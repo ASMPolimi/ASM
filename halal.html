@@ -626,7 +626,7 @@
     // Load custom barcodes from the backend (which reads HalalScanner.xlsx)
     async function loadCustomBarcodes() {
         let result = null;
-        for (const url of ['/api/custom_barcodes', 'data/custom_barcodes.json', 'api/custom_barcodes.json']) {
+        for (const url of ['https://admin.asmpolimi.it/api/custom_barcodes', '/api/custom_barcodes', 'data/custom_barcodes.json', 'api/custom_barcodes.json']) {
             try {
                 const response = await fetch(url);
                 if (response.ok) {

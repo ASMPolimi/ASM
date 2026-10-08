@@ -369,7 +369,7 @@
     async function loadContent() {
         try {
             let data = null;
-            for (const url of ['/api/content', 'data/content.json', 'api/content.json']) {
+            for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
                 try {
                     const response = await fetch(url);
                     if (response.ok) {

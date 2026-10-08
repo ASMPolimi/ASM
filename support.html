@@ -209,7 +209,10 @@
         btn.textContent = 'Submitting...';
 
         try {
-            const response = await fetch('/api/questions', {
+            const endpoint = (window.location.hostname === 'asmpolimi.it' || window.location.hostname.endsWith('github.io'))
+                ? 'https://admin.asmpolimi.it/api/questions'
+                : '/api/questions';
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ topic, question, email, phone })

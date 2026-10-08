@@ -213,7 +213,7 @@
 <script>
     async function loadGalleryContent() {
         let data = null;
-        for (const url of ['/api/content', 'data/content.json', 'api/content.json']) {
+        for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
             try {
                 const res = await fetch(url);
                 if (res.ok) { data = await res.json(); break; }

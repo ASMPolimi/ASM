@@ -170,20 +170,13 @@
 
         async function loadEventsContent() {
             let data = null;
-            try {
-                const response = await fetch('/api/content');
-                if (response.ok) data = await response.json();
-            } catch (e) {}
-            if (!data) {
+            for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
                 try {
-                    const response = await fetch('data/content.json');
-                    if (response.ok) data = await response.json();
-                } catch (e) {}
-            }
-            if (!data) {
-                try {
-                    const response = await fetch('api/content.json');
-                    if (response.ok) data = await response.json();
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        data = await response.json();
+                        break;
+                    }
                 } catch (e) {}
             }
             if (!data) return;
