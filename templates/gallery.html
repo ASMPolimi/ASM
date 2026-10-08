@@ -65,7 +65,7 @@
         <div class="gallery-grid stagger-children" id="dynamic-gallery-container">
             {% if gallery %}
                 {% for item in gallery %}
-                <div class="gallery-item fade-in-up is-visible" style="transition-delay: {{ loop.index0 * 120 }}ms;">
+                <div class="gallery-item fade-in-up is-visible" {{ ('style="transition-delay: ' ~ (loop.index0 * 120) ~ 'ms;"') | safe }}>
                     <img src="{{ item.image }}" alt="{{ item.title }}" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                     <span style="position: relative; z-index: 0;">Image {{ loop.index }}</span>
