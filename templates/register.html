@@ -54,13 +54,18 @@
             }
         }
 
-        fetch('/api/content')
-            .then(response => response.json())
-            .then(data => {
-                if (data.join_us_link && data.join_us_link.trim() !== '') {
-                    setRegisterForm(data.join_us_link);
-                }
-            })
-            .catch(err => console.error('Error fetching dynamic Join Us link:', err));
+        async function loadRegisterContent() {
+            let data = null;
+            for (const url of ['/api/content', 'data/content.json', 'api/content.json']) {
+                try {
+                    const res = await fetch(url);
+                    if (res.ok) { data = await res.json(); break; }
+                } catch (e) {}
+            }
+            if (data && data.join_us_link && data.join_us_link.trim() !== '') {
+                setRegisterForm(data.join_us_link);
+            }
+        }
+        loadRegisterContent().catch(err => console.error('Error fetching dynamic Join Us link:', err));
     </script>
 {% endblock %}

@@ -249,17 +249,31 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Fetch cached prayer times from our backend API
-            const response = await fetch('/api/prayer_times');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const result = await response.json();
+            // Fetch cached prayer times from backend API or fallback to direct Aladhan API for static hosting
+            let timings = null;
+            try {
+                const response = await fetch('/api/prayer_times');
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result && result.success && result.data) timings = result.data;
+                }
+            } catch (e) {}
 
-            if (result && result.success && result.data) {
-                updatePrayerUI(result.data);
+            if (!timings) {
+                // Direct call for GitHub Pages / static hosting
+                const directRes = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Milan&country=Italy&method=2');
+                if (directRes.ok) {
+                    const directData = await directRes.json();
+                    if (directData && directData.data && directData.data.timings) {
+                        timings = directData.data.timings;
+                    }
+                }
+            }
+
+            if (timings) {
+                updatePrayerUI(timings);
             } else {
-                throw new Error("Invalid API response format");
+                updatePrayerUI(defaultTimings);
             }
         } catch (error) {
             console.warn('Error fetching live prayer times, using Milan defaults:', error);
@@ -336,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                alert('Connection error.');
+                alert('Note: On static GitHub Pages preview, live database subscriptions are not active. Please use the Join Us Google Form or email asm.polimi@gmail.com.');
                 btn.textContent = originalText;
             } finally {
                 btn.disabled = false;

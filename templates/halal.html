@@ -539,15 +539,19 @@
 
     // Load custom barcodes from the backend (which reads HalalScanner.xlsx)
     async function loadCustomBarcodes() {
-        try {
-            const response = await fetch('/api/custom_barcodes');
-            const result = await response.json();
-            if (result.success && result.data) {
-                CUSTOM_BARCODES = result.data;
-                console.log("Loaded custom barcodes from Excel.");
-            }
-        } catch (e) {
-            console.error("Failed to load custom barcodes:", e);
+        let result = null;
+        for (const url of ['/api/custom_barcodes', 'data/custom_barcodes.json', 'api/custom_barcodes.json']) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    result = await response.json();
+                    if (result && result.success && result.data) break;
+                }
+            } catch (e) {}
+        }
+        if (result && result.success && result.data) {
+            CUSTOM_BARCODES = result.data;
+            console.log("Loaded custom barcodes successfully.");
         }
     }
     

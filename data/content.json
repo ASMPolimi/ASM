@@ -1,0 +1,98 @@
+{
+  "announcement": "كل عام وانتم بخير ❤️🎉🥳 Eid Mubark \n \n",
+  "jumuah_prayer": "Fridays at 12:30 PM & 13:30 PM in the Prayer room in Bovisa",
+  "mission_text": "Associazione Studenti Musulmani (ASM) strives to facilitate a welcoming and active community for Muslim students on campus. We aim to support our members in balancing their academic pursuits with their spiritual growth, while fostering an inclusive environment that promotes understanding and dialogue.",
+  "join_us_link": "https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true",
+  "global_event_reg_link": "https://docs.google.com/forms/d/e/1FAIpQLSfa6iLQlLccx8UjKnXZI4OeBoojuvdr0kZUtgOM4k5tmyerEw/viewform",
+  "events": [],
+  "board_members": [
+    {
+      "id": 1,
+      "name": "Hanea B",
+      "role": "president",
+      "title": "President",
+      "avatar": "P"
+    },
+    {
+      "id": 2,
+      "name": "Khalil T",
+      "role": "vicepresident",
+      "title": "Vice President",
+      "avatar": "V"
+    },
+    {
+      "id": 3,
+      "name": "Razia",
+      "role": "secretary",
+      "title": "Secretary",
+      "avatar": "S"
+    },
+    {
+      "id": 4,
+      "name": "Mariam",
+      "role": "treasurer",
+      "title": "Treasurer",
+      "avatar": "T"
+    },
+    {
+      "id": 5,
+      "name": "Numaan",
+      "role": "advisor",
+      "title": "Advisor",
+      "avatar": "A"
+    }
+  ],
+  "gallery": [
+    {
+      "id": 1,
+      "title": "Escape Room",
+      "role": "event1",
+      "image": "assets/gallery_event1.png"
+    },
+    {
+      "id": 2,
+      "title": "Horse riding",
+      "role": "event2",
+      "image": "assets/gallery_event2.png"
+    },
+    {
+      "id": 3,
+      "title": "Islam Awareness Week",
+      "role": "event3",
+      "image": "assets/gallery_event3.png"
+    },
+    {
+      "id": 4,
+      "title": "Arabic Calligraphy",
+      "role": "event4",
+      "image": "assets/gallery_event4.png"
+    },
+    {
+      "id": 5,
+      "title": "Ramadiamo",
+      "role": "event5",
+      "image": "assets/gallery_event5.png"
+    },
+    {
+      "id": 6,
+      "title": "Islamic activities",
+      "role": "event6",
+      "image": "assets/gallery_event6.png"
+    }
+  ],
+  "jumuah_info": {
+    "bovisa": {
+      "count": "0",
+      "motivation": "Strike",
+      "time1": "13:15",
+      "time2": "14:00"
+    },
+    "leonardo": {
+      "count": "2",
+      "motivation": "Holiday",
+      "time1": "13:77",
+      "time2": "14:00"
+    },
+    "date": "Friday, May 22"
+  }
+}

@@ -1,30 +1,84 @@
-# ASM_Website
-v1.7.2 Official
+# ASM Politecnico di Milano Website
+**Official Website for the Associazione Studenti Musulmani (ASM) - Politecnico di Milano**
 
-السلام عليكم 
-I’ve been working on a website for our association it's a project I started back when I was on the board, and i picked it back up again after Omar talked to me about reviving the ASM
+Live Online URL: [https://asmpolimi.onrender.com](https://asmpolimi.onrender.com)  
+GitHub Pages: Enable GitHub Pages in repository settings pointing to `/ (root)` of branch `main`.
 
-It’s pretty much done
-I just need to add a few final photos and make tiny modification
+---
 
-​The siteicomes with features for our members, including
-​An intro to ASM, an announcement bar, mailing list, board memebers and a calendar for events plus a gallery images of past ones
+## 🌟 Features
+- **Community & Mission**: Overview of ASM Polimi, community photo, board members.
+- **Daily Prayer Timings & Ayah**: Automatic Milan prayer schedule (Aladhan API) with daily Ayah (AlQuran API).
+- **Jumu'ah Timings & Locations**: Friday prayer information for Bovisa and Leonardo with interactive maps.
+- **Halal Product Scanner**: Live camera barcode scanner, manual barcode lookup via Open Food Facts, ingredients analyzer with Haram/Mashbuh classification, and custom barcodes database.
+- **Events & Registration**: Upcoming events calendar with linked Google Form registration.
+- **Ask an Imam**: Private question submission portal.
+- **Gallery**: Event photos and activities.
+- **Admin & Superadmin Dashboard**: Dynamic management for announcements, events, gallery, Jumu'ah timings, and board details.
 
-​A daily Ayah (in arabic and english) and an "Ask an Imam" service where people can get private answers from our scholars
+---
 
-Daily prayer timing and​Jumuah prayer timings for Bovisa and UniMi, with Google Maps links and video guides on how to find the prayer rooms, plus a list of local mosques
+## 🚀 How to Run Locally
 
-​A Halal food scanner, a membership link, and a page for our board members
+### Option 1: One-Click Quick Start
+- **Windows**: Double-click `run.bat`
+- **Linux / macOS**: Run `chmod +x run.sh && ./run.sh`
 
-​Admin features:
-​Admins can update announcements, membership links, and events, manage the gallery, access the mailing list, change prayer timings, and respond to "Ask an Imam" questions
+### Option 2: Manual Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ASMPolimi/ASM.git
+   cd ASM
+   ```
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   # Windows:
+   .\venv\Scripts\activate
+   # Linux/macOS:
+   source venv/bin/activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Start the server:
+   ```bash
+   python server.py
+   ```
+5. Open your browser at [http://localhost:8080](http://localhost:8080).
 
-​Superadmins in addition can handle board member info and manage admin access
+---
 
-​Right now, im running it on a free server, however if we can get funding from polimi, I’m planning to upgrade it so admins can upload photos directly to the site as at the moment i need to manually change the picture by github push
+## 🌐 GitHub Pages (Static Hosting)
+This repository is pre-rendered and static-ready:
+- All main pages (`index.html`, `events.html`, `halal.html`, `jumuah.html`, `gallery.html`, `register.html`, etc.) are located in the root directory.
+- Dynamic data is pre-compiled into `data/content.json` and `data/custom_barcodes.json`, allowing the site to work on static web hosts (GitHub Pages) without needing a Python backend.
+- To re-generate or refresh the static files after updating templates or database entries, run:
+  ```bash
+  python build_static.py
+  ```
 
-You guys are free to test and gimme your feedback on it and if you can test on different devices dimension as i was struggling in the past days to make it compatible for all screen dimension
+---
 
-Btw the website supports dark mode as well
-
-https://asmpolimi.onrender.com
+## 📂 Project Structure
+```text
+├── index.html              # Main homepage (static pre-rendered for GitHub Pages)
+├── events.html             # Events & registration page
+├── halal.html              # Halal scanner page
+├── jumuah.html             # Jumu'ah prayer info page
+├── gallery.html            # Event gallery page
+├── register.html           # Membership registration page
+├── support.html            # Ask an Imam page
+├── admin.html              # Admin dashboard
+├── admin_*.html            # Specific admin panels
+├── server.py               # Flask backend server & API
+├── build_static.py         # Static export & Jinja pre-rendering script
+├── requirements.txt        # Python dependencies
+├── run.bat / run.sh        # 1-click startup scripts
+├── asm.db                  # SQLite database
+├── data/ & api/            # Static JSON fallbacks for content & barcodes
+├── templates/              # Jinja2 source templates
+├── css/ & js/              # Stylesheets and frontend scripts
+└── assets/                 # Images, logos, and avatars
+```
