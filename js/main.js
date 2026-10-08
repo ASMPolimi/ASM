@@ -72,10 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileNavLinksContainer.appendChild(divider);
 
         const adminLinks = [
-            { text: 'Admin: Events', href: 'admin.html' },
-            { text: "Admin: Jumu'ah", href: 'admin_jumuah.html' },
-            { text: 'Admin: Users', href: 'admin_users.html' },
-            { text: 'Admin: Questions', href: 'admin_questions.html' }
+            { text: 'Admin: Events', href: 'https://asmpolimi.onrender.com/admin.html' },
+            { text: "Admin: Jumu'ah", href: 'https://asmpolimi.onrender.com/admin_jumuah.html' },
+            { text: 'Admin: Users', href: 'https://asmpolimi.onrender.com/admin_users.html' },
+            { text: 'Admin: Questions', href: 'https://asmpolimi.onrender.com/admin_questions.html' }
         ];
 
         adminLinks.forEach(linkInfo => {
