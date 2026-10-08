@@ -63,9 +63,18 @@
         </div>
 
         <div class="gallery-grid stagger-children" id="dynamic-gallery-container">
-            <!-- Gallery items will load here -->
-            <p class="text-center w-100" style="grid-column: 1 / -1; color: var(--color-text-light);">Loading
-                gallery...</p>
+            {% if gallery %}
+                {% for item in gallery %}
+                <div class="gallery-item fade-in-up is-visible" style="transition-delay: {{ loop.index0 * 120 }}ms;">
+                    <img src="{{ item.image }}" alt="{{ item.title }}" onerror="this.style.display='none'"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                    <span style="position: relative; z-index: 0;">Image {{ loop.index }}</span>
+                    <div class="gallery-caption" style="z-index: 2;">{{ item.title }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center w-100" style="grid-column: 1 / -1; color: var(--color-text-light);">Loading gallery...</p>
+            {% endif %}
         </div>
 
         <div class="text-center mt-4" style="margin-top: 4rem;">
@@ -92,30 +101,31 @@
             } catch (e) {}
         }
         if (!data) return;
-            const galleryContainer = document.getElementById('dynamic-gallery-container');
-            if (galleryContainer && data.gallery) {
-                galleryContainer.innerHTML = '';
-                data.gallery.forEach((item, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'gallery-item fade-in-up';
-                    div.style.transitionDelay = `${index * 120}ms`;
-                    div.innerHTML = `
-                            <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'"
-                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
-                            <span style="position: relative; z-index: 0;">Image ${index + 1}</span>
-                            <div class="gallery-caption" style="z-index: 2;">${item.title}</div>
-                        `;
-                    galleryContainer.appendChild(div);
 
-                    // Register with global scrollObserver if it exists
-                    if (window.scrollObserver) {
-                        window.scrollObserver.observe(div);
-                    } else {
-                        div.classList.add('is-visible');
-                    }
-                });
-            }
-        })
-        } loadGalleryContent()} loadGalleryContent().catch(err => console.error('Error fetching gallery content:', err));
+        const galleryContainer = document.getElementById('dynamic-gallery-container');
+        if (galleryContainer && data.gallery) {
+            galleryContainer.innerHTML = '';
+            data.gallery.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item fade-in-up';
+                div.style.transitionDelay = `${index * 120}ms`;
+                div.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                        <span style="position: relative; z-index: 0;">Image ${index + 1}</span>
+                        <div class="gallery-caption" style="z-index: 2;">${item.title}</div>
+                    `;
+                galleryContainer.appendChild(div);
+
+                if (window.scrollObserver) {
+                    window.scrollObserver.observe(div);
+                } else {
+                    div.classList.add('is-visible');
+                }
+            });
+        }
+    }
+
+    loadGalleryContent().catch(err => console.error('Error fetching gallery content:', err));
 </script>
 {% endblock %}

@@ -226,59 +226,59 @@
             } catch (e) {}
         }
         if (!data) return;
-            if (data.announcement && data.announcement.trim() !== '') {
-                const banner = document.getElementById('announcement-banner');
-                const text = document.getElementById('announcement-text');
-                if (banner && text) {
-                    text.textContent = data.announcement;
-                    banner.classList.remove('hidden');
-                    banner.style.display = 'block';
 
-                    // Hide after 30 seconds
+        if (data.announcement && data.announcement.trim() !== '') {
+            const banner = document.getElementById('announcement-banner');
+            const text = document.getElementById('announcement-text');
+            if (banner && text) {
+                text.textContent = data.announcement;
+                banner.classList.remove('hidden');
+                banner.style.display = 'block';
+
+                setTimeout(() => {
+                    banner.style.transition = 'opacity 0.5s ease';
+                    banner.style.opacity = '0';
                     setTimeout(() => {
-                        banner.style.transition = 'opacity 0.5s ease';
-                        banner.style.opacity = '0';
-                        setTimeout(() => {
-                            banner.classList.add('hidden');
-                            banner.style.display = 'none';
-                        }, 500);
-                    }, 20000);
-                }
+                        banner.classList.add('hidden');
+                        banner.style.display = 'none';
+                    }, 500);
+                }, 20000);
+            }
+        }
+
+        function renderCampus(campus, info) {
+            const statusDiv = document.getElementById(campus + '-status');
+            if (!statusDiv) return;
+
+            if (!info) {
+                statusDiv.textContent = 'Information not yet updated.';
+                return;
             }
 
-            function renderCampus(campus, info) {
-                const statusDiv = document.getElementById(campus + '-status');
-                if (!statusDiv) return;
-
-                if (!info) {
-                    statusDiv.textContent = 'Information not yet updated.';
-                    return;
-                }
-
-                if (info.count === '0') {
-                    statusDiv.innerHTML = `<span style="color: #dc3545;">No Jumu'ah Prayer</span><br><span style="font-size: 0.95rem; font-weight: 400;">Reason: ${info.motivation}</span>`;
-                } else if (info.count === '1') {
-                    statusDiv.innerHTML = `<span style="color: var(--color-primary);">One Prayer:</span> ${info.time1}`;
-                } else if (info.count === '2') {
-                    statusDiv.innerHTML = `<span style="color: var(--color-primary);">First Prayer:</span> ${info.time1} <br><span style="color: var(--color-primary);">Second Prayer:</span> ${info.time2}`;
-                }
+            if (info.count === '0') {
+                statusDiv.innerHTML = `<span style="color: #dc3545;">No Jumu'ah Prayer</span><br><span style="font-size: 0.95rem; font-weight: 400;">Reason: ${info.motivation}</span>`;
+            } else if (info.count === '1') {
+                statusDiv.innerHTML = `<span style="color: var(--color-primary);">One Prayer:</span> ${info.time1}`;
+            } else if (info.count === '2') {
+                statusDiv.innerHTML = `<span style="color: var(--color-primary);">First Prayer:</span> ${info.time1} <br><span style="color: var(--color-primary);">Second Prayer:</span> ${info.time2}`;
             }
+        }
 
-            if (data.jumuah_info) {
-                renderCampus('bovisa', data.jumuah_info.bovisa);
-                renderCampus('leonardo', data.jumuah_info.leonardo);
-                if (data.jumuah_info.date) {
-                    const dateEl = document.getElementById('next-friday-date');
-                    if (dateEl) dateEl.textContent = data.jumuah_info.date;
-                }
-            } else if (data.jumuah_prayer) {
-                // Fallback to legacy string format
-                const bovisaDiv = document.getElementById('bovisa-status');
-                if (bovisaDiv) bovisaDiv.textContent = data.jumuah_prayer;
-                const leonardoDiv = document.getElementById('leonardo-status');
-                if (leonardoDiv) leonardoDiv.textContent = "See above.";
+        if (data.jumuah_info) {
+            renderCampus('bovisa', data.jumuah_info.bovisa);
+            renderCampus('leonardo', data.jumuah_info.leonardo);
+            if (data.jumuah_info.date) {
+                const dateEl = document.getElementById('next-friday-date');
+                if (dateEl) dateEl.textContent = data.jumuah_info.date;
             }
-        })
-        } loadJumuahContent()} loadJumuahContent().catch(err => console.error('Error fetching dynamic content:', err));
+        } else if (data.jumuah_prayer) {
+            const bovisaDiv = document.getElementById('bovisa-status');
+            if (bovisaDiv) bovisaDiv.textContent = data.jumuah_prayer;
+            const leonardoDiv = document.getElementById('leonardo-status');
+            if (leonardoDiv) leonardoDiv.textContent = "See above.";
+        }
+    }
+
+    loadJumuahContent().catch(err => console.error('Error fetching dynamic content:', err));
 </script>
 {% endblock %}
