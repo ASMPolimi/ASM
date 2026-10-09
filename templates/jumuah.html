@@ -65,7 +65,7 @@
 
             <!-- Sunnahs of Jumu'ah -->
             <div class="contact-form-container">
-                <h3 style="color: var(--color-primary); margin-bottom: 1.5rem;">Sunnahs of Friday</h3>
+                <h3 style="color: var(--color-primary); margin-bottom: 0.75rem;">Sunnahs of Friday</h3>
                 <ul class="feature-list checklist" id="sunnah-checklist">
                     <li><strong>Ghusl (غسل):</strong> Performing the ritual bath before heading to the prayer.</li>
                     <li><strong>Clean Clothes:</strong> Wearing your best and cleanest clothes.</li>
@@ -80,6 +80,43 @@
                     <li><strong>Dua (الدعاء):</strong> Making earnest supplications, especially during the 'hour of
                         acceptance'.</li>
                 </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Daily Prayer Times Section -->
+<section id="daily-prayers" class="section fade-in" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
+    <div class="container">
+        <div class="section-header text-center" style="margin-bottom: 2rem;">
+            <h2>Daily Prayer Times</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="prayer-times-card">
+            <div class="date-display" id="current-date">Loading date...</div>
+
+            <div class="prayer-grid stagger-children">
+                <div class="prayer-item">
+                    <div class="prayer-name">Fajr</div>
+                    <div class="prayer-time" id="fajr-time">--:-- AM</div>
+                </div>
+                <div class="prayer-item">
+                    <div class="prayer-name">Dhuhr</div>
+                    <div class="prayer-time" id="dhuhr-time">--:-- PM</div>
+                </div>
+                <div class="prayer-item">
+                    <div class="prayer-name">Asr</div>
+                    <div class="prayer-time" id="asr-time">--:-- PM</div>
+                </div>
+                <div class="prayer-item">
+                    <div class="prayer-name">Maghrib</div>
+                    <div class="prayer-time" id="maghrib-time">--:-- PM</div>
+                </div>
+                <div class="prayer-item">
+                    <div class="prayer-name">Isha</div>
+                    <div class="prayer-time" id="isha-time">--:-- PM</div>
+                </div>
             </div>
         </div>
     </div>
@@ -122,43 +159,6 @@
             <!-- Side Location Cards List -->
             <div class="map-locations-sidebar" id="map-locations-list">
                 <!-- Dynamically populated by JS -->
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Daily Prayer Times Section -->
-<section id="daily-prayers" class="section fade-in" style="padding-top: 0;">
-    <div class="container">
-        <div class="section-header text-center">
-            <h2>Daily Prayer Times</h2>
-            <div class="divider"></div>
-        </div>
-
-        <div class="prayer-times-card">
-            <div class="date-display" id="current-date">Loading date...</div>
-
-            <div class="prayer-grid stagger-children">
-                <div class="prayer-item">
-                    <div class="prayer-name">Fajr</div>
-                    <div class="prayer-time" id="fajr-time">--:-- AM</div>
-                </div>
-                <div class="prayer-item">
-                    <div class="prayer-name">Dhuhr</div>
-                    <div class="prayer-time" id="dhuhr-time">--:-- PM</div>
-                </div>
-                <div class="prayer-item">
-                    <div class="prayer-name">Asr</div>
-                    <div class="prayer-time" id="asr-time">--:-- PM</div>
-                </div>
-                <div class="prayer-item">
-                    <div class="prayer-name">Maghrib</div>
-                    <div class="prayer-time" id="maghrib-time">--:-- PM</div>
-                </div>
-                <div class="prayer-item">
-                    <div class="prayer-name">Isha</div>
-                    <div class="prayer-time" id="isha-time">--:-- PM</div>
-                </div>
             </div>
         </div>
     </div>
@@ -486,12 +486,12 @@
                 <div class="map-loc-card-header">
                     <div class="map-loc-title-group">
                         <span class="map-loc-icon">${loc.icon}</span>
-                        <div>
-                            <div class="map-loc-name">${loc.name}</div>
-                            <span style="font-size: 0.75rem; color: var(--color-text-light);">${loc.categoryLabel}</span>
-                        </div>
+                        <div class="map-loc-name">${loc.name}</div>
                     </div>
+                </div>
+                <div class="map-loc-meta">
                     <span class="map-loc-badge ${loc.badgeClass}">${loc.badge}</span>
+                    <span class="map-loc-cat">${loc.categoryLabel}</span>
                 </div>
                 <p class="map-loc-address">${loc.address}</p>
                 <div class="map-loc-actions" onclick="event.stopPropagation();">
