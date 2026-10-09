@@ -105,10 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTopBtn.className = 'back-to-top';
     backToTopBtn.setAttribute('aria-label', 'Back to top');
     backToTopBtn.innerHTML = `
-        <svg class="progress-ring" width="50" height="50">
-            <circle cx="25" cy="25" r="22"/>
+        <svg class="progress-ring" viewBox="0 0 50 50" width="100%" height="100%">
+            <circle class="progress-ring-bg" cx="25" cy="25" r="22"/>
+            <circle class="progress-ring-fill" cx="25" cy="25" r="22"/>
         </svg>
-        <span style="font-size: 1.5rem; position: relative; z-index: 2;">↑</span>
+        <span class="back-to-top-arrow">↑</span>
     `;
     document.body.appendChild(backToTopBtn);
 
@@ -119,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const progressCircle = backToTopBtn.querySelector('circle');
+    const progressCircle = backToTopBtn.querySelector('.progress-ring-fill') || backToTopBtn.querySelector('circle');
     const radius = progressCircle.r.baseVal.value;
     const circumference = radius * 2 * Math.PI;
 

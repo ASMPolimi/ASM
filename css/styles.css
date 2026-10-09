@@ -329,15 +329,23 @@ a {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
-    min-height: 600px;
+    min-height: 100vh;
+    min-height: 100dvh;
     position: relative;
     display: flex;
     align-items: center;
+    padding-top: calc(80px + 2.5rem);
+    padding-bottom: 3rem;
+    box-sizing: border-box;
+    transition: padding-top 0.4s ease;
     background-image: url('../assets/hero_bg.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+}
+
+#announcement-banner:not(.hidden) ~ .hero {
+    padding-top: 2rem !important;
 }
 
 .hero-overlay {
@@ -981,8 +989,19 @@ body.dark-mode .email-send-link:hover {
         display: block;
     }
 
+    .hero {
+        padding-top: calc(80px + 2rem);
+        padding-bottom: 2.5rem;
+        background-attachment: scroll;
+    }
+
+    #announcement-banner:not(.hidden) ~ .hero {
+        padding-top: 1.25rem !important;
+    }
+
     .hero h1 {
-        font-size: 3rem;
+        font-size: clamp(2.2rem, 7.5vw, 2.85rem);
+        line-height: 1.2;
     }
 
     .hero-buttons {
@@ -991,6 +1010,12 @@ body.dark-mode .email-send-link:hover {
 
     .hero-quick-badges {
         justify-content: center;
+        gap: 0.6rem;
+    }
+
+    .hero-badge-pill {
+        font-size: 0.88rem;
+        padding: 0.45rem 1rem;
     }
 
     .prayer-grid {
@@ -1323,53 +1348,89 @@ body.dark-mode .hero-overlay {
 /* Back to Top circular progress indicator */
 .back-to-top {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
+    bottom: 28px;
+    right: 28px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background-color: var(--color-primary);
     color: white;
-    border: none;
+    border: 1.5px solid rgba(251, 191, 36, 0.45);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
     opacity: 0;
-    transform: translateY(20px) scale(0.8);
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+    transform: translateY(20px) scale(0.85);
+    transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                background-color 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
     z-index: 999;
 }
 
 .back-to-top.show {
     opacity: 1;
+    pointer-events: auto;
     transform: translateY(0) scale(1);
 }
 
 .back-to-top:hover {
-    transform: translateY(-5px) scale(1.05);
+    transform: translateY(-4px) scale(1.06);
     background-color: var(--color-secondary);
     color: var(--color-primary);
+    border-color: var(--color-secondary);
+    box-shadow: 0 6px 22px rgba(251, 191, 36, 0.4);
 }
 
 .back-to-top svg.progress-ring {
     position: absolute;
     top: 0;
     left: 0;
-    width: 50px;
-    height: 50px;
+    width: 100%;
+    height: 100%;
     transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    pointer-events: none;
 }
 
-.back-to-top svg.progress-ring circle {
+.back-to-top svg.progress-ring circle.progress-ring-bg {
+    fill: transparent;
+    stroke: rgba(255, 255, 255, 0.18);
+    stroke-width: 3.5;
+}
+
+.back-to-top:hover svg.progress-ring circle.progress-ring-bg {
+    stroke: rgba(18, 74, 97, 0.2);
+}
+
+.back-to-top svg.progress-ring circle.progress-ring-fill {
     fill: transparent;
     stroke: var(--color-secondary);
-    stroke-width: 3;
-    stroke-dasharray: 138.2;
-    /* 2 * PI * r = 2 * 3.14159 * 22 */
-    stroke-dashoffset: 138.2;
+    stroke-width: 3.5;
+    stroke-linecap: round;
     transition: stroke-dashoffset 0.1s ease-out;
+}
+
+.back-to-top:hover svg.progress-ring circle.progress-ring-fill {
+    stroke: var(--color-primary);
+}
+
+.back-to-top .back-to-top-arrow {
+    position: relative;
+    z-index: 2;
+    font-size: 1.35rem;
+    line-height: 1;
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.back-to-top:hover .back-to-top-arrow {
+    transform: translateY(-2px);
 }
 
 /* Gallery Lightbox modal */
@@ -2472,16 +2533,17 @@ body.dark-mode .jumuah-campus-card {
 
     /* Sleek Back to Top on mobile */
     .back-to-top {
-        bottom: 12px;
-        right: 12px;
-        width: 38px;
-        height: 38px;
-        z-index: 500;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+        right: 18px;
+        width: 44px;
+        height: 44px;
+        z-index: 995;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+        opacity: 0;
     }
 
     .back-to-top.show {
-        opacity: 0.75;
+        opacity: 1;
     }
 
     .back-to-top:hover,
@@ -2490,16 +2552,25 @@ body.dark-mode .jumuah-campus-card {
     }
 
     .back-to-top svg.progress-ring {
-        width: 38px;
-        height: 38px;
+        width: 100%;
+        height: 100%;
     }
 
-    .back-to-top span {
-        font-size: 1.05rem !important;
+    .back-to-top .back-to-top-arrow {
+        font-size: 1.2rem !important;
     }
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding-top: calc(80px + 1.5rem);
+        padding-bottom: 2rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(1.95rem, 8vw, 2.4rem);
+    }
+
     .map-frame-wrapper {
         height: 360px;
     }

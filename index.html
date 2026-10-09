@@ -532,10 +532,14 @@
                     banner.classList.remove('hidden');
                     banner.style.display = 'block';
 
-                    // Hide after 30 seconds
+                    // Hide after 20 seconds
                     setTimeout(() => {
-                        banner.style.transition = 'opacity 0.5s ease';
+                        banner.style.transition = 'opacity 0.5s ease, max-height 0.5s ease, padding 0.5s ease, margin 0.5s ease';
                         banner.style.opacity = '0';
+                        banner.style.maxHeight = '0px';
+                        banner.style.paddingTop = '0px';
+                        banner.style.paddingBottom = '0px';
+                        banner.style.overflow = 'hidden';
                         setTimeout(() => {
                             banner.classList.add('hidden');
                             banner.style.display = 'none';
