@@ -14,16 +14,15 @@
         rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/main.js" defer></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
 </head>
 
 <body class="bg-light">
 
     <!-- Header & Navigation -->
-    <header class="navbar">
+    <header class="navbar" >
         <div class="container nav-container">
             <a href="index.html" class="logo">
                 <img src="assets/asm_logo.png" alt="ASM Logo">
@@ -79,170 +78,163 @@
         </nav>
     </div>
 
+    
+<section class="section first-section jumuah-first-section">
+    <div class="container">
+        <div class="section-header text-center jumuah-header">
+            <h2>Jumu'ah Prayers</h2>
+            <div class="divider"></div>
 
-    <section class="section first-section jumuah-first-section">
-        <div class="container">
-            <div class="section-header text-center jumuah-header">
-                <h2>Jumu'ah Prayers</h2>
-                <div class="divider"></div>
+            <p class="jumuah-ayah-arabic">
+                يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا نُودِيَ لِلصَّلَاةِ مِن يَوْمِ الْجُمُعَةِ فَاسْعَوْا إِلَىٰ
+                ذِكْرِ اللَّهِ وَذَرُوا الْبَيْعَ ۚ ذَٰلِكُمْ خَيْرٌ لَّكُمْ إِن كُنتُمْ تَعْلَمُونَ
+            </p>
 
-                <p class="jumuah-ayah-arabic">
-                    يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا نُودِيَ لِلصَّلَاةِ مِن يَوْمِ الْجُمُعَةِ فَاسْعَوْا إِلَىٰ
-                    ذِكْرِ اللَّهِ وَذَرُوا الْبَيْعَ ۚ ذَٰلِكُمْ خَيْرٌ لَّكُمْ إِن كُنتُمْ تَعْلَمُونَ
-                </p>
-
-                <p class="jumuah-ayah-translation">
-                    O you who have believed, when [the adhan] is called for the prayer on the day of Jumu'ah (Friday),
-                    then proceed to the remembrance of Allah and leave trade. That is better for you, if you only knew.
-                    (Quran 62:9)
-                </p>
-            </div>
+            <p class="jumuah-ayah-translation">
+                O you who have believed, when [the adhan] is called for the prayer on the day of Jumu'ah (Friday),
+                then proceed to the remembrance of Allah and leave trade. That is better for you, if you only knew.
+                (Quran 62:9)
+            </p>
+        </div>
 
 
-            <div class="contact-grid stagger-children">
-                <!-- Location & Timing -->
-                <div class="contact-info">
-                    <h3 style="color: var(--color-primary); margin-bottom: 1.5rem;">Prayer Details for <span
-                            id="next-friday-date" style="color: var(--color-secondary);"></span></h3>
+        <div class="contact-grid stagger-children">
+            <!-- Location & Timing -->
+            <div class="contact-info">
+                <h3 style="color: var(--color-primary); margin-bottom: 1.5rem;">Prayer Details for <span
+                        id="next-friday-date" style="color: var(--color-secondary);"></span></h3>
 
-                    <div class="jumuah-campus-card">
-                        <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;">Bovisa
-                            Campus</h4>
-                        <div id="bovisa-status" style="font-size: 1.05rem; font-weight: 500; margin-bottom: 0.4rem;">
-                            Loading...
-                        </div>
-                        <div style="color: var(--color-text-light); font-size: 0.9rem; line-height: 1.4;">
-                            Location: <a href="#locations"
-                                onclick="if(typeof focusLocationById==='function'){focusLocationById('bovisa');}"
-                                style="color: var(--color-primary); text-decoration: underline; font-weight: 500;">Building
-                                24 level -1, Bovisa Campus</a><br>
-                            Please arrive early to secure a spot.
-                        </div>
+                <div class="jumuah-campus-card">
+                    <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;">Bovisa
+                        Campus</h4>
+                    <div id="bovisa-status" style="font-size: 1.05rem; font-weight: 500; margin-bottom: 0.4rem;">
+                        Loading...
                     </div>
-
-                    <div class="jumuah-campus-card">
-                        <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;">Unimi
-                            Building</h4>
-                        <div id="leonardo-status" style="font-size: 1.05rem; font-weight: 500; margin-bottom: 0.4rem;">
-                            Loading...
-                        </div>
-                        <div style="color: var(--color-text-light); font-size: 0.9rem; line-height: 1.4;">
-                            Location: <a href="#locations"
-                                onclick="if(typeof focusLocationById==='function'){focusLocationById('unimi');}"
-                                style="color: var(--color-primary); text-decoration: underline; font-weight: 500;">Room
-                                300
-                                Unimi Building</a><br>
-                            Please arrive early to secure a spot.
-                        </div>
+                    <div style="color: var(--color-text-light); font-size: 0.9rem; line-height: 1.4;">
+                        Location: <a href="#locations" onclick="if(typeof focusLocationById==='function'){focusLocationById('bovisa');}"
+                            style="color: var(--color-primary); text-decoration: underline; font-weight: 500;">Building
+                            24 level -1, Bovisa Campus</a><br>
+                        Please arrive early to secure a spot.
                     </div>
                 </div>
 
-                <!-- Sunnahs of Jumu'ah -->
-                <div class="contact-form-container">
-                    <h3 style="color: var(--color-primary); margin-bottom: 0.75rem;">Sunnahs of Friday</h3>
-                    <ul class="feature-list checklist" id="sunnah-checklist">
-                        <li><strong>Ghusl (غسل):</strong> Performing the ritual bath before heading to the prayer.</li>
-                        <li><strong>Clean Clothes:</strong> Wearing your best and cleanest clothes.</li>
-                        <li><strong>Perfume:</strong> Applying perfume (for men).</li>
-                        <li><strong>Siwak (سواك):</strong> Using the miswak to clean your teeth.</li>
-                        <li><strong>Surah Al-Kahf (سورة الكهف):</strong> Reciting Surah Al-Kahf during the day or the
-                            night before.
-                        </li>
-                        <li><strong>Prayer on the Profhet (الصلاة على النبي ﷺ):</strong> Sending abundant blessings upon
-                            the Prophet
-                            Muhammad (PBUH).</li>
-                        <li><strong>Dua (الدعاء):</strong> Making earnest supplications, especially during the 'hour of
-                            acceptance'.</li>
-                    </ul>
+                <div class="jumuah-campus-card">
+                    <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;">Unimi
+                        Building</h4>
+                    <div id="leonardo-status" style="font-size: 1.05rem; font-weight: 500; margin-bottom: 0.4rem;">
+                        Loading...
+                    </div>
+                    <div style="color: var(--color-text-light); font-size: 0.9rem; line-height: 1.4;">
+                        Location: <a href="#locations" onclick="if(typeof focusLocationById==='function'){focusLocationById('unimi');}"
+                            style="color: var(--color-primary); text-decoration: underline; font-weight: 500;">Room 300
+                            Unimi Building</a><br>
+                        Please arrive early to secure a spot.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sunnahs of Jumu'ah -->
+            <div class="contact-form-container">
+                <h3 style="color: var(--color-primary); margin-bottom: 0.75rem;">Sunnahs of Friday</h3>
+                <ul class="feature-list checklist" id="sunnah-checklist">
+                    <li><strong>Ghusl (غسل):</strong> Performing the ritual bath before heading to the prayer.</li>
+                    <li><strong>Clean Clothes:</strong> Wearing your best and cleanest clothes.</li>
+                    <li><strong>Perfume:</strong> Applying perfume (for men).</li>
+                    <li><strong>Siwak (سواك):</strong> Using the miswak to clean your teeth.</li>
+                    <li><strong>Surah Al-Kahf (سورة الكهف):</strong> Reciting Surah Al-Kahf during the day or the
+                        night before.
+                    </li>
+                    <li><strong>Prayer on the Profhet (الصلاة على النبي ﷺ):</strong> Sending abundant blessings upon
+                        the Prophet
+                        Muhammad (PBUH).</li>
+                    <li><strong>Dua (الدعاء):</strong> Making earnest supplications, especially during the 'hour of
+                        acceptance'.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Daily Prayer Times Section -->
+<section id="daily-prayers" class="section fade-in" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
+    <div class="container">
+        <div class="section-header text-center" style="margin-bottom: 2rem;">
+            <h2>Daily Prayer Times</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="prayer-times-card">
+            <div class="date-display" id="current-date">Loading date...</div>
+
+            <div class="prayer-grid stagger-children">
+                <div class="prayer-item">
+                    <div class="prayer-name">Fajr</div>
+                    <div class="prayer-time" id="fajr-time">--:-- AM</div>
+                </div>
+                <div class="prayer-item">
+                    <div class="prayer-name">Dhuhr</div>
+                    <div class="prayer-time" id="dhuhr-time">--:-- PM</div>
+                </div>
+                <div class="prayer-item">
+                    <div class="prayer-name">Asr</div>
+                    <div class="prayer-time" id="asr-time">--:-- PM</div>
+                </div>
+                <div class="prayer-item">
+                    <div class="prayer-name">Maghrib</div>
+                    <div class="prayer-time" id="maghrib-time">--:-- PM</div>
+                </div>
+                <div class="prayer-item">
+                    <div class="prayer-name">Isha</div>
+                    <div class="prayer-time" id="isha-time">--:-- PM</div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Daily Prayer Times Section -->
-    <section id="daily-prayers" class="section fade-in" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
-        <div class="container">
-            <div class="section-header text-center" style="margin-bottom: 2rem;">
-                <h2>Daily Prayer Times</h2>
-                <div class="divider"></div>
+<!-- Interactive Prayer Locations & Mosques Map Section -->
+<section id="locations" class="section bg-light fade-in" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-badge" style="display: inline-block; padding: 0.35rem 1rem; border-radius: 2rem; background: rgba(18, 74, 97, 0.1); color: var(--color-primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Campus & Milan Guide</span>
+            <h2>Locations & Mosques Map</h2>
+            <div class="divider"></div>
+            <p>Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location card or pin to see room video guides, Jumu'ah availability, or open 1-click GPS navigation in Google Maps.</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="map-filter-bar">
+            <button type="button" class="map-filter-btn active" data-category="all">
+                <span>📍 All</span> <span class="filter-count" id="count-all">13</span>
+            </button>
+            <button type="button" class="map-filter-btn" data-category="campus">
+                <span>🎓 Campus</span> <span class="filter-count" id="count-campus">3</span>
+            </button>
+            <button type="button" class="map-filter-btn" data-category="mosque">
+                <span>🕌 Mosques</span> <span class="filter-count" id="count-mosque">10</span>
+            </button>
+        </div>
+
+        <!-- Split Map Layout -->
+        <div class="prayer-map-layout">
+            <!-- Map Container -->
+            <div class="map-frame-wrapper">
+                <div id="prayer-leaflet-map"></div>
+                <div class="map-legend">
+                    <span class="legend-item"><span class="legend-dot dot-campus"></span> Campus Room</span>
+                    <span class="legend-item"><span class="legend-dot dot-mosque"></span> Milan Mosque</span>
+                </div>
             </div>
 
-            <div class="prayer-times-card">
-                <div class="date-display" id="current-date">Loading date...</div>
-
-                <div class="prayer-grid stagger-children">
-                    <div class="prayer-item">
-                        <div class="prayer-name">Fajr</div>
-                        <div class="prayer-time" id="fajr-time">--:-- AM</div>
-                    </div>
-                    <div class="prayer-item">
-                        <div class="prayer-name">Dhuhr</div>
-                        <div class="prayer-time" id="dhuhr-time">--:-- PM</div>
-                    </div>
-                    <div class="prayer-item">
-                        <div class="prayer-name">Asr</div>
-                        <div class="prayer-time" id="asr-time">--:-- PM</div>
-                    </div>
-                    <div class="prayer-item">
-                        <div class="prayer-name">Maghrib</div>
-                        <div class="prayer-time" id="maghrib-time">--:-- PM</div>
-                    </div>
-                    <div class="prayer-item">
-                        <div class="prayer-name">Isha</div>
-                        <div class="prayer-time" id="isha-time">--:-- PM</div>
-                    </div>
-                </div>
+            <!-- Side Location Cards List -->
+            <div class="map-locations-sidebar" id="map-locations-list">
+                <!-- Dynamically populated by JS -->
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Interactive Prayer Locations & Mosques Map Section -->
-    <section id="locations" class="section bg-light fade-in" style="padding-top: 2rem; padding-bottom: 4rem;">
-        <div class="container">
-            <div class="section-header text-center">
-                <span class="section-badge"
-                    style="display: inline-block; padding: 0.35rem 1rem; border-radius: 2rem; background: rgba(18, 74, 97, 0.1); color: var(--color-primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Campus
-                    & Milan Guide</span>
-                <h2>Locations & Mosques Map</h2>
-                <div class="divider"></div>
-                <p>Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location
-                    card or pin to see room video guides, Jumu'ah availability, or open 1-click GPS navigation in Google
-                    Maps.</p>
-            </div>
-
-            <!-- Filter Controls -->
-            <div class="map-filter-bar">
-                <button type="button" class="map-filter-btn active" data-category="all">
-                    <span>📍 All</span> <span class="filter-count" id="count-all">13</span>
-                </button>
-                <button type="button" class="map-filter-btn" data-category="campus">
-                    <span>🎓 Campus</span> <span class="filter-count" id="count-campus">3</span>
-                </button>
-                <button type="button" class="map-filter-btn" data-category="mosque">
-                    <span>🕌 Mosques</span> <span class="filter-count" id="count-mosque">10</span>
-                </button>
-            </div>
-
-            <!-- Split Map Layout -->
-            <div class="prayer-map-layout">
-                <!-- Map Container -->
-                <div class="map-frame-wrapper">
-                    <div id="prayer-leaflet-map"></div>
-                    <div class="map-legend">
-                        <span class="legend-item"><span class="legend-dot dot-campus"></span> Campus Room</span>
-                        <span class="legend-item"><span class="legend-dot dot-mosque"></span> Milan Mosque</span>
-                    </div>
-                </div>
-
-                <!-- Side Location Cards List -->
-                <div class="map-locations-sidebar" id="map-locations-list">
-                    <!-- Dynamically populated by JS -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
+<!-- Footer -->
 
 
     <!-- Footer -->
@@ -261,281 +253,280 @@
         </div>
     </footer>
 
+    
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    // Prayer locations dataset
+    const PRAYER_LOCATIONS = [
+        {
+            id: 'bovisa',
+            name: 'Bovisa Campus Prayer Room',
+            category: 'campus',
+            categoryLabel: 'Politecnico di Milano',
+            badge: 'Jumu\'ah Available',
+            badgeClass: 'badge-jumuah',
+            icon: '🎓',
+            address: 'Building 24 level -1, Via Privata Giuseppe La Masa, 34, 20156 Milano',
+            coords: [45.50294, 9.15651],
+            mapsUrl: 'https://goo.gl/maps/jVDEEckRJZBkWT5q7',
+            videoUrl: 'https://youtube.com/shorts/rXHHH2kImDc?is=Ea-2FxbiN4gJlDbk',
+            desc: 'Main Bovisa prayer hall located on level -1 of Building 24. Holds Friday Jumu\'ah.'
+        },
+        {
+            id: 'unimi',
+            name: 'Unimi Campus Prayer Room',
+            category: 'campus',
+            categoryLabel: 'Università degli Studi di Milano',
+            badge: 'Jumu\'ah Available',
+            badgeClass: 'badge-jumuah',
+            icon: '🎓',
+            address: 'Room 300, Unimi Building, Via Celoria / Città Studi, 20133 Milano',
+            coords: [45.47683, 9.22744],
+            mapsUrl: 'https://goo.gl/maps/cdUrXTAdf1Q9cGds9%7C',
+            videoUrl: 'https://youtube.com/shorts/A5vwr2wduu4?is=2Yd-BOlo2g3o-ypL',
+            desc: 'Room 300 in the Unimi sector. Friday Jumu\'ah prayers organized for students.'
+        },
+        {
+            id: 'leonardo2',
+            name: 'Leonardo Campus Prayer Room',
+            category: 'campus',
+            categoryLabel: 'Politecnico di Milano',
+            badge: 'Daily Prayers Only (No Jumu\'ah)',
+            badgeClass: 'badge-daily',
+            icon: '🎓',
+            address: 'Building 32.1.2, Leonardo Campus, Piazza Leonardo da Vinci 32, 20133 Milano',
+            coords: [45.47841, 9.22952],
+            mapsUrl: 'https://maps.app.goo.gl/FFZ3KJW3ns3FZHXDA',
+            videoUrl: 'https://youtube.com/shorts/I_jQXZ8b7zU?is=2z-M87fbhU_21VSL',
+            desc: 'Convenient space for daily Zuhr, Asr, and Maghrib. Note: Jumu\'ah is not hosted here.'
+        },
+        {
+            id: 'casa-cultura',
+            name: 'Casa della Cultura Islamica Onlus',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Padova, 144, 20132 Milano',
+            coords: [45.49520, 9.22680],
+            mapsUrl: 'https://maps.app.goo.gl/YSWi9PbpFCy4cpEDA',
+            videoUrl: null,
+            desc: 'Historic Milan community cultural and spiritual center with regular Friday prayers.'
+        },
+        {
+            id: 'merciful',
+            name: 'Mosque of the Merciful (Al-Rahma)',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Cassanese, 3, 20134 Milano (Lambrate / Segrate)',
+            coords: [45.48512, 9.26084],
+            mapsUrl: 'https://maps.app.goo.gl/y6Q5veskFkXbj9H18',
+            videoUrl: null,
+            desc: 'Large dedicated mosque accessible from east Milan, hosting major congregations.'
+        },
+        {
+            id: 'mariam',
+            name: 'Mariam Mosque (Moschea Mariam)',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Padova 366, 20132 Milano',
+            coords: [45.50851, 9.24580],
+            mapsUrl: 'https://maps.app.goo.gl/7M2ktytL5uwPYtzRA',
+            videoUrl: null,
+            desc: 'Traditional mosque architecture with minaret, open for daily and Friday prayers.'
+        },
+        {
+            id: 'gobba',
+            name: 'Centro Islamico di Milano (Cascina Gobba)',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Mondovì 1, 20132 Milano (M2 Cascina Gobba)',
+            coords: [45.51082, 9.25621],
+            mapsUrl: 'https://maps.google.com/?q=Centro+Islamico+Milano+Cascina+Gobba+Via+Mondov%C3%AC+1+Milano',
+            videoUrl: null,
+            desc: 'Major regional Islamic center in Lombardy with spacious halls near M2 Cascina Gobba.'
+        },
+        {
+            id: 'jenner',
+            name: 'Centro Islamico Jenner (Al-Rahman)',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Viale Edoardo Jenner 50, 20158 Milano (close to Bovisa)',
+            coords: [45.49472, 9.17720],
+            mapsUrl: 'https://maps.google.com/?q=Viale+Edoardo+Jenner+50+Milano',
+            videoUrl: null,
+            desc: 'Conveniently situated near Bovisa and Maciachini, active for daily and Friday prayers.'
+        },
+        {
+            id: 'al-nur',
+            name: 'Associazione Culturale Al Nur',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Giacomo Carissimi, 19, 20124 Milano (Maggiolina / Maciachini)',
+            coords: [45.49156, 9.20081],
+            mapsUrl: 'https://maps.app.goo.gl/45azyYP5pfornpoN7',
+            videoUrl: null,
+            desc: 'Active Islamic cultural association and prayer space near Sondrio and Central Station.'
+        },
+        {
+            id: 'coreis',
+            name: 'COREIS - Moschea al-Wahid',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Giuseppe Meda, 9, 20136 Milano (Ticinese / Navigli)',
+            coords: [45.44564, 9.17941],
+            mapsUrl: 'https://maps.app.goo.gl/5i3YTNn546CrAaQs5',
+            videoUrl: null,
+            desc: 'Historic mosque and headquarters of COREIS Italiana in south Milano near Navigli.'
+        },
+        {
+            id: 'fajr',
+            name: 'Comunità Islamica Fajr',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Bernardo Quaranta, 54, 20139 Milano (Ripamonti / Scalo Romana)',
+            coords: [45.43679, 9.20895],
+            mapsUrl: 'https://maps.app.goo.gl/sxn44ALqaobxE9Wt6',
+            videoUrl: null,
+            desc: 'Welcoming community prayer space and mosque in the southern district of Milan.'
+        },
+        {
+            id: 'ditib',
+            name: 'DITIB Milano',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Vincenzo Toffetti, 27, 20139 Milano (Rogoredo / Porto di Mare)',
+            coords: [45.43982, 9.23360],
+            mapsUrl: 'https://maps.app.goo.gl/iXoKx1dsTQfuQtLF9',
+            videoUrl: null,
+            desc: 'Spacious community center and mosque close to Rogoredo and Porto di Mare stations.'
+        },
+        {
+            id: 'viale-marche',
+            name: 'Moschea Viale Marche',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Viale Marche, 40, 20159 Milano (Maciachini / Maggiolina)',
+            coords: [45.49595, 9.19387],
+            mapsUrl: 'https://maps.app.goo.gl/LBk7HiQx6yj4CDQf6',
+            videoUrl: null,
+            desc: 'Convenient prayer space near M3 Maciachini / M3 Zara, easily accessible from Bovisa.'
+        }
+    ];
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script>
-        // Prayer locations dataset
-        const PRAYER_LOCATIONS = [
-            {
-                id: 'bovisa',
-                name: 'Bovisa Campus Prayer Room',
-                category: 'campus',
-                categoryLabel: 'Politecnico di Milano',
-                badge: 'Jumu\'ah Available',
-                badgeClass: 'badge-jumuah',
-                icon: '🎓',
-                address: 'Building 24 level -1, Via Privata Giuseppe La Masa, 34, 20156 Milano',
-                coords: [45.50294, 9.15651],
-                mapsUrl: 'https://goo.gl/maps/jVDEEckRJZBkWT5q7',
-                videoUrl: 'https://youtube.com/shorts/rXHHH2kImDc?is=Ea-2FxbiN4gJlDbk',
-                desc: 'Main Bovisa prayer hall located on level -1 of Building 24. Holds Friday Jumu\'ah.'
-            },
-            {
-                id: 'unimi',
-                name: 'Unimi Campus Prayer Room',
-                category: 'campus',
-                categoryLabel: 'Università degli Studi di Milano',
-                badge: 'Jumu\'ah Available',
-                badgeClass: 'badge-jumuah',
-                icon: '🎓',
-                address: 'Room 300, Unimi Building, Via Celoria / Città Studi, 20133 Milano',
-                coords: [45.47683, 9.22744],
-                mapsUrl: 'https://maps.app.goo.gl/zwwDhuQ6sGTsgyU18',
-                videoUrl: 'https://youtube.com/shorts/A5vwr2wduu4?is=2Yd-BOlo2g3o-ypL',
-                desc: 'Room 300 in the Unimi sector. Friday Jumu\'ah prayers organized for students.'
-            },
-            {
-                id: 'leonardo2',
-                name: 'Leonardo Campus Prayer Room',
-                category: 'campus',
-                categoryLabel: 'Politecnico di Milano',
-                badge: 'Daily Prayers Only (No Jumu\'ah)',
-                badgeClass: 'badge-daily',
-                icon: '🎓',
-                address: 'Building 32.1.2, Leonardo Campus, Piazza Leonardo da Vinci 32, 20133 Milano',
-                coords: [45.47841, 9.22952],
-                mapsUrl: 'https://maps.app.goo.gl/FFZ3KJW3ns3FZHXDA',
-                videoUrl: 'https://youtube.com/shorts/I_jQXZ8b7zU?is=2z-M87fbhU_21VSL',
-                desc: 'Convenient space for daily Zuhr, Asr, and Maghrib. Note: Jumu\'ah is not hosted here.'
-            },
-            {
-                id: 'casa-cultura',
-                name: 'Casa della Cultura Islamica Onlus',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Via Padova, 144, 20132 Milano',
-                coords: [45.49520, 9.22680],
-                mapsUrl: 'https://maps.app.goo.gl/YSWi9PbpFCy4cpEDA',
-                videoUrl: null,
-                desc: 'Historic Milan community cultural and spiritual center with regular Friday prayers.'
-            },
-            {
-                id: 'merciful',
-                name: 'Mosque of the Merciful (Al-Rahma)',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Via Cassanese, 3, 20134 Milano (Lambrate / Segrate)',
-                coords: [45.48512, 9.26084],
-                mapsUrl: 'https://maps.app.goo.gl/y6Q5veskFkXbj9H18',
-                videoUrl: null,
-                desc: 'Large dedicated mosque accessible from east Milan, hosting major congregations.'
-            },
-            {
-                id: 'mariam',
-                name: 'Mariam Mosque (Moschea Mariam)',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Via Padova 366, 20132 Milano',
-                coords: [45.50851, 9.24580],
-                mapsUrl: 'https://maps.app.goo.gl/7M2ktytL5uwPYtzRA',
-                videoUrl: null,
-                desc: 'Traditional mosque architecture with minaret, open for daily and Friday prayers.'
-            },
-            {
-                id: 'gobba',
-                name: 'Centro Islamico di Milano (Cascina Gobba)',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Via Mondovì 1, 20132 Milano (M2 Cascina Gobba)',
-                coords: [45.51082, 9.25621],
-                mapsUrl: 'https://maps.google.com/?q=Centro+Islamico+Milano+Cascina+Gobba+Via+Mondov%C3%AC+1+Milano',
-                videoUrl: null,
-                desc: 'Major regional Islamic center in Lombardy with spacious halls near M2 Cascina Gobba.'
-            },
-            {
-                id: 'jenner',
-                name: 'Centro Islamico Jenner (Al-Rahman)',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Viale Edoardo Jenner 50, 20158 Milano (close to Bovisa)',
-                coords: [45.49472, 9.17720],
-                mapsUrl: 'https://maps.google.com/?q=Viale+Edoardo+Jenner+50+Milano',
-                videoUrl: null,
-                desc: 'Conveniently situated near Bovisa and Maciachini, active for daily and Friday prayers.'
-            },
-            {
-                id: 'al-nur',
-                name: 'Associazione Culturale Al Nur',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Via Giacomo Carissimi, 19, 20124 Milano (Maggiolina / Maciachini)',
-                coords: [45.49156, 9.20081],
-                mapsUrl: 'https://maps.app.goo.gl/45azyYP5pfornpoN7',
-                videoUrl: null,
-                desc: 'Active Islamic cultural association and prayer space near Sondrio and Central Station.'
-            },
-            {
-                id: 'coreis',
-                name: 'COREIS - Moschea al-Wahid',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Via Giuseppe Meda, 9, 20136 Milano (Ticinese / Navigli)',
-                coords: [45.44564, 9.17941],
-                mapsUrl: 'https://maps.app.goo.gl/5i3YTNn546CrAaQs5',
-                videoUrl: null,
-                desc: 'Historic mosque and headquarters of COREIS Italiana in south Milano near Navigli.'
-            },
-            {
-                id: 'fajr',
-                name: 'Comunità Islamica Fajr',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Via Bernardo Quaranta, 54, 20139 Milano (Ripamonti / Scalo Romana)',
-                coords: [45.43679, 9.20895],
-                mapsUrl: 'https://maps.app.goo.gl/sxn44ALqaobxE9Wt6',
-                videoUrl: null,
-                desc: 'Welcoming community prayer space and mosque in the southern district of Milan.'
-            },
-            {
-                id: 'ditib',
-                name: 'DITIB Milano',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Via Vincenzo Toffetti, 27, 20139 Milano (Rogoredo / Porto di Mare)',
-                coords: [45.43982, 9.23360],
-                mapsUrl: 'https://maps.app.goo.gl/iXoKx1dsTQfuQtLF9',
-                videoUrl: null,
-                desc: 'Spacious community center and mosque close to Rogoredo and Porto di Mare stations.'
-            },
-            {
-                id: 'viale-marche',
-                name: 'Moschea Viale Marche',
-                category: 'mosque',
-                categoryLabel: 'Milan Mosque',
-                badge: 'Mosque & Jumu\'ah',
-                badgeClass: 'badge-mosque',
-                icon: '🕌',
-                address: 'Viale Marche, 40, 20159 Milano (Maciachini / Maggiolina)',
-                coords: [45.49595, 9.19387],
-                mapsUrl: 'https://maps.app.goo.gl/LBk7HiQx6yj4CDQf6',
-                videoUrl: null,
-                desc: 'Convenient prayer space near M3 Maciachini / M3 Zara, easily accessible from Bovisa.'
+    let prayerMap = null;
+    let markersMap = {};
+    let activeCategory = 'all';
+
+    function initPrayerMap() {
+        const mapContainer = document.getElementById('prayer-leaflet-map');
+        if (!mapContainer || typeof L === 'undefined') return;
+
+        // Initialize map centered to cover all locations across Milan
+        prayerMap = L.map('prayer-leaflet-map', {
+            center: [45.474, 9.208],
+            zoom: 12,
+            scrollWheelZoom: false
+        });
+
+        // Add official OpenStreetMap tile layer (100% free, no API key required, no watermarks)
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+        }).addTo(prayerMap);
+
+        // Add pins to map
+        renderMarkers();
+        renderSidebarList();
+        setupFilterButtons();
+        updateFilterCounts();
+
+        // Automatically frame locations with balanced safe padding
+        setTimeout(() => {
+            recenterMapCategory();
+        }, 100);
+    }
+
+    function createCustomMarkerIcon(loc) {
+        const markerClass = loc.category === 'campus' ? 'marker-campus' : 'marker-mosque';
+        const iconHtml = `<div class="custom-leaflet-marker ${markerClass}" title="${loc.name}"><span>${loc.icon}</span></div>`;
+        return L.divIcon({
+            html: iconHtml,
+            className: 'custom-div-icon',
+            iconSize: [36, 36],
+            iconAnchor: [18, 18],
+            popupAnchor: [0, -18]
+        });
+    }
+
+    function clearActiveMarkers() {
+        Object.values(markersMap).forEach(m => {
+            m.setZIndexOffset(0);
+            const el = m.getElement();
+            if (el) {
+                const pin = el.querySelector('.custom-leaflet-marker');
+                if (pin) pin.classList.remove('marker-active');
             }
-        ];
+            m.closeTooltip();
+        });
+    }
 
-        let prayerMap = null;
-        let markersMap = {};
-        let activeCategory = 'all';
+    function renderMarkers() {
+        if (!prayerMap) return;
+        // Clear existing markers
+        Object.values(markersMap).forEach(m => prayerMap.removeLayer(m));
+        markersMap = {};
 
-        function initPrayerMap() {
-            const mapContainer = document.getElementById('prayer-leaflet-map');
-            if (!mapContainer || typeof L === 'undefined') return;
+        const filtered = activeCategory === 'all'
+            ? PRAYER_LOCATIONS
+            : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
 
-            // Initialize map centered to cover all locations across Milan
-            prayerMap = L.map('prayer-leaflet-map', {
-                center: [45.474, 9.208],
-                zoom: 12,
-                scrollWheelZoom: false
-            });
+        const isDesktop = window.innerWidth > 992;
 
-            // Add official OpenStreetMap tile layer (100% free, no API key required, no watermarks)
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
-            }).addTo(prayerMap);
+        filtered.forEach(loc => {
+            const icon = createCustomMarkerIcon(loc);
+            const marker = L.marker(loc.coords, { icon: icon }).addTo(prayerMap);
 
-            // Add pins to map
-            renderMarkers();
-            renderSidebarList();
-            setupFilterButtons();
-            updateFilterCounts();
-
-            // Automatically frame locations with balanced safe padding
-            setTimeout(() => {
-                recenterMapCategory();
-            }, 100);
-        }
-
-        function createCustomMarkerIcon(loc) {
-            const markerClass = loc.category === 'campus' ? 'marker-campus' : 'marker-mosque';
-            const iconHtml = `<div class="custom-leaflet-marker ${markerClass}" title="${loc.name}"><span>${loc.icon}</span></div>`;
-            return L.divIcon({
-                html: iconHtml,
-                className: 'custom-div-icon',
-                iconSize: [36, 36],
-                iconAnchor: [18, 18],
-                popupAnchor: [0, -18]
-            });
-        }
-
-        function clearActiveMarkers() {
-            Object.values(markersMap).forEach(m => {
-                m.setZIndexOffset(0);
-                const el = m.getElement();
-                if (el) {
-                    const pin = el.querySelector('.custom-leaflet-marker');
-                    if (pin) pin.classList.remove('marker-active');
+            // Compact pointing tooltip on hover for desktop
+            marker.bindTooltip(
+                `<div class="map-tooltip-content"><span class="map-tooltip-icon">${loc.icon}</span> <span class="map-tooltip-title">${loc.name}</span></div>`,
+                {
+                    direction: 'top',
+                    offset: [0, -18],
+                    className: 'custom-map-tooltip'
                 }
-                m.closeTooltip();
-            });
-        }
+            );
 
-        function renderMarkers() {
-            if (!prayerMap) return;
-            // Clear existing markers
-            Object.values(markersMap).forEach(m => prayerMap.removeLayer(m));
-            markersMap = {};
-
-            const filtered = activeCategory === 'all'
-                ? PRAYER_LOCATIONS
-                : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
-
-            const isDesktop = window.innerWidth > 992;
-
-            filtered.forEach(loc => {
-                const icon = createCustomMarkerIcon(loc);
-                const marker = L.marker(loc.coords, { icon: icon }).addTo(prayerMap);
-
-                // Compact pointing tooltip on hover for desktop
-                marker.bindTooltip(
-                    `<div class="map-tooltip-content"><span class="map-tooltip-icon">${loc.icon}</span> <span class="map-tooltip-title">${loc.name}</span></div>`,
-                    {
-                        direction: 'top',
-                        offset: [0, -18],
-                        className: 'custom-map-tooltip'
-                    }
-                );
-
-                // Compact popup with clean layout and side-by-side action buttons
-                let popupHtml = `
+            // Compact popup with clean layout and side-by-side action buttons
+            let popupHtml = `
                 <div class="popup-content-box">
                     <div class="popup-title">${loc.name}</div>
                     <span class="popup-badge ${loc.badgeClass}">${loc.badge}</span>
@@ -548,36 +539,36 @@
                     </div>
                 </div>
             `;
-                marker.bindPopup(popupHtml, {
-                    maxWidth: 220,
-                    minWidth: 175,
-                    autoPanPadding: [15, 15],
-                    className: 'compact-leaflet-popup'
-                });
-
-                marker.on('click', () => {
-                    selectLocation(loc.id, false);
-                });
-
-                markersMap[loc.id] = marker;
+            marker.bindPopup(popupHtml, {
+                maxWidth: 220,
+                minWidth: 175,
+                autoPanPadding: [15, 15],
+                className: 'compact-leaflet-popup'
             });
-        }
 
-        function renderSidebarList() {
-            const listContainer = document.getElementById('map-locations-list');
-            if (!listContainer) return;
+            marker.on('click', () => {
+                selectLocation(loc.id, false);
+            });
 
-            const filtered = activeCategory === 'all'
-                ? PRAYER_LOCATIONS
-                : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
+            markersMap[loc.id] = marker;
+        });
+    }
 
-            listContainer.innerHTML = '';
+    function renderSidebarList() {
+        const listContainer = document.getElementById('map-locations-list');
+        if (!listContainer) return;
 
-            filtered.forEach(loc => {
-                const card = document.createElement('div');
-                card.className = 'map-loc-card';
-                card.id = `loc-card-${loc.id}`;
-                card.innerHTML = `
+        const filtered = activeCategory === 'all'
+            ? PRAYER_LOCATIONS
+            : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
+
+        listContainer.innerHTML = '';
+
+        filtered.forEach(loc => {
+            const card = document.createElement('div');
+            card.className = 'map-loc-card';
+            card.id = `loc-card-${loc.id}`;
+            card.innerHTML = `
                 <div class="map-loc-card-header">
                     <div class="map-loc-title-group">
                         <span class="map-loc-icon">${loc.icon}</span>
@@ -597,206 +588,206 @@
                 </div>
             `;
 
-                card.addEventListener('click', () => {
-                    focusLocation(loc);
-                });
-
-                listContainer.appendChild(card);
+            card.addEventListener('click', () => {
+                focusLocation(loc);
             });
-        }
 
-        function selectLocation(id, fromCard = false) {
-            const loc = PRAYER_LOCATIONS.find(l => l.id === id);
-            if (!loc) return;
-
-            const isDesktop = window.innerWidth > 992;
-
-            // 1. Highlight the selected marker pin and open compact popup
-            clearActiveMarkers();
-            const activeMarker = markersMap[id];
-            if (activeMarker) {
-                activeMarker.setZIndexOffset(1000);
-                const el = activeMarker.getElement();
-                if (el) {
-                    const pin = el.querySelector('.custom-leaflet-marker');
-                    if (pin) pin.classList.add('marker-active');
-                }
-                activeMarker.openPopup();
-            }
-
-            // 2. Highlight card in sidebar without scrolling the browser window
-            highlightSidebarCard(id, isDesktop);
-
-            // 3. Handle navigation/centering depending on source
-            if (fromCard) {
-                // User clicked a card in the list: scroll up to map and focus pin
-                if (!isDesktop) {
-                    const mapSection = document.getElementById('locations');
-                    if (mapSection) {
-                        mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }
-                if (prayerMap) {
-                    prayerMap.flyTo(loc.coords, 14, { duration: 0.8 });
-                }
-            }
-            // When clicking directly on the map pin, NEVER scroll down away from the map!
-        }
-
-        function focusLocation(loc) {
-            selectLocation(loc.id, true);
-        }
-
-        function focusLocationById(id) {
-            selectLocation(id, true);
-        }
-        window.focusLocationById = focusLocationById;
-
-        function highlightSidebarCard(id, scrollSidebarContainer = false) {
-            document.querySelectorAll('.map-loc-card').forEach(c => c.classList.remove('active-card'));
-            const card = document.getElementById(`loc-card-${id}`);
-            if (card) {
-                card.classList.add('active-card');
-                // Only scroll the internal sidebar scroll area on desktop; NEVER scroll the window on mobile
-                if (scrollSidebarContainer && window.innerWidth > 992) {
-                    const listContainer = document.getElementById('map-locations-list');
-                    if (listContainer) {
-                        const cardTop = card.offsetTop - listContainer.offsetTop;
-                        listContainer.scrollTo({ top: cardTop - 12, behavior: 'smooth' });
-                    }
-                }
-            }
-        }
-
-        function recenterMapCategory() {
-            if (!prayerMap) return;
-            prayerMap.invalidateSize();
-
-            const isMobile = window.innerWidth <= 992;
-            // Generous padding so pins on the edges (like Bovisa on the left) have ample breathing room
-            const padX = isMobile ? 48 : 36;
-            const padY = isMobile ? 42 : 36;
-
-            if (activeCategory === 'campus') {
-                const campusCoords = PRAYER_LOCATIONS.filter(l => l.category === 'campus').map(l => l.coords);
-                prayerMap.fitBounds(campusCoords, {
-                    padding: [padY, padX],
-                    maxZoom: isMobile ? 12.2 : 13.5,
-                    animate: true
-                });
-            } else if (activeCategory === 'mosque') {
-                const mosqueCoords = PRAYER_LOCATIONS.filter(l => l.category === 'mosque').map(l => l.coords);
-                prayerMap.fitBounds(mosqueCoords, {
-                    padding: [padY, padX],
-                    maxZoom: isMobile ? 12 : 13,
-                    animate: true
-                });
-            } else {
-                const allCoords = PRAYER_LOCATIONS.map(l => l.coords);
-                prayerMap.fitBounds(allCoords, {
-                    padding: [padY, padX],
-                    maxZoom: isMobile ? 11.8 : 12.5,
-                    animate: true
-                });
-            }
-        }
-
-        function setupFilterButtons() {
-            const buttons = document.querySelectorAll('.map-filter-btn');
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    buttons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    activeCategory = btn.getAttribute('data-category');
-                    renderMarkers();
-                    renderSidebarList();
-                    recenterMapCategory();
-                });
-            });
-        }
-
-        function updateFilterCounts() {
-            const campusCount = PRAYER_LOCATIONS.filter(l => l.category === 'campus').length;
-            const mosqueCount = PRAYER_LOCATIONS.filter(l => l.category === 'mosque').length;
-            const totalCount = PRAYER_LOCATIONS.length;
-            const elAll = document.getElementById('count-all');
-            const elCampus = document.getElementById('count-campus');
-            const elMosque = document.getElementById('count-mosque');
-            if (elAll) elAll.textContent = totalCount;
-            if (elCampus) elCampus.textContent = campusCount;
-            if (elMosque) elMosque.textContent = mosqueCount;
-        }
-
-        // Initialize map on DOM load
-        window.addEventListener('DOMContentLoaded', () => {
-            initPrayerMap();
+            listContainer.appendChild(card);
         });
+    }
 
-        // Fetch dynamic content
-        async function loadJumuahContent() {
-            let data = null;
-            for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
-                try {
-                    const res = await fetch(url);
-                    if (res.ok) { data = await res.json(); break; }
-                } catch (e) { }
+    function selectLocation(id, fromCard = false) {
+        const loc = PRAYER_LOCATIONS.find(l => l.id === id);
+        if (!loc) return;
+
+        const isDesktop = window.innerWidth > 992;
+
+        // 1. Highlight the selected marker pin and open compact popup
+        clearActiveMarkers();
+        const activeMarker = markersMap[id];
+        if (activeMarker) {
+            activeMarker.setZIndexOffset(1000);
+            const el = activeMarker.getElement();
+            if (el) {
+                const pin = el.querySelector('.custom-leaflet-marker');
+                if (pin) pin.classList.add('marker-active');
             }
-            if (!data) return;
+            activeMarker.openPopup();
+        }
 
-            if (data.announcement && data.announcement.trim() !== '') {
-                const banner = document.getElementById('announcement-banner');
-                const text = document.getElementById('announcement-text');
-                if (banner && text) {
-                    text.textContent = data.announcement;
-                    banner.classList.remove('hidden');
-                    banner.style.display = 'block';
+        // 2. Highlight card in sidebar without scrolling the browser window
+        highlightSidebarCard(id, isDesktop);
 
+        // 3. Handle navigation/centering depending on source
+        if (fromCard) {
+            // User clicked a card in the list: scroll up to map and focus pin
+            if (!isDesktop) {
+                const mapSection = document.getElementById('locations');
+                if (mapSection) {
+                    mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            if (prayerMap) {
+                prayerMap.flyTo(loc.coords, 14, { duration: 0.8 });
+            }
+        }
+        // When clicking directly on the map pin, NEVER scroll down away from the map!
+    }
+
+    function focusLocation(loc) {
+        selectLocation(loc.id, true);
+    }
+
+    function focusLocationById(id) {
+        selectLocation(id, true);
+    }
+    window.focusLocationById = focusLocationById;
+
+    function highlightSidebarCard(id, scrollSidebarContainer = false) {
+        document.querySelectorAll('.map-loc-card').forEach(c => c.classList.remove('active-card'));
+        const card = document.getElementById(`loc-card-${id}`);
+        if (card) {
+            card.classList.add('active-card');
+            // Only scroll the internal sidebar scroll area on desktop; NEVER scroll the window on mobile
+            if (scrollSidebarContainer && window.innerWidth > 992) {
+                const listContainer = document.getElementById('map-locations-list');
+                if (listContainer) {
+                    const cardTop = card.offsetTop - listContainer.offsetTop;
+                    listContainer.scrollTo({ top: cardTop - 12, behavior: 'smooth' });
+                }
+            }
+        }
+    }
+
+    function recenterMapCategory() {
+        if (!prayerMap) return;
+        prayerMap.invalidateSize();
+
+        const isMobile = window.innerWidth <= 992;
+        // Generous padding so pins on the edges (like Bovisa on the left) have ample breathing room
+        const padX = isMobile ? 48 : 36;
+        const padY = isMobile ? 42 : 36;
+
+        if (activeCategory === 'campus') {
+            const campusCoords = PRAYER_LOCATIONS.filter(l => l.category === 'campus').map(l => l.coords);
+            prayerMap.fitBounds(campusCoords, {
+                padding: [padY, padX],
+                maxZoom: isMobile ? 12.2 : 13.5,
+                animate: true
+            });
+        } else if (activeCategory === 'mosque') {
+            const mosqueCoords = PRAYER_LOCATIONS.filter(l => l.category === 'mosque').map(l => l.coords);
+            prayerMap.fitBounds(mosqueCoords, {
+                padding: [padY, padX],
+                maxZoom: isMobile ? 12 : 13,
+                animate: true
+            });
+        } else {
+            const allCoords = PRAYER_LOCATIONS.map(l => l.coords);
+            prayerMap.fitBounds(allCoords, {
+                padding: [padY, padX],
+                maxZoom: isMobile ? 11.8 : 12.5,
+                animate: true
+            });
+        }
+    }
+
+    function setupFilterButtons() {
+        const buttons = document.querySelectorAll('.map-filter-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeCategory = btn.getAttribute('data-category');
+                renderMarkers();
+                renderSidebarList();
+                recenterMapCategory();
+            });
+        });
+    }
+
+    function updateFilterCounts() {
+        const campusCount = PRAYER_LOCATIONS.filter(l => l.category === 'campus').length;
+        const mosqueCount = PRAYER_LOCATIONS.filter(l => l.category === 'mosque').length;
+        const totalCount = PRAYER_LOCATIONS.length;
+        const elAll = document.getElementById('count-all');
+        const elCampus = document.getElementById('count-campus');
+        const elMosque = document.getElementById('count-mosque');
+        if (elAll) elAll.textContent = totalCount;
+        if (elCampus) elCampus.textContent = campusCount;
+        if (elMosque) elMosque.textContent = mosqueCount;
+    }
+
+    // Initialize map on DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+        initPrayerMap();
+    });
+
+    // Fetch dynamic content
+    async function loadJumuahContent() {
+        let data = null;
+        for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
+            try {
+                const res = await fetch(url);
+                if (res.ok) { data = await res.json(); break; }
+            } catch (e) {}
+        }
+        if (!data) return;
+
+        if (data.announcement && data.announcement.trim() !== '') {
+            const banner = document.getElementById('announcement-banner');
+            const text = document.getElementById('announcement-text');
+            if (banner && text) {
+                text.textContent = data.announcement;
+                banner.classList.remove('hidden');
+                banner.style.display = 'block';
+
+                setTimeout(() => {
+                    banner.style.transition = 'opacity 0.5s ease';
+                    banner.style.opacity = '0';
                     setTimeout(() => {
-                        banner.style.transition = 'opacity 0.5s ease';
-                        banner.style.opacity = '0';
-                        setTimeout(() => {
-                            banner.classList.add('hidden');
-                            banner.style.display = 'none';
-                        }, 500);
-                    }, 20000);
-                }
-            }
-
-            function renderCampus(campus, info) {
-                const statusDiv = document.getElementById(campus + '-status');
-                if (!statusDiv) return;
-
-                if (!info) {
-                    statusDiv.textContent = 'Information not yet updated.';
-                    return;
-                }
-
-                if (info.count === '0') {
-                    statusDiv.innerHTML = `<span style="color: #dc3545;">No Jumu'ah Prayer</span><br><span style="font-size: 0.95rem; font-weight: 400;">Reason: ${info.motivation}</span>`;
-                } else if (info.count === '1') {
-                    statusDiv.innerHTML = `<span style="color: var(--color-primary);">One Prayer:</span> ${info.time1}`;
-                } else if (info.count === '2') {
-                    statusDiv.innerHTML = `<span style="color: var(--color-primary);">First Prayer:</span> ${info.time1} <br><span style="color: var(--color-primary);">Second Prayer:</span> ${info.time2}`;
-                }
-            }
-
-            if (data.jumuah_info) {
-                renderCampus('bovisa', data.jumuah_info.bovisa);
-                renderCampus('leonardo', data.jumuah_info.leonardo);
-                if (data.jumuah_info.date) {
-                    const dateEl = document.getElementById('next-friday-date');
-                    if (dateEl) dateEl.textContent = data.jumuah_info.date;
-                }
-            } else if (data.jumuah_prayer) {
-                const bovisaDiv = document.getElementById('bovisa-status');
-                if (bovisaDiv) bovisaDiv.textContent = data.jumuah_prayer;
-                const leonardoDiv = document.getElementById('leonardo-status');
-                if (leonardoDiv) leonardoDiv.textContent = "See above.";
+                        banner.classList.add('hidden');
+                        banner.style.display = 'none';
+                    }, 500);
+                }, 20000);
             }
         }
 
-        loadJumuahContent().catch(err => console.error('Error fetching dynamic content:', err));
-    </script>
+        function renderCampus(campus, info) {
+            const statusDiv = document.getElementById(campus + '-status');
+            if (!statusDiv) return;
+
+            if (!info) {
+                statusDiv.textContent = 'Information not yet updated.';
+                return;
+            }
+
+            if (info.count === '0') {
+                statusDiv.innerHTML = `<span style="color: #dc3545;">No Jumu'ah Prayer</span><br><span style="font-size: 0.95rem; font-weight: 400;">Reason: ${info.motivation}</span>`;
+            } else if (info.count === '1') {
+                statusDiv.innerHTML = `<span style="color: var(--color-primary);">One Prayer:</span> ${info.time1}`;
+            } else if (info.count === '2') {
+                statusDiv.innerHTML = `<span style="color: var(--color-primary);">First Prayer:</span> ${info.time1} <br><span style="color: var(--color-primary);">Second Prayer:</span> ${info.time2}`;
+            }
+        }
+
+        if (data.jumuah_info) {
+            renderCampus('bovisa', data.jumuah_info.bovisa);
+            renderCampus('leonardo', data.jumuah_info.leonardo);
+            if (data.jumuah_info.date) {
+                const dateEl = document.getElementById('next-friday-date');
+                if (dateEl) dateEl.textContent = data.jumuah_info.date;
+            }
+        } else if (data.jumuah_prayer) {
+            const bovisaDiv = document.getElementById('bovisa-status');
+            if (bovisaDiv) bovisaDiv.textContent = data.jumuah_prayer;
+            const leonardoDiv = document.getElementById('leonardo-status');
+            if (leonardoDiv) leonardoDiv.textContent = "See above.";
+        }
+    }
+
+    loadJumuahContent().catch(err => console.error('Error fetching dynamic content:', err));
+</script>
 
 </body>
 
