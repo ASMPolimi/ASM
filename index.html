@@ -359,111 +359,71 @@
                 <h3>Contact Information</h3>
                 <p>Have questions? Want to collaborate? Reach out to us!</p>
 
-                <div class="info-item contact-card-item">
-                    <div class="contact-card-header">
-                        <div class="contact-card-label">
-                            <span class="contact-card-icon">✉️</span>
-                            <strong>Email:</strong>
-                        </div>
-                        <div class="contact-card-actions">
-                            <a href="mailto:asm.polimi@gmail.com" class="contact-action-btn email-compose-btn"
-                                title="Send email to asm.polimi@gmail.com">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                                </svg>
-                                <span>Send Email</span>
-                            </a>
-                            <button type="button" class="contact-action-btn copy-btn" data-copy="asm.polimi@gmail.com"
-                                title="Copy email address" aria-label="Copy email address">
-                                <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                                <svg class="icon-check" width="13" height="13" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round" style="display: none;">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                <span class="copy-text">Copy</span>
-                            </button>
-                        </div>
+                <div class="info-item">
+                    <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                        <span style="font-size: 1.1rem; line-height: 1;">✉️</span>
+                        <strong>Email:</strong>
                     </div>
-                    <div class="contact-card-value">
-                        <a href="mailto:asm.polimi@gmail.com" class="contact-email-link"
-                            title="Click to send email">asm.polimi@gmail.com</a>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                        <span class="copyable-iban" data-copy="asm.polimi@gmail.com" title="Click to copy email">
+                            asm.polimi@gmail.com
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                style="display: inline-block; vertical-align: middle;">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </span>
+                        <a href="mailto:asm.polimi@gmail.com" class="email-send-link"
+                            title="Send email to asm.polimi@gmail.com">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                            <span>Send Email</span>
+                        </a>
                     </div>
                 </div>
 
-                <div class="info-item contact-card-item">
-                    <div class="contact-card-header">
-                        <div class="contact-card-label">
-                            <span class="contact-card-icon">💳</span>
-                            <strong>PayPal Email:</strong>
-                        </div>
-                        <div class="contact-card-actions">
-                            <button type="button" class="contact-action-btn copy-btn" data-copy="asm.polimi@gmail.com"
-                                title="Copy PayPal email address" aria-label="Copy PayPal email address">
-                                <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                                <svg class="icon-check" width="13" height="13" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round" style="display: none;">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                <span class="copy-text">Copy</span>
-                            </button>
-                        </div>
+                <div class="info-item">
+                    <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                        <span style="font-size: 1.1rem; line-height: 1;">💳</span>
+                        <strong>PayPal Email:</strong>
                     </div>
-                    <div class="contact-card-value">
-                        <span class="contact-plain-value">asm.polimi@gmail.com</span>
+                    <div>
+                        <span class="copyable-iban" data-copy="asm.polimi@gmail.com" title="Click to copy PayPal email">
+                            asm.polimi@gmail.com
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                style="display: inline-block; vertical-align: middle;">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </span>
                     </div>
                 </div>
 
-                <div class="info-item contact-card-item">
-                    <div class="contact-card-header">
-                        <div class="contact-card-label">
-                            <span class="contact-card-icon">🏦</span>
-                            <strong>Bank Transfer:</strong>
-                        </div>
-                        <div class="contact-card-actions">
-                            <button type="button" class="contact-action-btn copy-btn" data-copy="BE46967888148736"
-                                title="Copy IBAN" aria-label="Copy IBAN">
-                                <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                                <svg class="icon-check" width="13" height="13" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round" style="display: none;">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                <span class="copy-text">Copy</span>
-                            </button>
-                        </div>
+                <div class="info-item">
+                    <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                        <span style="font-size: 1.1rem; line-height: 1;">🏦</span>
+                        <strong>Bank Transfer:</strong>
                     </div>
-                    <div class="contact-card-value"
-                        style="flex-direction: column; align-items: flex-start; gap: 0.35rem;">
+                    <div style="display: flex; flex-direction: column; gap: 0.35rem;">
                         <span style="font-size: 0.95rem; color: var(--color-text-light);"><strong>Name:</strong> Mariam
                             abou el seod</span>
                         <div style="font-size: 0.95rem;">
                             <strong>IBAN:</strong>
-                            <span class="copyable-iban" id="iban-copy" title="Click to copy IBAN">BE46 9678 8814 8736
+                            <span class="copyable-iban is-iban" id="iban-copy" data-copy="BE46967888148736"
+                                title="Click to copy IBAN">
+                                BE46 9678 8814 8736
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                                     style="display: inline-block; vertical-align: middle;">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg></span>
+                                </svg>
+                            </span>
                         </div>
                     </div>
                 </div>
