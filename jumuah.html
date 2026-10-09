@@ -469,11 +469,10 @@
         setupFilterButtons();
         updateFilterCounts();
 
-        // Automatically frame all locations with clean safe margins
-        const allCoords = PRAYER_LOCATIONS.map(l => l.coords);
-        if (allCoords.length > 0) {
-            prayerMap.fitBounds(allCoords, { padding: [24, 24] });
-        }
+        // Automatically frame locations with balanced safe padding
+        setTimeout(() => {
+            recenterMapCategory();
+        }, 100);
     }
 
     function createCustomMarkerIcon(loc) {
@@ -660,6 +659,39 @@
         }
     }
 
+    function recenterMapCategory() {
+        if (!prayerMap) return;
+        prayerMap.invalidateSize();
+
+        const isMobile = window.innerWidth <= 992;
+        // Generous padding so pins on the edges (like Bovisa on the left) have ample breathing room
+        const padX = isMobile ? 48 : 36;
+        const padY = isMobile ? 42 : 36;
+
+        if (activeCategory === 'campus') {
+            const campusCoords = PRAYER_LOCATIONS.filter(l => l.category === 'campus').map(l => l.coords);
+            prayerMap.fitBounds(campusCoords, {
+                padding: [padY, padX],
+                maxZoom: isMobile ? 12.2 : 13.5,
+                animate: true
+            });
+        } else if (activeCategory === 'mosque') {
+            const mosqueCoords = PRAYER_LOCATIONS.filter(l => l.category === 'mosque').map(l => l.coords);
+            prayerMap.fitBounds(mosqueCoords, {
+                padding: [padY, padX],
+                maxZoom: isMobile ? 12 : 13,
+                animate: true
+            });
+        } else {
+            const allCoords = PRAYER_LOCATIONS.map(l => l.coords);
+            prayerMap.fitBounds(allCoords, {
+                padding: [padY, padX],
+                maxZoom: isMobile ? 11.8 : 12.5,
+                animate: true
+            });
+        }
+    }
+
     function setupFilterButtons() {
         const buttons = document.querySelectorAll('.map-filter-btn');
         buttons.forEach(btn => {
@@ -669,16 +701,7 @@
                 activeCategory = btn.getAttribute('data-category');
                 renderMarkers();
                 renderSidebarList();
-
-                // Recenter map bounds to fit the active pins
-                if (prayerMap) {
-                    const filtered = activeCategory === 'all'
-                        ? PRAYER_LOCATIONS
-                        : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
-                    if (filtered.length > 0) {
-                        prayerMap.fitBounds(filtered.map(l => l.coords), { padding: [28, 28], maxZoom: 14 });
-                    }
-                }
+                recenterMapCategory();
             });
         });
     }
