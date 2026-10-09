@@ -510,34 +510,36 @@
             const icon = createCustomMarkerIcon(loc);
             const marker = L.marker(loc.coords, { icon: icon }).addTo(prayerMap);
 
-            // Compact pointing tooltip for clean visual indicator
+            // Compact pointing tooltip on hover for desktop
             marker.bindTooltip(
                 `<div class="map-tooltip-content"><span class="map-tooltip-icon">${loc.icon}</span> <span class="map-tooltip-title">${loc.name}</span></div>`,
                 {
                     direction: 'top',
                     offset: [0, -18],
-                    className: 'custom-map-tooltip',
-                    opacity: 1
+                    className: 'custom-map-tooltip'
                 }
             );
 
-            // Only bind full popups on desktop where sidebar is side-by-side
-            if (isDesktop) {
-                let popupHtml = `
-                    <div class="popup-content-box">
-                        <div class="popup-title">${loc.name}</div>
-                        <span class="popup-badge ${loc.badgeClass}">${loc.badge}</span>
-                        <div class="popup-address">${loc.address}</div>
-                        <div class="popup-buttons">
-                            <a href="${loc.mapsUrl}" target="_blank" class="popup-btn popup-btn-gmaps">
-                                📍 Open in Google Maps
-                            </a>
-                            ${loc.videoUrl ? `<a href="${loc.videoUrl}" target="_blank" class="popup-btn popup-btn-video">▶ Watch Video Guide</a>` : ''}
-                        </div>
+            // Compact popup with clean layout and side-by-side action buttons
+            let popupHtml = `
+                <div class="popup-content-box">
+                    <div class="popup-title">${loc.name}</div>
+                    <span class="popup-badge ${loc.badgeClass}">${loc.badge}</span>
+                    <div class="popup-address">${loc.address}</div>
+                    <div class="popup-buttons">
+                        <a href="${loc.mapsUrl}" target="_blank" class="popup-btn popup-btn-gmaps">
+                            ${loc.videoUrl ? '📍 Maps' : '📍 Google Maps'}
+                        </a>
+                        ${loc.videoUrl ? `<a href="${loc.videoUrl}" target="_blank" class="popup-btn popup-btn-video">▶ Video</a>` : ''}
                     </div>
-                `;
-                marker.bindPopup(popupHtml);
-            }
+                </div>
+            `;
+            marker.bindPopup(popupHtml, {
+                maxWidth: 220,
+                minWidth: 175,
+                autoPanPadding: [15, 15],
+                className: 'compact-leaflet-popup'
+            });
 
             marker.on('click', () => {
                 selectLocation(loc.id, false);
@@ -595,7 +597,7 @@
 
         const isDesktop = window.innerWidth > 992;
 
-        // 1. Highlight the selected marker pin and show tooltip
+        // 1. Highlight the selected marker pin and open compact popup
         clearActiveMarkers();
         const activeMarker = markersMap[id];
         if (activeMarker) {
@@ -605,7 +607,7 @@
                 const pin = el.querySelector('.custom-leaflet-marker');
                 if (pin) pin.classList.add('marker-active');
             }
-            activeMarker.openTooltip();
+            activeMarker.openPopup();
         }
 
         // 2. Highlight card in sidebar without scrolling the browser window
@@ -623,12 +625,8 @@
             if (prayerMap) {
                 prayerMap.flyTo(loc.coords, 14, { duration: 0.8 });
             }
-        } else {
-            // User clicked on map marker: NEVER scroll down away from the map on mobile
-            if (prayerMap && !isDesktop) {
-                prayerMap.closePopup();
-            }
         }
+        // When clicking directly on the map pin, NEVER scroll down away from the map!
     }
 
     function focusLocation(loc) {
