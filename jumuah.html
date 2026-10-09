@@ -482,6 +482,18 @@
         });
     }
 
+    function clearActiveMarkers() {
+        Object.values(markersMap).forEach(m => {
+            m.setZIndexOffset(0);
+            const el = m.getElement();
+            if (el) {
+                const pin = el.querySelector('.custom-leaflet-marker');
+                if (pin) pin.classList.remove('marker-active');
+            }
+            m.closeTooltip();
+        });
+    }
+
     function renderMarkers() {
         if (!prayerMap) return;
         // Clear existing markers
@@ -492,27 +504,43 @@
             ? PRAYER_LOCATIONS
             : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
 
+        const isDesktop = window.innerWidth > 992;
+
         filtered.forEach(loc => {
             const icon = createCustomMarkerIcon(loc);
             const marker = L.marker(loc.coords, { icon: icon }).addTo(prayerMap);
 
-            let popupHtml = `
-                <div class="popup-content-box">
-                    <div class="popup-title">${loc.name}</div>
-                    <span class="popup-badge ${loc.badgeClass}">${loc.badge}</span>
-                    <div class="popup-address">${loc.address}</div>
-                    <div class="popup-buttons">
-                        <a href="${loc.mapsUrl}" target="_blank" class="popup-btn popup-btn-gmaps">
-                            📍 Open in Google Maps
-                        </a>
-                        ${loc.videoUrl ? `<a href="${loc.videoUrl}" target="_blank" class="popup-btn popup-btn-video">▶ Watch Video Guide</a>` : ''}
-                    </div>
-                </div>
-            `;
+            // Compact pointing tooltip for clean visual indicator
+            marker.bindTooltip(
+                `<div class="map-tooltip-content"><span class="map-tooltip-icon">${loc.icon}</span> <span class="map-tooltip-title">${loc.name}</span></div>`,
+                {
+                    direction: 'top',
+                    offset: [0, -18],
+                    className: 'custom-map-tooltip',
+                    opacity: 1
+                }
+            );
 
-            marker.bindPopup(popupHtml);
+            // Only bind full popups on desktop where sidebar is side-by-side
+            if (isDesktop) {
+                let popupHtml = `
+                    <div class="popup-content-box">
+                        <div class="popup-title">${loc.name}</div>
+                        <span class="popup-badge ${loc.badgeClass}">${loc.badge}</span>
+                        <div class="popup-address">${loc.address}</div>
+                        <div class="popup-buttons">
+                            <a href="${loc.mapsUrl}" target="_blank" class="popup-btn popup-btn-gmaps">
+                                📍 Open in Google Maps
+                            </a>
+                            ${loc.videoUrl ? `<a href="${loc.videoUrl}" target="_blank" class="popup-btn popup-btn-video">▶ Watch Video Guide</a>` : ''}
+                        </div>
+                    </div>
+                `;
+                marker.bindPopup(popupHtml);
+            }
+
             marker.on('click', () => {
-                highlightSidebarCard(loc.id);
+                selectLocation(loc.id, false);
             });
 
             markersMap[loc.id] = marker;
@@ -561,30 +589,70 @@
         });
     }
 
-    function focusLocation(loc) {
-        if (!prayerMap) return;
-        highlightSidebarCard(loc.id);
-        prayerMap.flyTo(loc.coords, 15, { duration: 1 });
-        const marker = markersMap[loc.id];
-        if (marker) {
-            setTimeout(() => { marker.openPopup(); }, 500);
+    function selectLocation(id, fromCard = false) {
+        const loc = PRAYER_LOCATIONS.find(l => l.id === id);
+        if (!loc) return;
+
+        const isDesktop = window.innerWidth > 992;
+
+        // 1. Highlight the selected marker pin and show tooltip
+        clearActiveMarkers();
+        const activeMarker = markersMap[id];
+        if (activeMarker) {
+            activeMarker.setZIndexOffset(1000);
+            const el = activeMarker.getElement();
+            if (el) {
+                const pin = el.querySelector('.custom-leaflet-marker');
+                if (pin) pin.classList.add('marker-active');
+            }
+            activeMarker.openTooltip();
         }
+
+        // 2. Highlight card in sidebar without scrolling the browser window
+        highlightSidebarCard(id, isDesktop);
+
+        // 3. Handle navigation/centering depending on source
+        if (fromCard) {
+            // User clicked a card in the list: scroll up to map and focus pin
+            if (!isDesktop) {
+                const mapSection = document.getElementById('locations');
+                if (mapSection) {
+                    mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            if (prayerMap) {
+                prayerMap.flyTo(loc.coords, 14, { duration: 0.8 });
+            }
+        } else {
+            // User clicked on map marker: NEVER scroll down away from the map on mobile
+            if (prayerMap && !isDesktop) {
+                prayerMap.closePopup();
+            }
+        }
+    }
+
+    function focusLocation(loc) {
+        selectLocation(loc.id, true);
     }
 
     function focusLocationById(id) {
-        const loc = PRAYER_LOCATIONS.find(l => l.id === id);
-        if (loc) {
-            focusLocation(loc);
-        }
+        selectLocation(id, true);
     }
     window.focusLocationById = focusLocationById;
 
-    function highlightSidebarCard(id) {
+    function highlightSidebarCard(id, scrollSidebarContainer = false) {
         document.querySelectorAll('.map-loc-card').forEach(c => c.classList.remove('active-card'));
         const card = document.getElementById(`loc-card-${id}`);
         if (card) {
             card.classList.add('active-card');
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // Only scroll the internal sidebar scroll area on desktop; NEVER scroll the window on mobile
+            if (scrollSidebarContainer && window.innerWidth > 992) {
+                const listContainer = document.getElementById('map-locations-list');
+                if (listContainer) {
+                    const cardTop = card.offsetTop - listContainer.offsetTop;
+                    listContainer.scrollTo({ top: cardTop - 12, behavior: 'smooth' });
+                }
+            }
         }
     }
 
