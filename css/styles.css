@@ -2350,28 +2350,23 @@ body.dark-mode .jumuah-campus-card {
         padding: 0 0.5rem;
     }
 
-    /* Horizontal sliding filter chip bar on mobile */
+    /* Balanced filter chip bar on mobile */
     .map-filter-bar {
         display: flex;
         flex-wrap: nowrap;
-        overflow-x: auto;
-        justify-content: flex-start;
-        gap: 0.5rem;
-        padding: 0.25rem 0.25rem 0.6rem;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.2rem 0.25rem 0.6rem;
         margin-bottom: 1rem;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .map-filter-bar::-webkit-scrollbar {
-        display: none;
     }
 
     .map-filter-btn {
-        flex: 0 0 auto;
-        padding: 0.45rem 0.85rem;
-        font-size: 0.82rem;
+        flex: 1 1 auto;
+        justify-content: center;
+        padding: 0.45rem 0.55rem;
+        font-size: 0.8rem;
         white-space: nowrap;
+        gap: 0.35rem;
     }
 
     /* Mobile map cards actions */
@@ -2418,21 +2413,30 @@ body.dark-mode .jumuah-campus-card {
 
     /* Sleek Back to Top on mobile */
     .back-to-top {
-        bottom: 18px;
-        right: 18px;
-        width: 42px;
-        height: 42px;
+        bottom: 12px;
+        right: 12px;
+        width: 38px;
+        height: 38px;
         z-index: 500;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
+    .back-to-top.show {
+        opacity: 0.75;
+    }
+
+    .back-to-top:hover,
+    .back-to-top:active {
+        opacity: 1;
+    }
+
     .back-to-top svg.progress-ring {
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
     }
 
     .back-to-top span {
-        font-size: 1.2rem !important;
+        font-size: 1.05rem !important;
     }
 }
 

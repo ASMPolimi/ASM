@@ -98,13 +98,13 @@
         <!-- Filter Controls -->
         <div class="map-filter-bar">
             <button type="button" class="map-filter-btn active" data-category="all">
-                <span>📍 All Locations</span> <span class="filter-count" id="count-all">13</span>
+                <span>📍 All</span> <span class="filter-count" id="count-all">13</span>
             </button>
             <button type="button" class="map-filter-btn" data-category="campus">
-                <span>🎓 Campus Prayer Rooms</span> <span class="filter-count" id="count-campus">3</span>
+                <span>🎓 Campus</span> <span class="filter-count" id="count-campus">3</span>
             </button>
             <button type="button" class="map-filter-btn" data-category="mosque">
-                <span>🕌 Milan Mosques</span> <span class="filter-count" id="count-mosque">10</span>
+                <span>🕌 Mosques</span> <span class="filter-count" id="count-mosque">10</span>
             </button>
         </div>
 
@@ -382,6 +382,12 @@
         renderSidebarList();
         setupFilterButtons();
         updateFilterCounts();
+
+        // Automatically frame all locations with clean safe margins
+        const allCoords = PRAYER_LOCATIONS.map(l => l.coords);
+        if (allCoords.length > 0) {
+            prayerMap.fitBounds(allCoords, { padding: [24, 24] });
+        }
     }
 
     function createCustomMarkerIcon(loc) {
@@ -578,9 +584,14 @@
                 renderMarkers();
                 renderSidebarList();
 
-                // Recenter map bounds
+                // Recenter map bounds to fit the active pins
                 if (prayerMap) {
-                    prayerMap.flyTo([45.474, 9.208], 12, { duration: 0.8 });
+                    const filtered = activeCategory === 'all'
+                        ? PRAYER_LOCATIONS
+                        : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
+                    if (filtered.length > 0) {
+                        prayerMap.fitBounds(filtered.map(l => l.coords), { padding: [28, 28], maxZoom: 14 });
+                    }
                 }
             });
         });
