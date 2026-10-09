@@ -21,3 +21,7 @@ Desktop.ini
 
 # Data files
 users.json
+
+# Nested standalone repositories
+asm-admin/
+ASM_Local/
