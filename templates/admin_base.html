@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ASM POLIMI Admin Portal{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .admin-nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-decoration: none;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .admin-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .admin-portal-badge {
+            background: rgba(18, 74, 97, 0.1);
+            color: var(--color-primary);
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .admin-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .admin-link:hover {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.05);
+        }
+
+        .admin-link.active {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.1);
+            font-weight: 700;
+        }
+
+        .btn-public-site {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0284c7;
+            background: rgba(2, 132, 199, 0.1);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            text-decoration: none;
+            margin-left: 0.5rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-public-site:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .btn-admin-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #dc2626;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            cursor: pointer;
+            margin-left: 0.25rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-admin-logout:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .admin-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 900px) {
+            .admin-mobile-toggle {
+                display: block;
+            }
+
+            .admin-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 1rem 1.5rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                align-items: stretch;
+            }
+
+            .admin-links.open {
+                display: flex;
+            }
+
+            .btn-public-site,
+            .btn-admin-logout {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                justify-content: center;
+            }
+        }
+
+        /* Footer */
+        .admin-footer {
+            margin-top: auto;
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body {% block body_class %}class="bg-light"{% endblock %} style="min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- Dedicated Admin Portal Navbar -->
+    <header class="admin-nav">
+        <div class="admin-nav-container">
+            <a href="https://asmpolimi.it" class="admin-brand" title="Go to ASM POLIMI website (asmpolimi.it)">
+                <img src="assets/asm_logo.png" alt="ASM Logo">
+                <span>ASM POLIMI</span>
+                <span class="admin-portal-badge">Admin</span>
+            </a>
+
+            <button type="button" class="admin-mobile-toggle" id="admin-nav-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+
+            <nav class="admin-links" id="admin-nav-menu">
+                <a href="admin.html" class="admin-link {% if active_page == 'events' %}active{% endif %}">
+                    <span>📅</span> Events & News
+                </a>
+                <a href="admin_jumuah.html" class="admin-link {% if active_page == 'jumuah' %}active{% endif %}">
+                    <span>🕌</span> Jumu'ah
+                </a>
+                <a href="admin_questions.html" class="admin-link {% if active_page == 'questions' %}active{% endif %}">
+                    <span>❓</span> Questions
+                </a>
+                <a href="admin_users.html" class="admin-link {% if active_page == 'users' %}active{% endif %}">
+                    <span>👥</span> Users & Accounts
+                </a>
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                    title="Open live public website (asmpolimi.it) in a new tab">
+                    <span>🌐</span> View Website ↗
+                </a>
+                <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
+                    <span>🚪</span> Logout
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Admin Content -->
+    <main style="flex: 1;">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="container">
+            <p style="margin: 0;"><strong>ASM POLIMI Admin Portal</strong> &bull; Authenticated Administration Area</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('admin-nav-toggle');
+        const navMenu = document.getElementById('admin-nav-menu');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('open');
+            });
+        }
+
+        // Global admin logout helper
+        function globalAdminLogout(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            try {
+                localStorage.removeItem('adminToken');
+            } catch (err) {}
+
+            // Trigger in-page logout UI if available
+            if (typeof logout === 'function') {
+                try { logout(); } catch (err) {}
+            }
+
+            // Immediately switch views if on a single-page view
+            const dash = document.getElementById('dashboard-section');
+            const login = document.getElementById('login-section');
+            if (dash && login) {
+                dash.classList.add('hidden');
+                login.classList.remove('hidden');
+            }
+
+            // Redirect with cache busting to guarantee clean logout state
+            window.location.href = 'admin.html?logout=' + Date.now();
+        }
+    </script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>
