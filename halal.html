@@ -769,6 +769,26 @@
 
     document.getElementById('start-camera-btn').addEventListener('click', startScanner);
     document.getElementById('stop-camera-btn').addEventListener('click', stopScanner);
+
+    // Deep linking support from main page
+    window.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const barcodeParam = urlParams.get('barcode');
+        const actionParam = urlParams.get('action');
+
+        if (barcodeParam) {
+            switchTab('barcode-tab');
+            const input = document.getElementById('barcode-input');
+            if (input) input.value = barcodeParam;
+            await loadCustomBarcodes();
+            fetchProductByBarcode(barcodeParam);
+        } else if (actionParam === 'camera') {
+            switchTab('camera-tab');
+            setTimeout(() => {
+                startScanner();
+            }, 300);
+        }
+    });
 </script>
 
 </body>

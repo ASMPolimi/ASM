@@ -557,18 +557,80 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Click-to-copy IBAN functionality
+    // Universal copy helper with fallback
+    function copyTextToClipboard(text, onSuccess, onError) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(onSuccess).catch(err => {
+                fallbackCopy(text, onSuccess, onError);
+            });
+        } else {
+            fallbackCopy(text, onSuccess, onError);
+        }
+    }
+
+    function fallbackCopy(text, onSuccess, onError) {
+        try {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textarea);
+            if (successful && onSuccess) onSuccess();
+            else if (!successful && onError) onError(new Error('execCommand failed'));
+        } catch (err) {
+            if (onError) onError(err);
+        }
+    }
+
+    // Click-to-copy buttons (Email, PayPal, IBAN buttons)
+    document.querySelectorAll('.copy-btn, [data-copy]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const textToCopy = btn.getAttribute('data-copy');
+            if (!textToCopy) return;
+
+            copyTextToClipboard(textToCopy, () => {
+                btn.classList.add('copied');
+                const iconCopy = btn.querySelector('.icon-copy');
+                const iconCheck = btn.querySelector('.icon-check');
+                const copyText = btn.querySelector('.copy-text');
+                if (iconCopy) iconCopy.style.display = 'none';
+                if (iconCheck) iconCheck.style.display = 'inline-block';
+                if (copyText) {
+                    btn.dataset.originalText = btn.dataset.originalText || copyText.textContent;
+                    copyText.textContent = 'Copied!';
+                }
+
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    if (iconCopy) iconCopy.style.display = 'inline-block';
+                    if (iconCheck) iconCheck.style.display = 'none';
+                    if (copyText && btn.dataset.originalText) {
+                        copyText.textContent = btn.dataset.originalText;
+                    }
+                }, 2000);
+            }, (err) => {
+                console.error('Failed to copy: ', err);
+            });
+        });
+    });
+
+    // Click-to-copy IBAN inline badge
     const ibanCopyBtn = document.getElementById('iban-copy');
     if (ibanCopyBtn) {
         ibanCopyBtn.addEventListener('click', () => {
-            // Get text content, excluding the SVG icon/children text
             const ibanText = ibanCopyBtn.childNodes[0].textContent.trim();
-            navigator.clipboard.writeText(ibanText).then(() => {
+            copyTextToClipboard(ibanText, () => {
                 ibanCopyBtn.classList.add('copied');
                 setTimeout(() => {
                     ibanCopyBtn.classList.remove('copied');
                 }, 2000);
-            }).catch(err => {
+            }, (err) => {
                 console.error('Failed to copy IBAN: ', err);
             });
         });

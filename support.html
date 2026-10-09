@@ -235,6 +235,16 @@
             btn.textContent = originalText;
         }
     });
+
+    // Deep linking support from main page
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const topicParam = urlParams.get('topic');
+        if (topicParam) {
+            const topicSelect = document.getElementById('q-topic');
+            if (topicSelect) topicSelect.value = topicParam;
+        }
+    });
 </script>
 
 </body>
