@@ -295,13 +295,13 @@
         <!-- Filter Controls -->
         <div class="map-filter-bar">
             <button type="button" class="map-filter-btn active" data-category="all">
-                <span>📍 All Locations</span> <span class="filter-count" id="count-all">8</span>
+                <span>📍 All Locations</span> <span class="filter-count" id="count-all">13</span>
             </button>
             <button type="button" class="map-filter-btn" data-category="campus">
                 <span>🎓 Campus Prayer Rooms</span> <span class="filter-count" id="count-campus">3</span>
             </button>
             <button type="button" class="map-filter-btn" data-category="mosque">
-                <span>🕌 Milan Mosques</span> <span class="filter-count" id="count-mosque">5</span>
+                <span>🕌 Milan Mosques</span> <span class="filter-count" id="count-mosque">10</span>
             </button>
         </div>
 
@@ -459,6 +459,76 @@
             mapsUrl: 'https://maps.google.com/?q=Viale+Edoardo+Jenner+50+Milano',
             videoUrl: null,
             desc: 'Conveniently situated near Bovisa and Maciachini, active for daily and Friday prayers.'
+        },
+        {
+            id: 'al-nur',
+            name: 'Associazione Culturale Al Nur',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Giacomo Carissimi, 19, 20124 Milano (Maggiolina / Maciachini)',
+            coords: [45.49156, 9.20081],
+            mapsUrl: 'https://maps.app.goo.gl/45azyYP5pfornpoN7',
+            videoUrl: null,
+            desc: 'Active Islamic cultural association and prayer space near Sondrio and Central Station.'
+        },
+        {
+            id: 'coreis',
+            name: 'COREIS - Moschea al-Wahid',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Giuseppe Meda, 9, 20136 Milano (Ticinese / Navigli)',
+            coords: [45.44564, 9.17941],
+            mapsUrl: 'https://maps.app.goo.gl/5i3YTNn546CrAaQs5',
+            videoUrl: null,
+            desc: 'Historic mosque and headquarters of COREIS Italiana in south Milano near Navigli.'
+        },
+        {
+            id: 'fajr',
+            name: 'Comunità Islamica Fajr',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Bernardo Quaranta, 54, 20139 Milano (Ripamonti / Scalo Romana)',
+            coords: [45.43679, 9.20895],
+            mapsUrl: 'https://maps.app.goo.gl/sxn44ALqaobxE9Wt6',
+            videoUrl: null,
+            desc: 'Welcoming community prayer space and mosque in the southern district of Milan.'
+        },
+        {
+            id: 'ditib',
+            name: 'DITIB Milano',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Vincenzo Toffetti, 27, 20139 Milano (Rogoredo / Porto di Mare)',
+            coords: [45.43982, 9.23360],
+            mapsUrl: 'https://maps.app.goo.gl/iXoKx1dsTQfuQtLF9',
+            videoUrl: null,
+            desc: 'Spacious community center and mosque close to Rogoredo and Porto di Mare stations.'
+        },
+        {
+            id: 'viale-marche',
+            name: 'Moschea Viale Marche',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Viale Marche, 40, 20159 Milano (Maciachini / Maggiolina)',
+            coords: [45.49595, 9.19387],
+            mapsUrl: 'https://maps.app.goo.gl/LBk7HiQx6yj4CDQf6',
+            videoUrl: null,
+            desc: 'Convenient prayer space near M3 Maciachini / M3 Zara, easily accessible from Bovisa.'
         }
     ];
 
@@ -470,9 +540,9 @@
         const mapContainer = document.getElementById('prayer-leaflet-map');
         if (!mapContainer || typeof L === 'undefined') return;
 
-        // Initialize map centered between Bovisa & East Milan
+        // Initialize map centered to cover all locations across Milan
         prayerMap = L.map('prayer-leaflet-map', {
-            center: [45.492, 9.215],
+            center: [45.474, 9.208],
             zoom: 12,
             scrollWheelZoom: false
         });
@@ -487,6 +557,7 @@
         renderMarkers();
         renderSidebarList();
         setupFilterButtons();
+        updateFilterCounts();
     }
 
     function createCustomMarkerIcon(loc) {
@@ -611,10 +682,22 @@
 
                 // Recenter map bounds
                 if (prayerMap) {
-                    prayerMap.flyTo([45.492, 9.215], 12, { duration: 0.8 });
+                    prayerMap.flyTo([45.474, 9.208], 12, { duration: 0.8 });
                 }
             });
         });
+    }
+
+    function updateFilterCounts() {
+        const campusCount = PRAYER_LOCATIONS.filter(l => l.category === 'campus').length;
+        const mosqueCount = PRAYER_LOCATIONS.filter(l => l.category === 'mosque').length;
+        const totalCount = PRAYER_LOCATIONS.length;
+        const elAll = document.getElementById('count-all');
+        const elCampus = document.getElementById('count-campus');
+        const elMosque = document.getElementById('count-mosque');
+        if (elAll) elAll.textContent = totalCount;
+        if (elCampus) elCampus.textContent = campusCount;
+        if (elMosque) elMosque.textContent = mosqueCount;
     }
 
     // Initialize map on DOM load
