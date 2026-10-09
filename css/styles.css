@@ -1699,3 +1699,436 @@ body.dark-mode .service-points li {
         font-size: 1.4rem;
     }
 }
+
+/* Interactive Prayer Locations & Mosques Map */
+.map-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.map-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 2rem;
+    border: 1px solid rgba(18, 74, 97, 0.2);
+    background: #ffffff;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+}
+
+.map-filter-btn:hover {
+    background: rgba(18, 74, 97, 0.08);
+    transform: translateY(-1px);
+}
+
+.map-filter-btn.active {
+    background: var(--color-primary);
+    color: #ffffff;
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(18, 74, 97, 0.25);
+}
+
+.map-filter-btn .filter-count {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    background: rgba(0, 0, 0, 0.08);
+    color: inherit;
+}
+
+.map-filter-btn.active .filter-count {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.prayer-map-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1.5rem;
+    min-height: 560px;
+}
+
+.map-frame-wrapper {
+    position: relative;
+    height: 560px;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #e5e7eb;
+}
+
+#prayer-leaflet-map {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.map-legend {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    display: flex;
+    gap: 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1f2937;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-campus {
+    background: #0284c7;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.3);
+}
+
+.dot-mosque {
+    background: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+}
+
+.map-locations-sidebar {
+    height: 560px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-right: 0.4rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(18, 74, 97, 0.3) transparent;
+}
+
+.map-locations-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.map-locations-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(18, 74, 97, 0.3);
+    border-radius: 3px;
+}
+
+.map-loc-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.85rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.map-loc-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-primary);
+}
+
+.map-loc-card.active-card {
+    border-color: var(--color-primary);
+    background: rgba(18, 74, 97, 0.03);
+    box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.map-loc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.map-loc-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.map-loc-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.map-loc-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0;
+}
+
+.map-loc-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-jumuah {
+    background: rgba(16, 185, 129, 0.15);
+    color: #065f46;
+}
+
+.badge-daily {
+    background: rgba(239, 68, 68, 0.15);
+    color: #991b1b;
+}
+
+.badge-mosque {
+    background: rgba(2, 132, 199, 0.15);
+    color: #075985;
+}
+
+.map-loc-address {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    line-height: 1.4;
+    margin: 0;
+}
+
+.map-loc-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.map-loc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.btn-gmaps {
+    background: rgba(18, 74, 97, 0.08);
+    color: var(--color-primary);
+    border: 1px solid rgba(18, 74, 97, 0.2);
+}
+
+.btn-gmaps:hover {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+.btn-guide {
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-guide:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+/* Custom Leaflet Marker Pins */
+.custom-leaflet-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid #ffffff;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.custom-leaflet-marker:hover {
+    transform: scale(1.18);
+}
+
+.marker-campus {
+    background: linear-gradient(135deg, #0284c7, #0369a1);
+}
+
+.marker-mosque {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+/* Leaflet Popup Styling */
+.leaflet-popup-content-wrapper {
+    border-radius: 0.75rem !important;
+    padding: 0.5rem !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+.popup-content-box {
+    padding: 0.25rem 0.5rem;
+}
+
+.popup-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+}
+
+.popup-badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.popup-address {
+    font-size: 0.82rem;
+    color: #4b5563;
+    margin-bottom: 0.75rem;
+    line-height: 1.35;
+}
+
+.popup-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.popup-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.popup-btn-gmaps {
+    background: var(--color-primary);
+    color: #ffffff !important;
+}
+
+.popup-btn-gmaps:hover {
+    filter: brightness(1.1);
+}
+
+.popup-btn-video {
+    background: #fef2f2;
+    color: #dc2626 !important;
+    border: 1px solid #fecaca;
+}
+
+.popup-btn-video:hover {
+    background: #fee2e2;
+}
+
+/* Dark mode for map section */
+body.dark-mode .map-filter-btn {
+    background: #1f2937;
+    border-color: #374151;
+    color: #e5e7eb;
+}
+
+body.dark-mode .map-filter-btn.active {
+    background: var(--color-primary);
+    color: #0f172a;
+    border-color: var(--color-primary);
+}
+
+body.dark-mode .map-loc-card {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+body.dark-mode .map-loc-card:hover {
+    border-color: var(--color-primary);
+}
+
+body.dark-mode .map-loc-card.active-card {
+    background: #111827;
+    border-color: var(--color-primary);
+}
+
+body.dark-mode .map-loc-name {
+    color: var(--color-primary);
+}
+
+body.dark-mode .map-loc-address {
+    color: #9ca3af;
+}
+
+body.dark-mode .btn-gmaps {
+    background: #111827;
+    border-color: #374151;
+    color: var(--color-primary);
+}
+
+body.dark-mode .map-legend {
+    background: rgba(31, 41, 55, 0.92);
+    color: #e5e7eb;
+    border-color: #374151;
+}
+
+body.dark-mode .badge-jumuah {
+    background: rgba(16, 185, 129, 0.25);
+    color: #34d399;
+}
+
+body.dark-mode .badge-daily {
+    background: rgba(239, 68, 68, 0.25);
+    color: #f87171;
+}
+
+body.dark-mode .badge-mosque {
+    background: rgba(56, 189, 248, 0.25);
+    color: #38bdf8;
+}
+
+/* Responsive layout */
+@media (max-width: 992px) {
+    .prayer-map-layout {
+        grid-template-columns: 1fr;
+    }
+    .map-frame-wrapper {
+        height: 420px;
+    }
+    .map-locations-sidebar {
+        height: auto;
+        max-height: 450px;
+    }
+}

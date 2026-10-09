@@ -3,6 +3,7 @@
 {% block title %}Jumu'ah | ASM POLIMI{% endblock %}
 
 {% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 {% endblock %}
 
 {% block body_class %}class="bg-light"{% endblock %}
@@ -211,11 +212,331 @@
     </div>
 </section>
 
+<!-- Interactive Prayer Locations & Mosques Map Section -->
+<section id="prayer-map-section" class="section fade-in" style="padding-top: 1rem; padding-bottom: 4rem;">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-badge" style="display: inline-block; padding: 0.35rem 1rem; border-radius: 2rem; background: rgba(18, 74, 97, 0.1); color: var(--color-primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Campus & Milan Guide</span>
+            <h2>Mosques & Prayer Rooms Map</h2>
+            <div class="divider"></div>
+            <p>Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location card or pin to see room video guides, Jumu'ah availability, or open 1-click GPS navigation in Google Maps.</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="map-filter-bar">
+            <button type="button" class="map-filter-btn active" data-category="all">
+                <span>📍 All Locations</span> <span class="filter-count" id="count-all">8</span>
+            </button>
+            <button type="button" class="map-filter-btn" data-category="campus">
+                <span>🎓 Campus Prayer Rooms</span> <span class="filter-count" id="count-campus">3</span>
+            </button>
+            <button type="button" class="map-filter-btn" data-category="mosque">
+                <span>🕌 Milan Mosques</span> <span class="filter-count" id="count-mosque">5</span>
+            </button>
+        </div>
+
+        <!-- Split Map Layout -->
+        <div class="prayer-map-layout">
+            <!-- Map Container -->
+            <div class="map-frame-wrapper">
+                <div id="prayer-leaflet-map"></div>
+                <div class="map-legend">
+                    <span class="legend-item"><span class="legend-dot dot-campus"></span> Campus Room</span>
+                    <span class="legend-item"><span class="legend-dot dot-mosque"></span> Milan Mosque</span>
+                </div>
+            </div>
+
+            <!-- Side Location Cards List -->
+            <div class="map-locations-sidebar" id="map-locations-list">
+                <!-- Dynamically populated by JS -->
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Footer -->
 {% endblock %}
 
 {% block extra_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
+    // Prayer locations dataset
+    const PRAYER_LOCATIONS = [
+        {
+            id: 'bovisa',
+            name: 'Bovisa Campus Prayer Room',
+            category: 'campus',
+            categoryLabel: 'Politecnico di Milano',
+            badge: 'Jumu\'ah Available',
+            badgeClass: 'badge-jumuah',
+            icon: '🎓',
+            address: 'Building 24 level -1, Via Privata Giuseppe La Masa, 34, 20156 Milano',
+            coords: [45.50294, 9.15651],
+            mapsUrl: 'https://goo.gl/maps/jVDEEckRJZBkWT5q7',
+            videoUrl: 'https://youtube.com/shorts/rXHHH2kImDc?is=Ea-2FxbiN4gJlDbk',
+            desc: 'Main Bovisa prayer hall located on level -1 of Building 24. Holds Friday Jumu\'ah.'
+        },
+        {
+            id: 'unimi',
+            name: 'Unimi Campus Prayer Room',
+            category: 'campus',
+            categoryLabel: 'Università degli Studi di Milano',
+            badge: 'Jumu\'ah Available',
+            badgeClass: 'badge-jumuah',
+            icon: '🎓',
+            address: 'Room 300, Unimi Building, Via Celoria / Città Studi, 20133 Milano',
+            coords: [45.47683, 9.22744],
+            mapsUrl: 'https://goo.gl/maps/cdUrXTAdf1Q9cGds9%7C',
+            videoUrl: 'https://youtube.com/shorts/A5vwr2wduu4?is=2Yd-BOlo2g3o-ypL',
+            desc: 'Room 300 in the Unimi sector. Friday Jumu\'ah prayers organized for students.'
+        },
+        {
+            id: 'leonardo2',
+            name: 'Leonardo Campus Prayer Room',
+            category: 'campus',
+            categoryLabel: 'Politecnico di Milano',
+            badge: 'Daily Prayers Only (No Jumu\'ah)',
+            badgeClass: 'badge-daily',
+            icon: '🎓',
+            address: 'Building 32.1.2, Leonardo Campus, Piazza Leonardo da Vinci 32, 20133 Milano',
+            coords: [45.47841, 9.22952],
+            mapsUrl: 'https://maps.app.goo.gl/FFZ3KJW3ns3FZHXDA',
+            videoUrl: 'https://youtube.com/shorts/I_jQXZ8b7zU?is=2z-M87fbhU_21VSL',
+            desc: 'Convenient space for daily Zuhr, Asr, and Maghrib. Note: Jumu\'ah is not hosted here.'
+        },
+        {
+            id: 'casa-cultura',
+            name: 'Casa della Cultura Islamica Onlus',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Padova, 144, 20132 Milano',
+            coords: [45.49520, 9.22680],
+            mapsUrl: 'https://maps.app.goo.gl/YSWi9PbpFCy4cpEDA',
+            videoUrl: null,
+            desc: 'Historic Milan community cultural and spiritual center with regular Friday prayers.'
+        },
+        {
+            id: 'merciful',
+            name: 'Mosque of the Merciful (Al-Rahma)',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Cassanese, 3, 20134 Milano (Lambrate / Segrate)',
+            coords: [45.48512, 9.26084],
+            mapsUrl: 'https://maps.app.goo.gl/y6Q5veskFkXbj9H18',
+            videoUrl: null,
+            desc: 'Large dedicated mosque accessible from east Milan, hosting major congregations.'
+        },
+        {
+            id: 'mariam',
+            name: 'Mariam Mosque (Moschea Mariam)',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Padova 366, 20132 Milano',
+            coords: [45.50851, 9.24580],
+            mapsUrl: 'https://maps.app.goo.gl/7M2ktytL5uwPYtzRA',
+            videoUrl: null,
+            desc: 'Traditional mosque architecture with minaret, open for daily and Friday prayers.'
+        },
+        {
+            id: 'gobba',
+            name: 'Centro Islamico di Milano (Cascina Gobba)',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Via Mondovì 1, 20132 Milano (M2 Cascina Gobba)',
+            coords: [45.51082, 9.25621],
+            mapsUrl: 'https://maps.google.com/?q=Centro+Islamico+Milano+Cascina+Gobba+Via+Mondov%C3%AC+1+Milano',
+            videoUrl: null,
+            desc: 'Major regional Islamic center in Lombardy with spacious halls near M2 Cascina Gobba.'
+        },
+        {
+            id: 'jenner',
+            name: 'Centro Islamico Jenner (Al-Rahman)',
+            category: 'mosque',
+            categoryLabel: 'Milan Mosque',
+            badge: 'Mosque & Jumu\'ah',
+            badgeClass: 'badge-mosque',
+            icon: '🕌',
+            address: 'Viale Edoardo Jenner 50, 20158 Milano (close to Bovisa)',
+            coords: [45.49472, 9.17720],
+            mapsUrl: 'https://maps.google.com/?q=Viale+Edoardo+Jenner+50+Milano',
+            videoUrl: null,
+            desc: 'Conveniently situated near Bovisa and Maciachini, active for daily and Friday prayers.'
+        }
+    ];
+
+    let prayerMap = null;
+    let markersMap = {};
+    let activeCategory = 'all';
+
+    function initPrayerMap() {
+        const mapContainer = document.getElementById('prayer-leaflet-map');
+        if (!mapContainer || typeof L === 'undefined') return;
+
+        // Initialize map centered between Bovisa & East Milan
+        prayerMap = L.map('prayer-leaflet-map', {
+            center: [45.492, 9.215],
+            zoom: 12,
+            scrollWheelZoom: false
+        });
+
+        // Add CARTO Voyager tile layer (reliable, high-res CDN, no 403 block)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(prayerMap);
+
+        // Add pins to map
+        renderMarkers();
+        renderSidebarList();
+        setupFilterButtons();
+    }
+
+    function createCustomMarkerIcon(loc) {
+        const markerClass = loc.category === 'campus' ? 'marker-campus' : 'marker-mosque';
+        const iconHtml = `<div class="custom-leaflet-marker ${markerClass}" title="${loc.name}"><span>${loc.icon}</span></div>`;
+        return L.divIcon({
+            html: iconHtml,
+            className: 'custom-div-icon',
+            iconSize: [36, 36],
+            iconAnchor: [18, 18],
+            popupAnchor: [0, -18]
+        });
+    }
+
+    function renderMarkers() {
+        if (!prayerMap) return;
+        // Clear existing markers
+        Object.values(markersMap).forEach(m => prayerMap.removeLayer(m));
+        markersMap = {};
+
+        const filtered = activeCategory === 'all'
+            ? PRAYER_LOCATIONS
+            : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
+
+        filtered.forEach(loc => {
+            const icon = createCustomMarkerIcon(loc);
+            const marker = L.marker(loc.coords, { icon: icon }).addTo(prayerMap);
+
+            let popupHtml = `
+                <div class="popup-content-box">
+                    <div class="popup-title">${loc.name}</div>
+                    <span class="popup-badge ${loc.badgeClass}">${loc.badge}</span>
+                    <div class="popup-address">${loc.address}</div>
+                    <div class="popup-buttons">
+                        <a href="${loc.mapsUrl}" target="_blank" class="popup-btn popup-btn-gmaps">
+                            📍 Open in Google Maps
+                        </a>
+                        ${loc.videoUrl ? `<a href="${loc.videoUrl}" target="_blank" class="popup-btn popup-btn-video">▶ Watch Video Guide</a>` : ''}
+                    </div>
+                </div>
+            `;
+
+            marker.bindPopup(popupHtml);
+            marker.on('click', () => {
+                highlightSidebarCard(loc.id);
+            });
+
+            markersMap[loc.id] = marker;
+        });
+    }
+
+    function renderSidebarList() {
+        const listContainer = document.getElementById('map-locations-list');
+        if (!listContainer) return;
+
+        const filtered = activeCategory === 'all'
+            ? PRAYER_LOCATIONS
+            : PRAYER_LOCATIONS.filter(l => l.category === activeCategory);
+
+        listContainer.innerHTML = '';
+
+        filtered.forEach(loc => {
+            const card = document.createElement('div');
+            card.className = 'map-loc-card';
+            card.id = `loc-card-${loc.id}`;
+            card.innerHTML = `
+                <div class="map-loc-card-header">
+                    <div class="map-loc-title-group">
+                        <span class="map-loc-icon">${loc.icon}</span>
+                        <div>
+                            <div class="map-loc-name">${loc.name}</div>
+                            <span style="font-size: 0.75rem; color: var(--color-text-light);">${loc.categoryLabel}</span>
+                        </div>
+                    </div>
+                    <span class="map-loc-badge ${loc.badgeClass}">${loc.badge}</span>
+                </div>
+                <p class="map-loc-address">${loc.address}</p>
+                <div class="map-loc-actions" onclick="event.stopPropagation();">
+                    <a href="${loc.mapsUrl}" target="_blank" class="map-loc-btn btn-gmaps" title="Open Google Maps Navigation">
+                        📍 Google Maps
+                    </a>
+                    ${loc.videoUrl ? `<a href="${loc.videoUrl}" target="_blank" class="map-loc-btn btn-guide" title="Watch room video guide">▶ Video Guide</a>` : ''}
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                focusLocation(loc);
+            });
+
+            listContainer.appendChild(card);
+        });
+    }
+
+    function focusLocation(loc) {
+        if (!prayerMap) return;
+        highlightSidebarCard(loc.id);
+        prayerMap.flyTo(loc.coords, 15, { duration: 1 });
+        const marker = markersMap[loc.id];
+        if (marker) {
+            setTimeout(() => { marker.openPopup(); }, 500);
+        }
+    }
+
+    function highlightSidebarCard(id) {
+        document.querySelectorAll('.map-loc-card').forEach(c => c.classList.remove('active-card'));
+        const card = document.getElementById(`loc-card-${id}`);
+        if (card) {
+            card.classList.add('active-card');
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    function setupFilterButtons() {
+        const buttons = document.querySelectorAll('.map-filter-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeCategory = btn.getAttribute('data-category');
+                renderMarkers();
+                renderSidebarList();
+
+                // Recenter map bounds
+                if (prayerMap) {
+                    prayerMap.flyTo([45.492, 9.215], 12, { duration: 0.8 });
+                }
+            });
+        });
+    }
+
+    // Initialize map on DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+        initPrayerMap();
+    });
+
     // Fetch dynamic content
     async function loadJumuahContent() {
         let data = null;
