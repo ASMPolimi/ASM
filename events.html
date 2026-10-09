@@ -21,7 +21,8 @@
 <body >
 
     <!-- Header & Navigation -->
-    <header class="navbar" style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 0;">
+    <header class="navbar" style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding:
+0;">
         <div class="container nav-container">
             <a href="index.html" class="logo">
                 <img src="assets/asm_logo.png" alt="ASM Logo">
@@ -79,54 +80,56 @@
 
     
 <section id="events" class="section first-section bg-light">
-        <div class="container">
-            <div class="section-header text-center">
-                <h2>Featured Events</h2>
-                <div class="divider"></div>
-                <p>Stay updated with our latest halaqas, socials, and activities.</p>
-            </div>
-
-            <div id="dynamic-events-container" class="team-grid stagger-children">
-                <!-- Events will be populated here by JS -->
-                <p class="text-center w-100" style="grid-column: 1 / -1;">Loading events...</p>
-            </div>
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Featured Events</h2>
+            <div class="divider"></div>
+            <p>Stay updated with our latest halaqas, socials, and activities.</p>
         </div>
-    </section>
 
-    <!-- Event Registration Form Section -->
-    <section id="register-form" class="section" style="min-height: 80vh; scroll-margin-top: 100px;">
-        <div class="container">
-            <div class="section-header text-center">
-                <h2>Register for an Event</h2>
-                <div class="divider"></div>
-                <p>Reserve your spot by filling out the form below.</p>
-            </div>
-
-            <div class="contact-form-container" style="max-width: 800px; margin: 0 auto; padding: 0;">
-                <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <a id="open-form-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeaXV2VdR08pr81JZa2zRefxB2HaUhi_qlBj6Zkaa0_t0RtuQ/viewform?usp=dialog" target="_blank" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px; border-color: var(--color-primary); color: var(--color-primary); font-weight: 600;">
-                        <span>📋</span> Open Form in New Tab
-                    </a>
-                </div>
-                <!-- Google Form Embed Placeholder -->
-                <div
-                    style="width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 1rem;">
-                    <iframe
-                        src="https://docs.google.com/forms/d/e/1FAIpQLSeaXV2VdR08pr81JZa2zRefxB2HaUhi_qlBj6Zkaa0_t0RtuQ/viewform?usp=dialog"
-                        width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-                </div>
-                <p style="text-align: center; margin: 1.5rem 0; color: var(--color-text-light); font-size: 0.95rem;">
-                    <strong>Note for Admin:</strong> To make this form work for events, create a form at <a
-                        href="https://forms.google.com" target="_blank"
-                        style="color: var(--color-primary); text-decoration: underline;">Google Forms</a>, click "Send",
-                    choose the `&lt; &gt;` embed icon, and replace the iframe `src` link in `events.html` with your
-                    real form link.
-                </p>
-            </div>
+        <div id="dynamic-events-container" class="team-grid stagger-children">
+            <!-- Events will be populated here by JS -->
+            <p class="text-center w-100" style="grid-column: 1 / -1;">Loading events...</p>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
+<!-- Event Registration Form Section -->
+<section id="register-form" class="section" style="min-height: 80vh; scroll-margin-top: 100px;">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Register for an Event</h2>
+            <div class="divider"></div>
+            <p>Reserve your spot by filling out the form below.</p>
+        </div>
+
+        <div class="contact-form-container" style="max-width: 800px; margin: 0 auto; padding: 0;">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <a id="open-form-btn"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true"
+                    target="_blank" class="btn btn-secondary"
+                    style="display: inline-flex; align-items: center; gap: 0.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px; border-color: var(--color-primary); color: var(--color-primary); font-weight: 600;">
+                    <span>📋</span> Open Form in New Tab
+                </a>
+            </div>
+            <!-- Google Form Embed Placeholder -->
+            <div style="width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 1rem;">
+                <iframe
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true"
+                    width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+            <p style="text-align: center; margin: 1.5rem 0; color: var(--color-text-light); font-size: 0.95rem;">
+                <strong>Note for Admin:</strong> To make this form work for events, create a form at <a
+                    href="https://forms.google.com" target="_blank"
+                    style="color: var(--color-primary); text-decoration: underline;">Google Forms</a>, click "Send",
+                choose the `&lt; &gt;` embed icon, and replace the iframe `src` link in `events.html` with your
+                real form link.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
 
 
     <!-- Footer -->
@@ -147,105 +150,105 @@
 
     
 <script>
-        const DEFAULT_REG_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSeaXV2VdR08pr81JZa2zRefxB2HaUhi_qlBj6Zkaa0_t0RtuQ/viewform?usp=dialog';
-        let activeDefaultForm = DEFAULT_REG_FORM;
+    const DEFAULT_REG_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true';
+    let activeDefaultForm = DEFAULT_REG_FORM;
 
-        function setRegistrationForm(url) {
-            const iframe = document.querySelector('#register-form iframe');
-            if (iframe) {
-                iframe.src = url;
-            }
-            const openBtn = document.getElementById('open-form-btn');
-            if (openBtn) {
-                openBtn.href = url;
-            }
+    function setRegistrationForm(url) {
+        const iframe = document.querySelector('#register-form iframe');
+        if (iframe) {
+            iframe.src = url;
         }
-
-        // Check if registration link was passed as query parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const queryRegLink = urlParams.get('reg_link');
-        if (queryRegLink) {
-            setRegistrationForm(decodeURIComponent(queryRegLink));
+        const openBtn = document.getElementById('open-form-btn');
+        if (openBtn) {
+            openBtn.href = url;
         }
+    }
 
-        async function loadEventsContent() {
-            let data = null;
-            for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
-                try {
-                    const response = await fetch(url);
-                    if (response.ok) {
-                        data = await response.json();
-                        break;
-                    }
-                } catch (e) {}
-            }
-            if (!data) return;
+    // Check if registration link was passed as query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryRegLink = urlParams.get('reg_link');
+    if (queryRegLink) {
+        setRegistrationForm(decodeURIComponent(queryRegLink));
+    }
 
-            // Set active default form from admin settings
-            if (data.global_event_reg_link && data.global_event_reg_link.trim() !== '') {
-                activeDefaultForm = data.global_event_reg_link;
-            }
-
-            // If no specific link query parameter exists, default the iframe to our active form
-            if (!queryRegLink) {
-                setRegistrationForm(activeDefaultForm);
-            }
-
-            // Announcement Banner
-            if (data.announcement && data.announcement.trim() !== '') {
-                const banner = document.getElementById('announcement-banner');
-                const text = document.getElementById('announcement-text');
-                if (banner && text) {
-                    text.textContent = data.announcement;
-                    banner.classList.remove('hidden');
-                    banner.style.display = 'block';
-
-                    // Hide after 30 seconds
-                    setTimeout(() => {
-                        banner.style.transition = 'opacity 0.5s ease';
-                        banner.style.opacity = '0';
-                        setTimeout(() => {
-                            banner.classList.add('hidden');
-                            banner.style.display = 'none';
-                        }, 500);
-                    }, 30000);
+    async function loadEventsContent() {
+        let data = null;
+        for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    data = await response.json();
+                    break;
                 }
-            }
+            } catch (e) { }
+        }
+        if (!data) return;
 
-            // Render Events
-            const eventsContainer = document.getElementById('dynamic-events-container');
-            if (eventsContainer) {
-                if (data.events && data.events.length > 0) {
-                    eventsContainer.innerHTML = ''; // Clear loading
-                    data.events.forEach(event => {
-                        if (event.title || event.date || event.desc) {
-                            const card = document.createElement('a');
-                            card.href = '#register-form';
-                            card.className = 'team-card animate-up';
-                            card.style.display = 'block';
-                            card.style.textDecoration = 'none';
-                            card.style.cursor = 'pointer';
-                            card.innerHTML = `
+        // Set active default form from admin settings
+        if (data.global_event_reg_link && data.global_event_reg_link.trim() !== '') {
+            activeDefaultForm = data.global_event_reg_link;
+        }
+
+        // If no specific link query parameter exists, default the iframe to our active form
+        if (!queryRegLink) {
+            setRegistrationForm(activeDefaultForm);
+        }
+
+        // Announcement Banner
+        if (data.announcement && data.announcement.trim() !== '') {
+            const banner = document.getElementById('announcement-banner');
+            const text = document.getElementById('announcement-text');
+            if (banner && text) {
+                text.textContent = data.announcement;
+                banner.classList.remove('hidden');
+                banner.style.display = 'block';
+
+                // Hide after 30 seconds
+                setTimeout(() => {
+                    banner.style.transition = 'opacity 0.5s ease';
+                    banner.style.opacity = '0';
+                    setTimeout(() => {
+                        banner.classList.add('hidden');
+                        banner.style.display = 'none';
+                    }, 500);
+                }, 30000);
+            }
+        }
+
+        // Render Events
+        const eventsContainer = document.getElementById('dynamic-events-container');
+        if (eventsContainer) {
+            if (data.events && data.events.length > 0) {
+                eventsContainer.innerHTML = ''; // Clear loading
+                data.events.forEach(event => {
+                    if (event.title || event.date || event.desc) {
+                        const card = document.createElement('a');
+                        card.href = '#register-form';
+                        card.className = 'team-card animate-up';
+                        card.style.display = 'block';
+                        card.style.textDecoration = 'none';
+                        card.style.cursor = 'pointer';
+                        card.innerHTML = `
                                 <div class="team-info">
                                     <h3 style="color: var(--color-primary);">${event.title || 'Untitled Event'}</h3>
                                     <p style="color: var(--color-secondary); font-weight: 500; margin-bottom: 0.5rem;">${event.date || 'Date TBD'}</p>
                                     <p style="color: var(--color-text-light); font-size: 0.95rem;">${event.desc || ''}</p>
                                 </div>
                             `;
-                            card.addEventListener('click', () => {
-                                setRegistrationForm(event.reg_link && event.reg_link.trim() !== '' ? event.reg_link : activeDefaultForm);
-                            });
-                            eventsContainer.appendChild(card);
-                        }
-                    });
-                } else {
-                    eventsContainer.innerHTML = '<p class="text-center w-100" style="grid-column: 1 / -1;">No upcoming events at this time. Check back later!</p>';
-                }
+                        card.addEventListener('click', () => {
+                            setRegistrationForm(event.reg_link && event.reg_link.trim() !== '' ? event.reg_link : activeDefaultForm);
+                        });
+                        eventsContainer.appendChild(card);
+                    }
+                });
+            } else {
+                eventsContainer.innerHTML = '<p class="text-center w-100" style="grid-column: 1 / -1;">No upcoming events at this time. Check back later!</p>';
             }
         }
+    }
 
-        loadEventsContent().catch(err => console.error('Error fetching events/announcements:', err));
-    </script>
+    loadEventsContent().catch(err => console.error('Error fetching events/announcements:', err));
+</script>
 
 </body>
 
