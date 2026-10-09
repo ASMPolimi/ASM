@@ -210,7 +210,7 @@
                 <a href="admin_questions.html" class="admin-link {% if active_page == 'questions' %}active{% endif %}">
                     <span>❓</span> Questions
                 </a>
-                <a href="admin_users.html" class="admin-link {% if active_page == 'users' %}active{% endif %}">
+                <a href="admin_users.html" id="nav-users-link" class="admin-link {% if active_page == 'users' %}active{% endif %}">
                     <span>👥</span> Users & Accounts
                 </a>
                 <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
@@ -246,6 +246,15 @@
             });
         }
 
+        // Hide Users tab for non-superadmin users
+        try {
+            const currentRole = localStorage.getItem('adminRole');
+            if (currentRole && currentRole !== 'superadmin') {
+                const navUsers = document.getElementById('nav-users-link');
+                if (navUsers) navUsers.style.display = 'none';
+            }
+        } catch (err) {}
+
         // Global admin logout helper
         function globalAdminLogout(e) {
             if (e) {
@@ -254,6 +263,7 @@
             }
             try {
                 localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminRole');
             } catch (err) {}
 
             // Trigger in-page logout UI if available

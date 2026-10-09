@@ -153,12 +153,12 @@
 
             <div id="update-message" class="hidden"></div>
 
-            <h3 class="mb-2">Current Admins</h3>
-            <div id="users-list" style="margin-bottom: 2rem;">
+            <h3 class="mb-2" id="current-admins-header" style="display: none;">Current Admins</h3>
+            <div id="users-list" style="margin-bottom: 2rem; display: none;">
                 <p class="text-center">Loading users...</p>
             </div>
 
-            <div style="background: #f9fafb; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+            <div id="add-admin-section" style="background: #f9fafb; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; display: none;">
                 <h4 class="mb-2" style="font-size: 1rem;">Add New Admin</h4>
                 <form id="add-user-form">
                     <div class="form-group">
@@ -183,7 +183,7 @@
 
             <!-- Manage Board Members Section -->
             <div id="board-members-section"
-                style="background: #f9fafb; padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid #e5e7eb;">
+                style="background: #f9fafb; padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid #e5e7eb; display: none;">
                 <h3 class="mb-2"
                     style="font-size: 1.2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 1rem;">
                     Manage Board Members</h3>
@@ -285,39 +285,50 @@
         async function showDashboard() {
             loginSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
-            // Load users first
-            fetchUsers();
-            // Load board members only for superadmin
-            if (role === 'superadmin') {
-                fetchBoardMembers();
+
+            const isSuper = (role === 'superadmin');
+
+            const addAdminSection = document.getElementById('add-admin-section');
+            if (addAdminSection) {
+                addAdminSection.style.display = isSuper ? 'block' : 'none';
             }
-            // Role‑based UI adjustments
-            if (role !== 'superadmin') {
-                // Hide the Manage Board Members section
-                const boardSection = document.getElementById('board-members-section');
-                if (boardSection) boardSection.style.display = 'none';
 
-                // Hide the Add New Admin container and Current Admins list
-                const addContainer = document.getElementById('add-user-form')?.parentElement;
-                if (addContainer) addContainer.style.display = 'none';
+            const boardSection = document.getElementById('board-members-section');
+            if (boardSection) {
+                boardSection.style.display = isSuper ? 'block' : 'none';
+            }
 
-                const usersList = document.getElementById('users-list');
-                if (usersList) usersList.style.display = 'none';
+            const currentAdminsHeader = document.getElementById('current-admins-header');
+            if (currentAdminsHeader) {
+                currentAdminsHeader.style.display = isSuper ? 'block' : 'none';
+            }
 
-                const currentAdminsHeader = document.querySelector('h3.mb-2');
-                if (currentAdminsHeader) currentAdminsHeader.style.display = 'none';
+            const usersList = document.getElementById('users-list');
+            if (usersList) {
+                usersList.style.display = isSuper ? 'block' : 'none';
+            }
 
-                // Show a persistent forbidden notice
-                const existingMsg = document.getElementById('add-admin-forbidden');
-                if (!existingMsg) {
-                    const msg = document.createElement('div');
-                    msg.id = 'add-admin-forbidden';
-                    msg.textContent = 'Forbidden. Superadmin access required.';
-                    msg.className = 'error-message';
-                    msg.style.marginTop = '1rem';
-
+            if (isSuper) {
+                fetchUsers();
+                fetchBoardMembers();
+            } else {
+                let existingNotice = document.getElementById('admin-role-notice');
+                if (!existingNotice) {
+                    existingNotice = document.createElement('div');
+                    existingNotice.id = 'admin-role-notice';
+                    existingNotice.style.cssText = 'background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius-sm); padding: 1.5rem; text-align: center; margin: 1.5rem 0;';
+                    existingNotice.innerHTML = `
+                        <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🔒</div>
+                        <h3 style="color: #92400e; font-size: 1.15rem; margin-bottom: 0.5rem;">Superadmin Access Required</h3>
+                        <p style="color: #78350f; font-size: 0.95rem; margin-bottom: 1rem;">
+                            Managing administrator accounts and board members is restricted to <strong>Superadmin</strong> accounts.
+                        </p>
+                        <p style="color: #78350f; font-size: 0.9rem; margin-bottom: 0;">
+                            As a standard Admin, you have full access to <a href="admin.html" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Events & Announcements</a> and <a href="admin_jumuah.html" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Jumu'ah</a> settings.
+                        </p>
+                    `;
                     const updateMsg = document.getElementById('update-message');
-                    updateMsg.parentNode.insertBefore(msg, updateMsg.nextSibling);
+                    updateMsg.parentNode.insertBefore(existingNotice, updateMsg.nextSibling);
                 }
             }
         }
@@ -496,7 +507,9 @@
 
         function logout() {
             localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminRole');
             token = null;
+            role = null;
             document.getElementById('password').value = '';
             dashboardSection.classList.add('hidden');
             loginSection.classList.remove('hidden');

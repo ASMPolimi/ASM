@@ -188,6 +188,7 @@
                 if (data.success) {
                     token = data.token;
                     localStorage.setItem('adminToken', token);
+                    localStorage.setItem('adminRole', data.role);
                     showDashboard();
                 } else {
                     loginError.textContent = data.message;
@@ -330,6 +331,7 @@
 
         function logout() {
             localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminRole');
             token = null;
             document.getElementById('password').value = '';
             dashboardSection.classList.add('hidden');
