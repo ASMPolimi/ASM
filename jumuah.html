@@ -477,11 +477,10 @@
             scrollWheelZoom: false
         });
 
-        // Add CARTO Voyager tile layer (reliable, high-res CDN, no 403 block)
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
+        // Add official OpenStreetMap tile layer (100% free, no API key required, no watermarks)
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
         }).addTo(prayerMap);
 
         // Add pins to map
