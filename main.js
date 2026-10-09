@@ -333,34 +333,50 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.disabled = true;
             btn.textContent = 'Subscribing...';
 
-            try {
-                const response = await fetch('/api/subscribe', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, year })
-                });
-                const result = await response.json();
-                if (result.success) {
-                    btn.textContent = result.message || 'Subscribed!';
-                    btn.style.backgroundColor = '#047857';
-                    btn.style.color = 'white';
-                    form.reset();
-                } else {
-                    alert(result.message || 'Error subscribing.');
-                    btn.textContent = originalText;
+            const isLiveDomain = window.location.hostname.includes('asmpolimi.it') || window.location.hostname.endsWith('github.io');
+            const endpoints = isLiveDomain
+                ? ['https://admin.asmpolimi.it/api/subscribe', '/api/subscribe']
+                : ['/api/subscribe', 'https://admin.asmpolimi.it/api/subscribe'];
+
+            let succeeded = false;
+            let lastMessage = '';
+
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, year })
+                    });
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.success) {
+                            btn.textContent = result.message || 'Subscribed!';
+                            btn.style.backgroundColor = '#047857';
+                            btn.style.color = 'white';
+                            form.reset();
+                            succeeded = true;
+                            break;
+                        } else {
+                            lastMessage = result.message || 'Error subscribing.';
+                        }
+                    }
+                } catch (err) {
+                    console.warn(`Failed to connect to ${endpoint}:`, err);
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Note: On static GitHub Pages preview, live database subscriptions are not active. Please use the Join Us Google Form or email asm.polimi@gmail.com.');
-                btn.textContent = originalText;
-            } finally {
-                btn.disabled = false;
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.backgroundColor = '';
-                    btn.style.color = '';
-                }, 3000);
             }
+
+            if (!succeeded) {
+                alert(lastMessage || 'Unable to complete subscription at this time. Please try again or reach out to us at asm.polimi@gmail.com.');
+                btn.textContent = originalText;
+            }
+
+            btn.disabled = false;
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+            }, 3000);
         });
     }
 
