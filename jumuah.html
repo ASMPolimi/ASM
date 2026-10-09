@@ -79,19 +79,18 @@
     </div>
 
     
-<section class="section first-section" style="min-height: 80vh;">
+<section class="section first-section jumuah-first-section">
     <div class="container">
-        <div class="section-header text-center">
+        <div class="section-header text-center jumuah-header">
             <h2>Jumu'ah Prayers</h2>
             <div class="divider"></div>
 
-            <p
-                style="font-family: 'Amiri', 'Scheherazade New', 'Traditional Arabic', serif; direction: rtl; font-size: 1.6rem; line-height: 1.8; color: var(--color-primary);">
+            <p class="jumuah-ayah-arabic">
                 يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا نُودِيَ لِلصَّلَاةِ مِن يَوْمِ الْجُمُعَةِ فَاسْعَوْا إِلَىٰ
                 ذِكْرِ اللَّهِ وَذَرُوا الْبَيْعَ ۚ ذَٰلِكُمْ خَيْرٌ لَّكُمْ إِن كُنتُمْ تَعْلَمُونَ
             </p>
 
-            <p style="font-size: 1.1rem; font-style: italic; color: var(--color-text-light); margin-top: 0.5rem;">
+            <p class="jumuah-ayah-translation">
                 O you who have believed, when [the adhan] is called for the prayer on the day of Jumu'ah (Friday),
                 then proceed to the remembrance of Allah and leave trade. That is better for you, if you only knew.
                 (Quran 62:9)
@@ -112,7 +111,7 @@
                         Loading...
                     </div>
                     <div style="color: var(--color-text-light); font-size: 0.95rem;">
-                        Location: <a href="#location-bovisa"
+                        Location: <a href="#locations" onclick="if(typeof focusLocationById==='function'){focusLocationById('bovisa');}"
                             style="color: var(--color-primary); text-decoration: underline; font-weight: 500;">Building
                             24 level -1, Bovisa Campus</a><br>
                         Please arrive early to secure a spot.
@@ -126,7 +125,7 @@
                         Loading...
                     </div>
                     <div style="color: var(--color-text-light); font-size: 0.95rem;">
-                        Location: <a href="#location-leonardo"
+                        Location: <a href="#locations" onclick="if(typeof focusLocationById==='function'){focusLocationById('unimi');}"
                             style="color: var(--color-primary); text-decoration: underline; font-weight: 500;">Room 300
                             Unimi Building</a><br>
                         Please arrive early to secure a spot.
@@ -156,90 +155,43 @@
     </div>
 </section>
 
-<!-- Locations & Directions Section -->
-<section id="locations" class="section bg-light">
+<!-- Interactive Prayer Locations & Mosques Map Section -->
+<section id="locations" class="section bg-light fade-in" style="padding-top: 2rem; padding-bottom: 4rem;">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Locations & Directions</h2>
+            <span class="section-badge" style="display: inline-block; padding: 0.35rem 1rem; border-radius: 2rem; background: rgba(18, 74, 97, 0.1); color: var(--color-primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Campus & Milan Guide</span>
+            <h2>Locations & Mosques Map</h2>
             <div class="divider"></div>
+            <p>Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location card or pin to see room video guides, Jumu'ah availability, or open 1-click GPS navigation in Google Maps.</p>
         </div>
 
-        <div class="contact-grid stagger-children">
-            <!-- Bovisa Location -->
-            <div id="location-bovisa" class="contact-info" style="scroll-margin-top: 100px;">
-                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Bovisa Campus</h3>
-                <p style="margin-bottom: 1.5rem; color: var(--color-text-light);">Building 24 level -1, Via Privata
-                    Giuseppe La Masa, 34.
-                    <br>Please check the video below if you are unsure how to find the room.
-                </p>
+        <!-- Filter Controls -->
+        <div class="map-filter-bar">
+            <button type="button" class="map-filter-btn active" data-category="all">
+                <span>📍 All Locations</span> <span class="filter-count" id="count-all">13</span>
+            </button>
+            <button type="button" class="map-filter-btn" data-category="campus">
+                <span>🎓 Campus Prayer Rooms</span> <span class="filter-count" id="count-campus">3</span>
+            </button>
+            <button type="button" class="map-filter-btn" data-category="mosque">
+                <span>🕌 Milan Mosques</span> <span class="filter-count" id="count-mosque">10</span>
+            </button>
+        </div>
 
-                <a href="https://goo.gl/maps/jVDEEckRJZBkWT5q7" target="_blank" class="btn btn-primary"
-                    style="display: block; text-align: center; margin-bottom: 1rem; padding: 0.75rem;">
-                    Open in Google Maps
-                </a>
-
-                <a href="https://youtube.com/shorts/rXHHH2kImDc?is=Ea-2FxbiN4gJlDbk" target="_blank"
-                    class="btn btn-secondary"
-                    style="display: block; text-align: center; padding: 0.75rem; color: var(--color-primary); border-color: var(--color-primary);">
-                    Watch Video Guide
-                </a>
+        <!-- Split Map Layout -->
+        <div class="prayer-map-layout">
+            <!-- Map Container -->
+            <div class="map-frame-wrapper">
+                <div id="prayer-leaflet-map"></div>
+                <div class="map-legend">
+                    <span class="legend-item"><span class="legend-dot dot-campus"></span> Campus Room</span>
+                    <span class="legend-item"><span class="legend-dot dot-mosque"></span> Milan Mosque</span>
+                </div>
             </div>
 
-            <!-- Unimi Location -->
-            <div id="location-leonardo" class="contact-info" style="scroll-margin-top: 100px;">
-                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Unimi Campus</h3>
-                <p style="margin-bottom: 1.5rem; color: var(--color-text-light);"> Room 300 Unimi
-                    Building.
-                    <br>
-                    Please check the video below if you are unsure how to find the hall.
-                </p>
-                <a href="https://goo.gl/maps/cdUrXTAdf1Q9cGds9%7C" target="_blank" class="btn btn-primary"
-                    style="display: block; text-align: center; margin-bottom: 1rem; padding: 0.75rem;">
-                    Open in Google Maps
-                </a>
-                <a href="https://youtube.com/shorts/A5vwr2wduu4?is=2Yd-BOlo2g3o-ypL" target="_blank"
-                    class="btn btn-secondary"
-                    style="display: block; text-align: center; padding: 0.75rem; color: var(--color-primary); border-color: var(--color-primary);">
-                    Watch Video Guide
-                </a>
-            </div>
-            <!-- Leonardo second Location -->
-            <div id="location-leonardo2" class="contact-info" style="scroll-margin-top: 100px;">
-                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Leonardo Campus No Jumu'ah
-                </h3>
-                <p style="margin-bottom: 1.5rem; color: var(--color-text-light);">Building 32.1.2 Leonardo
-                    Campus<br>Please check the video below if you are unsure how to find the room.</p>
-                <a href="https://maps.app.goo.gl/FFZ3KJW3ns3FZHXDA" target="_blank" class="btn btn-primary"
-                    style="display: block; text-align: center; margin-bottom: 1rem; padding: 0.75rem;">
-                    Open in Google Maps
-                </a>
-
-                <a href="https://youtube.com/shorts/I_jQXZ8b7zU?is=2z-M87fbhU_21VSL" target="_blank"
-                    class="btn btn-secondary"
-                    style="display: block; text-align: center; padding: 0.75rem; color: var(--color-primary); border-color: var(--color-primary);">
-                    Watch Video Guide
-                </a>
-            </div>
-            <!-- Local mosques -->
-            <div id="location-mosques" class="contact-info" style="scroll-margin-top: 100px;">
-                <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Local Mosques
-                </h3>
-                <p style="margin-bottom: 1.5rem; color: var(--color-text-light);">Check the <strong>google maps</strong>
-                    links below
-                </p>
-                <a href="https://maps.app.goo.gl/YSWi9PbpFCy4cpEDA" target="_blank" class="btn btn-primary"
-                    style="display: block; text-align: center; margin-bottom: 1rem; padding: 0.75rem;">
-                    <strong> Casa della Cultura Islamica Onlus:</strong> Via Padova, 144, 20132 MI
-                </a>
-
-                <a href="https://maps.app.goo.gl/y6Q5veskFkXbj9H18" target="_blank" class="btn btn-primary"
-                    style="display: block; text-align: center; margin-bottom: 1rem; padding: 0.75rem;">
-                    <strong>Mosque of the Merciful:</strong> Via Cassanese, 3, 20134 MI
-                </a>
-                <a href="https://maps.app.goo.gl/7M2ktytL5uwPYtzRA" target="_blank" class="btn btn-primary"
-                    style="display: block; text-align: center; margin-bottom: 0.5rem; padding: 0.75rem;">
-                    <strong>Mariam Mosque:</strong> Via Padova 366, 20132 M
-                </a>
+            <!-- Side Location Cards List -->
+            <div class="map-locations-sidebar" id="map-locations-list">
+                <!-- Dynamically populated by JS -->
             </div>
         </div>
     </div>
@@ -277,48 +229,6 @@
                     <div class="prayer-name">Isha</div>
                     <div class="prayer-time" id="isha-time">--:-- PM</div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Interactive Prayer Locations & Mosques Map Section -->
-<section id="prayer-map-section" class="section fade-in" style="padding-top: 1rem; padding-bottom: 4rem;">
-    <div class="container">
-        <div class="section-header text-center">
-            <span class="section-badge" style="display: inline-block; padding: 0.35rem 1rem; border-radius: 2rem; background: rgba(18, 74, 97, 0.1); color: var(--color-primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Campus & Milan Guide</span>
-            <h2>Mosques & Prayer Rooms Map</h2>
-            <div class="divider"></div>
-            <p>Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location card or pin to see room video guides, Jumu'ah availability, or open 1-click GPS navigation in Google Maps.</p>
-        </div>
-
-        <!-- Filter Controls -->
-        <div class="map-filter-bar">
-            <button type="button" class="map-filter-btn active" data-category="all">
-                <span>📍 All Locations</span> <span class="filter-count" id="count-all">13</span>
-            </button>
-            <button type="button" class="map-filter-btn" data-category="campus">
-                <span>🎓 Campus Prayer Rooms</span> <span class="filter-count" id="count-campus">3</span>
-            </button>
-            <button type="button" class="map-filter-btn" data-category="mosque">
-                <span>🕌 Milan Mosques</span> <span class="filter-count" id="count-mosque">10</span>
-            </button>
-        </div>
-
-        <!-- Split Map Layout -->
-        <div class="prayer-map-layout">
-            <!-- Map Container -->
-            <div class="map-frame-wrapper">
-                <div id="prayer-leaflet-map"></div>
-                <div class="map-legend">
-                    <span class="legend-item"><span class="legend-dot dot-campus"></span> Campus Room</span>
-                    <span class="legend-item"><span class="legend-dot dot-mosque"></span> Milan Mosque</span>
-                </div>
-            </div>
-
-            <!-- Side Location Cards List -->
-            <div class="map-locations-sidebar" id="map-locations-list">
-                <!-- Dynamically populated by JS -->
             </div>
         </div>
     </div>
@@ -660,6 +570,14 @@
             setTimeout(() => { marker.openPopup(); }, 500);
         }
     }
+
+    function focusLocationById(id) {
+        const loc = PRAYER_LOCATIONS.find(l => l.id === id);
+        if (loc) {
+            focusLocation(loc);
+        }
+    }
+    window.focusLocationById = focusLocationById;
 
     function highlightSidebarCard(id) {
         document.querySelectorAll('.map-loc-card').forEach(c => c.classList.remove('active-card'));
