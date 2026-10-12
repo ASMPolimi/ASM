@@ -362,6 +362,39 @@
     .badge-payment { background: #fef3c7; color: #92400e; }
     .badge-team { background: #e0f2fe; color: #0369a1; font-weight: 500; }
     .badge-translator { background: #dcfce7; color: #166534; }
+    .badge-paid { background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 700; }
+    .badge-unpaid { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 700; }
+
+    .btn-toggle-paid {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+    .btn-mark-paid {
+        background: #10b981;
+        color: white;
+        border: 1px solid #059669;
+    }
+    .btn-mark-paid:hover {
+        background: #059669;
+        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+    }
+    .btn-mark-unpaid {
+        background: #f8fafc;
+        color: #64748b;
+        border: 1px solid #cbd5e1;
+    }
+    .btn-mark-unpaid:hover {
+        background: #fee2e2;
+        color: #b91c1c;
+        border-color: #fca5a5;
+    }
 </style>
 
 </head>
@@ -467,12 +500,24 @@
             <div class="controls-bar">
                 <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
                     <input type="text" id="app-search-input" class="search-input" placeholder="Search name, matricola, email, team..." oninput="filterApplications()">
+                    <select id="app-fee-filter" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
+                        <option value="">All Fee Statuses</option>
+                        <option value="paid">✅ Fee Paid (€5)</option>
+                        <option value="unpaid">⏳ Fee Pending / Unpaid</option>
+                    </select>
                     <select id="app-payment-filter" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
                         <option value="">All Payment Methods</option>
                         <option value="PayPal">PayPal</option>
                         <option value="Bank transfer">Bank Transfer</option>
                         <option value="Leonardo">Leonardo Campus</option>
                         <option value="Bovisa">Bovisa Campus</option>
+                    </select>
+                    <select id="app-sort-select" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
+                        <option value="newest">Sort: Newest First</option>
+                        <option value="oldest">Sort: Oldest First</option>
+                        <option value="paid_first">Sort: Fee Paid First</option>
+                        <option value="unpaid_first">Sort: Fee Unpaid First</option>
+                        <option value="name_asc">Sort: Name (A-Z)</option>
                     </select>
                 </div>
                 <button type="button" class="btn-export" id="btn-export-apps">
@@ -669,21 +714,31 @@
                 ? `<span class="badge badge-translator">🗣️ Translator</span>`
                 : '';
 
+            const feeBadge = app.paid
+                ? `<span class="badge badge-paid">✅ Fee Paid (€5)</span>`
+                : `<span class="badge badge-unpaid">⏳ Fee Pending</span>`;
+
+            const feeButton = app.paid
+                ? `<button type="button" class="btn-toggle-paid btn-mark-unpaid" onclick="confirmTogglePaid(${app.id}, false, '${escapeHtml(app.full_name)}')">↩ Mark Unpaid</button>`
+                : `<button type="button" class="btn-toggle-paid btn-mark-paid" onclick="confirmTogglePaid(${app.id}, true, '${escapeHtml(app.full_name)}')">✓ Mark Paid (€5)</button>`;
+
             card.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                         <span style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary);">${escapeHtml(app.full_name)}</span>
                         <span class="badge badge-matricola">Matr: ${escapeHtml(app.matricola)}</span>
-                        <span class="badge badge-lang">${app.lang_selected === 'it' ? '🇮🇹 IT' : '🇬🇧 EN'}</span>
+                        ${feeBadge}
                         <span class="badge badge-payment">💰 ${escapeHtml(app.payment_method || 'N/A')}</span>
+                        <span class="badge badge-lang">${app.lang_selected === 'it' ? '🇮🇹 IT' : '🇬🇧 EN'}</span>
                         ${transBadge}
                     </div>
-                    <div style="display: flex; gap: 0.4rem; align-items: center;">
+                    <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+                        ${feeButton}
                         <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: var(--color-primary); color: var(--color-primary); background: none; font-weight: 600;" onclick="viewAppModal(${app.id})">
-                            👁️ View Details
+                            👁️ Details
                         </button>
                         <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteApp(${app.id})">
-                            🗑️ Remove
+                            🗑️
                         </button>
                     </div>
                 </div>
@@ -701,9 +756,11 @@
 
     function filterApplications() {
         const query = (document.getElementById('app-search-input')?.value || '').toLowerCase().trim();
+        const feeFilter = document.getElementById('app-fee-filter')?.value || '';
         const payFilter = document.getElementById('app-payment-filter')?.value || '';
+        const sortBy = document.getElementById('app-sort-select')?.value || 'newest';
 
-        const filtered = allApplications.filter(app => {
+        let filtered = allApplications.filter(app => {
             const matchesQuery = !query ||
                 (app.full_name && app.full_name.toLowerCase().includes(query)) ||
                 (app.matricola && app.matricola.toLowerCase().includes(query)) ||
@@ -713,12 +770,72 @@
                 (app.teams && app.teams.toLowerCase().includes(query)) ||
                 (app.skills && app.skills.toLowerCase().includes(query));
 
-            const matchesPay = !payFilter || (app.payment_method && app.payment_method === payFilter);
+            const matchesPay = !payFilter || (app.payment_method && app.payment_method.toLowerCase().includes(payFilter.toLowerCase()));
 
-            return matchesQuery && matchesPay;
+            const matchesFee = !feeFilter || (feeFilter === 'paid' ? Boolean(app.paid) : !app.paid);
+
+            return matchesQuery && matchesPay && matchesFee;
+        });
+
+        // Sorting
+        filtered.sort((a, b) => {
+            if (sortBy === 'newest') {
+                return (b.created_at || '').localeCompare(a.created_at || '');
+            } else if (sortBy === 'oldest') {
+                return (a.created_at || '').localeCompare(b.created_at || '');
+            } else if (sortBy === 'paid_first') {
+                if (Boolean(a.paid) !== Boolean(b.paid)) return a.paid ? -1 : 1;
+                return (b.created_at || '').localeCompare(a.created_at || '');
+            } else if (sortBy === 'unpaid_first') {
+                if (Boolean(a.paid) !== Boolean(b.paid)) return a.paid ? 1 : -1;
+                return (b.created_at || '').localeCompare(a.created_at || '');
+            } else if (sortBy === 'name_asc') {
+                return (a.full_name || '').localeCompare(b.full_name || '');
+            }
+            return 0;
         });
 
         renderApplications(filtered);
+    }
+
+    function confirmTogglePaid(id, markAsPaid, applicantName) {
+        const actionText = markAsPaid 
+            ? `Confirm that "${applicantName}" has PAID the €5 membership fee?`
+            : `Revert fee status for "${applicantName}" back to UNPAID (Pending)?`;
+        if (confirm(actionText)) {
+            executeTogglePaid(id, markAsPaid);
+        }
+    }
+
+    async function executeTogglePaid(id, markAsPaid) {
+        try {
+            const res = await fetch('/api/memberships/toggle-paid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ id, paid: markAsPaid })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                const target = allApplications.find(a => a.id === id);
+                if (target) target.paid = data.paid;
+                filterApplications();
+                showToast(data.paid ? "Membership fee recorded as PAID ✅" : "Fee status reverted to UNPAID", true);
+                
+                // If modal is open for this application, refresh its view
+                const modal = document.getElementById('membership-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    viewAppModal(id);
+                }
+            } else {
+                showToast(data.message || "Could not update fee status", false);
+            }
+        } catch (err) {
+            console.error("executeTogglePaid error:", err);
+            showToast("Server connection error", false);
+        }
     }
 
     window.viewAppModal = function(id) {
@@ -750,6 +867,15 @@
                 <div>
                     <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Payment Method</div>
                     <div style="font-weight: 600; color: #b45309;">💰 ${escapeHtml(app.payment_method || 'N/A')}</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Fee Payment Status</div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+                        ${app.paid ? '<span class="badge badge-paid">✅ PAID (€5)</span>' : '<span class="badge badge-unpaid">⏳ UNPAID / PENDING</span>'}
+                        <button type="button" class="btn-toggle-paid ${app.paid ? 'btn-mark-unpaid' : 'btn-mark-paid'}" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="confirmTogglePaid(${app.id}, ${!app.paid}, '${escapeHtml(app.full_name)}')">
+                            ${app.paid ? '↩ Mark Unpaid' : '✓ Mark Paid (€5)'}
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Translator Volunteer</div>
