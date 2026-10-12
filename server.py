@@ -38,6 +38,25 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS membership_applications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            full_name TEXT NOT NULL,
+            matricola TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            course_level TEXT,
+            course TEXT,
+            skills TEXT,
+            teams TEXT,
+            languages TEXT,
+            volunteer_translator TEXT,
+            payment_method TEXT,
+            comments TEXT,
+            lang_selected TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
     conn.commit()
     conn.close()
 
@@ -101,8 +120,15 @@ def get_content():
     return jsonify(content)
 
 def get_user_role(token):
-    if not token or not token.startswith('Bearer token-'): return None
-    username = token.split('token-')[1]
+    if not token:
+        return None
+    token = str(token).strip()
+    if token.startswith('Bearer '):
+        token = token[7:].strip()
+    if token.startswith('token-'):
+        username = token.split('token-')[1]
+    else:
+        username = token
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT role FROM users WHERE username = ?", (username,))
@@ -542,6 +568,132 @@ def export_subscribers():
         
     response = Response(output.getvalue(), mimetype='text/csv')
     response.headers['Content-Disposition'] = 'attachment; filename=subscribers.csv'
+    return response
+
+# ----------------------------------------------------
+# Membership Application Endpoints
+# ----------------------------------------------------
+
+@app.route('/api/membership', methods=['POST'])
+@app.route('/api/memberships', methods=['POST'])
+def submit_membership():
+    data = request.json or {}
+    full_name = data.get('full_name') or data.get('name')
+    matricola = data.get('matricola')
+    email = data.get('email')
+    phone = data.get('phone')
+    
+    if not full_name or not matricola or not email or not phone:
+        return jsonify({"success": False, "message": "Full name, matricola, email, and phone are required"}), 400
+        
+    course_level = data.get('course_level', '')
+    course = data.get('course', '')
+    skills = data.get('skills', '')
+    if isinstance(skills, list):
+        skills = ", ".join(skills)
+    teams = data.get('teams', '')
+    if isinstance(teams, list):
+        teams = ", ".join(teams)
+    languages = data.get('languages', '')
+    if isinstance(languages, list):
+        languages = ", ".join(languages)
+    volunteer_translator = data.get('volunteer_translator', '')
+    payment_method = data.get('payment_method', '')
+    comments = data.get('comments', '')
+    lang_selected = data.get('lang_selected', 'en')
+    
+    conn = get_db()
+    c = conn.cursor()
+    try:
+        c.execute('''
+            INSERT INTO membership_applications 
+            (full_name, matricola, email, phone, course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (full_name, str(matricola).strip(), email.strip(), phone.strip(), course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected))
+        conn.commit()
+    except Exception as e:
+        conn.close()
+        return jsonify({"success": False, "message": str(e)}), 500
+        
+    conn.close()
+    return jsonify({"success": True, "message": "Application submitted successfully"})
+
+@app.route('/api/memberships', methods=['GET'])
+def get_memberships():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+        
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM membership_applications ORDER BY created_at DESC")
+    applications = [dict(row) for row in c.fetchall()]
+    conn.close()
+    return jsonify({"success": True, "applications": applications})
+
+@app.route('/api/memberships', methods=['DELETE'])
+def delete_membership():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+        
+    data = request.json or {}
+    app_id = data.get('id')
+    if not app_id:
+        return jsonify({"success": False, "message": "Application ID required"}), 400
+        
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("DELETE FROM membership_applications WHERE id = ?", (app_id,))
+    deleted = c.rowcount > 0
+    conn.commit()
+    conn.close()
+    
+    if not deleted:
+        return jsonify({"success": False, "message": "Application not found"}), 404
+        
+    return jsonify({"success": True})
+
+@app.route('/api/memberships/export', methods=['GET'])
+def export_memberships():
+    token = request.args.get('token')
+    role = get_user_role(f"Bearer {token}" if token else None)
+    if not role:
+        auth_header = request.headers.get('Authorization')
+        role = get_user_role(auth_header)
+    if not role:
+        return "Unauthorized", 401
+        
+    import io
+    import csv
+    from flask import Response
+    
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT id, created_at, lang_selected, full_name, matricola, email, phone, course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments FROM membership_applications ORDER BY created_at DESC")
+    rows = c.fetchall()
+    conn.close()
+    
+    output = io.StringIO()
+    output.write('\ufeff')
+    writer = csv.writer(output)
+    writer.writerow([
+        'ID', 'Submission Date', 'Language', 'Full Name', 'Matricola', 'Email',
+        'Phone', 'Course Level', 'Course', 'Skills', 'Teams', 'Languages Spoken',
+        'Volunteer Translator', 'Payment Method', 'Comments'
+    ])
+    for r in rows:
+        writer.writerow([
+            r['id'], r['created_at'], r['lang_selected'], r['full_name'], r['matricola'],
+            r['email'], r['phone'], r['course_level'], r['course'], r['skills'],
+            r['teams'], r['languages'], r['volunteer_translator'], r['payment_method'],
+            r['comments']
+        ])
+        
+    response = Response(output.getvalue(), mimetype='text/csv; charset=utf-8')
+    response.headers['Content-Disposition'] = 'attachment; filename=membership_applications.csv'
     return response
 
 if __name__ == '__main__':

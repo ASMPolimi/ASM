@@ -195,6 +195,45 @@
             </form>
         </div>
 
+        <!-- Membership Applications Section -->
+        <div style="background: var(--color-bg-light); padding: 1.5rem; border-radius: var(--radius-sm); margin-top: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #e5e7eb;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.2rem; margin: 0; color: var(--color-primary);">Membership Applications</h3>
+                    <span id="memberships-count-badge" style="background: var(--color-primary); color: white; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">0</span>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                    <input type="text" id="membership-search-input" placeholder="Search applications..." style="padding: 0.4rem 0.75rem; font-size: 0.85rem; border: 1px solid #d1d5db; border-radius: 6px; width: 200px;" oninput="filterMemberships()">
+                    <button type="button" class="btn btn-primary" id="export-memberships-btn" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+                        <span>📥</span> Export to Excel (CSV)
+                    </button>
+                </div>
+            </div>
+            
+            <div id="memberships-container" style="max-height: 480px; overflow-y: auto; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                <!-- Membership applications will be populated here -->
+            </div>
+        </div>
+
+        <!-- Membership Application Details Modal -->
+        <div id="membership-details-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1050; display: flex; justify-content: center; align-items: center; padding: 1rem;">
+            <div style="background: white; border-radius: 12px; max-width: 650px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); border: 1px solid #e5e7eb; padding: 1.5rem; position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div>
+                        <h3 id="modal-app-name" style="margin: 0; font-size: 1.3rem; color: var(--color-primary);">Application Details</h3>
+                        <div id="modal-app-subtitle" style="font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem;"></div>
+                    </div>
+                    <button type="button" onclick="closeMembershipModal()" style="background: none; border: none; font-size: 1.5rem; line-height: 1; cursor: pointer; color: #9ca3af; padding: 0.25rem;">&times;</button>
+                </div>
+                <div id="modal-app-body" style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- Details will be injected here -->
+                </div>
+                <div style="border-top: 1px solid #e5e7eb; margin-top: 1.5rem; padding-top: 1rem; text-align: right;">
+                    <button type="button" class="btn btn-secondary" onclick="closeMembershipModal()" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Close</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Mailing List Subscribers Section -->
         <div style="background: var(--color-bg-light); padding: 1.5rem; border-radius: var(--radius-sm); margin-top: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #e5e7eb;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 1rem;">
@@ -278,6 +317,8 @@
             fetchBoardMembers();
             // Load subscribers
             fetchSubscribers();
+            // Load membership applications
+            fetchMemberships();
         } catch (err) {
             console.error("Failed to load content", err);
         }
@@ -585,6 +626,179 @@
     if (exportBtn) {
         exportBtn.addEventListener('click', () => {
             window.open(`/api/subscribers/export?token=${encodeURIComponent(token)}`);
+        });
+    }
+
+    // ----------------------------------------------------
+    // Membership Applications Logic
+    // ----------------------------------------------------
+    let allMemberships = [];
+
+    async function fetchMemberships() {
+        try {
+            const response = await fetch('/api/memberships', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.success) {
+                allMemberships = data.applications || [];
+                renderMemberships(allMemberships);
+            } else {
+                if (response.status === 401) {
+                    logout();
+                }
+            }
+        } catch (err) {
+            console.error("Failed to load memberships", err);
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function renderMemberships(list) {
+        const container = document.getElementById('memberships-container');
+        const countBadge = document.getElementById('memberships-count-badge');
+        if (countBadge) countBadge.textContent = list ? list.length : 0;
+        if (!container) return;
+        container.innerHTML = '';
+        if (!list || list.length === 0) {
+            container.innerHTML = '<p style="color: var(--color-text-light); font-size: 0.9rem; text-align: center; padding: 1.5rem; background: white; border-radius: 8px; border: 1px dashed #d1d5db;">No membership applications found.</p>';
+            return;
+        }
+        list.forEach(app => {
+            const div = document.createElement('div');
+            div.style.cssText = 'background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 0.5rem;';
+            
+            const teamsList = app.teams ? app.teams.split(',').map(t => t.trim()).filter(Boolean) : [];
+            const teamsBadges = teamsList.map(t => `<span style="background: #e0f2fe; color: #0369a1; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">${escapeHtml(t)}</span>`).join(' ');
+            
+            const payBadge = `<span style="background: #fef3c7; color: #92400e; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">💰 ${escapeHtml(app.payment_method || 'N/A')}</span>`;
+            const langBadge = `<span style="background: #f3f4f6; color: #374151; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">${app.lang_selected === 'it' ? '🇮🇹 IT' : '🇬🇧 EN'}</span>`;
+            const transBadge = app.volunteer_translator && (app.volunteer_translator.toLowerCase() === 'yes' || app.volunteer_translator.toLowerCase() === 'sì' || app.volunteer_translator.toLowerCase() === 'si')
+                ? `<span style="background: #dcfce7; color: #166534; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">🗣️ Translator</span>`
+                : '';
+
+            div.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="font-weight: 700; font-size: 1rem; color: var(--color-primary);">${escapeHtml(app.full_name)}</span>
+                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Matr: ${escapeHtml(app.matricola)}</span>
+                        ${langBadge}
+                        ${payBadge}
+                        ${transBadge}
+                    </div>
+                    <div style="display: flex; gap: 0.4rem; align-items: center;">
+                        <button type="button" class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem; border-color: var(--color-primary); color: var(--color-primary); background: none;" onclick="openMembershipModal(${app.id})">View Details</button>
+                        <button type="button" class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem; border-color: #dc3545; color: #dc3545; background: none;" onclick="deleteMembership(${app.id})">Remove</button>
+                    </div>
+                </div>
+                <div style="font-size: 0.85rem; color: #4b5563; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+                    <span>📧 <a href="mailto:${escapeHtml(app.email)}" style="color: var(--color-primary); text-decoration: underline;">${escapeHtml(app.email)}</a></span>
+                    <span>📞 <a href="tel:${escapeHtml(app.phone)}" style="color: var(--color-primary);">${escapeHtml(app.phone)}</a></span>
+                    <span>🎓 <strong>${escapeHtml(app.course_level || 'N/A')}</strong> &middot; ${escapeHtml(app.course || 'N/A')}</span>
+                    <span style="color: #9ca3af; margin-left: auto;">📅 ${escapeHtml(app.created_at || '')}</span>
+                </div>
+                ${teamsBadges ? `<div style="display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center; margin-top: 0.25rem;"><span style="font-size: 0.75rem; color: #6b7280; font-weight: 600;">Teams:</span> ${teamsBadges}</div>` : ''}
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function filterMemberships() {
+        const query = (document.getElementById('membership-search-input')?.value || '').toLowerCase().trim();
+        if (!query) {
+            renderMemberships(allMemberships);
+            return;
+        }
+        const filtered = allMemberships.filter(app => {
+            return (app.full_name && app.full_name.toLowerCase().includes(query)) ||
+                   (app.matricola && app.matricola.toLowerCase().includes(query)) ||
+                   (app.email && app.email.toLowerCase().includes(query)) ||
+                   (app.phone && app.phone.toLowerCase().includes(query)) ||
+                   (app.course && app.course.toLowerCase().includes(query)) ||
+                   (app.teams && app.teams.toLowerCase().includes(query)) ||
+                   (app.payment_method && app.payment_method.toLowerCase().includes(query));
+        });
+        renderMemberships(filtered);
+    }
+
+    window.openMembershipModal = function(id) {
+        const app = allMemberships.find(a => a.id === id);
+        if (!app) return;
+        const modal = document.getElementById('membership-details-modal');
+        document.getElementById('modal-app-name').textContent = app.full_name;
+        document.getElementById('modal-app-subtitle').textContent = `Matricola: ${app.matricola} • Submitted: ${app.created_at || 'N/A'} • Preferred Language: ${app.lang_selected === 'it' ? 'Italian' : 'English'}`;
+        
+        const body = document.getElementById('modal-app-body');
+        body.innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: #f9fafb; padding: 1rem; border-radius: 8px;">
+                <div><strong>Email:</strong> <br><a href="mailto:${escapeHtml(app.email)}" style="color: var(--color-primary);">${escapeHtml(app.email)}</a></div>
+                <div><strong>Phone:</strong> <br><a href="tel:${escapeHtml(app.phone)}" style="color: var(--color-primary);">${escapeHtml(app.phone)}</a></div>
+                <div><strong>Course Level:</strong> <br>${escapeHtml(app.course_level || 'N/A')}</div>
+                <div><strong>Course:</strong> <br>${escapeHtml(app.course || 'N/A')}</div>
+                <div><strong>Payment Method:</strong> <br>${escapeHtml(app.payment_method || 'N/A')}</div>
+                <div><strong>Volunteer Translator:</strong> <br>${escapeHtml(app.volunteer_translator || 'No')}</div>
+            </div>
+            <div>
+                <strong style="color: var(--color-primary); display: block; margin-bottom: 0.25rem;">Skills & Competences:</strong>
+                <p style="background: #f9fafb; padding: 0.75rem; border-radius: 6px; margin: 0; color: #374151;">${escapeHtml(app.skills || 'None specified')}</p>
+            </div>
+            <div>
+                <strong style="color: var(--color-primary); display: block; margin-bottom: 0.25rem;">Desired ASM Teams:</strong>
+                <p style="background: #f9fafb; padding: 0.75rem; border-radius: 6px; margin: 0; color: #374151;">${escapeHtml(app.teams || 'None specified')}</p>
+            </div>
+            <div>
+                <strong style="color: var(--color-primary); display: block; margin-bottom: 0.25rem;">Languages Fluent At:</strong>
+                <p style="background: #f9fafb; padding: 0.75rem; border-radius: 6px; margin: 0; color: #374151;">${escapeHtml(app.languages || 'None specified')}</p>
+            </div>
+            <div>
+                <strong style="color: var(--color-primary); display: block; margin-bottom: 0.25rem;">Comments, Ideas, Feedback:</strong>
+                <p style="background: #f9fafb; padding: 0.75rem; border-radius: 6px; margin: 0; white-space: pre-wrap; color: #374151;">${escapeHtml(app.comments || 'No comments provided')}</p>
+            </div>
+        `;
+        modal.classList.remove('hidden');
+    };
+
+    window.closeMembershipModal = function() {
+        const modal = document.getElementById('membership-details-modal');
+        if (modal) modal.classList.add('hidden');
+    };
+
+    window.deleteMembership = async function(id) {
+        if (!confirm("Are you sure you want to permanently delete this membership application?")) return;
+        try {
+            const response = await fetch('/api/memberships', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ id })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showMessage("Membership application deleted successfully", true);
+                fetchMemberships();
+            } else {
+                showMessage(data.message || "Error deleting application", false);
+            }
+        } catch (err) {
+            showMessage("Error connecting to server", false);
+        }
+    };
+
+    const exportMembershipsBtn = document.getElementById('export-memberships-btn');
+    if (exportMembershipsBtn) {
+        exportMembershipsBtn.addEventListener('click', () => {
+            window.open(`/api/memberships/export?token=${encodeURIComponent(token)}`);
         });
     }
 </script>
