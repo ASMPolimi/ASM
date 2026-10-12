@@ -405,6 +405,42 @@
         display: none !important;
     }
 
+    /* Contact Box in Success Screen */
+    .success-contact-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.75rem;
+        margin: 0 auto 2.25rem auto;
+        max-width: 580px;
+        text-align: left;
+    }
+
+    body.dark-mode .success-contact-box {
+        background: #111827;
+        border-color: #374151;
+    }
+
+    .success-contact-box .info-item {
+        margin-bottom: 1.15rem;
+        padding-bottom: 1.15rem;
+        border-bottom: 1px solid #edf2f7;
+    }
+
+    body.dark-mode .success-contact-box .info-item {
+        border-bottom-color: #374151;
+    }
+
+    .success-contact-box .info-item:last-of-type {
+        border-bottom: none;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0;
+    }
+
+    body.dark-mode .success-follow-section {
+        border-top-color: #374151 !important;
+    }
+
     /* Dark Mode Adjustments */
     body.dark-mode .lang-card,
     body.dark-mode .form-card,
@@ -995,9 +1031,111 @@
                 <div class="success-card">
                     <div class="success-icon-wrap">✓</div>
                     <h2 id="success-header" style="color: var(--color-primary); margin-bottom: 0.75rem;">Application Received!</h2>
-                    <p id="success-body" style="color: var(--color-text-light); max-width: 600px; margin: 0 auto 2rem auto; font-size: 1.05rem; line-height: 1.6;">
+                    <p id="success-body" style="color: var(--color-text-light); max-width: 600px; margin: 0 auto 1.75rem auto; font-size: 1.05rem; line-height: 1.6;">
                         Thank you for applying to join ASM POLIMI. We have securely saved your application and will be in touch shortly regarding your membership card and welcome package!
                     </p>
+
+                    <!-- Contact & Payment Details (from Index page) -->
+                    <div class="success-contact-box">
+                        <div style="text-align: center; margin-bottom: 1.25rem;">
+                            <h3 id="success-contact-title" style="color: var(--color-primary); margin-bottom: 0.35rem; font-size: 1.25rem;">Contact Information</h3>
+                            <p id="success-contact-desc" style="color: var(--color-text-light); font-size: 0.92rem; margin: 0;">Have questions? Want to complete your membership fee or stay connected? Find our details below:</p>
+                        </div>
+
+                        <div class="info-item">
+                            <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                                <span style="font-size: 1.1rem; line-height: 1;">✉️</span>
+                                <strong id="lbl-contact-email">Email:</strong>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                <span class="copyable-iban" data-copy="info@asmpolimi.it" title="Click to copy email">
+                                    info@asmpolimi.it
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        style="display: inline-block; vertical-align: middle;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </span>
+                                <a href="mailto:info@asmpolimi.it" class="email-send-link"
+                                    title="Send email to info@asmpolimi.it">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                    <span id="txt-send-email">Send Email</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                                <span style="font-size: 1.1rem; line-height: 1;">💳</span>
+                                <strong id="lbl-contact-paypal">PayPal Email:</strong>
+                            </div>
+                            <div>
+                                <span class="copyable-iban" data-copy="asm.polimi@gmail.com" title="Click to copy PayPal email">
+                                    asm.polimi@gmail.com
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        style="display: inline-block; vertical-align: middle;">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                                <span style="font-size: 1.1rem; line-height: 1;">🏦</span>
+                                <strong id="lbl-contact-bank">Bank Transfer:</strong>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                                <div style="font-size: 0.95rem;">
+                                    <strong id="lbl-contact-bank-name">Name:</strong>
+                                    <span class="copyable-iban is-iban" data-copy="Mariam abou el seod"
+                                        title="Click to copy Name">
+                                        Mariam abou el seod
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                            style="display: inline-block; vertical-align: middle;">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div style="font-size: 0.95rem;">
+                                    <strong>IBAN:</strong>
+                                    <span class="copyable-iban is-iban" data-copy="BE46967888148736"
+                                        title="Click to copy IBAN">
+                                        BE46 9678 8814 8736
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                            style="display: inline-block; vertical-align: middle;">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #edf2f7;" class="success-follow-section">
+                            <h4 id="success-follow-title" style="margin-bottom: 0.75rem; color: var(--color-primary); font-size: 1.05rem;">Follow Us</h4>
+                            <div class="social-links" style="margin-bottom: 0.75rem; justify-content: center;">
+                                <a href="https://www.instagram.com/asm.polimi/" target="_blank" rel="noopener" class="social-icon">Instagram</a>
+                                <a href="https://www.facebook.com/ASMPolimi/" target="_blank" rel="noopener" class="social-icon">Facebook</a>
+                                <a href="https://www.youtube.com/@asmpolimi7314" target="_blank" rel="noopener" class="social-icon">Youtube</a>
+                            </div>
+                            <div class="social-links" style="justify-content: center;">
+                                <a href="https://chat.whatsapp.com/LhULMwU6OkMCboPEpmfhy2" target="_blank" rel="noopener" class="social-icon" style="background-color: #25D366;">Whatsapp</a>
+                                <a href="https://t.me/asmpolimi" target="_blank" rel="noopener" class="social-icon" style="background-color: #0088cc;">Telegram</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                         <button type="button" class="btn btn-primary" onclick="resetFormToStart()">
                             <span id="btn-submit-another">Submit Another Application</span>
@@ -1131,6 +1269,14 @@
             btnSubmitting: "Submitting Application...",
             successHeader: "Application Received!",
             successBody: "Thank you for applying to join ASM POLIMI. We have securely received your application and will be in touch shortly regarding your membership and welcome package!",
+            successContactTitle: "Contact Information",
+            successContactDesc: "Have questions? Want to complete your membership fee or stay connected? Find our details below:",
+            lblContactEmail: "Email:",
+            lblSendEmail: "Send Email",
+            lblContactPaypal: "PayPal Email:",
+            lblContactBank: "Bank Transfer:",
+            lblContactBankName: "Name:",
+            successFollowTitle: "Follow Us",
             btnSubmitAnother: "Submit Another Application",
             btnReturnHome: "Return to Home",
             errMatricolaDigits: "Matriculation number must be exactly 6 digits (e.g., 849312).",
@@ -1247,6 +1393,14 @@
             btnSubmitting: "Invio richiesta in corso...",
             successHeader: "Richiesta Ricevuta!",
             successBody: "Grazie per esserti iscritto ad ASM POLIMI. Abbiamo registrato con successo la tua domanda e ti contatteremo a breve per completare l'iscrizione!",
+            successContactTitle: "Informazioni di Contatto",
+            successContactDesc: "Hai domande? Vuoi completare la quota di iscrizione o rimanere in contatto? Trovi i nostri dettagli qui sotto:",
+            lblContactEmail: "Email:",
+            lblSendEmail: "Invia Email",
+            lblContactPaypal: "Email PayPal:",
+            lblContactBank: "Bonifico Bancario:",
+            lblContactBankName: "Nome:",
+            successFollowTitle: "Seguici",
             btnSubmitAnother: "Invia un'altra richiesta",
             btnReturnHome: "Torna alla Home",
             errMatricolaDigits: "Il numero di matricola deve essere composto esattamente da 6 numeri (es. 849312).",
@@ -1401,6 +1555,14 @@
         document.getElementById('btn-submit-app').textContent = t.btnSubmit;
         document.getElementById('success-header').textContent = t.successHeader;
         document.getElementById('success-body').textContent = t.successBody;
+        if (document.getElementById('success-contact-title')) document.getElementById('success-contact-title').textContent = t.successContactTitle;
+        if (document.getElementById('success-contact-desc')) document.getElementById('success-contact-desc').textContent = t.successContactDesc;
+        if (document.getElementById('lbl-contact-email')) document.getElementById('lbl-contact-email').textContent = t.lblContactEmail;
+        if (document.getElementById('txt-send-email')) document.getElementById('txt-send-email').textContent = t.lblSendEmail;
+        if (document.getElementById('lbl-contact-paypal')) document.getElementById('lbl-contact-paypal').textContent = t.lblContactPaypal;
+        if (document.getElementById('lbl-contact-bank')) document.getElementById('lbl-contact-bank').textContent = t.lblContactBank;
+        if (document.getElementById('lbl-contact-bank-name')) document.getElementById('lbl-contact-bank-name').textContent = t.lblContactBankName;
+        if (document.getElementById('success-follow-title')) document.getElementById('success-follow-title').textContent = t.successFollowTitle;
         document.getElementById('btn-submit-another').textContent = t.btnSubmitAnother;
         document.getElementById('btn-return-home').textContent = t.btnReturnHome;
     }
@@ -1760,6 +1922,42 @@
                 }
             });
         }
+
+        // Click-to-copy handler for .copyable-iban badges (works reliably across all steps)
+        document.addEventListener('click', (e) => {
+            const badge = e.target.closest('.copyable-iban');
+            if (!badge) return;
+            e.preventDefault();
+            const textToCopy = badge.getAttribute('data-copy') || badge.innerText.trim();
+            if (!textToCopy) return;
+
+            const onCopied = () => {
+                badge.classList.add('copied');
+                setTimeout(() => badge.classList.remove('copied'), 2000);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(onCopied).catch(() => {
+                    const ta = document.createElement('textarea');
+                    ta.value = textToCopy;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); onCopied(); } catch(err){}
+                    document.body.removeChild(ta);
+                });
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = textToCopy;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); onCopied(); } catch(err){}
+                document.body.removeChild(ta);
+            }
+        });
     });
 </script>
 {% endblock %}
