@@ -80,6 +80,7 @@ template_names = [
     'register.html',
     'support.html',
     'admin.html',
+    'admin_members.html',
     'admin_jumuah.html',
     'admin_questions.html',
     'admin_users.html'
