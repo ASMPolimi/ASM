@@ -160,10 +160,6 @@
                 <textarea id="mission-text-input" rows="4" required></textarea>
             </div>
             <div class="form-group">
-                <label for="join-us-link">Membership "Join Us" Form Link (Change if needed only)</label>
-                <input type="text" id="join-us-link" placeholder="e.g. https://docs.google.com/forms/...">
-            </div>
-            <div class="form-group">
                 <label for="global-event-reg-link">Global Event Registration Form Link</label>
                 <input type="text" id="global-event-reg-link" placeholder="e.g. https://docs.google.com/forms/...">
             </div>
@@ -343,7 +339,6 @@
             const data = await response.json();
             document.getElementById('announcement').value = data.announcement || '';
             document.getElementById('mission-text-input').value = data.mission_text || '';
-            document.getElementById('join-us-link').value = data.join_us_link || '';
             document.getElementById('global-event-reg-link').value = data.global_event_reg_link || '';
             events = data.events || [];
             renderEvents();
@@ -408,7 +403,6 @@
         e.preventDefault();
         const announcement = document.getElementById('announcement').value;
         const mission_text = document.getElementById('mission-text-input').value;
-        const join_us_link = document.getElementById('join-us-link').value;
         const global_event_reg_link = document.getElementById('global-event-reg-link').value;
 
         try {
@@ -418,7 +412,7 @@
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ announcement, mission_text, join_us_link, global_event_reg_link, events })
+                body: JSON.stringify({ announcement, mission_text, global_event_reg_link, events })
             });
 
             const data = await response.json();

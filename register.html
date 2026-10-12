@@ -525,7 +525,7 @@
     <div class="container">
         <div class="reg-wrapper">
 
-            <!-- Stepper Progress Indicator (4 Steps) -->
+            <!-- Stepper Progress Indicator (5 Steps) -->
             <div class="stepper-container">
                 <div class="step-item active" id="stepper-step-1">
                     <span class="step-badge">1</span>
@@ -534,17 +534,22 @@
                 <div class="step-divider"></div>
                 <div class="step-item" id="stepper-step-2">
                     <span class="step-badge">2</span>
-                    <span id="step-label-2">Personal</span>
+                    <span id="step-label-2">Overview</span>
                 </div>
                 <div class="step-divider"></div>
                 <div class="step-item" id="stepper-step-3">
                     <span class="step-badge">3</span>
-                    <span id="step-label-3">Teams & Skills</span>
+                    <span id="step-label-3">Personal</span>
                 </div>
                 <div class="step-divider"></div>
                 <div class="step-item" id="stepper-step-4">
                     <span class="step-badge">4</span>
-                    <span id="step-label-4">Payment & Finish</span>
+                    <span id="step-label-4">Teams & Skills</span>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step-item" id="stepper-step-5">
+                    <span class="step-badge">5</span>
+                    <span id="step-label-5">Payment & Finish</span>
                 </div>
             </div>
 
@@ -559,22 +564,25 @@
             <form id="membership-form" novalidate>
 
                 <!-- ============================================== -->
-                <!-- STEP 1: LANGUAGE SELECTION & WELCOME OVERVIEW -->
+                <!-- STEP 1: LANGUAGE SELECTION                     -->
                 <!-- ============================================== -->
-                <div id="step-1-welcome">
-                    <div style="text-align: center; margin-bottom: 1.5rem;">
-                        <p style="color: var(--color-text-light); font-size: 1.05rem;">
+                <div id="step-1-language">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h3 style="color: var(--color-primary); font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;" id="prompt-select-lang">
+                            Select Your Language / Seleziona la Lingua
+                        </h3>
+                        <p style="color: var(--color-text-light); font-size: 1.05rem;" id="prompt-select-desc">
                             Please choose your language to begin / Seleziona la lingua per iniziare:
                         </p>
                     </div>
 
                     <!-- Language Choice Cards -->
-                    <div class="lang-grid">
+                    <div class="lang-grid" style="max-width: 680px; margin: 0 auto 1.5rem auto;">
                         <div class="lang-card" id="lang-card-en" onclick="chooseLanguage('en')" role="button" tabindex="0">
                             <div class="lang-flag">🇬🇧</div>
                             <h3 class="lang-title">English</h3>
                             <p class="lang-desc">Complete the membership application in English.</p>
-                            <button type="button" class="btn btn-primary w-100" style="margin-top: auto; padding: 0.65rem 1.25rem;">
+                            <button type="button" class="btn btn-primary w-100" style="margin-top: auto; padding: 0.75rem 1.25rem; font-size: 1rem;">
                                 Select English &rarr;
                             </button>
                         </div>
@@ -583,86 +591,17 @@
                             <div class="lang-flag">🇮🇹</div>
                             <h3 class="lang-title">Italiano</h3>
                             <p class="lang-desc">Compila la richiesta di iscrizione in lingua italiana.</p>
-                            <button type="button" class="btn btn-primary w-100" style="margin-top: auto; padding: 0.65rem 1.25rem;">
+                            <button type="button" class="btn btn-primary w-100" style="margin-top: auto; padding: 0.75rem 1.25rem; font-size: 1rem;">
                                 Seleziona Italiano &rarr;
                             </button>
-                        </div>
-                    </div>
-
-                    <!-- Membership Overview & Benefits Description Card -->
-                    <div class="membership-info-card" id="membership-intro-card"
-                        style="background: linear-gradient(135deg, rgba(18, 74, 97, 0.05), rgba(251, 191, 36, 0.09)); border: 1.5px solid rgba(18, 74, 97, 0.16); border-radius: 1rem; padding: 1.75rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
-                            <h3 id="intro-heading" style="margin: 0; font-size: 1.25rem; color: var(--color-primary); font-weight: 700; line-height: 1.35; flex: 1; min-width: 250px;">
-                                Become a Member of the Muslim Students Association at Politecnico di Milano (ASM)!
-                            </h3>
-                            <span id="intro-fee-badge" style="background: var(--color-secondary); color: var(--color-primary); font-weight: 700; font-size: 0.85rem; padding: 0.35rem 0.8rem; border-radius: 999px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
-                                🏷️ Membership Fee: €5
-                            </span>
-                        </div>
-                        <p id="intro-body-lead" style="color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
-                            ASM is a community-centered association for Muslim students at Politecnico di Milano. Our goal is to create a warm, cultural, and supportive environment, helping international students feel at home, even when they’re far from home.
-                        </p>
-
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
-                            <!-- Why Join Us -->
-                            <div class="intro-sub-card" style="background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                                <h4 id="intro-why-title" style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
-                                    <span>🌟</span> Why Join Us?
-                                </h4>
-                                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.55; color: #4b5563; display: flex; flex-direction: column; gap: 0.5rem;">
-                                    <li id="intro-why-1"><strong>• Exclusive Discounts:</strong> on events, such as Islamic conferences, cultural excursions, sports activities, and more.</li>
-                                    <li id="intro-why-2"><strong>• Priority Reservations:</strong> for you and your friends at popular events, so you never miss a spot.</li>
-                                    <li id="intro-why-3"><strong>• Continuous Support Network:</strong> that offers a sense of community and helps you adjust to life abroad.</li>
-                                </ul>
-                            </div>
-
-                            <!-- Your Impact -->
-                            <div class="intro-sub-card" style="background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                                <h4 id="intro-impact-title" style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
-                                    <span>🌱</span> Your Impact
-                                </h4>
-                                <p id="intro-impact-lead" style="font-size: 0.9rem; line-height: 1.45; color: #4b5563; margin-bottom: 0.5rem;">
-                                    With your membership, we can continue to organize meaningful activities that enrich our campus community, including:
-                                </p>
-                                <ul style="list-style: none; padding: 0; margin: 0 0 0.65rem 0; font-size: 0.88rem; line-height: 1.45; color: #4b5563; display: flex; flex-direction: column; gap: 0.25rem;">
-                                    <li id="intro-impact-1">• Ramadan Iftars</li>
-                                    <li id="intro-impact-2">• Mentorship Programs</li>
-                                    <li id="intro-impact-3">• Workshops and Guest Lectures</li>
-                                </ul>
-                                <p id="intro-impact-fee" style="font-size: 0.88rem; color: var(--color-primary); font-weight: 600; margin: 0;">
-                                    Your €5 membership fee helps us keep these events accessible and affordable for all.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Contact & Social Bar -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(18, 74, 97, 0.12); padding-top: 0.9rem; flex-wrap: wrap; gap: 0.75rem; font-size: 0.88rem;">
-                            <span id="intro-contact-label" style="color: var(--color-text-light); font-weight: 500;">
-                                For any further information, you can contact us on our social media pages or via ASM email:
-                            </span>
-                            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
-                                <a href="https://www.facebook.com/ASMPolimi/" target="_blank" rel="noopener noreferrer"
-                                    style="display: inline-flex; align-items: center; gap: 0.35rem; background: #1877f2; color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
-                                    Facebook
-                                </a>
-                                <a href="https://www.instagram.com/asm.polimi/" target="_blank" rel="noopener noreferrer"
-                                    style="display: inline-flex; align-items: center; gap: 0.35rem; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
-                                    Instagram
-                                </a>
-                                <a href="mailto:info@asmpolimi.it"
-                                    style="display: inline-flex; align-items: center; gap: 0.35rem; background: var(--color-primary); color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
-                                    ✉️ info@asmpolimi.it
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- ============================================== -->
-                <!-- STEP 2: PERSONAL & ACADEMIC DETAILS -->
+                <!-- STEP 2: MEMBERSHIP OVERVIEW & DESCRIPTION     -->
                 <!-- ============================================== -->
-                <div id="step-2-personal" class="hidden">
+                <div id="step-2-overview" class="hidden">
                     <div class="form-card">
                         <!-- Header Bar -->
                         <div class="form-header-bar">
@@ -670,13 +609,110 @@
                                 <span id="txt-nav-step1">← Change Language</span>
                             </button>
                             <div class="current-lang-pill">
-                                <span id="current-lang-flag">🇬🇧</span>
-                                <span id="current-lang-name">ENGLISH</span>
+                                <span id="current-lang-flag-2">🇬🇧</span>
+                                <span id="current-lang-name-2">ENGLISH</span>
                             </div>
                         </div>
 
-                        <!-- Step 2 Error Banner -->
-                        <div id="step-2-error-banner" class="alert-banner"></div>
+                        <!-- Membership Overview & Benefits Description Card -->
+                        <div class="membership-info-card" id="membership-intro-card"
+                            style="background: linear-gradient(135deg, rgba(18, 74, 97, 0.05), rgba(251, 191, 36, 0.09)); border: 1.5px solid rgba(18, 74, 97, 0.16); border-radius: 1rem; padding: 1.75rem; margin-bottom: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+                                <h3 id="intro-heading" style="margin: 0; font-size: 1.25rem; color: var(--color-primary); font-weight: 700; line-height: 1.35; flex: 1; min-width: 250px;">
+                                    Become a Member of the Muslim Students Association at Politecnico di Milano (ASM)!
+                                </h3>
+                                <span id="intro-fee-badge" style="background: var(--color-secondary); color: var(--color-primary); font-weight: 700; font-size: 0.85rem; padding: 0.35rem 0.8rem; border-radius: 999px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+                                    🏷️ Membership Fee: €5
+                                </span>
+                            </div>
+                            <p id="intro-body-lead" style="color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
+                                ASM is a community-centered association for Muslim students at Politecnico di Milano. Our goal is to create a warm, cultural, and supportive environment, helping international students feel at home, even when they’re far from home.
+                            </p>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
+                                <!-- Why Join Us -->
+                                <div class="intro-sub-card" style="background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                    <h4 id="intro-why-title" style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+                                        <span>🌟</span> Why Join Us?
+                                    </h4>
+                                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.55; color: #4b5563; display: flex; flex-direction: column; gap: 0.5rem;">
+                                        <li id="intro-why-1"><strong>• Exclusive Discounts:</strong> on events, such as Islamic conferences, cultural excursions, sports activities, and more.</li>
+                                        <li id="intro-why-2"><strong>• Priority Reservations:</strong> for you and your friends at popular events, so you never miss a spot.</li>
+                                        <li id="intro-why-3"><strong>• Continuous Support Network:</strong> that offers a sense of community and helps you adjust to life abroad.</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Your Impact -->
+                                <div class="intro-sub-card" style="background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                    <h4 id="intro-impact-title" style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+                                        <span>🌱</span> Your Impact
+                                    </h4>
+                                    <p id="intro-impact-lead" style="font-size: 0.9rem; line-height: 1.45; color: #4b5563; margin-bottom: 0.5rem;">
+                                        With your membership, we can continue to organize meaningful activities that enrich our campus community, including:
+                                    </p>
+                                    <ul style="list-style: none; padding: 0; margin: 0 0 0.65rem 0; font-size: 0.88rem; line-height: 1.45; color: #4b5563; display: flex; flex-direction: column; gap: 0.25rem;">
+                                        <li id="intro-impact-1">• Ramadan Iftars</li>
+                                        <li id="intro-impact-2">• Mentorship Programs</li>
+                                        <li id="intro-impact-3">• Workshops and Guest Lectures</li>
+                                    </ul>
+                                    <p id="intro-impact-fee" style="font-size: 0.88rem; color: var(--color-primary); font-weight: 600; margin: 0;">
+                                        Your €5 membership fee helps us keep these events accessible and affordable for all.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Contact & Social Bar -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(18, 74, 97, 0.12); padding-top: 0.9rem; flex-wrap: wrap; gap: 0.75rem; font-size: 0.88rem;">
+                                <span id="intro-contact-label" style="color: var(--color-text-light); font-weight: 500;">
+                                    For any further information, you can contact us on our social media pages or via ASM email:
+                                </span>
+                                <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
+                                    <a href="https://www.facebook.com/ASMPolimi/" target="_blank" rel="noopener noreferrer"
+                                        style="display: inline-flex; align-items: center; gap: 0.35rem; background: #1877f2; color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
+                                        Facebook
+                                    </a>
+                                    <a href="https://www.instagram.com/asm.polimi/" target="_blank" rel="noopener noreferrer"
+                                        style="display: inline-flex; align-items: center; gap: 0.35rem; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
+                                        Instagram
+                                    </a>
+                                    <a href="mailto:info@asmpolimi.it"
+                                        style="display: inline-flex; align-items: center; gap: 0.35rem; background: var(--color-primary); color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
+                                        ✉️ info@asmpolimi.it
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions Bar -->
+                        <div class="step-actions-bar">
+                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(1)">
+                                <span id="btn-back-step1">← Change Language</span>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-step-next" id="btn-start-app" onclick="goToStep(3)" style="padding: 0.85rem 2rem; font-size: 1.05rem;">
+                                <span id="btn-start-app-text">Continue to Application &rarr;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- STEP 3: PERSONAL & ACADEMIC DETAILS            -->
+                <!-- ============================================== -->
+                <div id="step-3-personal" class="hidden">
+                    <div class="form-card">
+                        <!-- Header Bar -->
+                        <div class="form-header-bar">
+                            <button type="button" class="btn-step-nav" onclick="goToStep(2)">
+                                <span id="txt-nav-step2">← Overview</span>
+                            </button>
+                            <div class="current-lang-pill">
+                                <span id="current-lang-flag-3">🇬🇧</span>
+                                <span id="current-lang-name-3">ENGLISH</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 Error Banner -->
+                        <div id="step-3-error-banner" class="alert-banner"></div>
 
                         <div class="form-section-title">
                             <span>👤</span> <span id="sec-personal-title">Personal & Academic Details</span>
@@ -740,29 +776,29 @@
 
                         <!-- Actions Bar -->
                         <div class="step-actions-bar">
-                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(1)">
-                                <span id="btn-back-step1">← Language</span>
+                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(2)">
+                                <span id="btn-back-step2">← Overview</span>
                             </button>
-                            <button type="button" class="btn btn-primary btn-step-next" onclick="proceedToStep3()">
-                                <span id="btn-next-step3">Next: Teams & Skills →</span>
+                            <button type="button" class="btn btn-primary btn-step-next" onclick="proceedToStep4()">
+                                <span id="btn-next-step4">Next: Teams & Skills →</span>
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ============================================== -->
-                <!-- STEP 3: ASM TEAMS, SKILLS & LANGUAGES -->
+                <!-- STEP 4: ASM TEAMS, SKILLS & LANGUAGES          -->
                 <!-- ============================================== -->
-                <div id="step-3-teams" class="hidden">
+                <div id="step-4-teams" class="hidden">
                     <div class="form-card">
                         <!-- Header Bar -->
                         <div class="form-header-bar">
-                            <button type="button" class="btn-step-nav" onclick="goToStep(2)">
-                                <span id="txt-nav-step2">← Personal Details</span>
+                            <button type="button" class="btn-step-nav" onclick="goToStep(3)">
+                                <span id="txt-nav-step3">← Personal Details</span>
                             </button>
                             <div class="current-lang-pill">
-                                <span id="current-lang-flag-3">🇬🇧</span>
-                                <span id="current-lang-name-3">ENGLISH</span>
+                                <span id="current-lang-flag-4">🇬🇧</span>
+                                <span id="current-lang-name-4">ENGLISH</span>
                             </div>
                         </div>
 
@@ -932,34 +968,34 @@
 
                         <!-- Actions Bar -->
                         <div class="step-actions-bar">
-                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(2)">
-                                <span id="btn-back-step2">← Personal Info</span>
+                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(3)">
+                                <span id="btn-back-step3">← Personal Details</span>
                             </button>
-                            <button type="button" class="btn btn-primary btn-step-next" onclick="goToStep(4)">
-                                <span id="btn-next-step4">Next: Payment & Consent →</span>
+                            <button type="button" class="btn btn-primary btn-step-next" onclick="goToStep(5)">
+                                <span id="btn-next-step5">Next: Payment & Consent →</span>
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ============================================== -->
-                <!-- STEP 4: PAYMENT METHOD, FEEDBACK & CONSENT -->
+                <!-- STEP 5: PAYMENT METHOD, FEEDBACK & CONSENT    -->
                 <!-- ============================================== -->
-                <div id="step-4-payment" class="hidden">
+                <div id="step-5-payment" class="hidden">
                     <div class="form-card">
                         <!-- Header Bar -->
                         <div class="form-header-bar">
-                            <button type="button" class="btn-step-nav" onclick="goToStep(3)">
-                                <span id="txt-nav-step3">← Teams & Skills</span>
+                            <button type="button" class="btn-step-nav" onclick="goToStep(4)">
+                                <span id="txt-nav-step4">← Teams & Skills</span>
                             </button>
                             <div class="current-lang-pill">
-                                <span id="current-lang-flag-4">🇬🇧</span>
-                                <span id="current-lang-name-4">ENGLISH</span>
+                                <span id="current-lang-flag-5">🇬🇧</span>
+                                <span id="current-lang-name-5">ENGLISH</span>
                             </div>
                         </div>
 
-                        <!-- Step 4 Error Banner -->
-                        <div id="step-4-error-banner" class="alert-banner"></div>
+                        <!-- Step 5 Error Banner -->
+                        <div id="step-5-error-banner" class="alert-banner"></div>
 
                         <div class="form-section-title">
                             <span>💳</span> <span id="sec-payment-title">Membership Fee & Feedback</span>
@@ -1011,8 +1047,8 @@
 
                         <!-- Actions Bar -->
                         <div class="step-actions-bar">
-                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(3)">
-                                <span id="btn-back-step3">← Teams & Skills</span>
+                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(4)">
+                                <span id="btn-back-step4">← Teams & Skills</span>
                             </button>
                             <button type="submit" class="btn btn-primary btn-step-next" id="btn-submit-app" style="padding: 0.85rem 2rem; font-size: 1.05rem;">
                                 Submit Application
@@ -1075,17 +1111,21 @@
             title: "New Member Application",
             subtitle: "Join the POLIMI Muslim Student Association and become part of our active community.",
             step1: "Language",
-            step2: "Personal",
-            step3: "Teams & Skills",
-            step4: "Payment & Finish",
+            step2: "Overview",
+            step3: "Personal",
+            step4: "Teams & Skills",
+            step5: "Payment & Finish",
+            btnStartAppText: "Continue to Application →",
             btnNavStep1: "← Change Language",
-            btnNavStep2: "← Personal Details",
-            btnNavStep3: "← Teams & Skills",
-            btnBackStep1: "← Language",
-            btnBackStep2: "← Personal Info",
-            btnBackStep3: "← Teams & Skills",
-            btnNextStep3: "Next: Teams & Skills →",
-            btnNextStep4: "Next: Payment & Consent →",
+            btnNavStep2: "← Overview",
+            btnNavStep3: "← Personal Details",
+            btnNavStep4: "← Teams & Skills",
+            btnBackStep1: "← Change Language",
+            btnBackStep2: "← Overview",
+            btnBackStep3: "← Personal Details",
+            btnBackStep4: "← Teams & Skills",
+            btnNextStep4: "Next: Teams & Skills →",
+            btnNextStep5: "Next: Payment & Consent →",
             langName: "ENGLISH",
             langFlag: "🇬🇧",
             introHeading: "Become a Member of the Muslim Students Association at Politecnico di Milano (ASM)!",
@@ -1187,17 +1227,21 @@
             title: "Modulo di Iscrizione all'Associazione",
             subtitle: "Unisciti all'Associazione Studenti Musulmani del POLIMI e partecipa attivamente alla comunità.",
             step1: "Lingua",
-            step2: "Dati Personali",
-            step3: "Team e Competenze",
-            step4: "Pagamento e Conferma",
+            step2: "Presentazione",
+            step3: "Dati Personali",
+            step4: "Team e Competenze",
+            step5: "Pagamento e Conferma",
+            btnStartAppText: "Continua con la Domanda →",
             btnNavStep1: "← Cambia Lingua",
-            btnNavStep2: "← Dati Personali",
-            btnNavStep3: "← Team e Competenze",
-            btnBackStep1: "← Lingua",
-            btnBackStep2: "← Dati Personali",
-            btnBackStep3: "← Team e Competenze",
-            btnNextStep3: "Avanti: Team e Competenze →",
-            btnNextStep4: "Avanti: Pagamento e Consenso →",
+            btnNavStep2: "← Presentazione",
+            btnNavStep3: "← Dati Personali",
+            btnNavStep4: "← Team e Competenze",
+            btnBackStep1: "← Cambia Lingua",
+            btnBackStep2: "← Presentazione",
+            btnBackStep3: "← Dati Personali",
+            btnBackStep4: "← Team e Competenze",
+            btnNextStep4: "Avanti: Team e Competenze →",
+            btnNextStep5: "Avanti: Pagamento e Consenso →",
             langName: "ITALIANO",
             langFlag: "🇮🇹",
             introHeading: "Diventa Socio dell'Associazione Studenti Musulmani del Politecnico di Milano (ASM)!",
@@ -1315,13 +1359,14 @@
         document.getElementById('step-label-2').textContent = t.step2;
         document.getElementById('step-label-3').textContent = t.step3;
         document.getElementById('step-label-4').textContent = t.step4;
+        document.getElementById('step-label-5').textContent = t.step5;
 
         // Language badges & nav buttons
-        ['current-lang-flag', 'current-lang-flag-3', 'current-lang-flag-4'].forEach(id => {
+        ['current-lang-flag-2', 'current-lang-flag-3', 'current-lang-flag-4', 'current-lang-flag-5'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.textContent = t.langFlag;
         });
-        ['current-lang-name', 'current-lang-name-3', 'current-lang-name-4'].forEach(id => {
+        ['current-lang-name-2', 'current-lang-name-3', 'current-lang-name-4', 'current-lang-name-5'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.textContent = t.langName;
         });
@@ -1329,13 +1374,16 @@
         if (document.getElementById('txt-nav-step1')) document.getElementById('txt-nav-step1').textContent = t.btnNavStep1;
         if (document.getElementById('txt-nav-step2')) document.getElementById('txt-nav-step2').textContent = t.btnNavStep2;
         if (document.getElementById('txt-nav-step3')) document.getElementById('txt-nav-step3').textContent = t.btnNavStep3;
+        if (document.getElementById('txt-nav-step4')) document.getElementById('txt-nav-step4').textContent = t.btnNavStep4;
 
         if (document.getElementById('btn-back-step1')) document.getElementById('btn-back-step1').textContent = t.btnBackStep1;
         if (document.getElementById('btn-back-step2')) document.getElementById('btn-back-step2').textContent = t.btnBackStep2;
         if (document.getElementById('btn-back-step3')) document.getElementById('btn-back-step3').textContent = t.btnBackStep3;
+        if (document.getElementById('btn-back-step4')) document.getElementById('btn-back-step4').textContent = t.btnBackStep4;
 
-        if (document.getElementById('btn-next-step3')) document.getElementById('btn-next-step3').textContent = t.btnNextStep3;
+        if (document.getElementById('btn-start-app-text')) document.getElementById('btn-start-app-text').textContent = t.btnStartAppText;
         if (document.getElementById('btn-next-step4')) document.getElementById('btn-next-step4').textContent = t.btnNextStep4;
+        if (document.getElementById('btn-next-step5')) document.getElementById('btn-next-step5').textContent = t.btnNextStep5;
 
         // Intro Card
         document.getElementById('intro-heading').textContent = t.introHeading;
@@ -1445,18 +1493,19 @@
     }
 
     function goToStep(step) {
-        const step1 = document.getElementById('step-1-welcome');
-        const step2 = document.getElementById('step-2-personal');
-        const step3 = document.getElementById('step-3-teams');
-        const step4 = document.getElementById('step-4-payment');
+        const step1 = document.getElementById('step-1-language');
+        const step2 = document.getElementById('step-2-overview');
+        const step3 = document.getElementById('step-3-personal');
+        const step4 = document.getElementById('step-4-teams');
+        const step5 = document.getElementById('step-5-payment');
         const stepSuccess = document.getElementById('page-success');
 
-        [step1, step2, step3, step4, stepSuccess].forEach(el => {
+        [step1, step2, step3, step4, step5, stepSuccess].forEach(el => {
             if (el) el.classList.add('hidden');
         });
 
         // Update stepper indicators
-        for (let i = 1; i <= 4; i++) {
+        for (let i = 1; i <= 5; i++) {
             const item = document.getElementById(`stepper-step-${i}`);
             if (!item) continue;
             if (i < step) {
@@ -1472,9 +1521,10 @@
         if (step === 2) step2.classList.remove('hidden');
         if (step === 3) step3.classList.remove('hidden');
         if (step === 4) step4.classList.remove('hidden');
-        if (step === 5) {
+        if (step === 5) step5.classList.remove('hidden');
+        if (step === 6) {
             stepSuccess.classList.remove('hidden');
-            for (let i = 1; i <= 4; i++) {
+            for (let i = 1; i <= 5; i++) {
                 const item = document.getElementById(`stepper-step-${i}`);
                 if (item) item.className = 'step-item completed';
             }
@@ -1483,8 +1533,8 @@
         window.scrollTo({ top: 120, behavior: 'smooth' });
     }
 
-    function proceedToStep3() {
-        const errBanner = document.getElementById('step-2-error-banner');
+    function proceedToStep4() {
+        const errBanner = document.getElementById('step-3-error-banner');
         errBanner.classList.remove('alert-error');
         errBanner.textContent = '';
         const t = i18n[currentLang] || i18n.en;
@@ -1510,7 +1560,7 @@
             return;
         }
 
-        goToStep(3);
+        goToStep(4);
     }
 
     function updateChoiceStyle(labelEl) {
@@ -1602,22 +1652,22 @@
         const payBox = document.getElementById('payment-info-box');
         if (payBox) payBox.style.display = 'none';
         
-        const err2 = document.getElementById('step-2-error-banner');
-        if (err2) err2.classList.remove('alert-error');
-        const err4 = document.getElementById('step-4-error-banner');
-        if (err4) err4.classList.remove('alert-error');
+        const err3 = document.getElementById('step-3-error-banner');
+        if (err3) err3.classList.remove('alert-error');
+        const err5 = document.getElementById('step-5-error-banner');
+        if (err5) err5.classList.remove('alert-error');
         
         goToStep(1);
     }
 
     // ----------------------------------------------------
-    // Form Submission (Step 4)
+    // Form Submission (Step 5)
     // ----------------------------------------------------
     const formEl = document.getElementById('membership-form');
 
     formEl.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const errorBanner = document.getElementById('step-4-error-banner');
+        const errorBanner = document.getElementById('step-5-error-banner');
         errorBanner.classList.remove('alert-error');
         errorBanner.textContent = '';
 
@@ -1693,11 +1743,21 @@
         submitBtn.disabled = true;
         submitBtn.textContent = t.btnSubmitting;
 
-        const endpoints = [
+        const isStatic = window.location.hostname.includes('github.io') || 
+                         window.location.protocol === 'file:' || 
+                         window.location.hostname === 'asmpolimi.it' || 
+                         window.location.hostname === 'www.asmpolimi.it';
+
+        const endpoints = isStatic ? [
+            'https://admin.asmpolimi.it/api/membership',
+            'https://asmpolimi.onrender.com/api/membership',
+            '/api/membership',
+            '/api/memberships'
+        ] : [
             '/api/membership',
             '/api/memberships',
-            'https://asm-backend.onrender.com/api/membership',
-            'https://asm-backend.onrender.com/api/memberships'
+            'https://admin.asmpolimi.it/api/membership',
+            'https://asmpolimi.onrender.com/api/membership'
         ];
 
         let success = false;
@@ -1716,6 +1776,9 @@
                     break;
                 } else {
                     errorMsg = data.message || 'Error processing application.';
+                    if (res.status >= 400 && res.status < 500) {
+                        break;
+                    }
                 }
             } catch (err) {
                 console.warn(`Endpoint ${ep} failed:`, err);
@@ -1726,7 +1789,7 @@
         submitBtn.textContent = t.btnSubmit;
 
         if (success) {
-            goToStep(5);
+            goToStep(6);
         } else {
             errorBanner.textContent = errorMsg || 'Unable to submit application at this time. Please check your connection or contact us at info@asmpolimi.it.';
             errorBanner.classList.add('alert-error');
