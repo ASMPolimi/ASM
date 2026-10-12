@@ -543,32 +543,82 @@ def delete_subscriber():
         
     return jsonify({"success": True})
 
+def generate_excel_response(headers, data_rows, filename, sheet_title="Sheet1"):
+    import io
+    import openpyxl
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from flask import Response
+    
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = sheet_title
+    
+    # ASM Brand Primary header fill and bold font
+    header_fill = PatternFill(start_color="124A61", end_color="124A61", fill_type="solid")
+    header_font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
+    header_alignment = Alignment(horizontal="center", vertical="center")
+    
+    ws.append(headers)
+    for col_num in range(1, len(headers) + 1):
+        cell = ws.cell(row=1, column=col_num)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = header_alignment
+        
+    thin_border = Border(
+        left=Side(style='thin', color='E5E7EB'),
+        right=Side(style='thin', color='E5E7EB'),
+        top=Side(style='thin', color='E5E7EB'),
+        bottom=Side(style='thin', color='E5E7EB')
+    )
+    
+    for row_idx, row_data in enumerate(data_rows, start=2):
+        ws.append(list(row_data))
+        for col_idx in range(1, len(row_data) + 1):
+            cell = ws.cell(row=row_idx, column=col_idx)
+            cell.border = thin_border
+            if row_idx % 2 == 1:
+                cell.fill = PatternFill(start_color="F8FAFC", end_color="F8FAFC", fill_type="solid")
+            cell.alignment = Alignment(vertical="center")
+
+    for col in ws.columns:
+        max_len = 0
+        col_letter = openpyxl.utils.get_column_letter(col[0].column)
+        for cell in col:
+            val = str(cell.value or '')
+            max_len = max(max_len, len(val))
+        ws.column_dimensions[col_letter].width = max(12, min(max_len + 4, 60))
+        
+    bio = io.BytesIO()
+    wb.save(bio)
+    bio.seek(0)
+    
+    response = Response(
+        bio.getvalue(),
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response.headers['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response
+
 @app.route('/api/subscribers/export', methods=['GET'])
 def export_subscribers():
     token = request.args.get('token')
     role = get_user_role(f"Bearer {token}" if token else None)
     if not role:
+        auth_header = request.headers.get('Authorization')
+        role = get_user_role(auth_header)
+    if not role:
         return "Unauthorized", 401
         
-    import io
-    import csv
-    from flask import Response
-    
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT name, email, year, created_at FROM subscribers ORDER BY created_at DESC")
     rows = c.fetchall()
     conn.close()
     
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(['Name', 'Email', 'Graduation Year', 'Subscribed At'])
-    for r in rows:
-        writer.writerow([r['name'], r['email'], r['year'], r['created_at']])
-        
-    response = Response(output.getvalue(), mimetype='text/csv')
-    response.headers['Content-Disposition'] = 'attachment; filename=subscribers.csv'
-    return response
+    headers = ['Name', 'Email', 'Graduation Year', 'Subscribed At']
+    data_rows = [[r['name'], r['email'], r['year'] or '', r['created_at'] or ''] for r in rows]
+    return generate_excel_response(headers, data_rows, "subscribers.xlsx", "Subscribers")
 
 # ----------------------------------------------------
 # Membership Application Endpoints
@@ -666,35 +716,28 @@ def export_memberships():
     if not role:
         return "Unauthorized", 401
         
-    import io
-    import csv
-    from flask import Response
-    
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT id, created_at, lang_selected, full_name, matricola, email, phone, course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments FROM membership_applications ORDER BY created_at DESC")
     rows = c.fetchall()
     conn.close()
     
-    output = io.StringIO()
-    output.write('\ufeff')
-    writer = csv.writer(output)
-    writer.writerow([
+    headers = [
         'ID', 'Submission Date', 'Language', 'Full Name', 'Matricola', 'Email',
         'Phone', 'Course Level', 'Course', 'Skills', 'Teams', 'Languages Spoken',
         'Volunteer Translator', 'Payment Method', 'Comments'
-    ])
-    for r in rows:
-        writer.writerow([
-            r['id'], r['created_at'], r['lang_selected'], r['full_name'], r['matricola'],
-            r['email'], r['phone'], r['course_level'], r['course'], r['skills'],
-            r['teams'], r['languages'], r['volunteer_translator'], r['payment_method'],
-            r['comments']
-        ])
-        
-    response = Response(output.getvalue(), mimetype='text/csv; charset=utf-8')
-    response.headers['Content-Disposition'] = 'attachment; filename=membership_applications.csv'
-    return response
+    ]
+    data_rows = [
+        [
+            r['id'], r['created_at'] or '', r['lang_selected'] or '', r['full_name'] or '',
+            str(r['matricola'] or ''), r['email'] or '', r['phone'] or '',
+            r['course_level'] or '', r['course'] or '', r['skills'] or '',
+            r['teams'] or '', r['languages'] or '', r['volunteer_translator'] or '',
+            r['payment_method'] or '', r['comments'] or ''
+        ]
+        for r in rows
+    ]
+    return generate_excel_response(headers, data_rows, "membership_applications.xlsx", "Membership Applications")
 
 if __name__ == '__main__':
     print("Starting server on http://localhost:8080")

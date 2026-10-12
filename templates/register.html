@@ -6,7 +6,7 @@
 <style>
     /* Registration Wizard Styles */
     .reg-wrapper {
-        max-width: 840px;
+        max-width: 860px;
         margin: 0 auto;
     }
 
@@ -15,16 +15,17 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 2.5rem;
-        gap: 1rem;
+        margin-bottom: 2.25rem;
+        gap: 0.75rem;
+        flex-wrap: wrap;
     }
 
     .step-item {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
+        gap: 0.5rem;
         font-family: var(--font-heading);
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         font-weight: 600;
         color: #9ca3af;
         transition: all var(--transition-fast);
@@ -46,6 +47,7 @@
         font-size: 0.85rem;
         font-weight: 700;
         transition: all var(--transition-fast);
+        flex-shrink: 0;
     }
 
     .step-item.active .step-badge {
@@ -61,25 +63,37 @@
 
     .step-divider {
         flex-grow: 0;
-        width: 40px;
+        width: 32px;
         height: 2px;
         background-color: #e5e7eb;
         border-radius: 2px;
     }
 
-    /* Language Selection Page 1 */
+    @media (max-width: 680px) {
+        .stepper-container {
+            gap: 0.4rem;
+        }
+        .step-item span:not(.step-badge) {
+            display: none;
+        }
+        .step-divider {
+            width: 18px;
+        }
+    }
+
+    /* Language Selection Cards */
     .lang-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1.5rem;
-        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
 
     .lang-card {
         background: white;
         border: 2px solid #e5e7eb;
         border-radius: 1rem;
-        padding: 2.5rem 2rem;
+        padding: 2.2rem 1.75rem;
         text-align: center;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -97,9 +111,15 @@
         box-shadow: 0 15px 30px -5px rgba(18, 74, 97, 0.15);
     }
 
+    .lang-card.selected-lang {
+        border-color: var(--color-primary);
+        background: rgba(18, 74, 97, 0.02);
+        box-shadow: 0 0 0 3px rgba(18, 74, 97, 0.12);
+    }
+
     .lang-flag {
         font-size: 3.5rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0.85rem;
         line-height: 1;
         transition: transform 0.3s ease;
     }
@@ -109,56 +129,63 @@
     }
 
     .lang-title {
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-size: 1.4rem;
         color: var(--color-primary);
         margin-bottom: 0.5rem;
+        font-weight: 700;
     }
 
     .lang-desc {
         color: var(--color-text-light);
         font-size: 0.95rem;
         margin-bottom: 1.5rem;
+        line-height: 1.5;
     }
 
     /* Form Container & Sections */
     .form-card {
         background: white;
         border-radius: 1.25rem;
-        padding: 2.5rem;
-        box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+        padding: 2.5rem 2.25rem;
+    }
+
+    @media (max-width: 600px) {
+        .form-card {
+            padding: 1.5rem 1.25rem;
+        }
     }
 
     .form-header-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #e5e7eb;
         padding-bottom: 1.25rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.75rem;
+        border-bottom: 1px solid #e5e7eb;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 0.75rem;
     }
 
-    .btn-back-lang {
+    .btn-step-nav {
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
         background: #f3f4f6;
-        color: var(--color-primary);
-        border: 1px solid #e5e7eb;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
+        color: #4b5563;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 0.45rem 0.9rem;
+        font-size: 0.88rem;
         font-weight: 600;
-        font-size: 0.85rem;
         cursor: pointer;
         transition: all var(--transition-fast);
     }
 
-    .btn-back-lang:hover {
+    .btn-step-nav:hover {
         background: #e5e7eb;
-        border-color: #d1d5db;
+        color: var(--color-primary);
     }
 
     .current-lang-pill {
@@ -167,33 +194,65 @@
         gap: 0.4rem;
         background: rgba(18, 74, 97, 0.08);
         color: var(--color-primary);
-        padding: 0.35rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.8rem;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.82rem;
         font-weight: 700;
-        text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     .form-section-title {
-        font-size: 1.15rem;
-        font-weight: 700;
+        font-size: 1.25rem;
         color: var(--color-primary);
-        margin: 2rem 0 1rem 0;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid rgba(18, 74, 97, 0.1);
+        font-weight: 700;
+        margin-bottom: 1.25rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        border-left: 4px solid var(--color-secondary);
+        padding-left: 0.75rem;
     }
 
-    .form-section-title:first-of-type {
-        margin-top: 0;
+    /* Form Fields */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.92rem;
+        margin-bottom: 0.5rem;
+        color: var(--color-text);
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid #d1d5db;
+        border-radius: 0.65rem;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--color-text);
+        background-color: #ffffff;
+        transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(18, 74, 97, 0.12);
     }
 
     .field-hint {
-        font-size: 0.8rem;
-        color: #6b7280;
+        font-size: 0.82rem;
+        color: var(--color-text-light);
         margin-top: 0.35rem;
     }
 
@@ -277,6 +336,31 @@
         color: var(--color-primary);
     }
 
+    /* Action Buttons Bar */
+    .step-actions-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+        flex-wrap: wrap;
+    }
+
+    .btn-step-prev {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .btn-step-next {
+        padding: 0.75rem 1.75rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-left: auto;
+    }
+
     /* Messages */
     .alert-banner {
         padding: 1rem 1.25rem;
@@ -288,10 +372,10 @@
     }
 
     .alert-banner.alert-error {
-        background: #fee2e2;
-        border: 1px solid #fca5a5;
-        color: #991b1b;
         display: block;
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #f87171;
     }
 
     /* Success Screen */
@@ -300,118 +384,77 @@
         border-radius: 1.25rem;
         padding: 3.5rem 2rem;
         text-align: center;
-        box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
     }
 
     .success-icon-wrap {
-        width: 80px;
-        height: 80px;
+        width: 72px;
+        height: 72px;
+        background: #dcfce7;
+        color: #16a34a;
         border-radius: 50%;
-        background: #d1fae5;
-        color: #059669;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         margin: 0 auto 1.5rem auto;
-        box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
     }
 
-    /* Dark Mode Overrides */
+    .hidden {
+        display: none !important;
+    }
+
+    /* Dark Mode Adjustments */
     body.dark-mode .lang-card,
     body.dark-mode .form-card,
     body.dark-mode .success-card {
-        background-color: #1f2937 !important;
-        border-color: #374151 !important;
-        color: #e5e7eb !important;
-    }
-
-    body.dark-mode .lang-title,
-    body.dark-mode .form-section-title,
-    body.dark-mode .callout-header,
-    body.dark-mode .team-desc-title {
-        color: #93c5fd !important;
+        background: #1f2937;
+        border-color: #374151;
     }
 
     body.dark-mode .choice-card-label {
-        background: #111827;
-        border-color: #374151;
-        color: #d1d5db;
+        background: #374151;
+        border-color: #4b5563;
+        color: #f3f4f6;
     }
 
     body.dark-mode .choice-card-label:hover {
-        background: #1f2937;
+        background: #4b5563;
+    }
+
+    body.dark-mode .form-group input,
+    body.dark-mode .form-group textarea {
+        background: #374151;
         border-color: #4b5563;
-    }
-
-    body.dark-mode .choice-card-label.selected {
-        background: rgba(59, 130, 246, 0.15);
-        border-color: #60a5fa;
-        color: #93c5fd;
-    }
-
-    /* Dark mode for membership intro card */
-    body.dark-mode .membership-info-card {
-        background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95)) !important;
-        border-color: #374151 !important;
-    }
-
-    body.dark-mode .intro-sub-card {
-        background: #111827 !important;
-        border-color: #374151 !important;
-    }
-
-    body.dark-mode .intro-sub-card h4 {
-        color: #93c5fd !important;
-    }
-
-    body.dark-mode .intro-sub-card p,
-    body.dark-mode .intro-sub-card li {
-        color: #d1d5db !important;
-    }
-
-    body.dark-mode #payment-info-box {
-        background: #111827 !important;
-        border-color: #374151 !important;
-        color: #e5e7eb !important;
-    }
-
-    body.dark-mode #payment-info-box strong {
-        color: #93c5fd !important;
+        color: #f3f4f6;
     }
 
     body.dark-mode .callout-box {
-        background: rgba(31, 41, 55, 0.8);
-        border-color: #374151;
-        border-left-color: #60a5fa;
+        background: rgba(18, 74, 97, 0.25);
+        border-color: rgba(255, 255, 255, 0.1);
     }
 
     body.dark-mode .team-desc-item {
         color: #d1d5db;
     }
 
-    body.dark-mode .btn-back-lang {
+    body.dark-mode .btn-step-nav {
         background: #374151;
         color: #e5e7eb;
         border-color: #4b5563;
     }
-
-    body.dark-mode .btn-back-lang:hover {
-        background: #4b5563;
-    }
 </style>
 {% endblock %}
 
-{% block header_style %}style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding:
-0;"{% endblock %}
+{% block header_style %}style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 0;"{% endblock %}
 
 {% block content %}
 <section class="section first-section" style="min-height: 85vh; padding-bottom: 4rem;">
     <div class="container">
         <div class="reg-wrapper">
 
-            <!-- Stepper Progress Indicator -->
+            <!-- Stepper Progress Indicator (4 Steps) -->
             <div class="stepper-container">
                 <div class="step-item active" id="stepper-step-1">
                     <span class="step-badge">1</span>
@@ -420,7 +463,17 @@
                 <div class="step-divider"></div>
                 <div class="step-item" id="stepper-step-2">
                     <span class="step-badge">2</span>
-                    <span id="step-label-2">Application</span>
+                    <span id="step-label-2">Personal</span>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step-item" id="stepper-step-3">
+                    <span class="step-badge">3</span>
+                    <span id="step-label-3">Teams & Skills</span>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step-item" id="stepper-step-4">
+                    <span class="step-badge">4</span>
+                    <span id="step-label-4">Payment & Finish</span>
                 </div>
             </div>
 
@@ -428,144 +481,101 @@
             <div class="section-header text-center" style="margin-bottom: 2rem;">
                 <h2 id="main-reg-title">New Member Application</h2>
                 <div class="divider"></div>
-                <p id="main-reg-subtitle">Join the POLIMI Muslim Student Association and become part of our active
-                    community.</p>
+                <p id="main-reg-subtitle">Join the POLIMI Muslim Student Association and become part of our active community.</p>
             </div>
 
-            <!-- ============================================== -->
-            <!-- PAGE 1: LANGUAGE SELECTION -->
-            <!-- ============================================== -->
-            <div id="page-1-lang-select">
-                <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <p style="color: var(--color-text-light); font-size: 1.05rem;">
-                        Please choose your language to begin / Seleziona la lingua per iniziare:
-                    </p>
-                </div>
+            <!-- Main Application Form Container -->
+            <form id="membership-form" novalidate>
 
-                <div class="lang-grid">
-                    <!-- English Card -->
-                    <div class="lang-card" onclick="selectLanguage('en')" role="button" tabindex="0">
-                        <div class="lang-flag">🇬🇧</div>
-                        <h3 class="lang-title">English</h3>
-                        <p class="lang-desc">Complete the membership application in English.</p>
-                        <button type="button" class="btn btn-primary w-100"
-                            style="margin-top: auto; padding: 0.65rem 1.25rem;">
-                            Continue in English &rarr;
-                        </button>
+                <!-- ============================================== -->
+                <!-- STEP 1: LANGUAGE SELECTION & WELCOME OVERVIEW -->
+                <!-- ============================================== -->
+                <div id="step-1-welcome">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <p style="color: var(--color-text-light); font-size: 1.05rem;">
+                            Please choose your language to begin / Seleziona la lingua per iniziare:
+                        </p>
                     </div>
 
-                    <!-- Italian Card -->
-                    <div class="lang-card" onclick="selectLanguage('it')" role="button" tabindex="0">
-                        <div class="lang-flag">🇮🇹</div>
-                        <h3 class="lang-title">Italiano</h3>
-                        <p class="lang-desc">Compila la richiesta di iscrizione in lingua italiana.</p>
-                        <button type="button" class="btn btn-primary w-100"
-                            style="margin-top: auto; padding: 0.65rem 1.25rem;">
-                            Continua in Italiano &rarr;
-                        </button>
-                    </div>
-                </div>
-            </div>
+                    <!-- Language Choice Cards -->
+                    <div class="lang-grid">
+                        <div class="lang-card" id="lang-card-en" onclick="chooseLanguage('en')" role="button" tabindex="0">
+                            <div class="lang-flag">🇬🇧</div>
+                            <h3 class="lang-title">English</h3>
+                            <p class="lang-desc">Complete the membership application in English.</p>
+                            <button type="button" class="btn btn-primary w-100" style="margin-top: auto; padding: 0.65rem 1.25rem;">
+                                Select English &rarr;
+                            </button>
+                        </div>
 
-            <!-- ============================================== -->
-            <!-- PAGE 2: APPLICATION FORM -->
-            <!-- ============================================== -->
-            <div id="page-2-form-container" class="hidden">
-                <div class="form-card">
-                    <!-- Top Navigation Bar -->
-                    <div class="form-header-bar">
-                        <button type="button" class="btn-back-lang" onclick="goToStep(1)">
-                            <span id="txt-change-lang">← Change Language</span>
-                        </button>
-                        <div class="current-lang-pill">
-                            <span id="current-lang-flag">🇬🇧</span>
-                            <span id="current-lang-name">ENGLISH</span>
+                        <div class="lang-card" id="lang-card-it" onclick="chooseLanguage('it')" role="button" tabindex="0">
+                            <div class="lang-flag">🇮🇹</div>
+                            <h3 class="lang-title">Italiano</h3>
+                            <p class="lang-desc">Compila la richiesta di iscrizione in lingua italiana.</p>
+                            <button type="button" class="btn btn-primary w-100" style="margin-top: auto; padding: 0.65rem 1.25rem;">
+                                Seleziona Italiano &rarr;
+                            </button>
                         </div>
                     </div>
-
-                    <!-- Error Alert Banner -->
-                    <div id="form-error-banner" class="alert-banner"></div>
 
                     <!-- Membership Overview & Benefits Description Card -->
                     <div class="membership-info-card" id="membership-intro-card"
-                        style="background: linear-gradient(135deg, rgba(18, 74, 97, 0.05), rgba(251, 191, 36, 0.09)); border: 1.5px solid rgba(18, 74, 97, 0.16); border-radius: 1rem; padding: 1.75rem; margin-bottom: 2rem;">
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
-                            <h3 id="intro-heading"
-                                style="margin: 0; font-size: 1.25rem; color: var(--color-primary); font-weight: 700; line-height: 1.35; flex: 1; min-width: 250px;">
+                        style="background: linear-gradient(135deg, rgba(18, 74, 97, 0.05), rgba(251, 191, 36, 0.09)); border: 1.5px solid rgba(18, 74, 97, 0.16); border-radius: 1rem; padding: 1.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+                            <h3 id="intro-heading" style="margin: 0; font-size: 1.25rem; color: var(--color-primary); font-weight: 700; line-height: 1.35; flex: 1; min-width: 250px;">
                                 Become a Member of the Muslim Students Association at Politecnico di Milano (ASM)!
                             </h3>
-                            <span id="intro-fee-badge"
-                                style="background: var(--color-secondary); color: var(--color-primary); font-weight: 700; font-size: 0.85rem; padding: 0.35rem 0.8rem; border-radius: 999px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+                            <span id="intro-fee-badge" style="background: var(--color-secondary); color: var(--color-primary); font-weight: 700; font-size: 0.85rem; padding: 0.35rem 0.8rem; border-radius: 999px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
                                 🏷️ Membership Fee: €5
                             </span>
                         </div>
-                        <p id="intro-body-lead"
-                            style="color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
-                            ASM is a community-centered association for Muslim students at Politecnico di Milano. Our
-                            goal is to create a warm, cultural, and supportive environment, helping international
-                            students feel at home, even when they’re far from home.
+                        <p id="intro-body-lead" style="color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
+                            ASM is a community-centered association for Muslim students at Politecnico di Milano. Our goal is to create a warm, cultural, and supportive environment, helping international students feel at home, even when they’re far from home.
                         </p>
 
-                        <div
-                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
                             <!-- Why Join Us -->
-                            <div class="intro-sub-card"
-                                style="background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                                <h4 id="intro-why-title"
-                                    style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+                            <div class="intro-sub-card" style="background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                <h4 id="intro-why-title" style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
                                     <span>🌟</span> Why Join Us?
                                 </h4>
-                                <ul
-                                    style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.55; color: #4b5563; display: flex; flex-direction: column; gap: 0.5rem;">
-                                    <li id="intro-why-1"><strong>• Exclusive Discounts:</strong> on events, such as
-                                        Islamic conferences, cultural excursions, sports activities, and more.</li>
-                                    <li id="intro-why-2"><strong>• Priority Reservations:</strong> for you and your
-                                        friends at popular events, so you never miss a spot.</li>
-                                    <li id="intro-why-3"><strong>• Continuous Support Network:</strong> that offers a
-                                        sense of community and helps you adjust to life abroad.</li>
+                                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.55; color: #4b5563; display: flex; flex-direction: column; gap: 0.5rem;">
+                                    <li id="intro-why-1"><strong>• Exclusive Discounts:</strong> on events, such as Islamic conferences, cultural excursions, sports activities, and more.</li>
+                                    <li id="intro-why-2"><strong>• Priority Reservations:</strong> for you and your friends at popular events, so you never miss a spot.</li>
+                                    <li id="intro-why-3"><strong>• Continuous Support Network:</strong> that offers a sense of community and helps you adjust to life abroad.</li>
                                 </ul>
                             </div>
 
                             <!-- Your Impact -->
-                            <div class="intro-sub-card"
-                                style="background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                                <h4 id="intro-impact-title"
-                                    style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+                            <div class="intro-sub-card" style="background: white; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                <h4 id="intro-impact-title" style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
                                     <span>🌱</span> Your Impact
                                 </h4>
-                                <p id="intro-impact-lead"
-                                    style="font-size: 0.9rem; line-height: 1.45; color: #4b5563; margin-bottom: 0.5rem;">
-                                    With your membership, we can continue to organize meaningful activities that enrich
-                                    our campus community, including:
+                                <p id="intro-impact-lead" style="font-size: 0.9rem; line-height: 1.45; color: #4b5563; margin-bottom: 0.5rem;">
+                                    With your membership, we can continue to organize meaningful activities that enrich our campus community, including:
                                 </p>
-                                <ul
-                                    style="list-style: none; padding: 0; margin: 0 0 0.65rem 0; font-size: 0.88rem; line-height: 1.45; color: #4b5563; display: flex; flex-direction: column; gap: 0.25rem;">
+                                <ul style="list-style: none; padding: 0; margin: 0 0 0.65rem 0; font-size: 0.88rem; line-height: 1.45; color: #4b5563; display: flex; flex-direction: column; gap: 0.25rem;">
                                     <li id="intro-impact-1">• Ramadan Iftars</li>
                                     <li id="intro-impact-2">• Mentorship Programs</li>
                                     <li id="intro-impact-3">• Workshops and Guest Lectures</li>
                                 </ul>
-                                <p id="intro-impact-fee"
-                                    style="font-size: 0.88rem; color: var(--color-primary); font-weight: 600; margin: 0;">
+                                <p id="intro-impact-fee" style="font-size: 0.88rem; color: var(--color-primary); font-weight: 600; margin: 0;">
                                     Your €5 membership fee helps us keep these events accessible and affordable for all.
                                 </p>
                             </div>
                         </div>
 
                         <!-- Contact & Social Bar -->
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(18, 74, 97, 0.12); padding-top: 0.9rem; flex-wrap: wrap; gap: 0.75rem; font-size: 0.88rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(18, 74, 97, 0.12); padding-top: 0.9rem; flex-wrap: wrap; gap: 0.75rem; font-size: 0.88rem;">
                             <span id="intro-contact-label" style="color: var(--color-text-light); font-weight: 500;">
-                                For any further information, you can contact us on our social media pages or via ASM
-                                email:
+                                For any further information, you can contact us on our social media pages or via ASM email:
                             </span>
                             <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
                                 <a href="https://www.facebook.com/ASMPolimi/" target="_blank" rel="noopener noreferrer"
                                     style="display: inline-flex; align-items: center; gap: 0.35rem; background: #1877f2; color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
                                     Facebook
                                 </a>
-                                <a href="https://www.instagram.com/asm.polimi/" target="_blank"
-                                    rel="noopener noreferrer"
+                                <a href="https://www.instagram.com/asm.polimi/" target="_blank" rel="noopener noreferrer"
                                     style="display: inline-flex; align-items: center; gap: 0.35rem; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
                                     Instagram
                                 </a>
@@ -576,11 +586,27 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Form Body -->
-                    <form id="membership-form" novalidate>
+                <!-- ============================================== -->
+                <!-- STEP 2: PERSONAL & ACADEMIC DETAILS -->
+                <!-- ============================================== -->
+                <div id="step-2-personal" class="hidden">
+                    <div class="form-card">
+                        <!-- Header Bar -->
+                        <div class="form-header-bar">
+                            <button type="button" class="btn-step-nav" onclick="goToStep(1)">
+                                <span id="txt-nav-step1">← Change Language</span>
+                            </button>
+                            <div class="current-lang-pill">
+                                <span id="current-lang-flag">🇬🇧</span>
+                                <span id="current-lang-name">ENGLISH</span>
+                            </div>
+                        </div>
 
-                        <!-- Section 1: Personal & Academic Info -->
+                        <!-- Step 2 Error Banner -->
+                        <div id="step-2-error-banner" class="alert-banner"></div>
+
                         <div class="form-section-title">
                             <span>👤</span> <span id="sec-personal-title">Personal & Academic Details</span>
                         </div>
@@ -594,26 +620,22 @@
                         <!-- Matriculation Number -->
                         <div class="form-group">
                             <label for="app-matricola" id="lbl-matricola">Matriculation number (6 numbers) *</label>
-                            <input type="text" id="app-matricola" pattern="[0-9]{6}" maxlength="6" inputmode="numeric"
-                                required placeholder="849312">
-                            <div class="field-hint" id="hint-matricola">Ex: 8493.. it is 6 numbers assigned by
-                                Politecnico di Milano.</div>
+                            <input type="text" id="app-matricola" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" required placeholder="849312">
+                            <div class="field-hint" id="hint-matricola">Ex: 8493.. it is 6 numbers assigned by Politecnico di Milano.</div>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group">
                             <label for="app-email" id="lbl-email">Mail to receive communications *</label>
                             <input type="email" id="app-email" required placeholder="name@mail.polimi.it">
-                            <div class="field-hint" id="hint-email">You may provide either your Polimi email or personal
-                                email.</div>
+                            <div class="field-hint" id="hint-email">You may provide either your Polimi email or personal email.</div>
                         </div>
 
                         <!-- Phone Number -->
                         <div class="form-group">
                             <label for="app-phone" id="lbl-phone">Phone number with the national prefix *</label>
                             <input type="tel" id="app-phone" required placeholder="+39 123 456 7890">
-                            <div class="field-hint" id="hint-phone">Remember to include country code (e.g., +39 for
-                                Italy, +966, +92, etc.).</div>
+                            <div class="field-hint" id="hint-phone">Remember to include country code (e.g., +39 for Italy, +966, +92, etc.).</div>
                         </div>
 
                         <!-- Course Level -->
@@ -642,60 +664,75 @@
                         <!-- Course of Study -->
                         <div class="form-group">
                             <label for="app-course" id="lbl-course">Course *</label>
-                            <input type="text" id="app-course" required
-                                placeholder="e.g. Computer Science and Engineering, Mechanical...">
+                            <input type="text" id="app-course" required placeholder="e.g. Computer Science and Engineering, Mechanical...">
                         </div>
 
-                        <!-- Section 2: Skills & Competences -->
+                        <!-- Actions Bar -->
+                        <div class="step-actions-bar">
+                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(1)">
+                                <span id="btn-back-step1">← Language</span>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-step-next" onclick="proceedToStep3()">
+                                <span id="btn-next-step3">Next: Teams & Skills →</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- STEP 3: ASM TEAMS, SKILLS & LANGUAGES -->
+                <!-- ============================================== -->
+                <div id="step-3-teams" class="hidden">
+                    <div class="form-card">
+                        <!-- Header Bar -->
+                        <div class="form-header-bar">
+                            <button type="button" class="btn-step-nav" onclick="goToStep(2)">
+                                <span id="txt-nav-step2">← Personal Details</span>
+                            </button>
+                            <div class="current-lang-pill">
+                                <span id="current-lang-flag-3">🇬🇧</span>
+                                <span id="current-lang-name-3">ENGLISH</span>
+                            </div>
+                        </div>
+
+                        <!-- Section: Skills -->
                         <div class="form-section-title">
                             <span>🛠️</span> <span id="sec-skills-title">Skills & Experience</span>
                         </div>
-                        <p class="field-hint" style="margin-bottom: 0.75rem;" id="hint-skills">Select all options that
-                            apply:</p>
+                        <p class="field-hint" style="margin-bottom: 0.75rem;" id="hint-skills">Select all options that apply:</p>
 
                         <div class="form-group">
                             <div class="selection-grid" id="skills-grid">
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Graphic & Video making"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="skills" value="Graphic & Video making" onchange="toggleCheckbox(this)">
                                     <span id="opt-skill-graphic">Graphic & Video making</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills"
-                                        value="Managing social pages (Facebook, Instagram, Linkedin, ...)"
-                                        onchange="toggleCheckbox(this)">
-                                    <span id="opt-skill-social">Managing social pages (Facebook, Instagram, Linkedin,
-                                        ...)</span>
+                                    <input type="checkbox" name="skills" value="Managing social pages (Facebook, Instagram, Linkedin, ...)" onchange="toggleCheckbox(this)">
+                                    <span id="opt-skill-social">Managing social pages (Facebook, Instagram, Linkedin, ...)</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Event organisation"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="skills" value="Event organisation" onchange="toggleCheckbox(this)">
                                     <span id="opt-skill-events">Event organisation</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Web development & IT"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="skills" value="Web development & IT" onchange="toggleCheckbox(this)">
                                     <span id="opt-skill-it">Web development & IT</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Knowledge of the Islamic religion"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="skills" value="Knowledge of the Islamic religion" onchange="toggleCheckbox(this)">
                                     <span id="opt-skill-religion">Knowledge of the Islamic religion</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="I don't have any particular skill now"
-                                        id="skill-none-checkbox" onchange="handleNoneSkills(this)">
+                                    <input type="checkbox" name="skills" value="I don't have any particular skill now" id="skill-none-checkbox" onchange="handleNoneSkills(this)">
                                     <span id="opt-skill-none">I don't have any particular skill now</span>
                                 </label>
                             </div>
 
                             <!-- Other Skill -->
                             <div style="margin-top: 0.75rem;">
-                                <label for="app-skill-other"
-                                    style="font-size: 0.85rem; color: #4b5563; font-weight: 600;"
-                                    id="lbl-skill-other">Other skill:</label>
-                                <input type="text" id="app-skill-other" placeholder="Other skill (optional)"
-                                    style="margin-top: 0.25rem;">
+                                <label for="app-skill-other" style="font-size: 0.85rem; color: #4b5563; font-weight: 600;" id="lbl-skill-other">Other skill:</label>
+                                <input type="text" id="app-skill-other" placeholder="Other skill (optional)" style="margin-top: 0.25rem;">
                             </div>
                         </div>
 
@@ -705,34 +742,27 @@
                                 <span>🤝</span> <span id="txt-teams-info-title">ASM Teams</span>
                             </div>
                             <p style="font-size: 0.9rem; margin-bottom: 0.75rem; color: #374151;" id="txt-teams-intro">
-                                ASM provides the opportunity to join its teams, practice your skills and contribute to
-                                its ongoing story of success. A brief description of the teams and their role is
-                                provided below:
+                                ASM provides the opportunity to join its teams, practice your skills and contribute to its ongoing story of success. A brief description of the teams and their role is provided below:
                             </p>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-1-title">• Graphics and Video making:</span>
-                                <span id="t-desc-1-body"> involved in designing posters for events and editing photos
-                                    and videos.</span>
+                                <span id="t-desc-1-body"> involved in designing posters for events and editing photos and videos.</span>
                             </div>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-2-title">• Marketing and Social Media:</span>
-                                <span id="t-desc-2-body"> manages the social media pages of the association, promotes
-                                    events, and keeps members updated.</span>
+                                <span id="t-desc-2-body"> manages the social media pages of the association, promotes events, and keeps members updated.</span>
                             </div>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-3-title">• Events and Trips:</span>
-                                <span id="t-desc-3-body"> proposes and organizes activities and trips of ASM. For each
-                                    activity there is a contact person aided by team mates.</span>
+                                <span id="t-desc-3-body"> proposes and organizes activities and trips of ASM. For each activity there is a contact person aided by team mates.</span>
                             </div>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-4-title">• Tutoring:</span>
-                                <span id="t-desc-4-body"> elder students help first-year students. (Italian language is
-                                    mandatory)</span>
+                                <span id="t-desc-4-body"> elder students help first-year students. (Italian language is mandatory)</span>
                             </div>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-5-title">• Jumuah:</span>
-                                <span id="t-desc-5-body"> responsible for weekly Khatib scheduling in both campuses,
-                                    Drive revision of texts, and maintaining the meditation room.</span>
+                                <span id="t-desc-5-body"> responsible for weekly Khatib scheduling in both campuses, Drive revision of texts, and maintaining the meditation room.</span>
                             </div>
                         </div>
 
@@ -741,23 +771,19 @@
                             <label id="lbl-join-teams">Would you like to join one or more of ASM teams?</label>
                             <div class="selection-grid" id="teams-grid">
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="teams" value="Events and Trips"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="teams" value="Events and Trips" onchange="toggleCheckbox(this)">
                                     <span id="opt-team-events">Events and Trips</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="teams" value="Marketing and Social Media"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="teams" value="Marketing and Social Media" onchange="toggleCheckbox(this)">
                                     <span id="opt-team-marketing">Marketing and Social Media</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="teams" value="Graphics and Video making"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="teams" value="Graphics and Video making" onchange="toggleCheckbox(this)">
                                     <span id="opt-team-graphics">Graphics and Video making</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="teams" value="Tutoring"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="teams" value="Tutoring" onchange="toggleCheckbox(this)">
                                     <span id="opt-team-tutoring">Tutoring</span>
                                 </label>
                                 <label class="choice-card-label">
@@ -766,15 +792,12 @@
                                 </label>
                             </div>
                             <div style="margin-top: 0.75rem;">
-                                <label for="app-team-other"
-                                    style="font-size: 0.85rem; color: #4b5563; font-weight: 600;"
-                                    id="lbl-team-other">Other team / department:</label>
-                                <input type="text" id="app-team-other" placeholder="Other team preference (optional)"
-                                    style="margin-top: 0.25rem;">
+                                <label for="app-team-other" style="font-size: 0.85rem; color: #4b5563; font-weight: 600;" id="lbl-team-other">Other team / department:</label>
+                                <input type="text" id="app-team-other" placeholder="Other team preference (optional)" style="margin-top: 0.25rem;">
                             </div>
                         </div>
 
-                        <!-- Section 3: Languages & Translation -->
+                        <!-- Section: Languages & Translation -->
                         <div class="form-section-title">
                             <span>🌐</span> <span id="sec-languages-title">Languages & Volunteering</span>
                         </div>
@@ -783,73 +806,90 @@
                             <label id="lbl-languages">Select all the Languages you are fluent at:</label>
                             <div class="selection-grid" id="languages-grid">
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Italian"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Italian" onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-italian">Italian</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="English"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="English" onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-english">English</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Arabic"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Arabic" onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-arabic">Arabic</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Urdu"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Urdu" onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-urdu">Urdu</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Hindi"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Hindi" onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-hindi">Hindi</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Indonesian"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Indonesian" onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-indonesian">Indonesian</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Turkish"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Turkish" onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-turkish">Turkish</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Persian"
-                                        onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Persian" onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-persian">Persian</span>
                                 </label>
                             </div>
                             <div style="margin-top: 0.75rem;">
-                                <label for="app-lang-other"
-                                    style="font-size: 0.85rem; color: #4b5563; font-weight: 600;"
-                                    id="lbl-lang-other">Other language(s):</label>
-                                <input type="text" id="app-lang-other" placeholder="Other languages (optional)"
-                                    style="margin-top: 0.25rem;">
+                                <label for="app-lang-other" style="font-size: 0.85rem; color: #4b5563; font-weight: 600;" id="lbl-lang-other">Other language(s):</label>
+                                <input type="text" id="app-lang-other" placeholder="Other languages (optional)" style="margin-top: 0.25rem;">
                             </div>
                         </div>
 
                         <!-- Translator Volunteer -->
                         <div class="form-group">
-                            <label id="lbl-volunteer-translator">Do you want to volunteer as a translator in a future
-                                event/activity?</label>
+                            <label id="lbl-volunteer-translator">Do you want to volunteer as a translator in a future event/activity?</label>
                             <div style="display: flex; gap: 1rem; margin-top: 0.25rem;">
                                 <label class="choice-card-label" style="flex: 1;" onclick="updateChoiceStyle(this)">
                                     <input type="radio" name="volunteer_translator" value="Yes">
                                     <span id="opt-trans-yes">Yes</span>
                                 </label>
-                                <label class="choice-card-label selected" style="flex: 1;"
-                                    onclick="updateChoiceStyle(this)">
+                                <label class="choice-card-label selected" style="flex: 1;" onclick="updateChoiceStyle(this)">
                                     <input type="radio" name="volunteer_translator" value="No" checked>
                                     <span id="opt-trans-no">No</span>
                                 </label>
                             </div>
                         </div>
 
-                        <!-- Section 4: Membership Fee & Feedback -->
+                        <!-- Actions Bar -->
+                        <div class="step-actions-bar">
+                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(2)">
+                                <span id="btn-back-step2">← Personal Info</span>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-step-next" onclick="goToStep(4)">
+                                <span id="btn-next-step4">Next: Payment & Consent →</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- STEP 4: PAYMENT METHOD, FEEDBACK & CONSENT -->
+                <!-- ============================================== -->
+                <div id="step-4-payment" class="hidden">
+                    <div class="form-card">
+                        <!-- Header Bar -->
+                        <div class="form-header-bar">
+                            <button type="button" class="btn-step-nav" onclick="goToStep(3)">
+                                <span id="txt-nav-step3">← Teams & Skills</span>
+                            </button>
+                            <div class="current-lang-pill">
+                                <span id="current-lang-flag-4">🇬🇧</span>
+                                <span id="current-lang-name-4">ENGLISH</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 Error Banner -->
+                        <div id="step-4-error-banner" class="alert-banner"></div>
+
                         <div class="form-section-title">
                             <span>💳</span> <span id="sec-payment-title">Membership Fee & Feedback</span>
                         </div>
@@ -885,8 +925,7 @@
                         <!-- Comments, ideas, feedback -->
                         <div class="form-group">
                             <label for="app-comments" id="lbl-comments">Comments, ideas, feedback</label>
-                            <textarea id="app-comments" rows="3"
-                                placeholder="Tell us anything you'd like to share or suggest..."></textarea>
+                            <textarea id="app-comments" rows="3" placeholder="Tell us anything you'd like to share or suggest..."></textarea>
                         </div>
 
                         <!-- GDPR & Statute Consent Checkbox -->
@@ -899,27 +938,29 @@
                             </label>
                         </div>
 
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary w-100" id="btn-submit-app"
-                            style="margin-top: 0.5rem; padding: 0.9rem; font-size: 1.05rem;">
-                            Submit Application
-                        </button>
-                    </form>
+                        <!-- Actions Bar -->
+                        <div class="step-actions-bar">
+                            <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(3)">
+                                <span id="btn-back-step3">← Teams & Skills</span>
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-step-next" id="btn-submit-app" style="padding: 0.85rem 2rem; font-size: 1.05rem;">
+                                Submit Application
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+            </form>
 
             <!-- ============================================== -->
-            <!-- PAGE 3: SUBMISSION SUCCESS SCREEN -->
+            <!-- STEP 5: SUBMISSION SUCCESS SCREEN -->
             <!-- ============================================== -->
             <div id="page-success" class="hidden">
                 <div class="success-card">
                     <div class="success-icon-wrap">✓</div>
-                    <h2 id="success-header" style="color: var(--color-primary); margin-bottom: 0.75rem;">Application
-                        Received!</h2>
-                    <p id="success-body"
-                        style="color: var(--color-text-light); max-width: 600px; margin: 0 auto 2rem auto; font-size: 1.05rem; line-height: 1.6;">
-                        Thank you for applying to join ASM POLIMI. We have securely saved your application and will be
-                        in touch shortly regarding your membership card and welcome package!
+                    <h2 id="success-header" style="color: var(--color-primary); margin-bottom: 0.75rem;">Application Received!</h2>
+                    <p id="success-body" style="color: var(--color-text-light); max-width: 600px; margin: 0 auto 2rem auto; font-size: 1.05rem; line-height: 1.6;">
+                        Thank you for applying to join ASM POLIMI. We have securely saved your application and will be in touch shortly regarding your membership card and welcome package!
                     </p>
                     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                         <button type="button" class="btn btn-primary" onclick="resetFormToStart()">
@@ -947,8 +988,17 @@
             title: "New Member Application",
             subtitle: "Join the POLIMI Muslim Student Association and become part of our active community.",
             step1: "Language",
-            step2: "Application",
-            changeLang: "← Change Language",
+            step2: "Personal",
+            step3: "Teams & Skills",
+            step4: "Payment & Finish",
+            btnNavStep1: "← Change Language",
+            btnNavStep2: "← Personal Details",
+            btnNavStep3: "← Teams & Skills",
+            btnBackStep1: "← Language",
+            btnBackStep2: "← Personal Info",
+            btnBackStep3: "← Teams & Skills",
+            btnNextStep3: "Next: Teams & Skills →",
+            btnNextStep4: "Next: Payment & Consent →",
             langName: "ENGLISH",
             langFlag: "🇬🇧",
             introHeading: "Become a Member of the Muslim Students Association at Politecnico di Milano (ASM)!",
@@ -981,7 +1031,7 @@
             optSingle: "Single cycle (5 years)",
             optPhd: "Ph.D. (Dottorato)",
             lblCourse: "Course *",
-            placeholderCourse: "e.g. Computer Science Engineering, Mechanical, Architecture...",
+            placeholderCourse: "e.g. Computer Science and Engineering, Mechanical...",
             secSkills: "Skills & Experience",
             hintSkills: "Select all options that apply:",
             optSkillGraphic: "Graphic & Video making",
@@ -1050,8 +1100,17 @@
             title: "Modulo di Iscrizione all'Associazione",
             subtitle: "Unisciti all'Associazione Studenti Musulmani del POLIMI e partecipa attivamente alla comunità.",
             step1: "Lingua",
-            step2: "Iscrizione",
-            changeLang: "← Cambia Lingua",
+            step2: "Dati Personali",
+            step3: "Team e Competenze",
+            step4: "Pagamento e Conferma",
+            btnNavStep1: "← Cambia Lingua",
+            btnNavStep2: "← Dati Personali",
+            btnNavStep3: "← Team e Competenze",
+            btnBackStep1: "← Lingua",
+            btnBackStep2: "← Dati Personali",
+            btnBackStep3: "← Team e Competenze",
+            btnNextStep3: "Avanti: Team e Competenze →",
+            btnNextStep4: "Avanti: Pagamento e Consenso →",
             langName: "ITALIANO",
             langFlag: "🇮🇹",
             introHeading: "Diventa Socio dell'Associazione Studenti Musulmani del Politecnico di Milano (ASM)!",
@@ -1153,7 +1212,7 @@
 
     let currentLang = 'en';
 
-    function selectLanguage(lang) {
+    function chooseLanguage(lang) {
         currentLang = lang;
         applyTranslations(lang);
         goToStep(2);
@@ -1162,31 +1221,52 @@
     function applyTranslations(lang) {
         const t = i18n[lang] || i18n.en;
 
+        // Titles & Steps
         document.getElementById('main-reg-title').textContent = t.title;
         document.getElementById('main-reg-subtitle').textContent = t.subtitle;
         document.getElementById('step-label-1').textContent = t.step1;
         document.getElementById('step-label-2').textContent = t.step2;
-        document.getElementById('txt-change-lang').textContent = t.changeLang;
-        document.getElementById('current-lang-name').textContent = t.langName;
-        document.getElementById('current-lang-flag').textContent = t.langFlag;
+        document.getElementById('step-label-3').textContent = t.step3;
+        document.getElementById('step-label-4').textContent = t.step4;
 
-        // Membership Intro Card
-        if (document.getElementById('intro-heading')) document.getElementById('intro-heading').textContent = t.introHeading;
-        if (document.getElementById('intro-fee-badge')) document.getElementById('intro-fee-badge').textContent = t.introFeeBadge;
-        if (document.getElementById('intro-body-lead')) document.getElementById('intro-body-lead').textContent = t.introBodyLead;
-        if (document.getElementById('intro-why-title')) document.getElementById('intro-why-title').innerHTML = `<span>🌟</span> ${t.introWhyTitle}`;
-        if (document.getElementById('intro-why-1')) document.getElementById('intro-why-1').innerHTML = t.introWhy1;
-        if (document.getElementById('intro-why-2')) document.getElementById('intro-why-2').innerHTML = t.introWhy2;
-        if (document.getElementById('intro-why-3')) document.getElementById('intro-why-3').innerHTML = t.introWhy3;
-        if (document.getElementById('intro-impact-title')) document.getElementById('intro-impact-title').innerHTML = `<span>🌱</span> ${t.introImpactTitle}`;
-        if (document.getElementById('intro-impact-lead')) document.getElementById('intro-impact-lead').textContent = t.introImpactLead;
-        if (document.getElementById('intro-impact-1')) document.getElementById('intro-impact-1').textContent = t.introImpact1;
-        if (document.getElementById('intro-impact-2')) document.getElementById('intro-impact-2').textContent = t.introImpact2;
-        if (document.getElementById('intro-impact-3')) document.getElementById('intro-impact-3').textContent = t.introImpact3;
-        if (document.getElementById('intro-impact-fee')) document.getElementById('intro-impact-fee').textContent = t.introImpactFee;
-        if (document.getElementById('intro-contact-label')) document.getElementById('intro-contact-label').textContent = t.introContactLabel;
+        // Language badges & nav buttons
+        ['current-lang-flag', 'current-lang-flag-3', 'current-lang-flag-4'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = t.langFlag;
+        });
+        ['current-lang-name', 'current-lang-name-3', 'current-lang-name-4'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = t.langName;
+        });
 
-        // Section 1
+        if (document.getElementById('txt-nav-step1')) document.getElementById('txt-nav-step1').textContent = t.btnNavStep1;
+        if (document.getElementById('txt-nav-step2')) document.getElementById('txt-nav-step2').textContent = t.btnNavStep2;
+        if (document.getElementById('txt-nav-step3')) document.getElementById('txt-nav-step3').textContent = t.btnNavStep3;
+
+        if (document.getElementById('btn-back-step1')) document.getElementById('btn-back-step1').textContent = t.btnBackStep1;
+        if (document.getElementById('btn-back-step2')) document.getElementById('btn-back-step2').textContent = t.btnBackStep2;
+        if (document.getElementById('btn-back-step3')) document.getElementById('btn-back-step3').textContent = t.btnBackStep3;
+
+        if (document.getElementById('btn-next-step3')) document.getElementById('btn-next-step3').textContent = t.btnNextStep3;
+        if (document.getElementById('btn-next-step4')) document.getElementById('btn-next-step4').textContent = t.btnNextStep4;
+
+        // Intro Card
+        document.getElementById('intro-heading').textContent = t.introHeading;
+        document.getElementById('intro-fee-badge').textContent = t.introFeeBadge;
+        document.getElementById('intro-body-lead').textContent = t.introBodyLead;
+        document.getElementById('intro-why-title').innerHTML = `<span>🌟</span> ${t.introWhyTitle}`;
+        document.getElementById('intro-why-1').innerHTML = t.introWhy1;
+        document.getElementById('intro-why-2').innerHTML = t.introWhy2;
+        document.getElementById('intro-why-3').innerHTML = t.introWhy3;
+        document.getElementById('intro-impact-title').innerHTML = `<span>🌱</span> ${t.introImpactTitle}`;
+        document.getElementById('intro-impact-lead').textContent = t.introImpactLead;
+        document.getElementById('intro-impact-1').textContent = t.introImpact1;
+        document.getElementById('intro-impact-2').textContent = t.introImpact2;
+        document.getElementById('intro-impact-3').textContent = t.introImpact3;
+        document.getElementById('intro-impact-fee').textContent = t.introImpactFee;
+        document.getElementById('intro-contact-label').textContent = t.introContactLabel;
+
+        // Step 2: Personal & Academic
         document.getElementById('sec-personal-title').textContent = t.secPersonal;
         document.getElementById('lbl-fullname').textContent = t.lblFullname;
         document.getElementById('app-fullname').placeholder = t.placeholderFullname;
@@ -1195,7 +1275,7 @@
         document.getElementById('lbl-email').textContent = t.lblEmail;
         document.getElementById('hint-email').textContent = t.hintEmail;
         document.getElementById('lbl-phone').textContent = t.lblPhone;
-        document.getElementById('app-phone').placeholder = t.placeholderPhone || '+39 123 456 7890';
+        document.getElementById('app-phone').placeholder = t.placeholderPhone;
         document.getElementById('hint-phone').textContent = t.hintPhone;
         document.getElementById('lbl-course-level').textContent = t.lblCourseLevel;
         document.getElementById('opt-level-bachelor').textContent = t.optBachelor;
@@ -1205,7 +1285,7 @@
         document.getElementById('lbl-course').textContent = t.lblCourse;
         document.getElementById('app-course').placeholder = t.placeholderCourse;
 
-        // Section 2
+        // Step 3: Skills, Teams & Languages
         document.getElementById('sec-skills-title').textContent = t.secSkills;
         document.getElementById('hint-skills').textContent = t.hintSkills;
         document.getElementById('opt-skill-graphic').textContent = t.optSkillGraphic;
@@ -1216,7 +1296,6 @@
         document.getElementById('opt-skill-none').textContent = t.optSkillNone;
         document.getElementById('lbl-skill-other').textContent = t.lblSkillOther;
 
-        // Info box
         document.getElementById('txt-teams-info-title').textContent = t.teamsInfoTitle;
         document.getElementById('txt-teams-intro').textContent = t.teamsIntro;
         document.getElementById('t-desc-1-title').textContent = t.tDesc1Title;
@@ -1230,7 +1309,6 @@
         document.getElementById('t-desc-5-title').textContent = t.tDesc5Title;
         document.getElementById('t-desc-5-body').textContent = t.tDesc5Body;
 
-        // Desired teams
         document.getElementById('lbl-join-teams').textContent = t.lblJoinTeams;
         document.getElementById('opt-team-events').textContent = t.optTeamEvents;
         document.getElementById('opt-team-marketing').textContent = t.optTeamMarketing;
@@ -1239,7 +1317,6 @@
         document.getElementById('opt-team-jumuah').textContent = t.optTeamJumuah;
         document.getElementById('lbl-team-other').textContent = t.lblTeamOther;
 
-        // Languages
         document.getElementById('sec-languages-title').textContent = t.secLanguages;
         document.getElementById('lbl-languages').textContent = t.lblLanguages;
         document.getElementById('opt-lang-italian').textContent = t.optLangItalian;
@@ -1252,12 +1329,11 @@
         document.getElementById('opt-lang-persian').textContent = t.optLangPersian;
         document.getElementById('lbl-lang-other').textContent = t.lblLangOther;
 
-        // Volunteer Translator
         document.getElementById('lbl-volunteer-translator').textContent = t.lblVolunteerTranslator;
         document.getElementById('opt-trans-yes').textContent = t.optTransYes;
         document.getElementById('opt-trans-no').textContent = t.optTransNo;
 
-        // Payment & Feedback
+        // Step 4: Payment & Feedback
         document.getElementById('sec-payment-title').textContent = t.secPayment;
         document.getElementById('lbl-payment-method').textContent = t.lblPaymentMethod;
         document.getElementById('opt-pay-bank').textContent = t.optPayBank;
@@ -1267,13 +1343,13 @@
         document.getElementById('app-comments').placeholder = t.placeholderComments;
         if (document.getElementById('lbl-consent-text')) document.getElementById('lbl-consent-text').innerHTML = t.lblConsentText;
 
-        // Re-render payment instructions if already selected
+        // Update payment instructions if selected
         const selectedPay = document.querySelector('input[name="payment_method"]:checked');
         if (selectedPay) {
             updatePaymentInstructions(selectedPay.value);
         }
 
-        // Buttons & Success
+        // Submit & Success Buttons
         document.getElementById('btn-submit-app').textContent = t.btnSubmit;
         document.getElementById('success-header').textContent = t.successHeader;
         document.getElementById('success-body').textContent = t.successBody;
@@ -1282,31 +1358,72 @@
     }
 
     function goToStep(step) {
-        const page1 = document.getElementById('page-1-lang-select');
-        const page2 = document.getElementById('page-2-form-container');
-        const pageSuccess = document.getElementById('page-success');
-        const step1Badge = document.getElementById('stepper-step-1');
-        const step2Badge = document.getElementById('stepper-step-2');
+        const step1 = document.getElementById('step-1-welcome');
+        const step2 = document.getElementById('step-2-personal');
+        const step3 = document.getElementById('step-3-teams');
+        const step4 = document.getElementById('step-4-payment');
+        const stepSuccess = document.getElementById('page-success');
 
-        page1.classList.add('hidden');
-        page2.classList.add('hidden');
-        pageSuccess.classList.add('hidden');
+        [step1, step2, step3, step4, stepSuccess].forEach(el => {
+            if (el) el.classList.add('hidden');
+        });
 
-        if (step === 1) {
-            page1.classList.remove('hidden');
-            step1Badge.className = 'step-item active';
-            step2Badge.className = 'step-item';
-        } else if (step === 2) {
-            page2.classList.remove('hidden');
-            step1Badge.className = 'step-item completed';
-            step2Badge.className = 'step-item active';
-        } else if (step === 3) {
-            pageSuccess.classList.remove('hidden');
-            step1Badge.className = 'step-item completed';
-            step2Badge.className = 'step-item completed';
+        // Update stepper indicators
+        for (let i = 1; i <= 4; i++) {
+            const item = document.getElementById(`stepper-step-${i}`);
+            if (!item) continue;
+            if (i < step) {
+                item.className = 'step-item completed';
+            } else if (i === step) {
+                item.className = 'step-item active';
+            } else {
+                item.className = 'step-item';
+            }
+        }
+
+        if (step === 1) step1.classList.remove('hidden');
+        if (step === 2) step2.classList.remove('hidden');
+        if (step === 3) step3.classList.remove('hidden');
+        if (step === 4) step4.classList.remove('hidden');
+        if (step === 5) {
+            stepSuccess.classList.remove('hidden');
+            for (let i = 1; i <= 4; i++) {
+                const item = document.getElementById(`stepper-step-${i}`);
+                if (item) item.className = 'step-item completed';
+            }
         }
 
         window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    function proceedToStep3() {
+        const errBanner = document.getElementById('step-2-error-banner');
+        errBanner.classList.remove('alert-error');
+        errBanner.textContent = '';
+        const t = i18n[currentLang] || i18n.en;
+
+        const fullName = document.getElementById('app-fullname').value.trim();
+        const matricola = document.getElementById('app-matricola').value.trim();
+        const email = document.getElementById('app-email').value.trim();
+        const phone = document.getElementById('app-phone').value.trim();
+        const course = document.getElementById('app-course').value.trim();
+        const courseLevel = document.querySelector('input[name="course_level"]:checked');
+
+        if (!fullName || !matricola || !email || !phone || !course || !courseLevel) {
+            errBanner.textContent = t.errRequiredFields;
+            errBanner.classList.add('alert-error');
+            errBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        if (!/^[0-9]{6}$/.test(matricola)) {
+            errBanner.textContent = t.errMatricolaDigits;
+            errBanner.classList.add('alert-error');
+            errBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        goToStep(3);
     }
 
     function updateChoiceStyle(labelEl) {
@@ -1359,7 +1476,7 @@
             }
         }
 
-        // Bidirectional logic: if another skill is checked, uncheck "no skills"
+        // Bidirectional logic: if a skill is checked, uncheck "no skills"
         if (input.name === 'skills' && input.checked && input.id !== 'skill-none-checkbox') {
             const noneCb = document.getElementById('skill-none-checkbox');
             if (noneCb && noneCb.checked) {
@@ -1388,7 +1505,8 @@
     function resetFormToStart() {
         document.getElementById('membership-form').reset();
         document.querySelectorAll('.choice-card-label').forEach(el => el.classList.remove('selected'));
-        // reset default radio
+        
+        // Re-apply default radio for translator
         const defaultTrans = document.querySelector('input[name="volunteer_translator"][value="No"]');
         if (defaultTrans) {
             defaultTrans.checked = true;
@@ -1396,18 +1514,23 @@
         }
         const payBox = document.getElementById('payment-info-box');
         if (payBox) payBox.style.display = 'none';
-        document.getElementById('form-error-banner').classList.remove('alert-error');
+        
+        const err2 = document.getElementById('step-2-error-banner');
+        if (err2) err2.classList.remove('alert-error');
+        const err4 = document.getElementById('step-4-error-banner');
+        if (err4) err4.classList.remove('alert-error');
+        
         goToStep(1);
     }
 
     // ----------------------------------------------------
-    // Form Submission
+    // Form Submission (Step 4)
     // ----------------------------------------------------
     const formEl = document.getElementById('membership-form');
-    const errorBanner = document.getElementById('form-error-banner');
 
     formEl.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const errorBanner = document.getElementById('step-4-error-banner');
         errorBanner.classList.remove('alert-error');
         errorBanner.textContent = '';
 
@@ -1425,17 +1548,9 @@
         const paymentMethodEl = document.querySelector('input[name="payment_method"]:checked');
         const paymentMethod = paymentMethodEl ? paymentMethodEl.value : '';
 
-        // Validation
-        if (!fullName || !matricola || !email || !phone || !course || !courseLevel || !paymentMethod) {
+        // Validation for final step
+        if (!paymentMethod) {
             errorBanner.textContent = t.errRequiredFields;
-            errorBanner.classList.add('alert-error');
-            errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            return;
-        }
-
-        // Matricola 6 digits
-        if (!/^[0-9]{6}$/.test(matricola)) {
-            errorBanner.textContent = t.errMatricolaDigits;
             errorBanner.classList.add('alert-error');
             errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
@@ -1450,26 +1565,24 @@
             return;
         }
 
-        // Collect skills
+        // Collect Multi-selects
         const skills = [];
         document.querySelectorAll('input[name="skills"]:checked').forEach(cb => skills.push(cb.value));
         const otherSkill = document.getElementById('app-skill-other').value.trim();
         if (otherSkill) skills.push(`Other: ${otherSkill}`);
 
-        // Collect teams
         const teams = [];
         document.querySelectorAll('input[name="teams"]:checked').forEach(cb => teams.push(cb.value));
         const otherTeam = document.getElementById('app-team-other').value.trim();
         if (otherTeam) teams.push(`Other: ${otherTeam}`);
 
-        // Collect languages
         const languages = [];
         document.querySelectorAll('input[name="languages"]:checked').forEach(cb => languages.push(cb.value));
         const otherLang = document.getElementById('app-lang-other').value.trim();
         if (otherLang) languages.push(`Other: ${otherLang}`);
 
-        const volunteerTranslatorEl = document.querySelector('input[name="volunteer_translator"]:checked');
-        const volunteerTranslator = volunteerTranslatorEl ? volunteerTranslatorEl.value : 'No';
+        const translatorEl = document.querySelector('input[name="volunteer_translator"]:checked');
+        const volunteerTranslator = translatorEl ? translatorEl.value : 'No';
 
         const comments = document.getElementById('app-comments').value.trim();
 
@@ -1493,10 +1606,12 @@
         submitBtn.disabled = true;
         submitBtn.textContent = t.btnSubmitting;
 
-        const isLiveDomain = window.location.hostname.includes('asmpolimi.it') || window.location.hostname.endsWith('github.io');
-        const endpoints = isLiveDomain
-            ? ['https://admin.asmpolimi.it/api/membership', '/api/membership']
-            : ['/api/membership', 'https://admin.asmpolimi.it/api/membership'];
+        const endpoints = [
+            '/api/membership',
+            '/api/memberships',
+            'https://asm-backend.onrender.com/api/membership',
+            'https://asm-backend.onrender.com/api/memberships'
+        ];
 
         let success = false;
         let errorMsg = '';
@@ -1524,15 +1639,15 @@
         submitBtn.textContent = t.btnSubmit;
 
         if (success) {
-            goToStep(3);
+            goToStep(5);
         } else {
-            errorBanner.textContent = errorMsg || 'Unable to submit application at this time. Please check your connection or contact us at asm.polimi@gmail.com.';
+            errorBanner.textContent = errorMsg || 'Unable to submit application at this time. Please check your connection or contact us at info@asmpolimi.it.';
             errorBanner.classList.add('alert-error');
             errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     });
 
-    // Initialize default radio selections styling and input helpers
+    // Initialize listeners on DOM load
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('input[type="radio"]:checked').forEach(r => {
             const p = r.closest('.choice-card-label');
