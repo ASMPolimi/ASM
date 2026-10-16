@@ -1,3 +1,10 @@
+// Clean URLs: automatically strip .html from browser address bar
+if (window.location.protocol.startsWith('http') && window.location.pathname.endsWith('.html')) {
+    const cleanPath = window.location.pathname.replace(/\.html$/, '');
+    const finalPath = (cleanPath === '/index' || cleanPath === 'index') ? '/' : cleanPath;
+    window.history.replaceState(null, '', finalPath + window.location.search + window.location.hash);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Dark Mode Toggle
@@ -72,10 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileNavLinksContainer.appendChild(divider);
 
         const adminLinks = [
-            { text: 'Admin: Events', href: 'https://admin.asmpolimi.it/admin.html' },
-            { text: "Admin: Jumu'ah", href: 'https://admin.asmpolimi.it/admin_jumuah.html' },
-            { text: 'Admin: Users', href: 'https://admin.asmpolimi.it/admin_users.html' },
-            { text: 'Admin: Questions', href: 'https://admin.asmpolimi.it/admin_questions.html' }
+            { text: 'Admin: Events', href: 'https://admin.asmpolimi.it/admin' },
+            { text: 'Admin: Members & Mailing', href: 'https://admin.asmpolimi.it/admin_members' },
+            { text: "Admin: Jumu'ah", href: 'https://admin.asmpolimi.it/admin_jumuah' },
+            { text: 'Admin: Questions', href: 'https://admin.asmpolimi.it/admin_questions' },
+            { text: 'Admin: Users', href: 'https://admin.asmpolimi.it/admin_users' }
         ];
 
         adminLinks.forEach(linkInfo => {

@@ -113,6 +113,8 @@ def index():
 def serve_file(path):
     if path in ALLOWED_FILES:
         return render_template(path)
+    if f"{path}.html" in ALLOWED_FILES:
+        return render_template(f"{path}.html")
     for d in ALLOWED_DIRS:
         if path.startswith(d + '/'):
             return send_from_directory('.', path)
