@@ -73,9 +73,11 @@
         .stepper-container {
             gap: 0.4rem;
         }
+
         .step-item span:not(.step-badge) {
             display: none;
         }
+
         .step-divider {
             width: 18px;
         }
@@ -484,7 +486,8 @@
     /* ======================================================== */
     /* MOBILE-FIRST ENHANCEMENTS & OVERFLOW-X PREVENTION        */
     /* ======================================================== */
-    html, body {
+    html,
+    body {
         overflow-x: hidden !important;
         max-width: 100vw;
     }
@@ -512,7 +515,7 @@
         border-radius: 0.75rem;
         padding: 1.25rem;
         border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         box-sizing: border-box;
         min-width: 0;
     }
@@ -701,7 +704,7 @@
             padding: 0.75rem 0.85rem !important;
         }
 
-        #keychain-name-field > div {
+        #keychain-name-field>div {
             max-width: 100% !important;
         }
 
@@ -720,7 +723,8 @@
 </style>
 {% endblock %}
 
-{% block header_style %}style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 0;"{% endblock %}
+{% block header_style %}style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding:
+0;"{% endblock %}
 
 {% block content %}
 <section class="section first-section" style="min-height: 85vh; padding-bottom: 4rem;">
@@ -759,7 +763,8 @@
             <div class="section-header text-center" style="margin-bottom: 2rem;">
                 <h2 id="main-reg-title">New Member Application</h2>
                 <div class="divider"></div>
-                <p id="main-reg-subtitle">Join the POLIMI Muslim Student Association and become part of our active community.</p>
+                <p id="main-reg-subtitle">Join the POLIMI Muslim Student Association and become part of our active
+                    community.</p>
             </div>
 
             <!-- Main Application Form Container -->
@@ -770,7 +775,8 @@
                 <!-- ============================================== -->
                 <div id="step-1-language">
                     <div style="text-align: center; margin-bottom: 2rem;">
-                        <h3 style="color: var(--color-primary); font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;" id="prompt-select-lang">
+                        <h3 style="color: var(--color-primary); font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;"
+                            id="prompt-select-lang">
                             Select Your Language / Seleziona la Lingua
                         </h3>
                         <p style="color: var(--color-text-light); font-size: 1.05rem;" id="prompt-select-desc">
@@ -780,20 +786,24 @@
 
                     <!-- Language Choice Cards -->
                     <div class="lang-grid" style="max-width: 680px; margin: 0 auto 1.5rem auto;">
-                        <div class="lang-card" id="lang-card-en" onclick="chooseLanguage('en')" role="button" tabindex="0">
+                        <div class="lang-card" id="lang-card-en" onclick="chooseLanguage('en')" role="button"
+                            tabindex="0">
                             <div class="lang-flag">🇬🇧</div>
                             <h3 class="lang-title">English</h3>
                             <p class="lang-desc">Complete the membership application in English.</p>
-                            <button type="button" class="btn btn-primary w-100" style="margin-top: auto; padding: 0.75rem 1.25rem; font-size: 1rem;">
+                            <button type="button" class="btn btn-primary w-100"
+                                style="margin-top: auto; padding: 0.75rem 1.25rem; font-size: 1rem;">
                                 Select English &rarr;
                             </button>
                         </div>
 
-                        <div class="lang-card" id="lang-card-it" onclick="chooseLanguage('it')" role="button" tabindex="0">
+                        <div class="lang-card" id="lang-card-it" onclick="chooseLanguage('it')" role="button"
+                            tabindex="0">
                             <div class="lang-flag">🇮🇹</div>
                             <h3 class="lang-title">Italiano</h3>
                             <p class="lang-desc">Compila la richiesta di iscrizione in lingua italiana.</p>
-                            <button type="button" class="btn btn-primary w-100" style="margin-top: auto; padding: 0.75rem 1.25rem; font-size: 1rem;">
+                            <button type="button" class="btn btn-primary w-100"
+                                style="margin-top: auto; padding: 0.75rem 1.25rem; font-size: 1rem;">
                                 Seleziona Italiano &rarr;
                             </button>
                         </div>
@@ -818,75 +828,104 @@
 
                         <!-- Membership Overview & Benefits Description Card -->
                         <div class="membership-info-card" id="membership-intro-card">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
-                                <h3 id="intro-heading" style="margin: 0; font-size: 1.25rem; color: var(--color-primary); font-weight: 700; line-height: 1.35; flex: 1 1 200px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+                                <h3 id="intro-heading"
+                                    style="margin: 0; font-size: 1.25rem; color: var(--color-primary); font-weight: 700; line-height: 1.35; flex: 1 1 200px;">
                                     Become a Member of the Muslim Students Association at Politecnico di Milano (ASM)!
                                 </h3>
-                                <span id="intro-fee-badge" style="background: var(--color-secondary); color: var(--color-primary); font-weight: 700; font-size: 0.85rem; padding: 0.35rem 0.8rem; border-radius: 999px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+                                <span id="intro-fee-badge"
+                                    style="background: var(--color-secondary); color: var(--color-primary); font-weight: 700; font-size: 0.85rem; padding: 0.35rem 0.8rem; border-radius: 999px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
                                     🏷️ Membership Fee: €5
                                 </span>
                             </div>
-                            <p id="intro-body-lead" style="color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
-                                ASM is a community-centered association for Muslim students at Politecnico di Milano. Our goal is to create a warm, cultural, and supportive environment, helping international students feel at home, even when they’re far from home.
+                            <p id="intro-body-lead"
+                                style="color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
+                                ASM is a community-centered association for Muslim students at Politecnico di Milano.
+                                Our goal is to create a warm, cultural, and supportive environment, helping
+                                international students feel at home, even when they’re far from home.
                             </p>
 
                             <div class="intro-subcards-grid">
                                 <!-- Why Join Us -->
                                 <div class="intro-sub-card">
-                                    <h4 id="intro-why-title" style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+                                    <h4 id="intro-why-title"
+                                        style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
                                         <span>🌟</span> Why Join Us?
                                     </h4>
-                                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.55; color: #4b5563; display: flex; flex-direction: column; gap: 0.5rem;">
-                                        <li id="intro-why-1"><strong>• Exclusive Discounts:</strong> on events, such as Islamic conferences, cultural excursions, sports activities, and more.</li>
-                                        <li id="intro-why-2"><strong>• Priority Reservations:</strong> for you and your friends at popular events, so you never miss a spot.</li>
-                                        <li id="intro-why-3"><strong>• Continuous Support Network:</strong> that offers a sense of community and helps you adjust to life abroad.</li>
+                                    <ul
+                                        style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.55; color: #4b5563; display: flex; flex-direction: column; gap: 0.5rem;">
+                                        <li id="intro-why-1"><strong>• Exclusive Discounts:</strong> on events, such as
+                                            Islamic conferences, cultural excursions, sports activities, and more.</li>
+                                        <li id="intro-why-2"><strong>• Priority Reservations:</strong> for you and your
+                                            friends at popular events, so you never miss a spot.</li>
+                                        <li id="intro-why-3"><strong>• Continuous Support Network:</strong> that offers
+                                            a sense of community and helps you adjust to life abroad.</li>
                                     </ul>
                                 </div>
 
                                 <!-- Your Impact -->
                                 <div class="intro-sub-card">
-                                    <h4 id="intro-impact-title" style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+                                    <h4 id="intro-impact-title"
+                                        style="margin: 0 0 0.65rem 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
                                         <span>🌱</span> Your Impact
                                     </h4>
-                                    <p id="intro-impact-lead" style="font-size: 0.9rem; line-height: 1.45; color: #4b5563; margin-bottom: 0.5rem;">
-                                        With your membership, we can continue to organize meaningful activities that enrich our campus community, including:
+                                    <p id="intro-impact-lead"
+                                        style="font-size: 0.9rem; line-height: 1.45; color: #4b5563; margin-bottom: 0.5rem;">
+                                        With your membership, we can continue to organize meaningful activities that
+                                        enrich our campus community, including:
                                     </p>
-                                    <ul style="list-style: none; padding: 0; margin: 0 0 0.65rem 0; font-size: 0.88rem; line-height: 1.45; color: #4b5563; display: flex; flex-direction: column; gap: 0.25rem;">
+                                    <ul
+                                        style="list-style: none; padding: 0; margin: 0 0 0.65rem 0; font-size: 0.88rem; line-height: 1.45; color: #4b5563; display: flex; flex-direction: column; gap: 0.25rem;">
                                         <li id="intro-impact-1">• Ramadan Iftars</li>
                                         <li id="intro-impact-2">• Mentorship Programs</li>
                                         <li id="intro-impact-3">• Workshops and Guest Lectures</li>
                                     </ul>
-                                    <p id="intro-impact-fee" style="font-size: 0.88rem; color: var(--color-primary); font-weight: 600; margin: 0;">
-                                        Your €5 membership fee helps us keep these events accessible and affordable for all.
+                                    <p id="intro-impact-fee"
+                                        style="font-size: 0.88rem; color: var(--color-primary); font-weight: 600; margin: 0;">
+                                        Your €5 membership fee helps us keep these events accessible and affordable for
+                                        all.
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Keychain Gift Highlight Banner -->
                             <div id="keychain-benefit-card" class="keychain-card-wrap">
-                                <img src="/assets/keychain_gift.jpg" alt="ASM Personalized Keychain Gift" class="keychain-card-img">
+                                <img src="/assets/keychain_gift.jpg" alt="ASM Personalized Keychain Gift"
+                                    class="keychain-card-img">
                                 <div class="keychain-card-body">
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.35rem;">
-                                        <span style="background: #0284c7; color: white; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 999px; letter-spacing: 0.04em;" id="keychain-benefit-tag">Special Welcome Gift</span>
-                                        <span style="font-weight: 700; color: #0369a1; font-size: 1.05rem;" id="keychain-benefit-title">🎁 Free Personalized 3D Keychain!</span>
+                                    <div
+                                        style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.35rem;">
+                                        <span
+                                            style="background: #0284c7; color: white; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 999px; letter-spacing: 0.04em;"
+                                            id="keychain-benefit-tag">Special Welcome Gift</span>
+                                        <span style="font-weight: 700; color: #0369a1; font-size: 1.05rem;"
+                                            id="keychain-benefit-title">🎁 Free Personalized 3D Keychain!</span>
                                     </div>
-                                    <p style="margin: 0; font-size: 0.88rem; color: #334155; line-height: 1.5;" id="keychain-benefit-desc">
-                                        Every new registered member receives a custom 3D-printed keychain with their personalized name as a welcome gift from ASM. You can choose the name you want printed on your keychain in the next steps!
+                                    <p style="margin: 0; font-size: 0.88rem; color: #334155; line-height: 1.5;"
+                                        id="keychain-benefit-desc">
+                                        Every new registered member receives a custom 3D-printed keychain with their
+                                        personalized name as a welcome gift from ASM. You can choose the name you want
+                                        printed on your keychain in the next steps!
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Contact & Social Bar -->
                             <div class="intro-contact-bar">
-                                <span id="intro-contact-label" style="color: var(--color-text-light); font-weight: 500;">
-                                    For any further information, you can contact us on our social media pages or via ASM email:
+                                <span id="intro-contact-label"
+                                    style="color: var(--color-text-light); font-weight: 500;">
+                                    For any further information, you can contact us on our social media pages or via ASM
+                                    email:
                                 </span>
                                 <div class="intro-social-links">
-                                    <a href="https://www.facebook.com/ASMPolimi/" target="_blank" rel="noopener noreferrer"
+                                    <a href="https://www.facebook.com/ASMPolimi/" target="_blank"
+                                        rel="noopener noreferrer"
                                         style="display: inline-flex; align-items: center; gap: 0.35rem; background: #1877f2; color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
                                         Facebook
                                     </a>
-                                    <a href="https://www.instagram.com/asm.polimi/" target="_blank" rel="noopener noreferrer"
+                                    <a href="https://www.instagram.com/asm.polimi/" target="_blank"
+                                        rel="noopener noreferrer"
                                         style="display: inline-flex; align-items: center; gap: 0.35rem; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; padding: 0.25rem 0.65rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-decoration: none;">
                                         Instagram
                                     </a>
@@ -903,7 +942,8 @@
                             <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(1)">
                                 <span id="btn-back-step1">← Change Language</span>
                             </button>
-                            <button type="button" class="btn btn-primary btn-step-next" id="btn-start-app" onclick="goToStep(3)" style="padding: 0.85rem 2rem; font-size: 1.05rem;">
+                            <button type="button" class="btn btn-primary btn-step-next" id="btn-start-app"
+                                onclick="goToStep(3)" style="padding: 0.85rem 2rem; font-size: 1.05rem;">
                                 <span id="btn-start-app-text">Continue to Application &rarr;</span>
                             </button>
                         </div>
@@ -942,22 +982,26 @@
                         <!-- Matriculation Number -->
                         <div class="form-group">
                             <label for="app-matricola" id="lbl-matricola">Matriculation number (6 numbers) *</label>
-                            <input type="text" id="app-matricola" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" required placeholder="849312">
-                            <div class="field-hint" id="hint-matricola">Ex: 8493.. it is 6 numbers assigned by Politecnico di Milano.</div>
+                            <input type="text" id="app-matricola" pattern="[0-9]{6}" maxlength="6" inputmode="numeric"
+                                required placeholder="849312">
+                            <div class="field-hint" id="hint-matricola">Ex: 8493.. it is 6 numbers assigned by
+                                Politecnico di Milano.</div>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group">
                             <label for="app-email" id="lbl-email">Mail to receive communications *</label>
                             <input type="email" id="app-email" required placeholder="name@mail.polimi.it">
-                            <div class="field-hint" id="hint-email">You may provide either your Polimi email or personal email.</div>
+                            <div class="field-hint" id="hint-email">You may provide either your Polimi email or personal
+                                email.</div>
                         </div>
 
                         <!-- Phone Number -->
                         <div class="form-group">
                             <label for="app-phone" id="lbl-phone">Phone number with the national prefix *</label>
                             <input type="tel" id="app-phone" required placeholder="+39 123 456 7890">
-                            <div class="field-hint" id="hint-phone">Remember to include country code (e.g., +39 for Italy, +966, +92, etc.).</div>
+                            <div class="field-hint" id="hint-phone">Remember to include country code (e.g., +39 for
+                                Italy, +966, +92, etc.).</div>
                         </div>
 
                         <!-- Course Level -->
@@ -986,7 +1030,8 @@
                         <!-- Course of Study -->
                         <div class="form-group">
                             <label for="app-course" id="lbl-course">Course *</label>
-                            <input type="text" id="app-course" required placeholder="e.g. Computer Science and Engineering, Mechanical...">
+                            <input type="text" id="app-course" required
+                                placeholder="e.g. Computer Science and Engineering, Mechanical...">
                         </div>
 
                         <!-- Actions Bar -->
@@ -1021,40 +1066,52 @@
                         <div class="form-section-title">
                             <span>🛠️</span> <span id="sec-skills-title">Skills & Experience</span>
                         </div>
-                        <p class="field-hint" style="margin-bottom: 0.75rem;" id="hint-skills">Select all options that apply:</p>
+                        <p class="field-hint" style="margin-bottom: 0.75rem;" id="hint-skills">Select all options that
+                            apply:</p>
 
                         <div class="form-group">
                             <div class="selection-grid" id="skills-grid">
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Graphic & Video making" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="skills" value="Graphic & Video making"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-skill-graphic">Graphic & Video making</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Managing social pages (Facebook, Instagram, Linkedin, ...)" onchange="toggleCheckbox(this)">
-                                    <span id="opt-skill-social">Managing social pages (Facebook, Instagram, Linkedin, ...)</span>
+                                    <input type="checkbox" name="skills"
+                                        value="Managing social pages (Facebook, Instagram, Linkedin, ...)"
+                                        onchange="toggleCheckbox(this)">
+                                    <span id="opt-skill-social">Managing social pages (Facebook, Instagram, Linkedin,
+                                        ...)</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Event organisation" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="skills" value="Event organisation"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-skill-events">Event organisation</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Web development & IT" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="skills" value="Web development & IT"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-skill-it">Web development & IT</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="Knowledge of the Islamic religion" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="skills" value="Knowledge of the Islamic religion"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-skill-religion">Knowledge of the Islamic religion</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="skills" value="I don't have any particular skill now" id="skill-none-checkbox" onchange="handleNoneSkills(this)">
+                                    <input type="checkbox" name="skills" value="I don't have any particular skill now"
+                                        id="skill-none-checkbox" onchange="handleNoneSkills(this)">
                                     <span id="opt-skill-none">I don't have any particular skill now</span>
                                 </label>
                             </div>
 
                             <!-- Other Skill -->
                             <div style="margin-top: 0.75rem;">
-                                <label for="app-skill-other" style="font-size: 0.85rem; color: #4b5563; font-weight: 600;" id="lbl-skill-other">Other skill:</label>
-                                <input type="text" id="app-skill-other" placeholder="Other skill (optional)" style="margin-top: 0.25rem;">
+                                <label for="app-skill-other"
+                                    style="font-size: 0.85rem; color: #4b5563; font-weight: 600;"
+                                    id="lbl-skill-other">Other skill:</label>
+                                <input type="text" id="app-skill-other" placeholder="Other skill (optional)"
+                                    style="margin-top: 0.25rem;">
                             </div>
                         </div>
 
@@ -1064,27 +1121,34 @@
                                 <span>🤝</span> <span id="txt-teams-info-title">ASM Teams</span>
                             </div>
                             <p style="font-size: 0.9rem; margin-bottom: 0.75rem; color: #374151;" id="txt-teams-intro">
-                                ASM provides the opportunity to join its teams, practice your skills and contribute to its ongoing story of success. A brief description of the teams and their role is provided below:
+                                ASM provides the opportunity to join its teams, practice your skills and contribute to
+                                its ongoing story of success. A brief description of the teams and their role is
+                                provided below:
                             </p>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-1-title">• Graphics and Video making:</span>
-                                <span id="t-desc-1-body"> involved in designing posters for events and editing photos and videos.</span>
+                                <span id="t-desc-1-body"> involved in designing posters for events and editing photos
+                                    and videos.</span>
                             </div>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-2-title">• Marketing and Social Media:</span>
-                                <span id="t-desc-2-body"> manages the social media pages of the association, promotes events, and keeps members updated.</span>
+                                <span id="t-desc-2-body"> manages the social media pages of the association, promotes
+                                    events, and keeps members updated.</span>
                             </div>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-3-title">• Events and Trips:</span>
-                                <span id="t-desc-3-body"> proposes and organizes activities and trips of ASM. For each activity there is a contact person aided by team mates.</span>
+                                <span id="t-desc-3-body"> proposes and organizes activities and trips of ASM. For each
+                                    activity there is a contact person aided by team mates.</span>
                             </div>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-4-title">• Tutoring:</span>
-                                <span id="t-desc-4-body"> elder students help first-year students. (Italian language is mandatory)</span>
+                                <span id="t-desc-4-body"> elder students help first-year students. (Italian language is
+                                    mandatory)</span>
                             </div>
                             <div class="team-desc-item">
                                 <span class="team-desc-title" id="t-desc-5-title">• Jumuah:</span>
-                                <span id="t-desc-5-body"> responsible for weekly Khatib scheduling in both campuses, Drive revision of texts, and maintaining the meditation room.</span>
+                                <span id="t-desc-5-body"> responsible for weekly Khatib scheduling in both campuses,
+                                    Drive revision of texts, and maintaining the meditation room.</span>
                             </div>
                         </div>
 
@@ -1093,19 +1157,23 @@
                             <label id="lbl-join-teams">Would you like to join one or more of ASM teams?</label>
                             <div class="selection-grid" id="teams-grid">
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="teams" value="Events and Trips" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="teams" value="Events and Trips"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-team-events">Events and Trips</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="teams" value="Marketing and Social Media" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="teams" value="Marketing and Social Media"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-team-marketing">Marketing and Social Media</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="teams" value="Graphics and Video making" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="teams" value="Graphics and Video making"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-team-graphics">Graphics and Video making</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="teams" value="Tutoring" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="teams" value="Tutoring"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-team-tutoring">Tutoring</span>
                                 </label>
                                 <label class="choice-card-label">
@@ -1114,8 +1182,11 @@
                                 </label>
                             </div>
                             <div style="margin-top: 0.75rem;">
-                                <label for="app-team-other" style="font-size: 0.85rem; color: #4b5563; font-weight: 600;" id="lbl-team-other">Other team / department:</label>
-                                <input type="text" id="app-team-other" placeholder="Other team preference (optional)" style="margin-top: 0.25rem;">
+                                <label for="app-team-other"
+                                    style="font-size: 0.85rem; color: #4b5563; font-weight: 600;"
+                                    id="lbl-team-other">Other team / department:</label>
+                                <input type="text" id="app-team-other" placeholder="Other team preference (optional)"
+                                    style="margin-top: 0.25rem;">
                             </div>
                         </div>
 
@@ -1128,53 +1199,66 @@
                             <label id="lbl-languages">Select all the Languages you are fluent at:</label>
                             <div class="selection-grid" id="languages-grid">
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Italian" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Italian"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-italian">Italian</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="English" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="English"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-english">English</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Arabic" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Arabic"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-arabic">Arabic</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Urdu" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Urdu"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-urdu">Urdu</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Hindi" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Hindi"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-hindi">Hindi</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Indonesian" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Indonesian"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-indonesian">Indonesian</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Turkish" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Turkish"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-turkish">Turkish</span>
                                 </label>
                                 <label class="choice-card-label">
-                                    <input type="checkbox" name="languages" value="Persian" onchange="toggleCheckbox(this)">
+                                    <input type="checkbox" name="languages" value="Persian"
+                                        onchange="toggleCheckbox(this)">
                                     <span id="opt-lang-persian">Persian</span>
                                 </label>
                             </div>
                             <div style="margin-top: 0.75rem;">
-                                <label for="app-lang-other" style="font-size: 0.85rem; color: #4b5563; font-weight: 600;" id="lbl-lang-other">Other language(s):</label>
-                                <input type="text" id="app-lang-other" placeholder="Other languages (optional)" style="margin-top: 0.25rem;">
+                                <label for="app-lang-other"
+                                    style="font-size: 0.85rem; color: #4b5563; font-weight: 600;"
+                                    id="lbl-lang-other">Other language(s):</label>
+                                <input type="text" id="app-lang-other" placeholder="Other languages (optional)"
+                                    style="margin-top: 0.25rem;">
                             </div>
                         </div>
 
                         <!-- Translator Volunteer -->
                         <div class="form-group">
-                            <label id="lbl-volunteer-translator">Do you want to volunteer as a translator in a future event/activity?</label>
+                            <label id="lbl-volunteer-translator">Do you want to volunteer as a translator in a future
+                                event/activity?</label>
                             <div style="display: flex; gap: 1rem; margin-top: 0.25rem;">
                                 <label class="choice-card-label" style="flex: 1;" onclick="updateChoiceStyle(this)">
                                     <input type="radio" name="volunteer_translator" value="Yes">
                                     <span id="opt-trans-yes">Yes</span>
                                 </label>
-                                <label class="choice-card-label selected" style="flex: 1;" onclick="updateChoiceStyle(this)">
+                                <label class="choice-card-label selected" style="flex: 1;"
+                                    onclick="updateChoiceStyle(this)">
                                     <input type="radio" name="volunteer_translator" value="No" checked>
                                     <span id="opt-trans-no">No</span>
                                 </label>
@@ -1217,13 +1301,16 @@
                         </div>
 
                         <!-- Free Membership Celebration Banner (shown when fee is €0) -->
-                        <div id="free-membership-banner" style="display: none; background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border: 2px solid #86efac; border-radius: 12px; padding: 1.25rem 1.5rem; align-items: center; gap: 1rem; margin-bottom: 1.25rem;"></div>
+                        <div id="free-membership-banner"
+                            style="display: none; background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border: 2px solid #86efac; border-radius: 12px; padding: 1.25rem 1.5rem; align-items: center; gap: 1rem; margin-bottom: 1.25rem;">
+                        </div>
 
                         <!-- Payment Method -->
                         <div class="form-group" id="payment-method-group">
                             <label id="lbl-payment-method">How do you want to pay the €5 membership fee? *</label>
                             <div class="selection-grid" id="payment-grid">
-                                <input type="radio" name="payment_method" value="Free" id="radio-pay-free" style="display: none;">
+                                <input type="radio" name="payment_method" value="Free" id="radio-pay-free"
+                                    style="display: none;">
                                 <label class="choice-card-label" onclick="updateChoiceStyle(this)">
                                     <input type="radio" name="payment_method" value="PayPal" required>
                                     <span>PayPal</span>
@@ -1243,41 +1330,55 @@
                             </div>
 
                             <!-- Contextual Payment Instructions Box -->
-                            <div id="payment-info-box" style="margin-top: 1rem; padding: 1rem 1.25rem; border-radius: 0.75rem; background: #f8fafc; border: 1.5px solid #cbd5e1; font-size: 0.88rem; line-height: 1.55; color: #334155; display: none;">
+                            <div id="payment-info-box"
+                                style="margin-top: 1rem; padding: 1rem 1.25rem; border-radius: 0.75rem; background: #f8fafc; border: 1.5px solid #cbd5e1; font-size: 0.88rem; line-height: 1.55; color: #334155; display: none;">
                                 <div id="payment-info-content"></div>
                             </div>
                         </div>
 
                         <!-- Personalized Keychain Gift Option -->
-                        <div id="keychain-choice-group" class="form-group" style="background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%); border: 1.5px solid #99f6e4; border-radius: 12px; padding: 1.25rem 1.35rem; margin-bottom: 1.5rem;">
-                            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
-                                <img src="/assets/keychain_gift.jpg" alt="ASM Keychain" style="width: 84px; height: 76px; object-fit: cover; border-radius: 10px; border: 2px solid #0284c7; box-shadow: 0 3px 8px rgba(2, 132, 199, 0.15); flex-shrink: 0;">
+                        <div id="keychain-choice-group" class="form-group"
+                            style="background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%); border: 1.5px solid #99f6e4; border-radius: 12px; padding: 1.25rem 1.35rem; margin-bottom: 1.5rem;">
+                            <div
+                                style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
+                                <img src="/assets/keychain_gift.jpg" alt="ASM Keychain"
+                                    style="width: 84px; height: 76px; object-fit: cover; border-radius: 10px; border: 2px solid #0284c7; box-shadow: 0 3px 8px rgba(2, 132, 199, 0.15); flex-shrink: 0;">
                                 <div style="flex: 1; min-width: 0;">
-                                    <div style="font-weight: 700; color: #0369a1; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem;" id="lbl-keychain-gift-header">
+                                    <div style="font-weight: 700; color: #0369a1; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem;"
+                                        id="lbl-keychain-gift-header">
                                         <span>🔑</span> Free Personalized Keychain Gift
                                     </div>
-                                    <div style="font-size: 0.85rem; color: #475569; margin-top: 0.2rem; line-height: 1.45;" id="txt-keychain-gift-subtitle">
-                                        As a new ASM member, receive a customized 3D keychain with your personalized name!
+                                    <div style="font-size: 0.85rem; color: #475569; margin-top: 0.2rem; line-height: 1.45;"
+                                        id="txt-keychain-gift-subtitle">
+                                        As a new ASM member, receive a customized 3D keychain with your personalized
+                                        name!
                                     </div>
                                 </div>
                             </div>
 
-                            <label class="choice-card-label selected" style="align-items: flex-start; gap: 0.75rem; padding: 0.85rem 1rem; background: white; border: 1.5px solid #bae6fd; border-radius: 8px; cursor: pointer; margin-bottom: 0.75rem;">
-                                <input type="checkbox" id="app-keychain-requested" checked onchange="toggleKeychainOption(this)" style="margin-top: 0.2rem;">
-                                <span style="font-size: 0.9rem; font-weight: 600; color: #0f172a;" id="lbl-keychain-optin">
+                            <label class="choice-card-label selected"
+                                style="align-items: flex-start; gap: 0.75rem; padding: 0.85rem 1rem; background: white; border: 1.5px solid #bae6fd; border-radius: 8px; cursor: pointer; margin-bottom: 0.75rem;">
+                                <input type="checkbox" id="app-keychain-requested" checked
+                                    onchange="toggleKeychainOption(this)" style="margin-top: 0.2rem;">
+                                <span style="font-size: 0.9rem; font-weight: 600; color: #0f172a;"
+                                    id="lbl-keychain-optin">
                                     Yes, I would like to receive my free personalized 3D keychain!
                                 </span>
                             </label>
 
                             <div id="keychain-name-field" style="display: block; margin-top: 0.5rem;">
-                                <label for="app-keychain-name" style="font-size: 0.85rem; font-weight: 600; color: #334155; display: block; margin-bottom: 0.35rem;" id="lbl-keychain-name">
+                                <label for="app-keychain-name"
+                                    style="font-size: 0.85rem; font-weight: 600; color: #334155; display: block; margin-bottom: 0.35rem;"
+                                    id="lbl-keychain-name">
                                     Name you want printed on the keychain:
                                 </label>
                                 <div style="display: flex; gap: 0.5rem; align-items: center; max-width: 400px;">
-                                    <input type="text" id="app-keychain-name" maxlength="25" placeholder="e.g. Samir" style="padding: 0.55rem 0.85rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; width: 100%;">
+                                    <input type="text" id="app-keychain-name" maxlength="25" placeholder="e.g. Samir"
+                                        style="padding: 0.55rem 0.85rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; width: 100%;">
                                 </div>
-                                <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.35rem;" id="hint-keychain-name">
-                                    Up to 25 characters. If left empty, your first name will be used by default.
+                                <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.35rem;"
+                                    id="hint-keychain-name">
+                                    Up to 10 characters. If left empty, your first name will be used by default.
                                 </div>
                             </div>
                         </div>
@@ -1285,15 +1386,21 @@
                         <!-- Comments, ideas, feedback -->
                         <div class="form-group">
                             <label for="app-comments" id="lbl-comments">Comments, ideas, feedback</label>
-                            <textarea id="app-comments" rows="3" placeholder="Tell us anything you'd like to share or suggest..."></textarea>
+                            <textarea id="app-comments" rows="3"
+                                placeholder="Tell us anything you'd like to share or suggest..."></textarea>
                         </div>
 
                         <!-- GDPR & Statute Consent Checkbox -->
                         <div class="form-group" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
-                            <label class="choice-card-label" style="align-items: flex-start; gap: 0.75rem; padding: 1rem; border-color: #cbd5e1; background: #f8fafc; cursor: pointer;">
-                                <input type="checkbox" id="app-consent" required style="margin-top: 0.2rem;" onchange="toggleCheckbox(this)">
-                                <span style="font-size: 0.88rem; line-height: 1.5; font-weight: 500;" id="lbl-consent-text">
-                                    I accept the <strong>ASM Statute</strong> and give my consent to the processing of personal data for association activities in accordance with European GDPR & Italian privacy regulations. *
+                            <label class="choice-card-label"
+                                style="align-items: flex-start; gap: 0.75rem; padding: 1rem; border-color: #cbd5e1; background: #f8fafc; cursor: pointer;">
+                                <input type="checkbox" id="app-consent" required style="margin-top: 0.2rem;"
+                                    onchange="toggleCheckbox(this)">
+                                <span style="font-size: 0.88rem; line-height: 1.5; font-weight: 500;"
+                                    id="lbl-consent-text">
+                                    I accept the <strong>ASM Statute</strong> and give my consent to the processing of
+                                    personal data for association activities in accordance with European GDPR & Italian
+                                    privacy regulations. *
                                 </span>
                             </label>
                         </div>
@@ -1303,7 +1410,8 @@
                             <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(4)">
                                 <span id="btn-back-step4">← Teams & Skills</span>
                             </button>
-                            <button type="submit" class="btn btn-primary btn-step-next" id="btn-submit-app" style="padding: 0.85rem 2rem; font-size: 1.05rem;">
+                            <button type="submit" class="btn btn-primary btn-step-next" id="btn-submit-app"
+                                style="padding: 0.85rem 2rem; font-size: 1.05rem;">
                                 Submit Application
                             </button>
                         </div>
@@ -1318,21 +1426,30 @@
             <div id="page-success" class="hidden">
                 <div class="success-card">
                     <div class="success-icon-wrap">✓</div>
-                    <h2 id="success-header" style="color: var(--color-primary); margin-bottom: 0.75rem;">Application Received!</h2>
-                    <p id="success-body" style="color: var(--color-text-light); max-width: 600px; margin: 0 auto 1.75rem auto; font-size: 1.05rem; line-height: 1.6;">
-                        Thank you for applying to join ASM POLIMI. We have securely saved your application and will be in touch shortly regarding your membership card and welcome package!
+                    <h2 id="success-header" style="color: var(--color-primary); margin-bottom: 0.75rem;">Application
+                        Received!</h2>
+                    <p id="success-body"
+                        style="color: var(--color-text-light); max-width: 600px; margin: 0 auto 1.75rem auto; font-size: 1.05rem; line-height: 1.6;">
+                        Thank you for applying to join ASM POLIMI. We have securely saved your application and will be
+                        in touch shortly regarding your membership card and welcome package!
                     </p>
 
                     <!-- Keychain Celebration Confirmation Notice -->
-                    <div id="success-keychain-notice" style="display: none; background: linear-gradient(135deg, #f0fdfa, #e0f2fe); border: 2px solid #7dd3fc; border-radius: 12px; padding: 1.25rem 1.5rem; max-width: 620px; margin: 0 auto 1.75rem auto; text-align: left; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);">
+                    <div id="success-keychain-notice"
+                        style="display: none; background: linear-gradient(135deg, #f0fdfa, #e0f2fe); border: 2px solid #7dd3fc; border-radius: 12px; padding: 1.25rem 1.5rem; max-width: 620px; margin: 0 auto 1.75rem auto; text-align: left; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);">
                         <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                            <img src="/assets/keychain_gift.jpg" alt="Personalized Keychain" style="width: 90px; height: 84px; object-fit: cover; border-radius: 12px; border: 2px solid #0284c7; box-shadow: 0 3px 8px rgba(2, 132, 199, 0.15); flex-shrink: 0;">
+                            <img src="/assets/keychain_gift.jpg" alt="Personalized Keychain"
+                                style="width: 90px; height: 84px; object-fit: cover; border-radius: 12px; border: 2px solid #0284c7; box-shadow: 0 3px 8px rgba(2, 132, 199, 0.15); flex-shrink: 0;">
                             <div style="flex: 1; min-width: 0;">
-                                <div style="font-weight: 700; color: #0369a1; font-size: 1.05rem;" id="success-keychain-title">
+                                <div style="font-weight: 700; color: #0369a1; font-size: 1.05rem;"
+                                    id="success-keychain-title">
                                     🔑 Personalized Keychain Gift Reserved!
                                 </div>
-                                <div style="font-size: 0.88rem; color: #334155; margin-top: 0.3rem; line-height: 1.45;" id="success-keychain-desc">
-                                    We have reserved a 3D custom keychain for you with the name: <strong id="success-keychain-name-val" style="color: #0284c7;"></strong>. It will be prepared and handed to you with your membership pack!
+                                <div style="font-size: 0.88rem; color: #334155; margin-top: 0.3rem; line-height: 1.45;"
+                                    id="success-keychain-desc">
+                                    We have reserved a 3D custom keychain for you with the name: <strong
+                                        id="success-keychain-name-val" style="color: #0284c7;"></strong>. It will be
+                                    prepared and handed to you with your membership pack!
                                 </div>
                             </div>
                         </div>
@@ -1341,8 +1458,12 @@
                     <!-- Contact & Payment Details (from Index page) -->
                     <div class="success-contact-box">
                         <div style="text-align: center; margin-bottom: 1.25rem;">
-                            <h3 id="success-contact-title" style="color: var(--color-primary); margin-bottom: 0.35rem; font-size: 1.25rem;">Contact Information</h3>
-                            <p id="success-contact-desc" style="color: var(--color-text-light); font-size: 0.92rem; margin: 0;">Have questions? Want to complete your membership fee or stay connected? Find our details below:</p>
+                            <h3 id="success-contact-title"
+                                style="color: var(--color-primary); margin-bottom: 0.35rem; font-size: 1.25rem;">Contact
+                                Information</h3>
+                            <p id="success-contact-desc"
+                                style="color: var(--color-text-light); font-size: 0.92rem; margin: 0;">Have questions?
+                                Want to complete your membership fee or stay connected? Find our details below:</p>
                         </div>
 
                         <div class="info-item">
@@ -1378,7 +1499,8 @@
                                 <strong id="lbl-contact-paypal">PayPal Email:</strong>
                             </div>
                             <div>
-                                <span class="copyable-iban" data-copy="asm.polimi@gmail.com" title="Click to copy PayPal email">
+                                <span class="copyable-iban" data-copy="asm.polimi@gmail.com"
+                                    title="Click to copy PayPal email">
                                     asm.polimi@gmail.com
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
@@ -1401,8 +1523,9 @@
                                     <span class="copyable-iban is-iban" data-copy="Mariam abou el seod"
                                         title="Click to copy Name">
                                         Mariam abou el seod
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                            stroke-linejoin="round"
                                             style="display: inline-block; vertical-align: middle;">
                                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -1414,8 +1537,9 @@
                                     <span class="copyable-iban is-iban" data-copy="BE46967888148736"
                                         title="Click to copy IBAN">
                                         BE46 9678 8814 8736
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                            stroke-linejoin="round"
                                             style="display: inline-block; vertical-align: middle;">
                                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -1425,16 +1549,24 @@
                             </div>
                         </div>
 
-                        <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #edf2f7;" class="success-follow-section">
-                            <h4 id="success-follow-title" style="margin-bottom: 0.75rem; color: var(--color-primary); font-size: 1.05rem;">Follow Us</h4>
+                        <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #edf2f7;"
+                            class="success-follow-section">
+                            <h4 id="success-follow-title"
+                                style="margin-bottom: 0.75rem; color: var(--color-primary); font-size: 1.05rem;">Follow
+                                Us</h4>
                             <div class="social-links" style="margin-bottom: 0.75rem; justify-content: center;">
-                                <a href="https://www.instagram.com/asm.polimi/" target="_blank" rel="noopener" class="social-icon">Instagram</a>
-                                <a href="https://www.facebook.com/ASMPolimi/" target="_blank" rel="noopener" class="social-icon">Facebook</a>
-                                <a href="https://www.youtube.com/@asmpolimi7314" target="_blank" rel="noopener" class="social-icon">Youtube</a>
+                                <a href="https://www.instagram.com/asm.polimi/" target="_blank" rel="noopener"
+                                    class="social-icon">Instagram</a>
+                                <a href="https://www.facebook.com/ASMPolimi/" target="_blank" rel="noopener"
+                                    class="social-icon">Facebook</a>
+                                <a href="https://www.youtube.com/@asmpolimi7314" target="_blank" rel="noopener"
+                                    class="social-icon">Youtube</a>
                             </div>
                             <div class="social-links" style="justify-content: center;">
-                                <a href="https://chat.whatsapp.com/LhULMwU6OkMCboPEpmfhy2" target="_blank" rel="noopener" class="social-icon" style="background-color: #25D366;">Whatsapp</a>
-                                <a href="https://t.me/asmpolimi" target="_blank" rel="noopener" class="social-icon" style="background-color: #0088cc;">Telegram</a>
+                                <a href="https://chat.whatsapp.com/LhULMwU6OkMCboPEpmfhy2" target="_blank"
+                                    rel="noopener" class="social-icon" style="background-color: #25D366;">Whatsapp</a>
+                                <a href="https://t.me/asmpolimi" target="_blank" rel="noopener" class="social-icon"
+                                    style="background-color: #0088cc;">Telegram</a>
                             </div>
                         </div>
                     </div>
@@ -1592,7 +1724,7 @@
             keychainOptin: "Yes, I would like to receive my free personalized 3D keychain!",
             keychainNameLabel: "Name you want printed on the keychain:",
             keychainNamePlaceholder: "e.g. Samir",
-            keychainNameHint: "Up to 25 characters. If left empty, your first name will be used by default.",
+            keychainNameHint: "Up to 10 characters. If left empty, your first name will be used by default.",
             successKeychainTitle: "🔑 Personalized Keychain Gift Reserved!",
             successKeychainDesc: "We have reserved a 3D custom keychain for you with the name: "
         },
@@ -1727,7 +1859,7 @@
             keychainOptin: "Sì, desidero ricevere il mio portachiavi 3D personalizzato in omaggio!",
             keychainNameLabel: "Nome che desideri stampato sul portachiavi:",
             keychainNamePlaceholder: "es. Samir",
-            keychainNameHint: "Fino a 25 caratteri. Se lasciato vuoto, verrà utilizzato automaticamente il tuo nome.",
+            keychainNameHint: "Fino a 10 caratteri. Se lasciato vuoto, verrà utilizzato automaticamente il tuo nome.",
             successKeychainTitle: "🔑 Portachiavi Personalizzato Riservato!",
             successKeychainDesc: "Abbiamo riservato per te un portachiavi 3D personalizzato con il nome: "
         }
@@ -1744,10 +1876,10 @@
     let liveKeychainGiftEnabled = true;
 
     async function loadFeeSetting() {
-        const isStatic = window.location.hostname.includes('github.io') || 
-                         window.location.protocol === 'file:' || 
-                         window.location.hostname === 'asmpolimi.it' || 
-                         window.location.hostname === 'www.asmpolimi.it';
+        const isStatic = window.location.hostname.includes('github.io') ||
+            window.location.protocol === 'file:' ||
+            window.location.hostname === 'asmpolimi.it' ||
+            window.location.hostname === 'www.asmpolimi.it';
 
         const endpoints = isStatic ? [
             'https://admin.asmpolimi.it/api/membership/fee',
@@ -1798,7 +1930,7 @@
                 feeBadge.style.border = '1.5px solid #86efac';
             }
             if (impactFee) {
-                impactFee.textContent = currentLang === 'it' 
+                impactFee.textContent = currentLang === 'it'
                     ? "L'iscrizione per questo periodo è completamente gratuita! Unisciti a noi senza alcuna quota."
                     : "Membership is currently completely free! Join our vibrant community without any fee.";
             }
@@ -1823,9 +1955,9 @@
                             ${currentLang === 'it' ? 'Iscrizione 100% Gratuita!' : '100% Free Membership!'}
                         </div>
                         <div style="font-size: 0.88rem; color: #15803d; margin-top: 0.25rem; line-height: 1.45;">
-                            ${currentLang === 'it' 
-                                ? 'Nessun pagamento o quota associativa richiesta per questo periodo. Compila il modulo e invia direttamente la tua richiesta!' 
-                                : 'No membership fee required for this period. Simply submit your application and your membership will be verified!'}
+                            ${currentLang === 'it'
+                        ? 'Nessun pagamento o quota associativa richiesta per questo periodo. Compila il modulo e invia direttamente la tua richiesta!'
+                        : 'No membership fee required for this period. Simply submit your application and your membership will be verified!'}
                         </div>
                     </div>
                 `;
@@ -2217,7 +2349,7 @@
     function resetFormToStart() {
         document.getElementById('membership-form').reset();
         document.querySelectorAll('.choice-card-label').forEach(el => el.classList.remove('selected'));
-        
+
         // Re-apply default radio for translator
         const defaultTrans = document.querySelector('input[name="volunteer_translator"][value="No"]');
         if (defaultTrans) {
@@ -2242,12 +2374,12 @@
         }
         const successNotice = document.getElementById('success-keychain-notice');
         if (successNotice) successNotice.style.display = 'none';
-        
+
         const err3 = document.getElementById('step-3-error-banner');
         if (err3) err3.classList.remove('alert-error');
         const err5 = document.getElementById('step-5-error-banner');
         if (err5) err5.classList.remove('alert-error');
-        
+
         goToStep(1);
     }
 
@@ -2346,10 +2478,10 @@
         submitBtn.disabled = true;
         submitBtn.textContent = t.btnSubmitting;
 
-        const isStatic = window.location.hostname.includes('github.io') || 
-                         window.location.protocol === 'file:' || 
-                         window.location.hostname === 'asmpolimi.it' || 
-                         window.location.hostname === 'www.asmpolimi.it';
+        const isStatic = window.location.hostname.includes('github.io') ||
+            window.location.protocol === 'file:' ||
+            window.location.hostname === 'asmpolimi.it' ||
+            window.location.hostname === 'www.asmpolimi.it';
 
         const endpoints = isStatic ? [
             'https://admin.asmpolimi.it/api/membership',
@@ -2421,13 +2553,13 @@
         const fullNameInput = document.getElementById('app-fullname');
         const keychainNameInput = document.getElementById('app-keychain-name');
         if (fullNameInput && keychainNameInput) {
-            keychainNameInput.addEventListener('input', function() {
+            keychainNameInput.addEventListener('input', function () {
                 this.dataset.manual = 'true';
             });
-            fullNameInput.addEventListener('input', function() {
+            fullNameInput.addEventListener('input', function () {
                 if (keychainNameInput.dataset.manual !== 'true') {
                     const first = this.value.trim().split(' ')[0] || '';
-                    keychainNameInput.value = first.substring(0, 25);
+                    keychainNameInput.value = first.substring(0, 10);
                 }
             });
         }
@@ -2435,7 +2567,7 @@
         // Real-time matricola digit filter
         const matricolaInput = document.getElementById('app-matricola');
         if (matricolaInput) {
-            matricolaInput.addEventListener('input', function() {
+            matricolaInput.addEventListener('input', function () {
                 this.value = this.value.replace(/[^0-9]/g, '');
             });
         }
@@ -2443,17 +2575,17 @@
         // Automatic phone prefix handling
         const phoneInput = document.getElementById('app-phone');
         if (phoneInput) {
-            phoneInput.addEventListener('focus', function() {
+            phoneInput.addEventListener('focus', function () {
                 if (!this.value.trim()) {
                     this.value = '+39 ';
                 }
             });
-            phoneInput.addEventListener('blur', function() {
+            phoneInput.addEventListener('blur', function () {
                 if (this.value.trim() === '+39' || this.value.trim() === '+39 ') {
                     this.value = '';
                 }
             });
-            phoneInput.addEventListener('input', function() {
+            phoneInput.addEventListener('input', function () {
                 let val = this.value;
                 if (val.length > 0 && !val.startsWith('+')) {
                     this.value = '+39 ' + val.replace(/[^0-9\s]/g, '');
@@ -2464,7 +2596,7 @@
         // If user types in 'other skill', automatically uncheck 'no skills'
         const otherSkillInput = document.getElementById('app-skill-other');
         if (otherSkillInput) {
-            otherSkillInput.addEventListener('input', function() {
+            otherSkillInput.addEventListener('input', function () {
                 if (this.value.trim().length > 0) {
                     const noneCb = document.getElementById('skill-none-checkbox');
                     if (noneCb && noneCb.checked) {
@@ -2497,7 +2629,7 @@
                     ta.style.opacity = '0';
                     document.body.appendChild(ta);
                     ta.select();
-                    try { document.execCommand('copy'); onCopied(); } catch(err){}
+                    try { document.execCommand('copy'); onCopied(); } catch (err) { }
                     document.body.removeChild(ta);
                 });
             } else {
@@ -2507,7 +2639,7 @@
                 ta.style.opacity = '0';
                 document.body.appendChild(ta);
                 ta.select();
-                try { document.execCommand('copy'); onCopied(); } catch(err){}
+                try { document.execCommand('copy'); onCopied(); } catch (err) { }
                 document.body.removeChild(ta);
             }
         });
