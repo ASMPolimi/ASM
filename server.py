@@ -30,6 +30,12 @@ def init_db():
     conn = get_db()
     c = conn.cursor()
     c.execute('''
+        CREATE TABLE IF NOT EXISTS settings (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        )
+    ''')
+    c.execute('''
         CREATE TABLE IF NOT EXISTS subscribers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
@@ -54,9 +60,14 @@ def init_db():
             payment_method TEXT,
             comments TEXT,
             lang_selected TEXT,
+            paid INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    try:
+        c.execute("ALTER TABLE membership_applications ADD COLUMN paid INTEGER DEFAULT 0")
+    except Exception:
+        pass
     conn.commit()
     conn.close()
 
@@ -621,6 +632,84 @@ def export_subscribers():
     return generate_excel_response(headers, data_rows, "subscribers.xlsx", "Subscribers")
 
 # ----------------------------------------------------
+# Membership Fee Configuration Endpoints
+# ----------------------------------------------------
+
+def get_membership_fee_setting():
+    conn = get_db()
+    c = conn.cursor()
+    try:
+        c.execute("SELECT value FROM settings WHERE key = 'membership_fee'")
+        row = c.fetchone()
+        conn.close()
+        if not row or not row['value']:
+            return 5.0
+        val = str(row['value']).strip().lower().replace('€', '').replace('eur', '').strip()
+        if val in ('0', 'free', 'gratis', '0.0', '0.00'):
+            return 0.0
+        return max(0.0, float(val))
+    except Exception:
+        if conn: conn.close()
+        return 5.0
+
+@app.route('/api/membership/fee', methods=['GET'])
+def get_membership_fee():
+    fee = get_membership_fee_setting()
+    is_free = (fee == 0.0)
+    fee_formatted = "Free" if is_free else (f"€{int(fee)}" if fee.is_integer() else f"€{fee:.2f}")
+    return jsonify({
+        "success": True,
+        "fee": fee,
+        "is_free": is_free,
+        "fee_formatted": fee_formatted,
+        "currency": "EUR"
+    })
+
+@app.route('/api/membership/fee', methods=['POST'])
+def set_membership_fee():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    data = request.json or {}
+    raw_val = data.get('fee')
+    if raw_val is None:
+        return jsonify({"success": False, "message": "Fee value is required"}), 400
+
+    try:
+        val_str = str(raw_val).strip().lower().replace('€', '').replace('eur', '').strip()
+        if val_str in ('0', 'free', 'gratis', '0.0', '0.00'):
+            fee = 0.0
+        else:
+            fee = max(0.0, float(val_str))
+    except (ValueError, TypeError):
+        return jsonify({"success": False, "message": "Invalid fee amount. Please enter a valid number (e.g. 0, 5, 10)."}), 400
+
+    fee_str = "0" if fee == 0.0 else (str(int(fee)) if fee.is_integer() else f"{fee:.2f}")
+    conn = get_db()
+    c = conn.cursor()
+    try:
+        c.execute(
+            "INSERT INTO settings (key, value) VALUES ('membership_fee', ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+            (fee_str,)
+        )
+        conn.commit()
+        conn.close()
+        is_free = (fee == 0.0)
+        fee_formatted = "Free" if is_free else (f"€{int(fee)}" if fee.is_integer() else f"€{fee:.2f}")
+        return jsonify({
+            "success": True,
+            "fee": fee,
+            "is_free": is_free,
+            "fee_formatted": fee_formatted,
+            "message": f"Membership fee successfully updated to {fee_formatted}!"
+        })
+    except Exception as e:
+        if conn: conn.close()
+        return jsonify({"success": False, "message": str(e)}), 500
+
+# ----------------------------------------------------
 # Membership Application Endpoints
 # ----------------------------------------------------
 
@@ -651,15 +740,20 @@ def submit_membership():
     payment_method = data.get('payment_method', '')
     comments = data.get('comments', '')
     lang_selected = data.get('lang_selected', 'en')
+
+    current_fee = get_membership_fee_setting()
+    if current_fee == 0.0 and (not payment_method or payment_method in ('N/A', 'None', '')):
+        payment_method = 'Free Membership'
+    initial_paid = 1 if current_fee == 0.0 else 0
     
     conn = get_db()
     c = conn.cursor()
     try:
         c.execute('''
             INSERT INTO membership_applications 
-            (full_name, matricola, email, phone, course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (full_name, str(matricola).strip(), email.strip(), phone.strip(), course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected))
+            (full_name, matricola, email, phone, course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected, paid)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (full_name, str(matricola).strip(), email.strip(), phone.strip(), course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected, initial_paid))
         conn.commit()
     except Exception as e:
         conn.close()
@@ -678,9 +772,44 @@ def get_memberships():
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT * FROM membership_applications ORDER BY created_at DESC")
-    applications = [dict(row) for row in c.fetchall()]
+    rows = c.fetchall()
     conn.close()
+    applications = []
+    for row in rows:
+        a = dict(row)
+        a['paid'] = bool(a.get('paid', 0))
+        applications.append(a)
     return jsonify({"success": True, "applications": applications})
+
+@app.route('/api/memberships/toggle-paid', methods=['POST'])
+def toggle_membership_paid():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    data = request.json or {}
+    app_id = data.get('id')
+    if not app_id:
+        return jsonify({"success": False, "message": "Application ID required"}), 400
+
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT paid FROM membership_applications WHERE id = ?", (app_id,))
+    row = c.fetchone()
+    if not row:
+        conn.close()
+        return jsonify({"success": False, "message": "Application not found"}), 404
+
+    current_val = bool(row['paid'])
+    new_val = 0 if current_val else 1
+    if 'paid' in data:
+        new_val = 1 if data['paid'] else 0
+
+    c.execute("UPDATE membership_applications SET paid = ? WHERE id = ?", (new_val, app_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "paid": bool(new_val)})
 
 @app.route('/api/memberships', methods=['DELETE'])
 def delete_membership():
@@ -718,22 +847,38 @@ def export_memberships():
         
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT id, created_at, lang_selected, full_name, matricola, email, phone, course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments FROM membership_applications ORDER BY created_at DESC")
+    c.execute("SELECT id, created_at, paid, payment_method, full_name, matricola, email, phone, course_level, course, teams, skills, languages, volunteer_translator, lang_selected, comments FROM membership_applications ORDER BY created_at DESC")
     rows = c.fetchall()
     conn.close()
+
+    current_fee = get_membership_fee_setting()
+    fee_str = "Free" if current_fee == 0.0 else (f"€{int(current_fee)}" if current_fee.is_integer() else f"€{current_fee:.2f}")
+    paid_status = f"PAID ({fee_str})" if current_fee > 0 else "FREE / WAIVED"
+    unpaid_status = "PENDING" if current_fee > 0 else "FREE"
     
     headers = [
-        'ID', 'Submission Date', 'Language', 'Full Name', 'Matricola', 'Email',
-        'Phone', 'Course Level', 'Course', 'Skills', 'Teams', 'Languages Spoken',
-        'Volunteer Translator', 'Payment Method', 'Comments'
+        'ID', 'Submission Date', 'Fee Paid', 'Payment Method', 'Full Name', 'Matricola', 'Email',
+        'Phone', 'Course Level', 'Course', 'Teams', 'Skills', 'Languages Spoken',
+        'Volunteer Translator', 'Language Form', 'Comments'
     ]
     data_rows = [
         [
-            r['id'], r['created_at'] or '', r['lang_selected'] or '', r['full_name'] or '',
-            str(r['matricola'] or ''), r['email'] or '', r['phone'] or '',
-            r['course_level'] or '', r['course'] or '', r['skills'] or '',
-            r['teams'] or '', r['languages'] or '', r['volunteer_translator'] or '',
-            r['payment_method'] or '', r['comments'] or ''
+            r['id'],
+            r['created_at'] or '',
+            paid_status if r['paid'] else unpaid_status,
+            r['payment_method'] or '',
+            r['full_name'] or '',
+            str(r['matricola'] or ''),
+            r['email'] or '',
+            r['phone'] or '',
+            r['course_level'] or '',
+            r['course'] or '',
+            r['teams'] or '',
+            r['skills'] or '',
+            r['languages'] or '',
+            r['volunteer_translator'] or '',
+            r['lang_selected'] or '',
+            r['comments'] or ''
         ]
         for r in rows
     ]

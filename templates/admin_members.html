@@ -259,6 +259,45 @@
             </a>
         </div>
 
+        <!-- Membership Fee Configuration Card -->
+        <div class="fee-settings-card" style="background: linear-gradient(135deg, #f8fafc 0%, #f0fdf4 100%); border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 1.15rem 1.4rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                    <span style="font-size: 1.25rem;">⚙️</span>
+                    <h3 style="margin: 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700;">Membership Fee Setting:</h3>
+                    <span id="current-fee-badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700; font-size: 0.88rem; padding: 0.25rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                        Loading...
+                    </span>
+                </div>
+                <p style="margin: 0.35rem 0 0 0; color: #64748b; font-size: 0.85rem;">
+                    Configure the association fee for applicants. You can set it to <strong>Free (€0)</strong> or any custom amount in Euros.
+                </p>
+            </div>
+
+            <!-- Fee Control Actions -->
+            <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-right: 0.15rem;">Presets:</span>
+                <button type="button" class="btn-preset-fee" onclick="setFeeInput(0)" title="Make membership 100% free" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #10b981; background: #ecfdf5; color: #047857; font-weight: 700; cursor: pointer; transition: all 0.2s;">
+                    🎁 Free (€0)
+                </button>
+                <button type="button" class="btn-preset-fee" onclick="setFeeInput(5)" style="padding: 0.4rem 0.7rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #cbd5e1; background: white; color: #334155; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    €5
+                </button>
+                <button type="button" class="btn-preset-fee" onclick="setFeeInput(10)" style="padding: 0.4rem 0.7rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #cbd5e1; background: white; color: #334155; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    €10
+                </button>
+
+                <div style="display: inline-flex; align-items: center; background: white; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 0 0.5rem; height: 36px; margin-left: 0.25rem;">
+                    <span style="color: #64748b; font-weight: 700; font-size: 0.9rem;">€</span>
+                    <input type="number" id="fee-amount-input" min="0" step="0.5" placeholder="5" style="width: 65px; border: none; outline: none; padding: 0.25rem 0.35rem; font-size: 0.95rem; font-weight: 700; color: #0f172a;">
+                </div>
+
+                <button type="button" id="btn-save-fee" onclick="saveMembershipFee()" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.85rem; height: 36px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                    <span>💾</span> Save
+                </button>
+            </div>
+        </div>
+
         <!-- Segmented Tab Switcher -->
         <div class="tab-pills-bar">
             <button type="button" class="tab-pill-btn active" id="tab-btn-applications" onclick="switchSubTab('applications')">
@@ -383,6 +422,7 @@
         } else {
             loginSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
+            fetchMembershipFee();
             fetchApplications();
             fetchSubscribers();
         }
@@ -416,6 +456,115 @@
         localStorage.removeItem('adminToken');
         token = null;
         checkAuth();
+    }
+
+    // ----------------------------------------------------
+    // Membership Fee Configuration Logic
+    // ----------------------------------------------------
+    let currentFee = 5.0;
+    let currentFeeFormatted = "€5";
+    let isFeeFree = false;
+
+    async function fetchMembershipFee() {
+        try {
+            const res = await fetch('/api/membership/fee');
+            const data = await res.json();
+            if (res.ok && data.success) {
+                currentFee = Number(data.fee) || 0;
+                isFeeFree = Boolean(data.is_free);
+                currentFeeFormatted = data.fee_formatted || (isFeeFree ? "Free" : `€${currentFee}`);
+                renderFeeBadge();
+            }
+        } catch (err) {
+            console.error("fetchMembershipFee error:", err);
+        }
+    }
+
+    function renderFeeBadge() {
+        const badge = document.getElementById('current-fee-badge');
+        const input = document.getElementById('fee-amount-input');
+        if (badge) {
+            if (isFeeFree) {
+                badge.innerHTML = '🎁 <strong>FREE (€0)</strong>';
+                badge.style.background = '#dcfce7';
+                badge.style.color = '#15803d';
+                badge.style.border = '1.5px solid #86efac';
+            } else {
+                badge.innerHTML = `🏷️ <strong>${currentFeeFormatted}</strong>`;
+                badge.style.background = '#e0f2fe';
+                badge.style.color = '#0369a1';
+                badge.style.border = '1.5px solid #bae6fd';
+            }
+        }
+        if (input && document.activeElement !== input) {
+            input.value = currentFee;
+        }
+
+        const paidOption = document.querySelector('#app-fee-filter option[value="paid"]');
+        if (paidOption) {
+            paidOption.textContent = isFeeFree ? "✅ Verified / Free" : `✅ Fee Paid (${currentFeeFormatted})`;
+        }
+    }
+
+    function setFeeInput(amount) {
+        const input = document.getElementById('fee-amount-input');
+        if (input) {
+            input.value = amount;
+            input.style.borderColor = '#10b981';
+            setTimeout(() => { input.style.borderColor = '#cbd5e1'; }, 600);
+        }
+    }
+
+    async function saveMembershipFee() {
+        const input = document.getElementById('fee-amount-input');
+        const saveBtn = document.getElementById('btn-save-fee');
+        if (!input) return;
+        
+        const val = input.value.trim();
+        if (val === '') {
+            showToast("Please enter a fee amount (0 for Free)", false);
+            return;
+        }
+
+        const numVal = parseFloat(val);
+        if (isNaN(numVal) || numVal < 0) {
+            showToast("Fee amount must be 0 or a positive number", false);
+            return;
+        }
+
+        try {
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<span>⏳</span> Saving...';
+            }
+            const res = await fetch('/api/membership/fee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ fee: numVal })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                currentFee = Number(data.fee) || 0;
+                isFeeFree = Boolean(data.is_free);
+                currentFeeFormatted = data.fee_formatted || (isFeeFree ? "Free" : `€${currentFee}`);
+                renderFeeBadge();
+                showToast(data.message || `Membership fee set to ${currentFeeFormatted}!`, true);
+                renderApplications(allApplications);
+            } else {
+                showToast(data.message || "Failed to update fee setting", false);
+            }
+        } catch (err) {
+            console.error("saveMembershipFee error:", err);
+            showToast("Network error updating fee", false);
+        } finally {
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<span>💾</span> Save';
+            }
+        }
     }
 
     // ----------------------------------------------------
@@ -490,13 +639,17 @@
                 ? `<span class="badge badge-translator">🗣️ Translator</span>`
                 : '';
 
-            const feeBadge = app.paid
-                ? `<span class="badge badge-paid">✅ Fee Paid (€5)</span>`
-                : `<span class="badge badge-unpaid">⏳ Fee Pending</span>`;
+            const feeBadge = isFeeFree
+                ? `<span class="badge badge-paid">🎁 FREE</span>`
+                : (app.paid
+                    ? `<span class="badge badge-paid">✅ Fee Paid (${currentFeeFormatted})</span>`
+                    : `<span class="badge badge-unpaid">⏳ Fee Pending</span>`);
 
-            const feeButton = app.paid
-                ? `<button type="button" class="btn-toggle-paid btn-mark-unpaid" onclick="confirmTogglePaid(${app.id}, false, '${escapeHtml(app.full_name)}')">↩ Mark Unpaid</button>`
-                : `<button type="button" class="btn-toggle-paid btn-mark-paid" onclick="confirmTogglePaid(${app.id}, true, '${escapeHtml(app.full_name)}')">✓ Mark Paid (€5)</button>`;
+            const feeButton = isFeeFree
+                ? `<button type="button" class="btn-toggle-paid btn-mark-paid" style="opacity: 0.9;" onclick="confirmTogglePaid(${app.id}, ${!app.paid}, '${escapeHtml(app.full_name)}')">${app.paid ? '✅ Free (Verified)' : '✓ Verify Member'}</button>`
+                : (app.paid
+                    ? `<button type="button" class="btn-toggle-paid btn-mark-unpaid" onclick="confirmTogglePaid(${app.id}, false, '${escapeHtml(app.full_name)}')">↩ Mark Unpaid</button>`
+                    : `<button type="button" class="btn-toggle-paid btn-mark-paid" onclick="confirmTogglePaid(${app.id}, true, '${escapeHtml(app.full_name)}')">✓ Mark Paid (${currentFeeFormatted})</button>`);
 
             card.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; flex-wrap: wrap;">
@@ -575,9 +728,16 @@
     }
 
     function confirmTogglePaid(id, markAsPaid, applicantName) {
-        const actionText = markAsPaid 
-            ? `Confirm that "${applicantName}" has PAID the €5 membership fee?`
-            : `Revert fee status for "${applicantName}" back to UNPAID (Pending)?`;
+        let actionText;
+        if (isFeeFree) {
+            actionText = markAsPaid 
+                ? `Confirm and verify member status for "${applicantName}" (Free Membership)?`
+                : `Revert verified status for "${applicantName}"?`;
+        } else {
+            actionText = markAsPaid 
+                ? `Confirm that "${applicantName}" has PAID the ${currentFeeFormatted} membership fee?`
+                : `Revert fee status for "${applicantName}" back to UNPAID (Pending)?`;
+        }
         if (confirm(actionText)) {
             executeTogglePaid(id, markAsPaid);
         }
@@ -647,9 +807,11 @@
                 <div>
                     <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Fee Payment Status</div>
                     <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
-                        ${app.paid ? '<span class="badge badge-paid">✅ PAID (€5)</span>' : '<span class="badge badge-unpaid">⏳ UNPAID / PENDING</span>'}
+                        ${isFeeFree 
+                            ? '<span class="badge badge-paid">🎁 FREE MEMBERSHIP</span>'
+                            : (app.paid ? `<span class="badge badge-paid">✅ PAID (${currentFeeFormatted})</span>` : '<span class="badge badge-unpaid">⏳ UNPAID / PENDING</span>')}
                         <button type="button" class="btn-toggle-paid ${app.paid ? 'btn-mark-unpaid' : 'btn-mark-paid'}" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="confirmTogglePaid(${app.id}, ${!app.paid}, '${escapeHtml(app.full_name)}')">
-                            ${app.paid ? '↩ Mark Unpaid' : '✓ Mark Paid (€5)'}
+                            ${isFeeFree ? (app.paid ? '↩ Revert' : '✓ Verify') : (app.paid ? '↩ Mark Unpaid' : `✓ Mark Paid (${currentFeeFormatted})`)}
                         </button>
                     </div>
                 </div>
