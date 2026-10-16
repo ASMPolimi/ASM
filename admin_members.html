@@ -182,220 +182,263 @@
             background: #ffffff;
         }
     </style>
-    
-<style>
-    .admin-members-container {
-        max-width: 950px;
-        margin: 30px auto 4rem auto;
-        padding: 2rem;
-        background: white;
-        border-radius: var(--radius-lg);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e5e7eb;
-    }
 
-    .hidden {
-        display: none !important;
-    }
+    <style>
+        .admin-members-container {
+            max-width: 950px;
+            margin: 30px auto 4rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
+        }
 
-    .toast-msg {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        z-index: 10000;
-        box-shadow: var(--shadow-lg);
-        font-weight: 500;
-        font-size: 0.95rem;
-        padding: 1rem 1.5rem;
-        border-radius: var(--radius-md);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        animation: slideInToast 0.3s ease;
-    }
+        .hidden {
+            display: none !important;
+        }
 
-    .toast-error {
-        color: #991b1b;
-        background: #fee2e2;
-        border-left: 5px solid #dc2626;
-    }
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 10000;
+            box-shadow: var(--shadow-lg);
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideInToast 0.3s ease;
+        }
 
-    .toast-success {
-        color: #166534;
-        background: #dcfce7;
-        border-left: 5px solid #16a34a;
-    }
+        .toast-error {
+            color: #991b1b;
+            background: #fee2e2;
+            border-left: 5px solid #dc2626;
+        }
 
-    @keyframes slideInToast {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
+        .toast-success {
+            color: #166534;
+            background: #dcfce7;
+            border-left: 5px solid #16a34a;
+        }
 
-    /* Sub-nav Segmented Control Tabs */
-    .tab-pills-bar {
-        display: flex;
-        gap: 0.5rem;
-        background: #f1f5f9;
-        padding: 0.35rem;
-        border-radius: 12px;
-        margin-bottom: 2rem;
-        border: 1px solid #e2e8f0;
-    }
+        @keyframes slideInToast {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
 
-    .tab-pill-btn {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1.25rem;
-        border: none;
-        background: none;
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: #64748b;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
 
-    .tab-pill-btn:hover {
-        color: var(--color-primary);
-        background: rgba(255, 255, 255, 0.6);
-    }
+        /* Sub-nav Segmented Control Tabs */
+        .tab-pills-bar {
+            display: flex;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            padding: 0.35rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
 
-    .tab-pill-btn.active {
-        color: var(--color-primary);
-        background: #ffffff;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    }
+        .tab-pill-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #64748b;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-    .tab-pill-badge {
-        font-size: 0.75rem;
-        padding: 0.15rem 0.55rem;
-        border-radius: 999px;
-        font-weight: 700;
-        background: #e2e8f0;
-        color: #475569;
-    }
+        .tab-pill-btn:hover {
+            color: var(--color-primary);
+            background: rgba(255, 255, 255, 0.6);
+        }
 
-    .tab-pill-btn.active .tab-pill-badge {
-        background: var(--color-primary);
-        color: #ffffff;
-    }
+        .tab-pill-btn.active {
+            color: var(--color-primary);
+            background: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
 
-    /* Search & Filter Controls */
-    .controls-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-bottom: 1.25rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid #e5e7eb;
-    }
+        .tab-pill-badge {
+            font-size: 0.75rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 999px;
+            font-weight: 700;
+            background: #e2e8f0;
+            color: #475569;
+        }
 
-    .search-input {
-        padding: 0.55rem 0.9rem;
-        font-size: 0.9rem;
-        border: 1.5px solid #d1d5db;
-        border-radius: 8px;
-        width: 260px;
-        max-width: 100%;
-        transition: border-color 0.2s;
-    }
+        .tab-pill-btn.active .tab-pill-badge {
+            background: var(--color-primary);
+            color: #ffffff;
+        }
 
-    .search-input:focus {
-        outline: none;
-        border-color: var(--color-primary);
-        box-shadow: 0 0 0 3px rgba(18, 74, 97, 0.1);
-    }
+        /* Search & Filter Controls */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
 
-    .btn-export {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.55rem 1rem;
-        border-radius: 8px;
-        font-size: 0.88rem;
-        font-weight: 600;
-        background: #10b981;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
+        .search-input {
+            padding: 0.55rem 0.9rem;
+            font-size: 0.9rem;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            width: 260px;
+            max-width: 100%;
+            transition: border-color 0.2s;
+        }
 
-    .btn-export:hover {
-        background: #059669;
-    }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(18, 74, 97, 0.1);
+        }
 
-    /* Member Card */
-    .member-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 1.2rem;
-        margin-bottom: 0.85rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        transition: all 0.2s;
-    }
+        .btn-export {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background: #10b981;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-    .member-card:hover {
-        border-color: #cbd5e1;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
+        .btn-export:hover {
+            background: #059669;
+        }
 
-    .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        padding: 0.2rem 0.5rem;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
+        /* Member Card */
+        .member-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-bottom: 0.85rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s;
+        }
 
-    .badge-matricola { background: #e0e7ff; color: #3730a3; }
-    .badge-lang { background: #f1f5f9; color: #334155; }
-    .badge-payment { background: #fef3c7; color: #92400e; }
-    .badge-team { background: #e0f2fe; color: #0369a1; font-weight: 500; }
-    .badge-translator { background: #dcfce7; color: #166534; }
-    .badge-paid { background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-weight: 700; }
-    .badge-unpaid { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 700; }
+        .member-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
 
-    .btn-toggle-paid {
-        padding: 0.35rem 0.75rem;
-        font-size: 0.8rem;
-        font-weight: 600;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-    }
-    .btn-mark-paid {
-        background: #10b981;
-        color: white;
-        border: 1px solid #059669;
-    }
-    .btn-mark-paid:hover {
-        background: #059669;
-        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
-    }
-    .btn-mark-unpaid {
-        background: #f8fafc;
-        color: #64748b;
-        border: 1px solid #cbd5e1;
-    }
-    .btn-mark-unpaid:hover {
-        background: #fee2e2;
-        color: #b91c1c;
-        border-color: #fca5a5;
-    }
-</style>
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-matricola {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .badge-lang {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .badge-payment {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-team {
+            background: #e0f2fe;
+            color: #0369a1;
+            font-weight: 500;
+        }
+
+        .badge-translator {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-paid {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+            font-weight: 700;
+        }
+
+        .badge-unpaid {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+            font-weight: 700;
+        }
+
+        .btn-toggle-paid {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .btn-mark-paid {
+            background: #10b981;
+            color: white;
+            border: 1px solid #059669;
+        }
+
+        .btn-mark-paid:hover {
+            background: #059669;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-mark-unpaid {
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-mark-unpaid:hover {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fca5a5;
+        }
+    </style>
 
 </head>
 
@@ -434,7 +477,8 @@
                     title="Open live public website (asmpolimi.it) in a new tab">
                     <span>🌐</span> View Website ↗
                 </a>
-                <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
+                <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)"
+                    title="Sign out of Admin Portal">
                     <span>🚪</span> Logout
                 </button>
             </nav>
@@ -443,594 +487,635 @@
 
     <!-- Main Admin Content -->
     <main style="flex: 1;">
-        
-<div class="container">
 
-    <!-- Login Container (if unauthenticated) -->
-    <div class="admin-members-container" id="login-section" style="max-width: 480px; margin-top: 80px;">
-        <h2 class="text-center mb-2" style="color: var(--color-primary);">Admin Authentication</h2>
-        <p class="text-center mb-4" style="color: var(--color-text-light); font-size: 0.9rem;">
-            Please log in with your ASM administrator credentials to access the Members & Mailing Portal.
-        </p>
-        <form id="members-login-form">
-            <div class="form-group mb-3">
-                <label for="mem-username" style="font-weight: 600; font-size: 0.9rem;">Username</label>
-                <input type="text" id="mem-username" required style="width: 100%; padding: 0.6rem; border: 1.5px solid #d1d5db; border-radius: 6px;">
-            </div>
-            <div class="form-group mb-3">
-                <label for="mem-password" style="font-weight: 600; font-size: 0.9rem;">Password</label>
-                <input type="password" id="mem-password" required style="width: 100%; padding: 0.6rem; border: 1.5px solid #d1d5db; border-radius: 6px;">
-            </div>
-            <button type="submit" class="btn btn-primary w-100" style="padding: 0.75rem; font-weight: 600;">Sign In</button>
-        </form>
-    </div>
+        <div class="container">
 
-    <!-- Main Dashboard Container -->
-    <div class="admin-members-container hidden" id="dashboard-section">
-        
-        <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-            <div>
-                <h2 style="margin: 0; color: var(--color-primary); font-size: 1.6rem; display: flex; align-items: center; gap: 0.5rem;">
-                    <span>📋</span> Members & Mailing Portal
-                </h2>
-                <p style="margin: 0.35rem 0 0 0; color: var(--color-text-light); font-size: 0.9rem;">
-                    Review association membership applications, volunteer teams, and newsletter subscribers.
+            <!-- Login Container (if unauthenticated) -->
+            <div class="admin-members-container" id="login-section" style="max-width: 480px; margin-top: 80px;">
+                <h2 class="text-center mb-2" style="color: var(--color-primary);">Admin Authentication</h2>
+                <p class="text-center mb-4" style="color: var(--color-text-light); font-size: 0.9rem;">
+                    Please log in with your ASM administrator credentials to access the Members & Mailing Portal.
                 </p>
-            </div>
-            <a href="admin.html" class="btn btn-secondary" style="padding: 0.45rem 0.9rem; font-size: 0.85rem; text-decoration: none;">
-                ← Back to Events Admin
-            </a>
-        </div>
-
-        <!-- Membership Fee Configuration Card -->
-        <div class="fee-settings-card" style="background: linear-gradient(135deg, #f8fafc 0%, #f0fdf4 100%); border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 1.15rem 1.4rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-            <div>
-                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                    <span style="font-size: 1.25rem;">⚙️</span>
-                    <h3 style="margin: 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700;">Membership Fee Setting:</h3>
-                    <span id="current-fee-badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700; font-size: 0.88rem; padding: 0.25rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.35rem;">
-                        Loading...
-                    </span>
-                </div>
-                <p style="margin: 0.35rem 0 0 0; color: #64748b; font-size: 0.85rem;">
-                    Configure the association fee for applicants. You can set it to <strong>Free (€0)</strong> or any custom amount in Euros.
-                </p>
-            </div>
-
-            <!-- Fee Control Actions -->
-            <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
-                <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-right: 0.15rem;">Presets:</span>
-                <button type="button" class="btn-preset-fee" onclick="setFeeInput(0)" title="Make membership 100% free" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #10b981; background: #ecfdf5; color: #047857; font-weight: 700; cursor: pointer; transition: all 0.2s;">
-                    🎁 Free (€0)
-                </button>
-                <button type="button" class="btn-preset-fee" onclick="setFeeInput(5)" style="padding: 0.4rem 0.7rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #cbd5e1; background: white; color: #334155; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-                    €5
-                </button>
-                <button type="button" class="btn-preset-fee" onclick="setFeeInput(10)" style="padding: 0.4rem 0.7rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #cbd5e1; background: white; color: #334155; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-                    €10
-                </button>
-
-                <div style="display: inline-flex; align-items: center; background: white; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 0 0.5rem; height: 36px; margin-left: 0.25rem;">
-                    <span style="color: #64748b; font-weight: 700; font-size: 0.9rem;">€</span>
-                    <input type="number" id="fee-amount-input" min="0" step="0.5" placeholder="5" style="width: 65px; border: none; outline: none; padding: 0.25rem 0.35rem; font-size: 0.95rem; font-weight: 700; color: #0f172a;">
-                </div>
-
-                <button type="button" id="btn-save-fee" onclick="saveMembershipFee()" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.85rem; height: 36px; display: inline-flex; align-items: center; gap: 0.35rem;">
-                    <span>💾</span> Save
-                </button>
-            </div>
-        </div>
-
-        <!-- Keychain Gift Offer Configuration Card -->
-        <div class="keychain-settings-card" style="background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%); border: 1.5px solid #99f6e4; border-radius: 12px; padding: 1.15rem 1.4rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                <img src="assets/keychain_gift.jpg" alt="ASM Keychain" style="width: 52px; height: 52px; object-fit: cover; border-radius: 8px; border: 1.5px solid #0284c7; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <div>
-                    <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                        <h3 style="margin: 0; font-size: 1.05rem; color: #0369a1; font-weight: 700;">Personalized Keychain Gift Offer:</h3>
-                        <span id="keychain-gift-badge" style="background: #dcfce7; color: #15803d; font-weight: 700; font-size: 0.88rem; padding: 0.25rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.35rem; border: 1.5px solid #86efac;">
-                            Loading...
-                        </span>
+                <form id="members-login-form">
+                    <div class="form-group mb-3">
+                        <label for="mem-username" style="font-weight: 600; font-size: 0.9rem;">Username</label>
+                        <input type="text" id="mem-username" required
+                            style="width: 100%; padding: 0.6rem; border: 1.5px solid #d1d5db; border-radius: 6px;">
                     </div>
-                    <p style="margin: 0.35rem 0 0 0; color: #475569; font-size: 0.85rem;">
-                        Offer new applicants a free 3D keychain personalized with their name. When enabled, the registration form highlights the offer and collects their desired name.
-                    </p>
+                    <div class="form-group mb-3">
+                        <label for="mem-password" style="font-weight: 600; font-size: 0.9rem;">Password</label>
+                        <input type="password" id="mem-password" required
+                            style="width: 100%; padding: 0.6rem; border: 1.5px solid #d1d5db; border-radius: 6px;">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" style="padding: 0.75rem; font-weight: 600;">Sign
+                        In</button>
+                </form>
+            </div>
+
+            <!-- Main Dashboard Container -->
+            <div class="admin-members-container hidden" id="dashboard-section">
+
+                <!-- Header -->
+                <div
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h2
+                            style="margin: 0; color: var(--color-primary); font-size: 1.6rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>📋</span> Members & Mailing Portal
+                        </h2>
+                        <p style="margin: 0.35rem 0 0 0; color: var(--color-text-light); font-size: 0.9rem;">
+                            Review association membership applications, volunteer teams, and newsletter subscribers.
+                        </p>
+                    </div>
+                    <a href="admin.html" class="btn btn-secondary"
+                        style="padding: 0.45rem 0.9rem; font-size: 0.85rem; text-decoration: none;">
+                        ← Back to Events Admin
+                    </a>
+                </div>
+
+                <!-- Membership Fee Configuration Card -->
+                <div class="fee-settings-card"
+                    style="background: linear-gradient(135deg, #f8fafc 0%, #f0fdf4 100%); border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 1.15rem 1.4rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                            <span style="font-size: 1.25rem;">⚙️</span>
+                            <h3 style="margin: 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700;">
+                                Membership Fee Setting:</h3>
+                            <span id="current-fee-badge"
+                                style="background: #e0f2fe; color: #0369a1; font-weight: 700; font-size: 0.88rem; padding: 0.25rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                                Loading...
+                            </span>
+                        </div>
+                        <p style="margin: 0.35rem 0 0 0; color: #64748b; font-size: 0.85rem;">
+                            Configure the association fee for applicants. You can set it to <strong>Free (€0)</strong>
+                            or any custom amount in Euros.
+                        </p>
+                    </div>
+
+                    <!-- Fee Control Actions -->
+                    <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                        <span
+                            style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-right: 0.15rem;">Presets:</span>
+                        <button type="button" class="btn-preset-fee" onclick="setFeeInput(0)"
+                            title="Make membership 100% free"
+                            style="padding: 0.4rem 0.75rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #10b981; background: #ecfdf5; color: #047857; font-weight: 700; cursor: pointer; transition: all 0.2s;">
+                            🎁 Free (€0)
+                        </button>
+                        <button type="button" class="btn-preset-fee" onclick="setFeeInput(5)"
+                            style="padding: 0.4rem 0.7rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #cbd5e1; background: white; color: #334155; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                            €5
+                        </button>
+                        <button type="button" class="btn-preset-fee" onclick="setFeeInput(15)"
+                            style="padding: 0.4rem 0.7rem; font-size: 0.82rem; border-radius: 8px; border: 1.5px solid #cbd5e1; background: white; color: #334155; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                            €15
+                        </button>
+
+                        <div
+                            style="display: inline-flex; align-items: center; background: white; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 0 0.5rem; height: 36px; margin-left: 0.25rem;">
+                            <span style="color: #64748b; font-weight: 700; font-size: 0.9rem;">€</span>
+                            <input type="number" id="fee-amount-input" min="0" step="0.5" placeholder="5"
+                                style="width: 65px; border: none; outline: none; padding: 0.25rem 0.35rem; font-size: 0.95rem; font-weight: 700; color: #0f172a;">
+                        </div>
+
+                        <button type="button" id="btn-save-fee" onclick="saveMembershipFee()" class="btn btn-primary"
+                            style="padding: 0.4rem 0.9rem; font-size: 0.85rem; height: 36px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                            <span>💾</span> Save
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Keychain Gift Offer Configuration Card -->
+                <div class="keychain-settings-card"
+                    style="background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%); border: 1.5px solid #99f6e4; border-radius: 12px; padding: 1.15rem 1.4rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <img src="assets/keychain_gift.jpg" alt="ASM Keychain"
+                            style="width: 52px; height: 52px; object-fit: cover; border-radius: 8px; border: 1.5px solid #0284c7; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                                <h3 style="margin: 0; font-size: 1.05rem; color: #0369a1; font-weight: 700;">
+                                    Personalized Keychain Gift Offer:</h3>
+                                <span id="keychain-gift-badge"
+                                    style="background: #dcfce7; color: #15803d; font-weight: 700; font-size: 0.88rem; padding: 0.25rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.35rem; border: 1.5px solid #86efac;">
+                                    Loading...
+                                </span>
+                            </div>
+                            <p style="margin: 0.35rem 0 0 0; color: #475569; font-size: 0.85rem;">
+                                Offer new applicants a free 3D keychain personalized with their name. When enabled, the
+                                registration form highlights the offer and collects their desired name.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Keychain Control Actions -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <button type="button" id="btn-toggle-keychain" onclick="toggleKeychainGift()" class="btn"
+                            style="padding: 0.45rem 1.1rem; font-size: 0.85rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: #0284c7; color: white; border: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+                            <span>⚙️</span> Toggle Gift Offer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Segmented Tab Switcher -->
+                <div class="tab-pills-bar">
+                    <button type="button" class="tab-pill-btn active" id="tab-btn-applications"
+                        onclick="switchSubTab('applications')">
+                        <span>🎓</span> Membership Applications
+                        <span class="tab-pill-badge" id="count-pill-apps">0</span>
+                    </button>
+                    <button type="button" class="tab-pill-btn" id="tab-btn-subscribers"
+                        onclick="switchSubTab('subscribers')">
+                        <span>📧</span> Mailing List Subscribers
+                        <span class="tab-pill-badge" id="count-pill-subs">0</span>
+                    </button>
+                </div>
+
+                <!-- View 1: Membership Applications -->
+                <div id="view-applications">
+                    <div class="controls-bar">
+                        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+                            <input type="text" id="app-search-input" class="search-input"
+                                placeholder="Search name, matricola, email, team..." oninput="filterApplications()">
+                            <select id="app-fee-filter" onchange="filterApplications()"
+                                style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
+                                <option value="">All Fee Statuses</option>
+                                <option value="paid">✅ Fee Paid (€5)</option>
+                                <option value="unpaid">⏳ Fee Pending / Unpaid</option>
+                            </select>
+                            <select id="app-keychain-filter" onchange="filterApplications()"
+                                style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
+                                <option value="">All Keychain Statuses</option>
+                                <option value="yes">🔑 Keychain Requested</option>
+                                <option value="no">⚪ No Keychain</option>
+                            </select>
+                            <select id="app-payment-filter" onchange="filterApplications()"
+                                style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
+                                <option value="">All Payment Methods</option>
+                                <option value="PayPal">PayPal</option>
+                                <option value="Bank transfer">Bank Transfer</option>
+                                <option value="Leonardo">Leonardo Campus</option>
+                                <option value="Bovisa">Bovisa Campus</option>
+                            </select>
+                            <select id="app-sort-select" onchange="filterApplications()"
+                                style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
+                                <option value="newest">Sort: Newest First</option>
+                                <option value="oldest">Sort: Oldest First</option>
+                                <option value="paid_first">Sort: Fee Paid First</option>
+                                <option value="unpaid_first">Sort: Fee Unpaid First</option>
+                                <option value="name_asc">Sort: Name (A-Z)</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn-export" id="btn-export-apps">
+                            <span>📥</span> Export to Excel (.xlsx)
+                        </button>
+                    </div>
+
+                    <!-- Applications List -->
+                    <div id="applications-list-container" style="display: flex; flex-direction: column;">
+                        <p style="text-align: center; color: var(--color-text-light); padding: 2rem;">Loading
+                            applications...</p>
+                    </div>
+                </div>
+
+                <!-- View 2: Mailing List Subscribers -->
+                <div id="view-subscribers" class="hidden">
+                    <div class="controls-bar">
+                        <input type="text" id="sub-search-input" class="search-input"
+                            placeholder="Search subscriber name or email..." oninput="filterSubscribers()">
+                        <button type="button" class="btn-export" id="btn-export-subs">
+                            <span>📥</span> Export to Excel (.xlsx)
+                        </button>
+                    </div>
+
+                    <!-- Subscribers List -->
+                    <div id="subscribers-list-container" style="display: flex; flex-direction: column;">
+                        <p style="text-align: center; color: var(--color-text-light); padding: 2rem;">Loading
+                            subscribers...</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Modal: View Membership Application Details -->
+        <div id="membership-modal" class="hidden"
+            style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1050; display: flex; justify-content: center; align-items: center; padding: 1rem;">
+            <div
+                style="background: white; border-radius: 14px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); border: 1px solid #e5e7eb; padding: 1.75rem; position: relative;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.85rem; margin-bottom: 1.25rem;">
+                    <div>
+                        <h3 id="modal-title"
+                            style="margin: 0; font-size: 1.35rem; color: var(--color-primary); font-weight: 700;"></h3>
+                        <div id="modal-meta" style="font-size: 0.85rem; color: #6b7280; margin-top: 0.35rem;"></div>
+                    </div>
+                    <button type="button" onclick="closeModal()"
+                        style="background: none; border: none; font-size: 1.75rem; line-height: 1; cursor: pointer; color: #9ca3af; padding: 0.25rem;">&times;</button>
+                </div>
+                <div id="modal-content-body"
+                    style="font-size: 0.92rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- Injected details -->
+                </div>
+                <div style="border-top: 1px solid #e5e7eb; margin-top: 1.5rem; padding-top: 1rem; text-align: right;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()"
+                        style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">Close</button>
                 </div>
             </div>
-
-            <!-- Keychain Control Actions -->
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <button type="button" id="btn-toggle-keychain" onclick="toggleKeychainGift()" class="btn" style="padding: 0.45rem 1.1rem; font-size: 0.85rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: #0284c7; color: white; border: none; display: inline-flex; align-items: center; gap: 0.4rem;">
-                    <span>⚙️</span> Toggle Gift Offer
-                </button>
-            </div>
         </div>
 
-        <!-- Segmented Tab Switcher -->
-        <div class="tab-pills-bar">
-            <button type="button" class="tab-pill-btn active" id="tab-btn-applications" onclick="switchSubTab('applications')">
-                <span>🎓</span> Membership Applications
-                <span class="tab-pill-badge" id="count-pill-apps">0</span>
-            </button>
-            <button type="button" class="tab-pill-btn" id="tab-btn-subscribers" onclick="switchSubTab('subscribers')">
-                <span>📧</span> Mailing List Subscribers
-                <span class="tab-pill-badge" id="count-pill-subs">0</span>
-            </button>
-        </div>
+        <script>
+            let token = localStorage.getItem('adminToken');
+            let allApplications = [];
+            let allSubscribers = [];
 
-        <!-- View 1: Membership Applications -->
-        <div id="view-applications">
-            <div class="controls-bar">
-                <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
-                    <input type="text" id="app-search-input" class="search-input" placeholder="Search name, matricola, email, team..." oninput="filterApplications()">
-                    <select id="app-fee-filter" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
-                        <option value="">All Fee Statuses</option>
-                        <option value="paid">✅ Fee Paid (€5)</option>
-                        <option value="unpaid">⏳ Fee Pending / Unpaid</option>
-                    </select>
-                    <select id="app-keychain-filter" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
-                        <option value="">All Keychain Statuses</option>
-                        <option value="yes">🔑 Keychain Requested</option>
-                        <option value="no">⚪ No Keychain</option>
-                    </select>
-                    <select id="app-payment-filter" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
-                        <option value="">All Payment Methods</option>
-                        <option value="PayPal">PayPal</option>
-                        <option value="Bank transfer">Bank Transfer</option>
-                        <option value="Leonardo">Leonardo Campus</option>
-                        <option value="Bovisa">Bovisa Campus</option>
-                    </select>
-                    <select id="app-sort-select" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
-                        <option value="newest">Sort: Newest First</option>
-                        <option value="oldest">Sort: Oldest First</option>
-                        <option value="paid_first">Sort: Fee Paid First</option>
-                        <option value="unpaid_first">Sort: Fee Unpaid First</option>
-                        <option value="name_asc">Sort: Name (A-Z)</option>
-                    </select>
-                </div>
-                <button type="button" class="btn-export" id="btn-export-apps">
-                    <span>📥</span> Export to Excel (.xlsx)
-                </button>
-            </div>
+            const loginSection = document.getElementById('login-section');
+            const dashboardSection = document.getElementById('dashboard-section');
+            const loginForm = document.getElementById('members-login-form');
 
-            <!-- Applications List -->
-            <div id="applications-list-container" style="display: flex; flex-direction: column;">
-                <p style="text-align: center; color: var(--color-text-light); padding: 2rem;">Loading applications...</p>
-            </div>
-        </div>
+            function showToast(text, isSuccess) {
+                const toast = document.createElement('div');
+                toast.className = `toast-msg ${isSuccess ? 'toast-success' : 'toast-error'}`;
+                toast.innerHTML = `<span>${isSuccess ? '✅' : '⚠️'}</span> <span>${text}</span>`;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.4s';
+                    setTimeout(() => toast.remove(), 400);
+                }, 3200);
+            }
 
-        <!-- View 2: Mailing List Subscribers -->
-        <div id="view-subscribers" class="hidden">
-            <div class="controls-bar">
-                <input type="text" id="sub-search-input" class="search-input" placeholder="Search subscriber name or email..." oninput="filterSubscribers()">
-                <button type="button" class="btn-export" id="btn-export-subs">
-                    <span>📥</span> Export to Excel (.xlsx)
-                </button>
-            </div>
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
 
-            <!-- Subscribers List -->
-            <div id="subscribers-list-container" style="display: flex; flex-direction: column;">
-                <p style="text-align: center; color: var(--color-text-light); padding: 2rem;">Loading subscribers...</p>
-            </div>
-        </div>
+            function checkAuth() {
+                if (!token) {
+                    loginSection.classList.remove('hidden');
+                    dashboardSection.classList.add('hidden');
+                } else {
+                    loginSection.classList.add('hidden');
+                    dashboardSection.classList.remove('hidden');
+                    fetchMembershipFee();
+                    fetchKeychainGiftStatus();
+                    fetchApplications();
+                    fetchSubscribers();
+                }
+            }
 
-    </div>
-
-</div>
-
-<!-- Modal: View Membership Application Details -->
-<div id="membership-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1050; display: flex; justify-content: center; align-items: center; padding: 1rem;">
-    <div style="background: white; border-radius: 14px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); border: 1px solid #e5e7eb; padding: 1.75rem; position: relative;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.85rem; margin-bottom: 1.25rem;">
-            <div>
-                <h3 id="modal-title" style="margin: 0; font-size: 1.35rem; color: var(--color-primary); font-weight: 700;"></h3>
-                <div id="modal-meta" style="font-size: 0.85rem; color: #6b7280; margin-top: 0.35rem;"></div>
-            </div>
-            <button type="button" onclick="closeModal()" style="background: none; border: none; font-size: 1.75rem; line-height: 1; cursor: pointer; color: #9ca3af; padding: 0.25rem;">&times;</button>
-        </div>
-        <div id="modal-content-body" style="font-size: 0.92rem; display: flex; flex-direction: column; gap: 1rem;">
-            <!-- Injected details -->
-        </div>
-        <div style="border-top: 1px solid #e5e7eb; margin-top: 1.5rem; padding-top: 1rem; text-align: right;">
-            <button type="button" class="btn btn-secondary" onclick="closeModal()" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">Close</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    let token = localStorage.getItem('adminToken');
-    let allApplications = [];
-    let allSubscribers = [];
-
-    const loginSection = document.getElementById('login-section');
-    const dashboardSection = document.getElementById('dashboard-section');
-    const loginForm = document.getElementById('members-login-form');
-
-    function showToast(text, isSuccess) {
-        const toast = document.createElement('div');
-        toast.className = `toast-msg ${isSuccess ? 'toast-success' : 'toast-error'}`;
-        toast.innerHTML = `<span>${isSuccess ? '✅' : '⚠️'}</span> <span>${text}</span>`;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transition = 'opacity 0.4s';
-            setTimeout(() => toast.remove(), 400);
-        }, 3200);
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-    }
-
-    function checkAuth() {
-        if (!token) {
-            loginSection.classList.remove('hidden');
-            dashboardSection.classList.add('hidden');
-        } else {
-            loginSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-            fetchMembershipFee();
-            fetchKeychainGiftStatus();
-            fetchApplications();
-            fetchSubscribers();
-        }
-    }
-
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('mem-username').value.trim();
-        const password = document.getElementById('mem-password').value.trim();
-        try {
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('mem-username').value.trim();
+                const password = document.getElementById('mem-password').value.trim();
+                try {
+                    const res = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        token = data.token;
+                        localStorage.setItem('adminToken', token);
+                        showToast("Signed in successfully", true);
+                        checkAuth();
+                    } else {
+                        showToast(data.message || "Invalid credentials", false);
+                    }
+                } catch (err) {
+                    showToast("Server connection error", false);
+                }
             });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                token = data.token;
-                localStorage.setItem('adminToken', token);
-                showToast("Signed in successfully", true);
+
+            function logout() {
+                localStorage.removeItem('adminToken');
+                token = null;
                 checkAuth();
-            } else {
-                showToast(data.message || "Invalid credentials", false);
             }
-        } catch (err) {
-            showToast("Server connection error", false);
-        }
-    });
 
-    function logout() {
-        localStorage.removeItem('adminToken');
-        token = null;
-        checkAuth();
-    }
+            // ----------------------------------------------------
+            // Membership Fee Configuration Logic
+            // ----------------------------------------------------
+            let currentFee = 5.0;
+            let currentFeeFormatted = "€5";
+            let isFeeFree = false;
 
-    // ----------------------------------------------------
-    // Membership Fee Configuration Logic
-    // ----------------------------------------------------
-    let currentFee = 5.0;
-    let currentFeeFormatted = "€5";
-    let isFeeFree = false;
-
-    async function fetchMembershipFee() {
-        try {
-            const res = await fetch('/api/membership/fee');
-            const data = await res.json();
-            if (res.ok && data.success) {
-                currentFee = Number(data.fee) || 0;
-                isFeeFree = Boolean(data.is_free);
-                currentFeeFormatted = data.fee_formatted || (isFeeFree ? "Free" : `€${currentFee}`);
-                renderFeeBadge();
-            }
-        } catch (err) {
-            console.error("fetchMembershipFee error:", err);
-        }
-    }
-
-    function renderFeeBadge() {
-        const badge = document.getElementById('current-fee-badge');
-        const input = document.getElementById('fee-amount-input');
-        if (badge) {
-            if (isFeeFree) {
-                badge.innerHTML = '🎁 <strong>FREE (€0)</strong>';
-                badge.style.background = '#dcfce7';
-                badge.style.color = '#15803d';
-                badge.style.border = '1.5px solid #86efac';
-            } else {
-                badge.innerHTML = `🏷️ <strong>${currentFeeFormatted}</strong>`;
-                badge.style.background = '#e0f2fe';
-                badge.style.color = '#0369a1';
-                badge.style.border = '1.5px solid #bae6fd';
-            }
-        }
-        if (input && document.activeElement !== input) {
-            input.value = currentFee;
-        }
-
-        const paidOption = document.querySelector('#app-fee-filter option[value="paid"]');
-        if (paidOption) {
-            paidOption.textContent = isFeeFree ? "✅ Verified / Free" : `✅ Fee Paid (${currentFeeFormatted})`;
-        }
-    }
-
-    function setFeeInput(amount) {
-        const input = document.getElementById('fee-amount-input');
-        if (input) {
-            input.value = amount;
-            input.style.borderColor = '#10b981';
-            setTimeout(() => { input.style.borderColor = '#cbd5e1'; }, 600);
-        }
-    }
-
-    async function saveMembershipFee() {
-        const input = document.getElementById('fee-amount-input');
-        const saveBtn = document.getElementById('btn-save-fee');
-        if (!input) return;
-        
-        const val = input.value.trim();
-        if (val === '') {
-            showToast("Please enter a fee amount (0 for Free)", false);
-            return;
-        }
-
-        const numVal = parseFloat(val);
-        if (isNaN(numVal) || numVal < 0) {
-            showToast("Fee amount must be 0 or a positive number", false);
-            return;
-        }
-
-        try {
-            if (saveBtn) {
-                saveBtn.disabled = true;
-                saveBtn.innerHTML = '<span>⏳</span> Saving...';
-            }
-            const res = await fetch('/api/membership/fee', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ fee: numVal })
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                currentFee = Number(data.fee) || 0;
-                isFeeFree = Boolean(data.is_free);
-                currentFeeFormatted = data.fee_formatted || (isFeeFree ? "Free" : `€${currentFee}`);
-                renderFeeBadge();
-                showToast(data.message || `Membership fee set to ${currentFeeFormatted}!`, true);
-                renderApplications(allApplications);
-            } else {
-                showToast(data.message || "Failed to update fee setting", false);
-            }
-        } catch (err) {
-            console.error("saveMembershipFee error:", err);
-            showToast("Network error updating fee", false);
-        } finally {
-            if (saveBtn) {
-                saveBtn.disabled = false;
-                saveBtn.innerHTML = '<span>💾</span> Save';
-            }
-        }
-    }
-
-    // ----------------------------------------------------
-    // Keychain Gift Configuration Logic
-    // ----------------------------------------------------
-    let isKeychainGiftEnabled = true;
-
-    async function fetchKeychainGiftStatus() {
-        try {
-            const res = await fetch('/api/membership/keychain-gift');
-            const data = await res.json();
-            if (res.ok && data.success) {
-                isKeychainGiftEnabled = Boolean(data.enabled);
-                renderKeychainGiftBadge();
-            }
-        } catch (err) {
-            console.error("fetchKeychainGiftStatus error:", err);
-        }
-    }
-
-    function renderKeychainGiftBadge() {
-        const badge = document.getElementById('keychain-gift-badge');
-        const btn = document.getElementById('btn-toggle-keychain');
-        if (badge) {
-            if (isKeychainGiftEnabled) {
-                badge.innerHTML = '✨ <strong>ACTIVE / ENABLED</strong>';
-                badge.style.background = '#dcfce7';
-                badge.style.color = '#15803d';
-                badge.style.border = '1.5px solid #86efac';
-            } else {
-                badge.innerHTML = '🚫 <strong>OFF / DISABLED</strong>';
-                badge.style.background = '#fee2e2';
-                badge.style.color = '#b91c1c';
-                badge.style.border = '1.5px solid #fca5a5';
-            }
-        }
-        if (btn) {
-            if (isKeychainGiftEnabled) {
-                btn.innerHTML = '<span>⏸️</span> Disable Gift Offer';
-                btn.style.background = '#e11d48';
-            } else {
-                btn.innerHTML = '<span>▶️</span> Enable Gift Offer';
-                btn.style.background = '#0284c7';
-            }
-        }
-    }
-
-    async function toggleKeychainGift() {
-        const newStatus = !isKeychainGiftEnabled;
-        const confirmMsg = newStatus
-            ? "Enable the free personalized keychain gift offer for all new membership applicants?"
-            : "Disable the personalized keychain gift offer? (The offer and name input will be hidden on the registration form)";
-        if (!confirm(confirmMsg)) return;
-
-        const btn = document.getElementById('btn-toggle-keychain');
-        try {
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = '<span>⏳</span> Updating...';
-            }
-            const res = await fetch('/api/membership/keychain-gift', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ enabled: newStatus })
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                isKeychainGiftEnabled = Boolean(data.enabled);
-                renderKeychainGiftBadge();
-                showToast(data.message || `Keychain gift offer is now ${isKeychainGiftEnabled ? 'enabled' : 'disabled'}!`, true);
-            } else {
-                showToast(data.message || "Failed to update keychain setting", false);
-            }
-        } catch (err) {
-            console.error("toggleKeychainGift error:", err);
-            showToast("Network error updating keychain offer", false);
-        } finally {
-            if (btn) btn.disabled = false;
-            renderKeychainGiftBadge();
-        }
-    }
-
-    async function toggleApplicantKeychain(id, targetState, applicantName) {
-        const confirmMsg = targetState
-            ? `Mark personalized keychain as REQUESTED / ENABLED for "${applicantName}"?`
-            : `Disable / cancel keychain gift for "${applicantName}"?`;
-        if (!confirm(confirmMsg)) return;
-
-        try {
-            const res = await fetch('/api/memberships/toggle-keychain', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ id, keychain_requested: targetState })
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                const target = allApplications.find(a => a.id === id);
-                if (target) {
-                    target.keychain_requested = Boolean(data.keychain_requested);
+            async function fetchMembershipFee() {
+                try {
+                    const res = await fetch('/api/membership/fee');
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        currentFee = Number(data.fee) || 0;
+                        isFeeFree = Boolean(data.is_free);
+                        currentFeeFormatted = data.fee_formatted || (isFeeFree ? "Free" : `€${currentFee}`);
+                        renderFeeBadge();
+                    }
+                } catch (err) {
+                    console.error("fetchMembershipFee error:", err);
                 }
-                filterApplications();
-                showToast(data.keychain_requested ? "Keychain gift enabled for applicant 🔑" : "Keychain gift disabled for applicant", true);
+            }
 
-                const modal = document.getElementById('membership-modal');
-                if (modal && !modal.classList.contains('hidden')) {
-                    viewAppModal(id);
+            function renderFeeBadge() {
+                const badge = document.getElementById('current-fee-badge');
+                const input = document.getElementById('fee-amount-input');
+                if (badge) {
+                    if (isFeeFree) {
+                        badge.innerHTML = '🎁 <strong>FREE (€0)</strong>';
+                        badge.style.background = '#dcfce7';
+                        badge.style.color = '#15803d';
+                        badge.style.border = '1.5px solid #86efac';
+                    } else {
+                        badge.innerHTML = `🏷️ <strong>${currentFeeFormatted}</strong>`;
+                        badge.style.background = '#e0f2fe';
+                        badge.style.color = '#0369a1';
+                        badge.style.border = '1.5px solid #bae6fd';
+                    }
                 }
-            } else {
-                showToast(data.message || "Could not update keychain status", false);
+                if (input && document.activeElement !== input) {
+                    input.value = currentFee;
+                }
+
+                const paidOption = document.querySelector('#app-fee-filter option[value="paid"]');
+                if (paidOption) {
+                    paidOption.textContent = isFeeFree ? "✅ Verified / Free" : `✅ Fee Paid (${currentFeeFormatted})`;
+                }
             }
-        } catch (err) {
-            console.error("toggleApplicantKeychain error:", err);
-            showToast("Server connection error", false);
-        }
-    }
 
-    // ----------------------------------------------------
-    // Sub-tab Navigation
-    // ----------------------------------------------------
-    function switchSubTab(tabName) {
-        const btnApps = document.getElementById('tab-btn-applications');
-        const btnSubs = document.getElementById('tab-btn-subscribers');
-        const viewApps = document.getElementById('view-applications');
-        const viewSubs = document.getElementById('view-subscribers');
-
-        if (tabName === 'applications') {
-            btnApps.classList.add('active');
-            btnSubs.classList.remove('active');
-            viewApps.classList.remove('hidden');
-            viewSubs.classList.add('hidden');
-        } else {
-            btnSubs.classList.add('active');
-            btnApps.classList.remove('active');
-            viewSubs.classList.remove('hidden');
-            viewApps.classList.add('hidden');
-        }
-    }
-
-    // ----------------------------------------------------
-    // Membership Applications Logic
-    // ----------------------------------------------------
-    async function fetchApplications() {
-        try {
-            const res = await fetch('/api/memberships', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                allApplications = data.applications || [];
-                document.getElementById('count-pill-apps').textContent = allApplications.length;
-                renderApplications(allApplications);
-            } else if (res.status === 401) {
-                logout();
-            } else {
-                showToast(data.message || "Error loading applications", false);
+            function setFeeInput(amount) {
+                const input = document.getElementById('fee-amount-input');
+                if (input) {
+                    input.value = amount;
+                    input.style.borderColor = '#10b981';
+                    setTimeout(() => { input.style.borderColor = '#cbd5e1'; }, 600);
+                }
             }
-        } catch (err) {
-            console.error("fetchApplications error:", err);
-            showToast("Could not load applications from server", false);
-        }
-    }
 
-    function renderApplications(list) {
-        const container = document.getElementById('applications-list-container');
-        container.innerHTML = '';
+            async function saveMembershipFee() {
+                const input = document.getElementById('fee-amount-input');
+                const saveBtn = document.getElementById('btn-save-fee');
+                if (!input) return;
 
-        if (!list || list.length === 0) {
-            container.innerHTML = `
+                const val = input.value.trim();
+                if (val === '') {
+                    showToast("Please enter a fee amount (0 for Free)", false);
+                    return;
+                }
+
+                const numVal = parseFloat(val);
+                if (isNaN(numVal) || numVal < 0) {
+                    showToast("Fee amount must be 0 or a positive number", false);
+                    return;
+                }
+
+                try {
+                    if (saveBtn) {
+                        saveBtn.disabled = true;
+                        saveBtn.innerHTML = '<span>⏳</span> Saving...';
+                    }
+                    const res = await fetch('/api/membership/fee', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ fee: numVal })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        currentFee = Number(data.fee) || 0;
+                        isFeeFree = Boolean(data.is_free);
+                        currentFeeFormatted = data.fee_formatted || (isFeeFree ? "Free" : `€${currentFee}`);
+                        renderFeeBadge();
+                        showToast(data.message || `Membership fee set to ${currentFeeFormatted}!`, true);
+                        renderApplications(allApplications);
+                    } else {
+                        showToast(data.message || "Failed to update fee setting", false);
+                    }
+                } catch (err) {
+                    console.error("saveMembershipFee error:", err);
+                    showToast("Network error updating fee", false);
+                } finally {
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = '<span>💾</span> Save';
+                    }
+                }
+            }
+
+            // ----------------------------------------------------
+            // Keychain Gift Configuration Logic
+            // ----------------------------------------------------
+            let isKeychainGiftEnabled = true;
+
+            async function fetchKeychainGiftStatus() {
+                try {
+                    const res = await fetch('/api/membership/keychain-gift');
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        isKeychainGiftEnabled = Boolean(data.enabled);
+                        renderKeychainGiftBadge();
+                    }
+                } catch (err) {
+                    console.error("fetchKeychainGiftStatus error:", err);
+                }
+            }
+
+            function renderKeychainGiftBadge() {
+                const badge = document.getElementById('keychain-gift-badge');
+                const btn = document.getElementById('btn-toggle-keychain');
+                if (badge) {
+                    if (isKeychainGiftEnabled) {
+                        badge.innerHTML = '✨ <strong>ACTIVE / ENABLED</strong>';
+                        badge.style.background = '#dcfce7';
+                        badge.style.color = '#15803d';
+                        badge.style.border = '1.5px solid #86efac';
+                    } else {
+                        badge.innerHTML = '🚫 <strong>OFF / DISABLED</strong>';
+                        badge.style.background = '#fee2e2';
+                        badge.style.color = '#b91c1c';
+                        badge.style.border = '1.5px solid #fca5a5';
+                    }
+                }
+                if (btn) {
+                    if (isKeychainGiftEnabled) {
+                        btn.innerHTML = '<span>⏸️</span> Disable Gift Offer';
+                        btn.style.background = '#e11d48';
+                    } else {
+                        btn.innerHTML = '<span>▶️</span> Enable Gift Offer';
+                        btn.style.background = '#0284c7';
+                    }
+                }
+            }
+
+            async function toggleKeychainGift() {
+                const newStatus = !isKeychainGiftEnabled;
+                const confirmMsg = newStatus
+                    ? "Enable the free personalized keychain gift offer for all new membership applicants?"
+                    : "Disable the personalized keychain gift offer? (The offer and name input will be hidden on the registration form)";
+                if (!confirm(confirmMsg)) return;
+
+                const btn = document.getElementById('btn-toggle-keychain');
+                try {
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerHTML = '<span>⏳</span> Updating...';
+                    }
+                    const res = await fetch('/api/membership/keychain-gift', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ enabled: newStatus })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        isKeychainGiftEnabled = Boolean(data.enabled);
+                        renderKeychainGiftBadge();
+                        showToast(data.message || `Keychain gift offer is now ${isKeychainGiftEnabled ? 'enabled' : 'disabled'}!`, true);
+                    } else {
+                        showToast(data.message || "Failed to update keychain setting", false);
+                    }
+                } catch (err) {
+                    console.error("toggleKeychainGift error:", err);
+                    showToast("Network error updating keychain offer", false);
+                } finally {
+                    if (btn) btn.disabled = false;
+                    renderKeychainGiftBadge();
+                }
+            }
+
+            async function toggleApplicantKeychain(id, targetState, applicantName) {
+                const confirmMsg = targetState
+                    ? `Mark personalized keychain as REQUESTED / ENABLED for "${applicantName}"?`
+                    : `Disable / cancel keychain gift for "${applicantName}"?`;
+                if (!confirm(confirmMsg)) return;
+
+                try {
+                    const res = await fetch('/api/memberships/toggle-keychain', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ id, keychain_requested: targetState })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        const target = allApplications.find(a => a.id === id);
+                        if (target) {
+                            target.keychain_requested = Boolean(data.keychain_requested);
+                        }
+                        filterApplications();
+                        showToast(data.keychain_requested ? "Keychain gift enabled for applicant 🔑" : "Keychain gift disabled for applicant", true);
+
+                        const modal = document.getElementById('membership-modal');
+                        if (modal && !modal.classList.contains('hidden')) {
+                            viewAppModal(id);
+                        }
+                    } else {
+                        showToast(data.message || "Could not update keychain status", false);
+                    }
+                } catch (err) {
+                    console.error("toggleApplicantKeychain error:", err);
+                    showToast("Server connection error", false);
+                }
+            }
+
+            // ----------------------------------------------------
+            // Sub-tab Navigation
+            // ----------------------------------------------------
+            function switchSubTab(tabName) {
+                const btnApps = document.getElementById('tab-btn-applications');
+                const btnSubs = document.getElementById('tab-btn-subscribers');
+                const viewApps = document.getElementById('view-applications');
+                const viewSubs = document.getElementById('view-subscribers');
+
+                if (tabName === 'applications') {
+                    btnApps.classList.add('active');
+                    btnSubs.classList.remove('active');
+                    viewApps.classList.remove('hidden');
+                    viewSubs.classList.add('hidden');
+                } else {
+                    btnSubs.classList.add('active');
+                    btnApps.classList.remove('active');
+                    viewSubs.classList.remove('hidden');
+                    viewApps.classList.add('hidden');
+                }
+            }
+
+            // ----------------------------------------------------
+            // Membership Applications Logic
+            // ----------------------------------------------------
+            async function fetchApplications() {
+                try {
+                    const res = await fetch('/api/memberships', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        allApplications = data.applications || [];
+                        document.getElementById('count-pill-apps').textContent = allApplications.length;
+                        renderApplications(allApplications);
+                    } else if (res.status === 401) {
+                        logout();
+                    } else {
+                        showToast(data.message || "Error loading applications", false);
+                    }
+                } catch (err) {
+                    console.error("fetchApplications error:", err);
+                    showToast("Could not load applications from server", false);
+                }
+            }
+
+            function renderApplications(list) {
+                const container = document.getElementById('applications-list-container');
+                container.innerHTML = '';
+
+                if (!list || list.length === 0) {
+                    container.innerHTML = `
                 <div style="text-align: center; padding: 3rem 1.5rem; background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px;">
                     <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📭</div>
                     <div style="font-size: 1.05rem; font-weight: 600; color: #475569;">No membership applications found</div>
                     <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.25rem;">New applications submitted through register.html will appear here automatically.</div>
                 </div>
             `;
-            return;
-        }
+                    return;
+                }
 
-        list.forEach(app => {
-            const card = document.createElement('div');
-            card.className = 'member-card';
+                list.forEach(app => {
+                    const card = document.createElement('div');
+                    card.className = 'member-card';
 
-            const teamsList = app.teams ? app.teams.split(',').map(t => t.trim()).filter(Boolean) : [];
-            const teamsBadges = teamsList.map(t => `<span class="badge badge-team">${escapeHtml(t)}</span>`).join(' ');
+                    const teamsList = app.teams ? app.teams.split(',').map(t => t.trim()).filter(Boolean) : [];
+                    const teamsBadges = teamsList.map(t => `<span class="badge badge-team">${escapeHtml(t)}</span>`).join(' ');
 
-            const transBadge = app.volunteer_translator && (app.volunteer_translator.toLowerCase() === 'yes' || app.volunteer_translator.toLowerCase() === 'sì' || app.volunteer_translator.toLowerCase() === 'si')
-                ? `<span class="badge badge-translator">🗣️ Translator</span>`
-                : '';
+                    const transBadge = app.volunteer_translator && (app.volunteer_translator.toLowerCase() === 'yes' || app.volunteer_translator.toLowerCase() === 'sì' || app.volunteer_translator.toLowerCase() === 'si')
+                        ? `<span class="badge badge-translator">🗣️ Translator</span>`
+                        : '';
 
-            const keychainBadge = app.keychain_requested
-                ? `<span class="badge" style="background: #e0f2fe; color: #0284c7; border: 1.5px solid #bae6fd; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">🔑 Keychain: "${escapeHtml(app.keychain_name || app.full_name)}"</span>`
-                : '';
+                    const keychainBadge = app.keychain_requested
+                        ? `<span class="badge" style="background: #e0f2fe; color: #0284c7; border: 1.5px solid #bae6fd; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">🔑 Keychain: "${escapeHtml(app.keychain_name || app.full_name)}"</span>`
+                        : '';
 
-            const feeBadge = isFeeFree
-                ? `<span class="badge badge-paid">🎁 FREE</span>`
-                : (app.paid
-                    ? `<span class="badge badge-paid">✅ Fee Paid (${currentFeeFormatted})</span>`
-                    : `<span class="badge badge-unpaid">⏳ Fee Pending</span>`);
+                    const feeBadge = isFeeFree
+                        ? `<span class="badge badge-paid">🎁 FREE</span>`
+                        : (app.paid
+                            ? `<span class="badge badge-paid">✅ Fee Paid (${currentFeeFormatted})</span>`
+                            : `<span class="badge badge-unpaid">⏳ Fee Pending</span>`);
 
-            const feeButton = isFeeFree
-                ? `<button type="button" class="btn-toggle-paid btn-mark-paid" style="opacity: 0.9;" onclick="confirmTogglePaid(${app.id}, ${!app.paid}, '${escapeHtml(app.full_name)}')">${app.paid ? '✅ Free (Verified)' : '✓ Verify Member'}</button>`
-                : (app.paid
-                    ? `<button type="button" class="btn-toggle-paid btn-mark-unpaid" onclick="confirmTogglePaid(${app.id}, false, '${escapeHtml(app.full_name)}')">↩ Mark Unpaid</button>`
-                    : `<button type="button" class="btn-toggle-paid btn-mark-paid" onclick="confirmTogglePaid(${app.id}, true, '${escapeHtml(app.full_name)}')">✓ Mark Paid (${currentFeeFormatted})</button>`);
+                    const feeButton = isFeeFree
+                        ? `<button type="button" class="btn-toggle-paid btn-mark-paid" style="opacity: 0.9;" onclick="confirmTogglePaid(${app.id}, ${!app.paid}, '${escapeHtml(app.full_name)}')">${app.paid ? '✅ Free (Verified)' : '✓ Verify Member'}</button>`
+                        : (app.paid
+                            ? `<button type="button" class="btn-toggle-paid btn-mark-unpaid" onclick="confirmTogglePaid(${app.id}, false, '${escapeHtml(app.full_name)}')">↩ Mark Unpaid</button>`
+                            : `<button type="button" class="btn-toggle-paid btn-mark-paid" onclick="confirmTogglePaid(${app.id}, true, '${escapeHtml(app.full_name)}')">✓ Mark Paid (${currentFeeFormatted})</button>`);
 
-            card.innerHTML = `
+                    card.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                         <span style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary);">${escapeHtml(app.full_name)}</span>
@@ -1059,113 +1144,113 @@
                 </div>
                 ${teamsBadges ? `<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #f1f5f9;"><span style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Teams:</span> ${teamsBadges}</div>` : ''}
             `;
-            container.appendChild(card);
-        });
-    }
-
-    function filterApplications() {
-        const query = (document.getElementById('app-search-input')?.value || '').toLowerCase().trim();
-        const feeFilter = document.getElementById('app-fee-filter')?.value || '';
-        const keychainFilter = document.getElementById('app-keychain-filter')?.value || '';
-        const payFilter = document.getElementById('app-payment-filter')?.value || '';
-        const sortBy = document.getElementById('app-sort-select')?.value || 'newest';
-
-        let filtered = allApplications.filter(app => {
-            const matchesQuery = !query ||
-                (app.full_name && app.full_name.toLowerCase().includes(query)) ||
-                (app.matricola && app.matricola.toLowerCase().includes(query)) ||
-                (app.email && app.email.toLowerCase().includes(query)) ||
-                (app.phone && app.phone.toLowerCase().includes(query)) ||
-                (app.course && app.course.toLowerCase().includes(query)) ||
-                (app.teams && app.teams.toLowerCase().includes(query)) ||
-                (app.skills && app.skills.toLowerCase().includes(query));
-
-            const matchesPay = !payFilter || (app.payment_method && app.payment_method.toLowerCase().includes(payFilter.toLowerCase()));
-
-            const matchesFee = !feeFilter || (feeFilter === 'paid' ? Boolean(app.paid) : !app.paid);
-
-            const matchesKeychain = !keychainFilter || (keychainFilter === 'yes' ? Boolean(app.keychain_requested) : !app.keychain_requested);
-
-            return matchesQuery && matchesPay && matchesFee && matchesKeychain;
-        });
-
-        // Sorting
-        filtered.sort((a, b) => {
-            if (sortBy === 'newest') {
-                return (b.created_at || '').localeCompare(a.created_at || '');
-            } else if (sortBy === 'oldest') {
-                return (a.created_at || '').localeCompare(b.created_at || '');
-            } else if (sortBy === 'paid_first') {
-                if (Boolean(a.paid) !== Boolean(b.paid)) return a.paid ? -1 : 1;
-                return (b.created_at || '').localeCompare(a.created_at || '');
-            } else if (sortBy === 'unpaid_first') {
-                if (Boolean(a.paid) !== Boolean(b.paid)) return a.paid ? 1 : -1;
-                return (b.created_at || '').localeCompare(a.created_at || '');
-            } else if (sortBy === 'name_asc') {
-                return (a.full_name || '').localeCompare(b.full_name || '');
+                    container.appendChild(card);
+                });
             }
-            return 0;
-        });
 
-        renderApplications(filtered);
-    }
+            function filterApplications() {
+                const query = (document.getElementById('app-search-input')?.value || '').toLowerCase().trim();
+                const feeFilter = document.getElementById('app-fee-filter')?.value || '';
+                const keychainFilter = document.getElementById('app-keychain-filter')?.value || '';
+                const payFilter = document.getElementById('app-payment-filter')?.value || '';
+                const sortBy = document.getElementById('app-sort-select')?.value || 'newest';
 
-    function confirmTogglePaid(id, markAsPaid, applicantName) {
-        let actionText;
-        if (isFeeFree) {
-            actionText = markAsPaid 
-                ? `Confirm and verify member status for "${applicantName}" (Free Membership)?`
-                : `Revert verified status for "${applicantName}"?`;
-        } else {
-            actionText = markAsPaid 
-                ? `Confirm that "${applicantName}" has PAID the ${currentFeeFormatted} membership fee?`
-                : `Revert fee status for "${applicantName}" back to UNPAID (Pending)?`;
-        }
-        if (confirm(actionText)) {
-            executeTogglePaid(id, markAsPaid);
-        }
-    }
+                let filtered = allApplications.filter(app => {
+                    const matchesQuery = !query ||
+                        (app.full_name && app.full_name.toLowerCase().includes(query)) ||
+                        (app.matricola && app.matricola.toLowerCase().includes(query)) ||
+                        (app.email && app.email.toLowerCase().includes(query)) ||
+                        (app.phone && app.phone.toLowerCase().includes(query)) ||
+                        (app.course && app.course.toLowerCase().includes(query)) ||
+                        (app.teams && app.teams.toLowerCase().includes(query)) ||
+                        (app.skills && app.skills.toLowerCase().includes(query));
 
-    async function executeTogglePaid(id, markAsPaid) {
-        try {
-            const res = await fetch('/api/memberships/toggle-paid', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ id, paid: markAsPaid })
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                const target = allApplications.find(a => a.id === id);
-                if (target) target.paid = data.paid;
-                filterApplications();
-                showToast(data.paid ? "Membership fee recorded as PAID ✅" : "Fee status reverted to UNPAID", true);
-                
-                // If modal is open for this application, refresh its view
-                const modal = document.getElementById('membership-modal');
-                if (modal && !modal.classList.contains('hidden')) {
-                    viewAppModal(id);
+                    const matchesPay = !payFilter || (app.payment_method && app.payment_method.toLowerCase().includes(payFilter.toLowerCase()));
+
+                    const matchesFee = !feeFilter || (feeFilter === 'paid' ? Boolean(app.paid) : !app.paid);
+
+                    const matchesKeychain = !keychainFilter || (keychainFilter === 'yes' ? Boolean(app.keychain_requested) : !app.keychain_requested);
+
+                    return matchesQuery && matchesPay && matchesFee && matchesKeychain;
+                });
+
+                // Sorting
+                filtered.sort((a, b) => {
+                    if (sortBy === 'newest') {
+                        return (b.created_at || '').localeCompare(a.created_at || '');
+                    } else if (sortBy === 'oldest') {
+                        return (a.created_at || '').localeCompare(b.created_at || '');
+                    } else if (sortBy === 'paid_first') {
+                        if (Boolean(a.paid) !== Boolean(b.paid)) return a.paid ? -1 : 1;
+                        return (b.created_at || '').localeCompare(a.created_at || '');
+                    } else if (sortBy === 'unpaid_first') {
+                        if (Boolean(a.paid) !== Boolean(b.paid)) return a.paid ? 1 : -1;
+                        return (b.created_at || '').localeCompare(a.created_at || '');
+                    } else if (sortBy === 'name_asc') {
+                        return (a.full_name || '').localeCompare(b.full_name || '');
+                    }
+                    return 0;
+                });
+
+                renderApplications(filtered);
+            }
+
+            function confirmTogglePaid(id, markAsPaid, applicantName) {
+                let actionText;
+                if (isFeeFree) {
+                    actionText = markAsPaid
+                        ? `Confirm and verify member status for "${applicantName}" (Free Membership)?`
+                        : `Revert verified status for "${applicantName}"?`;
+                } else {
+                    actionText = markAsPaid
+                        ? `Confirm that "${applicantName}" has PAID the ${currentFeeFormatted} membership fee?`
+                        : `Revert fee status for "${applicantName}" back to UNPAID (Pending)?`;
                 }
-            } else {
-                showToast(data.message || "Could not update fee status", false);
+                if (confirm(actionText)) {
+                    executeTogglePaid(id, markAsPaid);
+                }
             }
-        } catch (err) {
-            console.error("executeTogglePaid error:", err);
-            showToast("Server connection error", false);
-        }
-    }
 
-    window.viewAppModal = function(id) {
-        const app = allApplications.find(a => a.id === id);
-        if (!app) return;
+            async function executeTogglePaid(id, markAsPaid) {
+                try {
+                    const res = await fetch('/api/memberships/toggle-paid', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ id, paid: markAsPaid })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        const target = allApplications.find(a => a.id === id);
+                        if (target) target.paid = data.paid;
+                        filterApplications();
+                        showToast(data.paid ? "Membership fee recorded as PAID ✅" : "Fee status reverted to UNPAID", true);
 
-        document.getElementById('modal-title').textContent = app.full_name;
-        document.getElementById('modal-meta').textContent = `Matricola: ${app.matricola} • Date: ${app.created_at || 'N/A'} • Form Language: ${app.lang_selected === 'it' ? 'Italian' : 'English'}`;
+                        // If modal is open for this application, refresh its view
+                        const modal = document.getElementById('membership-modal');
+                        if (modal && !modal.classList.contains('hidden')) {
+                            viewAppModal(id);
+                        }
+                    } else {
+                        showToast(data.message || "Could not update fee status", false);
+                    }
+                } catch (err) {
+                    console.error("executeTogglePaid error:", err);
+                    showToast("Server connection error", false);
+                }
+            }
 
-        const body = document.getElementById('modal-content-body');
-        body.innerHTML = `
+            window.viewAppModal = function (id) {
+                const app = allApplications.find(a => a.id === id);
+                if (!app) return;
+
+                document.getElementById('modal-title').textContent = app.full_name;
+                document.getElementById('modal-meta').textContent = `Matricola: ${app.matricola} • Date: ${app.created_at || 'N/A'} • Form Language: ${app.lang_selected === 'it' ? 'Italian' : 'English'}`;
+
+                const body = document.getElementById('modal-content-body');
+                body.innerHTML = `
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; background: #f8fafc; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <div>
                     <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Email</div>
@@ -1190,9 +1275,9 @@
                 <div>
                     <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Fee Payment Status</div>
                     <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
-                        ${isFeeFree 
-                            ? '<span class="badge badge-paid">🎁 FREE MEMBERSHIP</span>'
-                            : (app.paid ? `<span class="badge badge-paid">✅ PAID (${currentFeeFormatted})</span>` : '<span class="badge badge-unpaid">⏳ UNPAID / PENDING</span>')}
+                        ${isFeeFree
+                        ? '<span class="badge badge-paid">🎁 FREE MEMBERSHIP</span>'
+                        : (app.paid ? `<span class="badge badge-paid">✅ PAID (${currentFeeFormatted})</span>` : '<span class="badge badge-unpaid">⏳ UNPAID / PENDING</span>')}
                         <button type="button" class="btn-toggle-paid ${app.paid ? 'btn-mark-unpaid' : 'btn-mark-paid'}" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="confirmTogglePaid(${app.id}, ${!app.paid}, '${escapeHtml(app.full_name)}')">
                             ${isFeeFree ? (app.paid ? '↩ Revert' : '✓ Verify') : (app.paid ? '↩ Mark Unpaid' : `✓ Mark Paid (${currentFeeFormatted})`)}
                         </button>
@@ -1205,9 +1290,9 @@
                 <div>
                     <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Personalized Keychain Gift</div>
                     <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; flex-wrap: wrap;">
-                        ${app.keychain_requested 
-                            ? `<span class="badge" style="background: #e0f2fe; color: #0284c7; border: 1.5px solid #bae6fd; font-weight: 700;">🔑 YES: "${escapeHtml(app.keychain_name || app.full_name)}"</span>` 
-                            : '<span class="badge" style="background: #f1f5f9; color: #64748b; border: 1.5px solid #e2e8f0; font-weight: 600;">⚪ Not Requested / Off</span>'}
+                        ${app.keychain_requested
+                        ? `<span class="badge" style="background: #e0f2fe; color: #0284c7; border: 1.5px solid #bae6fd; font-weight: 700;">🔑 YES: "${escapeHtml(app.keychain_name || app.full_name)}"</span>`
+                        : '<span class="badge" style="background: #f1f5f9; color: #64748b; border: 1.5px solid #e2e8f0; font-weight: 600;">⚪ Not Requested / Off</span>'}
                         <button type="button" class="btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; border-radius: 6px; font-weight: 700; cursor: pointer; border: 1px solid ${app.keychain_requested ? '#cbd5e1' : '#0284c7'}; background: ${app.keychain_requested ? '#ffffff' : '#0284c7'}; color: ${app.keychain_requested ? '#64748b' : '#ffffff'};" onclick="toggleApplicantKeychain(${app.id}, ${!app.keychain_requested}, '${escapeHtml(app.full_name)}')">
                             ${app.keychain_requested ? '↩ Disable Gift' : '✓ Enable Keychain'}
                         </button>
@@ -1246,85 +1331,85 @@
             ` : ''}
         `;
 
-        document.getElementById('membership-modal').classList.remove('hidden');
-    };
+                document.getElementById('membership-modal').classList.remove('hidden');
+            };
 
-    window.closeModal = function() {
-        document.getElementById('membership-modal').classList.add('hidden');
-    };
+            window.closeModal = function () {
+                document.getElementById('membership-modal').classList.add('hidden');
+            };
 
-    window.deleteApp = async function(id) {
-        if (!confirm("Are you sure you want to permanently remove this membership application?")) return;
-        try {
-            const res = await fetch('/api/memberships', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ id })
+            window.deleteApp = async function (id) {
+                if (!confirm("Are you sure you want to permanently remove this membership application?")) return;
+                try {
+                    const res = await fetch('/api/memberships', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ id })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        showToast("Application deleted successfully", true);
+                        fetchApplications();
+                    } else {
+                        showToast(data.message || "Error deleting application", false);
+                    }
+                } catch (err) {
+                    showToast("Server connection error", false);
+                }
+            };
+
+            document.getElementById('btn-export-apps').addEventListener('click', () => {
+                window.open(`/api/memberships/export?token=${encodeURIComponent(token)}`);
             });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                showToast("Application deleted successfully", true);
-                fetchApplications();
-            } else {
-                showToast(data.message || "Error deleting application", false);
+
+            // ----------------------------------------------------
+            // Mailing List Subscribers Logic
+            // ----------------------------------------------------
+            async function fetchSubscribers() {
+                try {
+                    const res = await fetch('/api/subscribers', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        allSubscribers = data.subscribers || [];
+                        document.getElementById('count-pill-subs').textContent = allSubscribers.length;
+                        renderSubscribers(allSubscribers);
+                    } else if (res.status === 401) {
+                        logout();
+                    }
+                } catch (err) {
+                    console.error("fetchSubscribers error:", err);
+                }
             }
-        } catch (err) {
-            showToast("Server connection error", false);
-        }
-    };
 
-    document.getElementById('btn-export-apps').addEventListener('click', () => {
-        window.open(`/api/memberships/export?token=${encodeURIComponent(token)}`);
-    });
+            function renderSubscribers(list) {
+                const container = document.getElementById('subscribers-list-container');
+                container.innerHTML = '';
 
-    // ----------------------------------------------------
-    // Mailing List Subscribers Logic
-    // ----------------------------------------------------
-    async function fetchSubscribers() {
-        try {
-            const res = await fetch('/api/subscribers', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                allSubscribers = data.subscribers || [];
-                document.getElementById('count-pill-subs').textContent = allSubscribers.length;
-                renderSubscribers(allSubscribers);
-            } else if (res.status === 401) {
-                logout();
-            }
-        } catch (err) {
-            console.error("fetchSubscribers error:", err);
-        }
-    }
-
-    function renderSubscribers(list) {
-        const container = document.getElementById('subscribers-list-container');
-        container.innerHTML = '';
-
-        if (!list || list.length === 0) {
-            container.innerHTML = `
+                if (!list || list.length === 0) {
+                    container.innerHTML = `
                 <div style="text-align: center; padding: 3rem 1.5rem; background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px;">
                     <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📭</div>
                     <div style="font-size: 1.05rem; font-weight: 600; color: #475569;">No mailing list subscribers found</div>
                 </div>
             `;
-            return;
-        }
+                    return;
+                }
 
-        list.forEach(sub => {
-            const card = document.createElement('div');
-            card.className = 'member-card';
-            card.style.display = 'flex';
-            card.style.justifyContent = 'space-between';
-            card.style.alignItems = 'center';
-            card.style.gap = '1rem';
-            card.style.flexWrap = 'wrap';
+                list.forEach(sub => {
+                    const card = document.createElement('div');
+                    card.className = 'member-card';
+                    card.style.display = 'flex';
+                    card.style.justifyContent = 'space-between';
+                    card.style.alignItems = 'center';
+                    card.style.gap = '1rem';
+                    card.style.flexWrap = 'wrap';
 
-            card.innerHTML = `
+                    card.innerHTML = `
                 <div style="min-width: 0; flex-grow: 1;">
                     <div style="font-weight: 700; font-size: 1rem; color: var(--color-primary);">${escapeHtml(sub.name)}</div>
                     <div style="font-size: 0.86rem; color: #4b5563; word-break: break-all; margin-top: 0.2rem;">
@@ -1336,59 +1421,59 @@
                     🗑️ Remove
                 </button>
             `;
-            container.appendChild(card);
-        });
-    }
-
-    function filterSubscribers() {
-        const query = (document.getElementById('sub-search-input')?.value || '').toLowerCase().trim();
-        const filtered = allSubscribers.filter(sub => {
-            return !query ||
-                (sub.name && sub.name.toLowerCase().includes(query)) ||
-                (sub.email && sub.email.toLowerCase().includes(query)) ||
-                (sub.year && String(sub.year).toLowerCase().includes(query));
-        });
-        renderSubscribers(filtered);
-    }
-
-    window.deleteSubscriber = async function(id) {
-        if (!confirm("Are you sure you want to remove this subscriber from the mailing list?")) return;
-        try {
-            const res = await fetch('/api/subscribers', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ id })
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                showToast("Subscriber removed successfully", true);
-                fetchSubscribers();
-            } else {
-                showToast(data.message || "Error removing subscriber", false);
+                    container.appendChild(card);
+                });
             }
-        } catch (err) {
-            showToast("Server connection error", false);
-        }
-    };
 
-    document.getElementById('btn-export-subs').addEventListener('click', () => {
-        window.open(`/api/subscribers/export?token=${encodeURIComponent(token)}`);
-    });
+            function filterSubscribers() {
+                const query = (document.getElementById('sub-search-input')?.value || '').toLowerCase().trim();
+                const filtered = allSubscribers.filter(sub => {
+                    return !query ||
+                        (sub.name && sub.name.toLowerCase().includes(query)) ||
+                        (sub.email && sub.email.toLowerCase().includes(query)) ||
+                        (sub.year && String(sub.year).toLowerCase().includes(query));
+                });
+                renderSubscribers(filtered);
+            }
 
-    // Close modal on escape key or background click
-    document.getElementById('membership-modal').addEventListener('click', (e) => {
-        if (e.target.id === 'membership-modal') closeModal();
-    });
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-    });
+            window.deleteSubscriber = async function (id) {
+                if (!confirm("Are you sure you want to remove this subscriber from the mailing list?")) return;
+                try {
+                    const res = await fetch('/api/subscribers', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ id })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        showToast("Subscriber removed successfully", true);
+                        fetchSubscribers();
+                    } else {
+                        showToast(data.message || "Error removing subscriber", false);
+                    }
+                } catch (err) {
+                    showToast("Server connection error", false);
+                }
+            };
 
-    // Initial Auth Check
-    checkAuth();
-</script>
+            document.getElementById('btn-export-subs').addEventListener('click', () => {
+                window.open(`/api/subscribers/export?token=${encodeURIComponent(token)}`);
+            });
+
+            // Close modal on escape key or background click
+            document.getElementById('membership-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'membership-modal') closeModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+
+            // Initial Auth Check
+            checkAuth();
+        </script>
 
     </main>
 
@@ -1416,7 +1501,7 @@
                 const navUsers = document.getElementById('nav-users-link');
                 if (navUsers) navUsers.style.display = 'none';
             }
-        } catch (err) {}
+        } catch (err) { }
 
         // Global admin logout helper
         function globalAdminLogout(e) {
@@ -1427,11 +1512,11 @@
             try {
                 localStorage.removeItem('adminToken');
                 localStorage.removeItem('adminRole');
-            } catch (err) {}
+            } catch (err) { }
 
             // Trigger in-page logout UI if available
             if (typeof logout === 'function') {
-                try { logout(); } catch (err) {}
+                try { logout(); } catch (err) { }
             }
 
             // Immediately switch views if on a single-page view
@@ -1446,7 +1531,7 @@
             window.location.href = 'admin.html?logout=' + Date.now();
         }
     </script>
-    
+
 </body>
 
 </html>
