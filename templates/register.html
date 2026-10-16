@@ -626,6 +626,20 @@
                                 </div>
                             </div>
 
+                            <!-- Keychain Gift Highlight Banner -->
+                            <div id="keychain-benefit-card" style="background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%); border: 1.5px solid #7dd3fc; border-radius: 0.85rem; padding: 1.15rem 1.35rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);">
+                                <img src="assets/keychain_gift.jpg" alt="ASM Personalized Keychain Gift" style="width: 82px; height: 82px; object-fit: cover; border-radius: 10px; border: 2px solid #0284c7; box-shadow: 0 4px 8px rgba(0,0,0,0.12); flex-shrink: 0;">
+                                <div style="flex: 1; min-width: 240px;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.35rem;">
+                                        <span style="background: #0284c7; color: white; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 999px; letter-spacing: 0.04em;" id="keychain-benefit-tag">Special Welcome Gift</span>
+                                        <span style="font-weight: 700; color: #0369a1; font-size: 1.05rem;" id="keychain-benefit-title">🎁 Free Personalized 3D Keychain!</span>
+                                    </div>
+                                    <p style="margin: 0; font-size: 0.88rem; color: #334155; line-height: 1.5;" id="keychain-benefit-desc">
+                                        Every new registered member receives a custom 3D-printed keychain with their personalized name as a welcome gift from ASM. You can choose the name you want printed on your keychain in the next steps!
+                                    </p>
+                                </div>
+                            </div>
+
                             <!-- Contact & Social Bar -->
                             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(18, 74, 97, 0.12); padding-top: 0.9rem; flex-wrap: wrap; gap: 0.75rem; font-size: 0.88rem;">
                                 <span id="intro-contact-label" style="color: var(--color-text-light); font-weight: 500;">
@@ -998,6 +1012,40 @@
                             </div>
                         </div>
 
+                        <!-- Personalized Keychain Gift Option -->
+                        <div id="keychain-choice-group" class="form-group" style="background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%); border: 1.5px solid #99f6e4; border-radius: 12px; padding: 1.25rem 1.35rem; margin-bottom: 1.5rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
+                                <img src="assets/keychain_gift.jpg" alt="ASM Keychain" style="width: 58px; height: 58px; object-fit: cover; border-radius: 8px; border: 1.5px solid #0284c7; box-shadow: 0 2px 6px rgba(0,0,0,0.1); flex-shrink: 0;">
+                                <div style="flex: 1; min-width: 220px;">
+                                    <div style="font-weight: 700; color: #0369a1; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem;" id="lbl-keychain-gift-header">
+                                        <span>🔑</span> Free Personalized Keychain Gift
+                                    </div>
+                                    <div style="font-size: 0.85rem; color: #475569; margin-top: 0.2rem; line-height: 1.45;" id="txt-keychain-gift-subtitle">
+                                        As a new ASM member, receive a customized 3D keychain with your personalized name!
+                                    </div>
+                                </div>
+                            </div>
+
+                            <label class="choice-card-label selected" style="align-items: flex-start; gap: 0.75rem; padding: 0.85rem 1rem; background: white; border: 1.5px solid #bae6fd; border-radius: 8px; cursor: pointer; margin-bottom: 0.75rem;">
+                                <input type="checkbox" id="app-keychain-requested" checked onchange="toggleKeychainOption(this)" style="margin-top: 0.2rem;">
+                                <span style="font-size: 0.9rem; font-weight: 600; color: #0f172a;" id="lbl-keychain-optin">
+                                    Yes, I would like to receive my free personalized 3D keychain!
+                                </span>
+                            </label>
+
+                            <div id="keychain-name-field" style="display: block; margin-top: 0.5rem;">
+                                <label for="app-keychain-name" style="font-size: 0.85rem; font-weight: 600; color: #334155; display: block; margin-bottom: 0.35rem;" id="lbl-keychain-name">
+                                    Name you want printed on the keychain:
+                                </label>
+                                <div style="display: flex; gap: 0.5rem; align-items: center; max-width: 400px;">
+                                    <input type="text" id="app-keychain-name" maxlength="25" placeholder="e.g. Samir" style="padding: 0.55rem 0.85rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; width: 100%;">
+                                </div>
+                                <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.35rem;" id="hint-keychain-name">
+                                    Up to 25 characters. If left empty, your first name will be used by default.
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Comments, ideas, feedback -->
                         <div class="form-group">
                             <label for="app-comments" id="lbl-comments">Comments, ideas, feedback</label>
@@ -1038,6 +1086,21 @@
                     <p id="success-body" style="color: var(--color-text-light); max-width: 600px; margin: 0 auto 1.75rem auto; font-size: 1.05rem; line-height: 1.6;">
                         Thank you for applying to join ASM POLIMI. We have securely saved your application and will be in touch shortly regarding your membership card and welcome package!
                     </p>
+
+                    <!-- Keychain Celebration Confirmation Notice -->
+                    <div id="success-keychain-notice" style="display: none; background: linear-gradient(135deg, #f0fdfa, #e0f2fe); border: 2px solid #7dd3fc; border-radius: 12px; padding: 1.25rem 1.5rem; max-width: 620px; margin: 0 auto 1.75rem auto; text-align: left; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);">
+                        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                            <img src="assets/keychain_gift.jpg" alt="Personalized Keychain" style="width: 68px; height: 68px; object-fit: cover; border-radius: 10px; border: 2px solid #0284c7; box-shadow: 0 2px 6px rgba(0,0,0,0.12); flex-shrink: 0;">
+                            <div style="flex: 1; min-width: 220px;">
+                                <div style="font-weight: 700; color: #0369a1; font-size: 1.05rem;" id="success-keychain-title">
+                                    🔑 Personalized Keychain Gift Reserved!
+                                </div>
+                                <div style="font-size: 0.88rem; color: #334155; margin-top: 0.3rem; line-height: 1.45;" id="success-keychain-desc">
+                                    We have reserved a 3D custom keychain for you with the name: <strong id="success-keychain-name-val" style="color: #0284c7;"></strong>. It will be prepared and handed to you with your membership pack!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Contact & Payment Details (from Index page) -->
                     <div class="success-contact-box">
@@ -1284,7 +1347,18 @@
             btnSubmitAnother: "Submit Another Application",
             btnReturnHome: "Return to Home",
             errMatricolaDigits: "Matriculation number must be exactly 6 digits (e.g., 849312).",
-            errRequiredFields: "Please fill in all required fields marked with *."
+            errRequiredFields: "Please fill in all required fields marked with *.",
+            keychainBenefitTag: "Special Welcome Gift",
+            keychainBenefitTitle: "🎁 Free Personalized 3D Keychain!",
+            keychainBenefitDesc: "Every new registered member receives a custom 3D-printed keychain with their personalized name as a welcome gift from ASM. You can choose the name you want printed on your keychain in the next steps!",
+            keychainGiftHeader: "Free Personalized Keychain Gift",
+            keychainGiftSubtitle: "As a new ASM member, receive a customized 3D keychain with your personalized name!",
+            keychainOptin: "Yes, I would like to receive my free personalized 3D keychain!",
+            keychainNameLabel: "Name you want printed on the keychain:",
+            keychainNamePlaceholder: "e.g. Samir",
+            keychainNameHint: "Up to 25 characters. If left empty, your first name will be used by default.",
+            successKeychainTitle: "🔑 Personalized Keychain Gift Reserved!",
+            successKeychainDesc: "We have reserved a 3D custom keychain for you with the name: "
         },
         it: {
             title: "Modulo di Iscrizione all'Associazione",
@@ -1408,18 +1482,30 @@
             btnSubmitAnother: "Invia un'altra richiesta",
             btnReturnHome: "Torna alla Home",
             errMatricolaDigits: "Il numero di matricola deve essere composto esattamente da 6 numeri (es. 849312).",
-            errRequiredFields: "Per favore compila tutti i campi obbligatori contrassegnati con *."
+            errRequiredFields: "Per favore compila tutti i campi obbligatori contrassegnati con *.",
+            keychainBenefitTag: "Speciale Regalo di Benvenuto",
+            keychainBenefitTitle: "🎁 Portachiavi 3D Personalizzato in Regalo!",
+            keychainBenefitDesc: "Ogni nuovo socio riceve in omaggio un portachiavi 3D personalizzato con il proprio nome come regalo di benvenuto da parte di ASM. Potrai scegliere il nome desiderato per la stampa nei passaggi successivi!",
+            keychainGiftHeader: "Portachiavi Personalizzato in Omaggio",
+            keychainGiftSubtitle: "Come nuovo socio ASM, ricevi in regalo un portachiavi 3D personalizzato con il tuo nome!",
+            keychainOptin: "Sì, desidero ricevere il mio portachiavi 3D personalizzato in omaggio!",
+            keychainNameLabel: "Nome che desideri stampato sul portachiavi:",
+            keychainNamePlaceholder: "es. Samir",
+            keychainNameHint: "Fino a 25 caratteri. Se lasciato vuoto, verrà utilizzato automaticamente il tuo nome.",
+            successKeychainTitle: "🔑 Portachiavi Personalizzato Riservato!",
+            successKeychainDesc: "Abbiamo riservato per te un portachiavi 3D personalizzato con il nome: "
         }
     };
 
     let currentLang = 'en';
 
     // ----------------------------------------------------
-    // Dynamic Membership Fee Integration
+    // Dynamic Membership Fee & Keychain Integration
     // ----------------------------------------------------
     let liveFee = 5.0;
     let liveIsFree = false;
     let liveFeeFormatted = "€5";
+    let liveKeychainGiftEnabled = true;
 
     async function loadFeeSetting() {
         const isStatic = window.location.hostname.includes('github.io') || 
@@ -1446,6 +1532,7 @@
                         liveFee = Number(data.fee) || 0;
                         liveIsFree = Boolean(data.is_free);
                         liveFeeFormatted = data.fee_formatted || (liveIsFree ? "Free" : `€${liveFee}`);
+                        liveKeychainGiftEnabled = data.keychain_gift_enabled !== undefined ? Boolean(data.keychain_gift_enabled) : true;
                         updateFeeUI();
                         break;
                     }
@@ -1551,6 +1638,17 @@
                 updatePaymentInstructions(selectedPay.value);
             }
         }
+
+        // Control Keychain offer visibility based on admin setting
+        const keychainBenefitCard = document.getElementById('keychain-benefit-card');
+        const keychainChoiceGroup = document.getElementById('keychain-choice-group');
+        if (liveKeychainGiftEnabled) {
+            if (keychainBenefitCard) keychainBenefitCard.style.display = 'flex';
+            if (keychainChoiceGroup) keychainChoiceGroup.style.display = 'block';
+        } else {
+            if (keychainBenefitCard) keychainBenefitCard.style.display = 'none';
+            if (keychainChoiceGroup) keychainChoiceGroup.style.display = 'none';
+        }
     }
 
     function chooseLanguage(lang) {
@@ -1610,6 +1708,18 @@
         document.getElementById('intro-impact-3').textContent = t.introImpact3;
         document.getElementById('intro-impact-fee').textContent = t.introImpactFee;
         document.getElementById('intro-contact-label').textContent = t.introContactLabel;
+
+        // Keychain Gift Offer Translations
+        if (document.getElementById('keychain-benefit-tag')) document.getElementById('keychain-benefit-tag').textContent = t.keychainBenefitTag;
+        if (document.getElementById('keychain-benefit-title')) document.getElementById('keychain-benefit-title').textContent = t.keychainBenefitTitle;
+        if (document.getElementById('keychain-benefit-desc')) document.getElementById('keychain-benefit-desc').textContent = t.keychainBenefitDesc;
+        if (document.getElementById('lbl-keychain-gift-header')) document.getElementById('lbl-keychain-gift-header').innerHTML = `<span>🔑</span> ${t.keychainGiftHeader}`;
+        if (document.getElementById('txt-keychain-gift-subtitle')) document.getElementById('txt-keychain-gift-subtitle').textContent = t.keychainGiftSubtitle;
+        if (document.getElementById('lbl-keychain-optin')) document.getElementById('lbl-keychain-optin').textContent = t.keychainOptin;
+        if (document.getElementById('lbl-keychain-name')) document.getElementById('lbl-keychain-name').textContent = t.keychainNameLabel;
+        if (document.getElementById('app-keychain-name')) document.getElementById('app-keychain-name').placeholder = t.keychainNamePlaceholder;
+        if (document.getElementById('hint-keychain-name')) document.getElementById('hint-keychain-name').textContent = t.keychainNameHint;
+        if (document.getElementById('success-keychain-title')) document.getElementById('success-keychain-title').textContent = t.successKeychainTitle;
 
         // Step 2: Personal & Academic
         document.getElementById('sec-personal-title').textContent = t.secPersonal;
@@ -1860,6 +1970,14 @@
         }
     }
 
+    function toggleKeychainOption(input) {
+        toggleCheckbox(input);
+        const nameField = document.getElementById('keychain-name-field');
+        if (nameField) {
+            nameField.style.display = input.checked ? 'block' : 'none';
+        }
+    }
+
     function resetFormToStart() {
         document.getElementById('membership-form').reset();
         document.querySelectorAll('.choice-card-label').forEach(el => el.classList.remove('selected'));
@@ -1872,6 +1990,22 @@
         }
         const payBox = document.getElementById('payment-info-box');
         if (payBox) payBox.style.display = 'none';
+
+        // Re-apply default for keychain
+        const keychainCb = document.getElementById('app-keychain-requested');
+        if (keychainCb) {
+            keychainCb.checked = true;
+            keychainCb.closest('.choice-card-label')?.classList.add('selected');
+        }
+        const keychainField = document.getElementById('keychain-name-field');
+        if (keychainField) keychainField.style.display = 'block';
+        const keychainNameInput = document.getElementById('app-keychain-name');
+        if (keychainNameInput) {
+            keychainNameInput.value = '';
+            keychainNameInput.dataset.manual = 'false';
+        }
+        const successNotice = document.getElementById('success-keychain-notice');
+        if (successNotice) successNotice.style.display = 'none';
         
         const err3 = document.getElementById('step-3-error-banner');
         if (err3) err3.classList.remove('alert-error');
@@ -1947,6 +2081,13 @@
 
         const comments = document.getElementById('app-comments').value.trim();
 
+        const keychainRequested = liveKeychainGiftEnabled && Boolean(document.getElementById('app-keychain-requested')?.checked);
+        let keychainName = '';
+        if (keychainRequested) {
+            const rawName = (document.getElementById('app-keychain-name')?.value || '').trim();
+            keychainName = rawName || fullName.split(' ')[0] || fullName;
+        }
+
         const payload = {
             full_name: fullName,
             matricola: matricola,
@@ -1960,7 +2101,9 @@
             volunteer_translator: volunteerTranslator,
             payment_method: paymentMethod,
             comments: comments,
-            lang_selected: currentLang
+            lang_selected: currentLang,
+            keychain_requested: keychainRequested,
+            keychain_name: keychainName
         };
 
         const submitBtn = document.getElementById('btn-submit-app');
@@ -2013,6 +2156,14 @@
         submitBtn.textContent = t.btnSubmit;
 
         if (success) {
+            const successNotice = document.getElementById('success-keychain-notice');
+            const successNameVal = document.getElementById('success-keychain-name-val');
+            if (keychainRequested && liveKeychainGiftEnabled) {
+                if (successNameVal) successNameVal.textContent = `"${keychainName}"`;
+                if (successNotice) successNotice.style.display = 'block';
+            } else {
+                if (successNotice) successNotice.style.display = 'none';
+            }
             goToStep(6);
         } else {
             errorBanner.textContent = errorMsg || 'Unable to submit application at this time. Please check your connection or contact us at info@asmpolimi.it.';
@@ -2029,6 +2180,21 @@
             const p = r.closest('.choice-card-label');
             if (p) p.classList.add('selected');
         });
+
+        // Auto-fill keychain name from applicant full name if not manually edited
+        const fullNameInput = document.getElementById('app-fullname');
+        const keychainNameInput = document.getElementById('app-keychain-name');
+        if (fullNameInput && keychainNameInput) {
+            keychainNameInput.addEventListener('input', function() {
+                this.dataset.manual = 'true';
+            });
+            fullNameInput.addEventListener('input', function() {
+                if (keychainNameInput.dataset.manual !== 'true') {
+                    const first = this.value.trim().split(' ')[0] || '';
+                    keychainNameInput.value = first.substring(0, 25);
+                }
+            });
+        }
 
         // Real-time matricola digit filter
         const matricolaInput = document.getElementById('app-matricola');

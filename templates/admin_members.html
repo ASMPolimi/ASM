@@ -298,6 +298,31 @@
             </div>
         </div>
 
+        <!-- Keychain Gift Offer Configuration Card -->
+        <div class="keychain-settings-card" style="background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%); border: 1.5px solid #99f6e4; border-radius: 12px; padding: 1.15rem 1.4rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <img src="assets/keychain_gift.jpg" alt="ASM Keychain" style="width: 52px; height: 52px; object-fit: cover; border-radius: 8px; border: 1.5px solid #0284c7; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                        <h3 style="margin: 0; font-size: 1.05rem; color: #0369a1; font-weight: 700;">Personalized Keychain Gift Offer:</h3>
+                        <span id="keychain-gift-badge" style="background: #dcfce7; color: #15803d; font-weight: 700; font-size: 0.88rem; padding: 0.25rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.35rem; border: 1.5px solid #86efac;">
+                            Loading...
+                        </span>
+                    </div>
+                    <p style="margin: 0.35rem 0 0 0; color: #475569; font-size: 0.85rem;">
+                        Offer new applicants a free 3D keychain personalized with their name. When enabled, the registration form highlights the offer and collects their desired name.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Keychain Control Actions -->
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button type="button" id="btn-toggle-keychain" onclick="toggleKeychainGift()" class="btn" style="padding: 0.45rem 1.1rem; font-size: 0.85rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: #0284c7; color: white; border: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+                    <span>⚙️</span> Toggle Gift Offer
+                </button>
+            </div>
+        </div>
+
         <!-- Segmented Tab Switcher -->
         <div class="tab-pills-bar">
             <button type="button" class="tab-pill-btn active" id="tab-btn-applications" onclick="switchSubTab('applications')">
@@ -319,6 +344,11 @@
                         <option value="">All Fee Statuses</option>
                         <option value="paid">✅ Fee Paid (€5)</option>
                         <option value="unpaid">⏳ Fee Pending / Unpaid</option>
+                    </select>
+                    <select id="app-keychain-filter" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
+                        <option value="">All Keychain Statuses</option>
+                        <option value="yes">🔑 Keychain Requested</option>
+                        <option value="no">⚪ No Keychain</option>
                     </select>
                     <select id="app-payment-filter" onchange="filterApplications()" style="padding: 0.55rem 0.8rem; font-size: 0.88rem; border: 1.5px solid #d1d5db; border-radius: 8px;">
                         <option value="">All Payment Methods</option>
@@ -423,6 +453,7 @@
             loginSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
             fetchMembershipFee();
+            fetchKeychainGiftStatus();
             fetchApplications();
             fetchSubscribers();
         }
@@ -568,6 +599,126 @@
     }
 
     // ----------------------------------------------------
+    // Keychain Gift Configuration Logic
+    // ----------------------------------------------------
+    let isKeychainGiftEnabled = true;
+
+    async function fetchKeychainGiftStatus() {
+        try {
+            const res = await fetch('/api/membership/keychain-gift');
+            const data = await res.json();
+            if (res.ok && data.success) {
+                isKeychainGiftEnabled = Boolean(data.enabled);
+                renderKeychainGiftBadge();
+            }
+        } catch (err) {
+            console.error("fetchKeychainGiftStatus error:", err);
+        }
+    }
+
+    function renderKeychainGiftBadge() {
+        const badge = document.getElementById('keychain-gift-badge');
+        const btn = document.getElementById('btn-toggle-keychain');
+        if (badge) {
+            if (isKeychainGiftEnabled) {
+                badge.innerHTML = '✨ <strong>ACTIVE / ENABLED</strong>';
+                badge.style.background = '#dcfce7';
+                badge.style.color = '#15803d';
+                badge.style.border = '1.5px solid #86efac';
+            } else {
+                badge.innerHTML = '🚫 <strong>OFF / DISABLED</strong>';
+                badge.style.background = '#fee2e2';
+                badge.style.color = '#b91c1c';
+                badge.style.border = '1.5px solid #fca5a5';
+            }
+        }
+        if (btn) {
+            if (isKeychainGiftEnabled) {
+                btn.innerHTML = '<span>⏸️</span> Disable Gift Offer';
+                btn.style.background = '#e11d48';
+            } else {
+                btn.innerHTML = '<span>▶️</span> Enable Gift Offer';
+                btn.style.background = '#0284c7';
+            }
+        }
+    }
+
+    async function toggleKeychainGift() {
+        const newStatus = !isKeychainGiftEnabled;
+        const confirmMsg = newStatus
+            ? "Enable the free personalized keychain gift offer for all new membership applicants?"
+            : "Disable the personalized keychain gift offer? (The offer and name input will be hidden on the registration form)";
+        if (!confirm(confirmMsg)) return;
+
+        const btn = document.getElementById('btn-toggle-keychain');
+        try {
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span>⏳</span> Updating...';
+            }
+            const res = await fetch('/api/membership/keychain-gift', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ enabled: newStatus })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                isKeychainGiftEnabled = Boolean(data.enabled);
+                renderKeychainGiftBadge();
+                showToast(data.message || `Keychain gift offer is now ${isKeychainGiftEnabled ? 'enabled' : 'disabled'}!`, true);
+            } else {
+                showToast(data.message || "Failed to update keychain setting", false);
+            }
+        } catch (err) {
+            console.error("toggleKeychainGift error:", err);
+            showToast("Network error updating keychain offer", false);
+        } finally {
+            if (btn) btn.disabled = false;
+            renderKeychainGiftBadge();
+        }
+    }
+
+    async function toggleApplicantKeychain(id, targetState, applicantName) {
+        const confirmMsg = targetState
+            ? `Mark personalized keychain as REQUESTED / ENABLED for "${applicantName}"?`
+            : `Disable / cancel keychain gift for "${applicantName}"?`;
+        if (!confirm(confirmMsg)) return;
+
+        try {
+            const res = await fetch('/api/memberships/toggle-keychain', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ id, keychain_requested: targetState })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                const target = allApplications.find(a => a.id === id);
+                if (target) {
+                    target.keychain_requested = Boolean(data.keychain_requested);
+                }
+                filterApplications();
+                showToast(data.keychain_requested ? "Keychain gift enabled for applicant 🔑" : "Keychain gift disabled for applicant", true);
+
+                const modal = document.getElementById('membership-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    viewAppModal(id);
+                }
+            } else {
+                showToast(data.message || "Could not update keychain status", false);
+            }
+        } catch (err) {
+            console.error("toggleApplicantKeychain error:", err);
+            showToast("Server connection error", false);
+        }
+    }
+
+    // ----------------------------------------------------
     // Sub-tab Navigation
     // ----------------------------------------------------
     function switchSubTab(tabName) {
@@ -639,6 +790,10 @@
                 ? `<span class="badge badge-translator">🗣️ Translator</span>`
                 : '';
 
+            const keychainBadge = app.keychain_requested
+                ? `<span class="badge" style="background: #e0f2fe; color: #0284c7; border: 1.5px solid #bae6fd; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">🔑 Keychain: "${escapeHtml(app.keychain_name || app.full_name)}"</span>`
+                : '';
+
             const feeBadge = isFeeFree
                 ? `<span class="badge badge-paid">🎁 FREE</span>`
                 : (app.paid
@@ -657,6 +812,7 @@
                         <span style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary);">${escapeHtml(app.full_name)}</span>
                         <span class="badge badge-matricola">Matr: ${escapeHtml(app.matricola)}</span>
                         ${feeBadge}
+                        ${keychainBadge}
                         <span class="badge badge-payment">💰 ${escapeHtml(app.payment_method || 'N/A')}</span>
                         <span class="badge badge-lang">${app.lang_selected === 'it' ? '🇮🇹 IT' : '🇬🇧 EN'}</span>
                         ${transBadge}
@@ -686,6 +842,7 @@
     function filterApplications() {
         const query = (document.getElementById('app-search-input')?.value || '').toLowerCase().trim();
         const feeFilter = document.getElementById('app-fee-filter')?.value || '';
+        const keychainFilter = document.getElementById('app-keychain-filter')?.value || '';
         const payFilter = document.getElementById('app-payment-filter')?.value || '';
         const sortBy = document.getElementById('app-sort-select')?.value || 'newest';
 
@@ -703,7 +860,9 @@
 
             const matchesFee = !feeFilter || (feeFilter === 'paid' ? Boolean(app.paid) : !app.paid);
 
-            return matchesQuery && matchesPay && matchesFee;
+            const matchesKeychain = !keychainFilter || (keychainFilter === 'yes' ? Boolean(app.keychain_requested) : !app.keychain_requested);
+
+            return matchesQuery && matchesPay && matchesFee && matchesKeychain;
         });
 
         // Sorting
@@ -818,6 +977,17 @@
                 <div>
                     <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Translator Volunteer</div>
                     <div style="font-weight: 600; color: #15803d;">${escapeHtml(app.volunteer_translator || 'No')}</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Personalized Keychain Gift</div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; flex-wrap: wrap;">
+                        ${app.keychain_requested 
+                            ? `<span class="badge" style="background: #e0f2fe; color: #0284c7; border: 1.5px solid #bae6fd; font-weight: 700;">🔑 YES: "${escapeHtml(app.keychain_name || app.full_name)}"</span>` 
+                            : '<span class="badge" style="background: #f1f5f9; color: #64748b; border: 1.5px solid #e2e8f0; font-weight: 600;">⚪ Not Requested / Off</span>'}
+                        <button type="button" class="btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; border-radius: 6px; font-weight: 700; cursor: pointer; border: 1px solid ${app.keychain_requested ? '#cbd5e1' : '#0284c7'}; background: ${app.keychain_requested ? '#ffffff' : '#0284c7'}; color: ${app.keychain_requested ? '#64748b' : '#ffffff'};" onclick="toggleApplicantKeychain(${app.id}, ${!app.keychain_requested}, '${escapeHtml(app.full_name)}')">
+                            ${app.keychain_requested ? '↩ Disable Gift' : '✓ Enable Keychain'}
+                        </button>
+                    </div>
                 </div>
             </div>
 

@@ -68,6 +68,14 @@ def init_db():
         c.execute("ALTER TABLE membership_applications ADD COLUMN paid INTEGER DEFAULT 0")
     except Exception:
         pass
+    try:
+        c.execute("ALTER TABLE membership_applications ADD COLUMN keychain_requested INTEGER DEFAULT 0")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE membership_applications ADD COLUMN keychain_name TEXT DEFAULT ''")
+    except Exception:
+        pass
     conn.commit()
     conn.close()
 
@@ -632,7 +640,7 @@ def export_subscribers():
     return generate_excel_response(headers, data_rows, "subscribers.xlsx", "Subscribers")
 
 # ----------------------------------------------------
-# Membership Fee Configuration Endpoints
+# Membership Fee & Keychain Gift Configuration Endpoints
 # ----------------------------------------------------
 
 def get_membership_fee_setting():
@@ -652,6 +660,21 @@ def get_membership_fee_setting():
         if conn: conn.close()
         return 5.0
 
+def get_keychain_gift_setting():
+    conn = get_db()
+    c = conn.cursor()
+    try:
+        c.execute("SELECT value FROM settings WHERE key = 'keychain_gift_enabled'")
+        row = c.fetchone()
+        conn.close()
+        if not row:
+            return True
+        val = str(row['value']).strip().lower()
+        return val in ('1', 'true', 'yes', 'enabled', 'on')
+    except Exception:
+        if conn: conn.close()
+        return True
+
 @app.route('/api/membership/fee', methods=['GET'])
 def get_membership_fee():
     fee = get_membership_fee_setting()
@@ -662,7 +685,8 @@ def get_membership_fee():
         "fee": fee,
         "is_free": is_free,
         "fee_formatted": fee_formatted,
-        "currency": "EUR"
+        "currency": "EUR",
+        "keychain_gift_enabled": get_keychain_gift_setting()
     })
 
 @app.route('/api/membership/fee', methods=['POST'])
@@ -709,6 +733,42 @@ def set_membership_fee():
         if conn: conn.close()
         return jsonify({"success": False, "message": str(e)}), 500
 
+@app.route('/api/membership/keychain-gift', methods=['GET'])
+def get_keychain_gift_status():
+    return jsonify({
+        "success": True,
+        "enabled": get_keychain_gift_setting(),
+        "image_url": "assets/keychain_gift.jpg"
+    })
+
+@app.route('/api/membership/keychain-gift', methods=['POST'])
+def set_keychain_gift_status():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    data = request.json or {}
+    enabled = bool(data.get('enabled', True))
+    val_str = '1' if enabled else '0'
+    conn = get_db()
+    c = conn.cursor()
+    try:
+        c.execute(
+            "INSERT INTO settings (key, value) VALUES ('keychain_gift_enabled', ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+            (val_str,)
+        )
+        conn.commit()
+        conn.close()
+        return jsonify({
+            "success": True,
+            "enabled": enabled,
+            "message": f"Personalized keychain gift offer has been {'enabled' if enabled else 'disabled'}!"
+        })
+    except Exception as e:
+        if conn: conn.close()
+        return jsonify({"success": False, "message": str(e)}), 500
+
 # ----------------------------------------------------
 # Membership Application Endpoints
 # ----------------------------------------------------
@@ -745,15 +805,24 @@ def submit_membership():
     if current_fee == 0.0 and (not payment_method or payment_method in ('N/A', 'None', '')):
         payment_method = 'Free Membership'
     initial_paid = 1 if current_fee == 0.0 else 0
+
+    keychain_gift_enabled = get_keychain_gift_setting()
+    raw_keychain_req = data.get('keychain_requested')
+    if keychain_gift_enabled and raw_keychain_req in (True, 1, '1', 'true', 'yes', 'on'):
+        keychain_requested = 1
+        keychain_name = str(data.get('keychain_name') or full_name).strip()[:40]
+    else:
+        keychain_requested = 0
+        keychain_name = ''
     
     conn = get_db()
     c = conn.cursor()
     try:
         c.execute('''
             INSERT INTO membership_applications 
-            (full_name, matricola, email, phone, course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected, paid)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (full_name, str(matricola).strip(), email.strip(), phone.strip(), course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected, initial_paid))
+            (full_name, matricola, email, phone, course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected, paid, keychain_requested, keychain_name)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (full_name, str(matricola).strip(), email.strip(), phone.strip(), course_level, course, skills, teams, languages, volunteer_translator, payment_method, comments, lang_selected, initial_paid, keychain_requested, keychain_name))
         conn.commit()
     except Exception as e:
         conn.close()
@@ -778,6 +847,8 @@ def get_memberships():
     for row in rows:
         a = dict(row)
         a['paid'] = bool(a.get('paid', 0))
+        a['keychain_requested'] = bool(a.get('keychain_requested', 0))
+        a['keychain_name'] = a.get('keychain_name') or ''
         applications.append(a)
     return jsonify({"success": True, "applications": applications})
 
@@ -810,6 +881,36 @@ def toggle_membership_paid():
     conn.commit()
     conn.close()
     return jsonify({"success": True, "paid": bool(new_val)})
+
+@app.route('/api/memberships/toggle-keychain', methods=['POST'])
+def toggle_membership_keychain():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    data = request.json or {}
+    app_id = data.get('id')
+    if not app_id:
+        return jsonify({"success": False, "message": "Application ID required"}), 400
+
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT keychain_requested FROM membership_applications WHERE id = ?", (app_id,))
+    row = c.fetchone()
+    if not row:
+        conn.close()
+        return jsonify({"success": False, "message": "Application not found"}), 404
+
+    current_val = bool(row['keychain_requested'])
+    new_val = 0 if current_val else 1
+    if 'keychain_requested' in data:
+        new_val = 1 if data['keychain_requested'] else 0
+
+    c.execute("UPDATE membership_applications SET keychain_requested = ? WHERE id = ?", (new_val, app_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "keychain_requested": bool(new_val)})
 
 @app.route('/api/memberships', methods=['DELETE'])
 def delete_membership():
@@ -847,7 +948,7 @@ def export_memberships():
         
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT id, created_at, paid, payment_method, full_name, matricola, email, phone, course_level, course, teams, skills, languages, volunteer_translator, lang_selected, comments FROM membership_applications ORDER BY created_at DESC")
+    c.execute("SELECT id, created_at, paid, payment_method, full_name, matricola, email, phone, course_level, course, teams, skills, languages, volunteer_translator, keychain_requested, keychain_name, lang_selected, comments FROM membership_applications ORDER BY created_at DESC")
     rows = c.fetchall()
     conn.close()
 
@@ -858,7 +959,7 @@ def export_memberships():
     
     headers = [
         'ID', 'Submission Date', 'Fee Paid', 'Payment Method', 'Full Name', 'Matricola', 'Email',
-        'Phone', 'Course Level', 'Course', 'Teams', 'Skills', 'Languages Spoken',
+        'Phone', 'Course Level', 'Course', 'Keychain Gift', 'Keychain Name', 'Teams', 'Skills', 'Languages Spoken',
         'Volunteer Translator', 'Language Form', 'Comments'
     ]
     data_rows = [
@@ -873,6 +974,8 @@ def export_memberships():
             r['phone'] or '',
             r['course_level'] or '',
             r['course'] or '',
+            'YES' if r['keychain_requested'] else 'NO',
+            r['keychain_name'] or '',
             r['teams'] or '',
             r['skills'] or '',
             r['languages'] or '',
