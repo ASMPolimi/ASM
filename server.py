@@ -76,6 +76,30 @@ def init_db():
         c.execute("ALTER TABLE membership_applications ADD COLUMN keychain_name TEXT DEFAULT ''")
     except Exception:
         pass
+
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            role TEXT DEFAULT 'admin'
+        )
+    ''')
+
+    # Ensure default superadmin user 'ASM' with password 'ASMKT'
+    c.execute("SELECT id FROM users WHERE username = 'ASM'")
+    if not c.fetchone():
+        c.execute("INSERT INTO users (username, password, role) VALUES ('ASM', 'ASMKT', 'superadmin')")
+    else:
+        c.execute("UPDATE users SET password = 'ASMKT', role = 'superadmin' WHERE username = 'ASM'")
+
+    # Also ensure legacy 'admin' user password is updated to 'ASMKT'
+    c.execute("SELECT id FROM users WHERE username = 'admin'")
+    if not c.fetchone():
+        c.execute("INSERT INTO users (username, password, role) VALUES ('admin', 'ASMKT', 'superadmin')")
+    else:
+        c.execute("UPDATE users SET password = 'ASMKT', role = 'superadmin' WHERE username = 'admin'")
+
     conn.commit()
     conn.close()
 
@@ -221,7 +245,7 @@ def manage_users():
         if not del_user:
             conn.close()
             return jsonify({"success": False, "message": "Username required"}), 400
-        if del_user == 'admin':
+        if del_user in ('admin', 'ASM'):
             conn.close()
             return jsonify({"success": False, "message": "Cannot delete default admin account"}), 400
             

@@ -59,7 +59,7 @@ Expanded the admin panels to make all key sections of the website editable:
 4. Try pasting an ingredient containing `pork gelatin` or `carmine`. The analyzer will immediately flag it as **Haram** in red.
 
 ### 2.2 Testing the Admin Uploads & Mission Editor
-1. Log in to the Admin Panel ([admin.html](file:///c:/Users/khalil.tamimi/.gemini/antigravity/scratch/admin.html)) using username `admin` and password `password123`.
+1. Log in to the Admin Panel ([admin.html](file:///c:/Users/khalil.tamimi/.gemini/antigravity/scratch/admin.html)) using username `ASM` and password `ASMKT`.
 2. Edit the **Our Mission** text and click save. Reload the homepage [index.html](file:///c:/Users/khalil.tamimi/.gemini/antigravity/scratch/index.html) to see the text updated instantly.
 3. Choose a board member or gallery image, select a file, and click upload. The server will save it directly to `assets/` and render it instantly.
 
@@ -73,7 +73,7 @@ Expanded the admin panels to make all key sections of the website editable:
 3. Verify that the Jumu'ah prayer info card section has a darker background (#111827) distinct from the card's background (#1f2937) for visual hierarchy, and turns slate-on-blue on hover.
 
 ### 2.5 Testing Admin Questions
-1. Log in to the Questions Admin Panel ([admin_questions.html](file:///c:/Users/khalil.tamimi/.gemini/antigravity/scratch/templates/admin_questions.html)) using `admin` and `password123`.
+1. Log in to the Questions Admin Panel ([admin_questions.html](file:///c:/Users/khalil.tamimi/.gemini/antigravity/scratch/templates/admin_questions.html)) using `ASM` and `ASMKT`.
 2. Notice that the questions are ordered newest first (newest questions appear at the top).
 3. Type a brief answer inside the "Admin Brief Answer" textarea for any question and click **Save**.
 4. A notification "Admin answer saved successfully!" will appear, and the page will re-render showing your saved answer.
