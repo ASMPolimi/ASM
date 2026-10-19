@@ -355,7 +355,7 @@ a {
     background-attachment: fixed;
 }
 
-#announcement-banner:not(.hidden) ~ .hero {
+#announcement-banner:not(.hidden)~.hero {
     padding-top: 2rem !important;
 }
 
@@ -786,6 +786,7 @@ a.jumuah-info:hover {
         flex-direction: column;
         align-items: flex-start;
     }
+
     .contact-card-actions {
         width: 100%;
         justify-content: flex-start;
@@ -1028,7 +1029,7 @@ body.dark-mode .email-send-link:hover {
         background-attachment: scroll;
     }
 
-    #announcement-banner:not(.hidden) ~ .hero {
+    #announcement-banner:not(.hidden)~.hero {
         padding-top: 1.25rem !important;
     }
 
@@ -1398,11 +1399,11 @@ body.dark-mode .hero-overlay {
     pointer-events: none;
     transform: translateY(20px) scale(0.85);
     transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-                transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-                background-color 0.2s ease,
-                color 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
+        transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     z-index: 999;
 }
 
@@ -2141,6 +2142,7 @@ body.dark-mode .service-points li {
     0% {
         box-shadow: 0 0 0 3px #eab308, 0 4px 12px rgba(0, 0, 0, 0.35);
     }
+
     100% {
         box-shadow: 0 0 0 8px rgba(234, 179, 8, 0.55), 0 8px 22px rgba(0, 0, 0, 0.5);
     }
@@ -2436,10 +2438,12 @@ body.dark-mode .jumuah-campus-card {
         grid-template-columns: 1fr;
         gap: 1.25rem;
     }
+
     .map-frame-wrapper {
         height: 400px;
         border-radius: 0.85rem;
     }
+
     /* Eliminate nested scroll trap on mobile so the page flows naturally */
     .map-locations-sidebar {
         height: auto;
@@ -2448,6 +2452,7 @@ body.dark-mode .jumuah-campus-card {
         padding-right: 0;
         gap: 0.55rem;
     }
+
     .leaflet-popup-content {
         max-width: 200px !important;
         margin: 6px 8px !important;
