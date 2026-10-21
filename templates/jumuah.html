@@ -3,7 +3,8 @@
 {% block title %}Jumu'ah | ASM POLIMI{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 {% endblock %}
 
 {% block body_class %}class="bg-light"{% endblock %}
@@ -41,7 +42,8 @@
                         Loading...
                     </div>
                     <div style="color: var(--color-text-light); font-size: 0.9rem; line-height: 1.4;">
-                        Location: <a href="#locations" onclick="if(typeof focusLocationById==='function'){focusLocationById('bovisa');}"
+                        Location: <a href="#locations"
+                            onclick="if(typeof focusLocationById==='function'){focusLocationById('bovisa');}"
                             style="color: var(--color-primary); text-decoration: underline; font-weight: 500;">Building
                             24 level -1, Bovisa Campus</a><br>
                         Please arrive early to secure a spot.
@@ -55,7 +57,8 @@
                         Loading...
                     </div>
                     <div style="color: var(--color-text-light); font-size: 0.9rem; line-height: 1.4;">
-                        Location: <a href="#locations" onclick="if(typeof focusLocationById==='function'){focusLocationById('unimi');}"
+                        Location: <a href="#locations"
+                            onclick="if(typeof focusLocationById==='function'){focusLocationById('unimi');}"
                             style="color: var(--color-primary); text-decoration: underline; font-weight: 500;">Room 300
                             Unimi Building</a><br>
                         Please arrive early to secure a spot.
@@ -131,10 +134,14 @@
                     </span>
                 </div>
                 <div class="next-prayer-status-right">
-                    <button type="button" class="qibla-compass-btn open-qibla-modal-btn" aria-label="Open Qibla Direction Compass for Milan" title="Click to view Milan Qibla Direction (124° SE)">
-                        <svg class="qibla-dial-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button type="button" class="qibla-compass-btn open-qibla-modal-btn"
+                        aria-label="Open Qibla Direction Compass for Milan"
+                        title="Click to view Milan Qibla Direction (124° SE)">
+                        <svg class="qibla-dial-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
-                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="var(--color-secondary)" stroke="currentColor"></polygon>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+                                fill="var(--color-secondary)" stroke="currentColor"></polygon>
                         </svg>
                         <span class="qibla-btn-label">Qibla: <strong>124° SE</strong></span>
                     </button>
@@ -148,10 +155,14 @@
 <section id="locations" class="section bg-light fade-in" style="padding-top: 2rem; padding-bottom: 4rem;">
     <div class="container">
         <div class="section-header text-center">
-            <span class="section-badge" style="display: inline-block; padding: 0.35rem 1rem; border-radius: 2rem; background: rgba(18, 74, 97, 0.1); color: var(--color-primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Campus & Milan Guide</span>
+            <span class="section-badge"
+                style="display: inline-block; padding: 0.35rem 1rem; border-radius: 2rem; background: rgba(18, 74, 97, 0.1); color: var(--color-primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Campus
+                & Milan Guide</span>
             <h2>Locations & Mosques Map</h2>
             <div class="divider"></div>
-            <p>Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location card or pin to see room video guides, Jumu'ah availability, or open 1-click GPS navigation in Google Maps.</p>
+            <p>Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location card
+                or pin to see room video guides, Jumu'ah availability, or open 1-click GPS navigation in Google Maps.
+            </p>
         </div>
 
         <!-- Filter Controls -->
@@ -190,7 +201,8 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     // Prayer locations dataset
     const PRAYER_LOCATIONS = [
@@ -222,20 +234,20 @@
             videoUrl: 'https://youtube.com/shorts/A5vwr2wduu4?is=2Yd-BOlo2g3o-ypL',
             desc: 'Room 300 in the Unimi sector. Friday Jumu\'ah prayers organized for students.'
         },
-        {
-            id: 'leonardo2',
-            name: 'Leonardo Campus Prayer Room',
-            category: 'campus',
-            categoryLabel: 'Politecnico di Milano',
-            badge: 'Daily Prayers Only (No Jumu\'ah)',
-            badgeClass: 'badge-daily',
-            icon: '🎓',
-            address: 'Building 32.1.2, Leonardo Campus, Piazza Leonardo da Vinci 32, 20133 Milano',
-            coords: [45.47841, 9.22952],
-            mapsUrl: 'https://maps.app.goo.gl/FFZ3KJW3ns3FZHXDA',
-            videoUrl: 'https://youtube.com/shorts/I_jQXZ8b7zU?is=2z-M87fbhU_21VSL',
-            desc: 'Convenient space for daily Zuhr, Asr, and Maghrib. Note: Jumu\'ah is not hosted here.'
-        },
+        /*      {
+                  id: 'leonardo2',
+                  name: 'Leonardo Campus Prayer Room',
+                  category: 'campus',
+                  categoryLabel: 'Politecnico di Milano',
+                  badge: 'Daily Prayers Only (No Jumu\'ah)',
+                  badgeClass: 'badge-daily',
+                  icon: '🎓',
+                  address: 'Building 32.1.2, Leonardo Campus, Piazza Leonardo da Vinci 32, 20133 Milano',
+                  coords: [45.47841, 9.22952],
+                  mapsUrl: 'https://maps.app.goo.gl/FFZ3KJW3ns3FZHXDA',
+                  videoUrl: 'https://youtube.com/shorts/I_jQXZ8b7zU?is=2z-M87fbhU_21VSL',
+                  desc: 'Convenient space for daily Zuhr, Asr, and Maghrib. Note: Jumu\'ah is not hosted here.'
+              },*/
         {
             id: 'casa-cultura',
             name: 'Casa della Cultura Islamica Onlus',
@@ -666,7 +678,7 @@
             try {
                 const res = await fetch(url);
                 if (res.ok) { data = await res.json(); break; }
-            } catch (e) {}
+            } catch (e) { }
         }
         if (!data) return;
 
