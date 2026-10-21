@@ -337,6 +337,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const year = document.getElementById('year').value;
+            const consentCheckbox = document.getElementById('newsletter-gdpr-consent');
+
+            if (consentCheckbox && !consentCheckbox.checked) {
+                consentCheckbox.focus();
+                alert('Please confirm your GDPR consent to receive association updates before subscribing.');
+                return;
+            }
 
             btn.disabled = true;
             btn.textContent = 'Subscribing...';
@@ -354,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ name, email, year })
+                        body: JSON.stringify({ name, email, year, consent: true })
                     });
                     if (response.ok) {
                         const result = await response.json();
@@ -363,6 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             btn.style.backgroundColor = '#047857';
                             btn.style.color = 'white';
                             form.reset();
+                            if (consentCheckbox) consentCheckbox.checked = false;
                             succeeded = true;
                             break;
                         } else {
@@ -386,6 +394,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.style.color = '';
             }, 3000);
         });
+    }
+
+    // GDPR Privacy Modal Controller
+    const privacyModal = document.getElementById('privacy-notice-modal');
+    if (privacyModal) {
+        const openBtns = document.querySelectorAll('.open-privacy-modal-btn');
+        const closeBtns = document.querySelectorAll('.close-privacy-modal-btn');
+
+        function openPrivacyModal(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            privacyModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePrivacyModal(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            privacyModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        openBtns.forEach(b => b.addEventListener('click', openPrivacyModal));
+        closeBtns.forEach(b => b.addEventListener('click', closePrivacyModal));
+
+        privacyModal.addEventListener('click', (e) => {
+            if (e.target === privacyModal) closePrivacyModal(e);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && privacyModal.classList.contains('active')) {
+                closePrivacyModal(e);
+            }
+        });
+
+        window.openPrivacyModal = openPrivacyModal;
+        window.closePrivacyModal = closePrivacyModal;
     }
 
     // Friday Sunnah checklist functionality

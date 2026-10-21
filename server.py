@@ -41,9 +41,19 @@ def init_db():
             name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
             year TEXT,
+            consent_given INTEGER DEFAULT 1,
+            consent_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    try:
+        c.execute("ALTER TABLE subscribers ADD COLUMN consent_given INTEGER DEFAULT 1")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE subscribers ADD COLUMN consent_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    except Exception:
+        pass
     c.execute('''
         CREATE TABLE IF NOT EXISTS membership_applications (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -528,8 +538,12 @@ def subscribe():
     if not data or not data.get('name') or not data.get('email'):
         return jsonify({"success": False, "message": "Name and email are required"}), 400
         
-    name = data.get('name')
-    email = data.get('email')
+    # Verify explicit consent
+    if data.get('consent') is False:
+        return jsonify({"success": False, "message": "Consent is required to subscribe under GDPR regulations"}), 400
+
+    name = data.get('name', '').strip()
+    email = data.get('email', '').strip().lower()
     year = data.get('year', '')
     
     conn = get_db()
@@ -541,7 +555,10 @@ def subscribe():
             conn.close()
             return jsonify({"success": True, "message": "Already subscribed!"})
             
-        c.execute("INSERT INTO subscribers (name, email, year) VALUES (?, ?, ?)", (name, email, year))
+        try:
+            c.execute("INSERT INTO subscribers (name, email, year, consent_given, consent_timestamp) VALUES (?, ?, ?, 1, CURRENT_TIMESTAMP)", (name, email, year))
+        except Exception:
+            c.execute("INSERT INTO subscribers (name, email, year) VALUES (?, ?, ?)", (name, email, year))
         conn.commit()
     except Exception as e:
         conn.close()
@@ -661,8 +678,8 @@ def export_subscribers():
     rows = c.fetchall()
     conn.close()
     
-    headers = ['Name', 'Email', 'Graduation Year', 'Subscribed At']
-    data_rows = [[r['name'], r['email'], r['year'] or '', r['created_at'] or ''] for r in rows]
+    headers = ['Name', 'Email', 'Graduation Year', 'GDPR Consent Confirmed', 'Subscribed At']
+    data_rows = [[r['name'], r['email'], r['year'] or '', 'Yes (Art. 6(1)(a) GDPR)', r['created_at'] or ''] for r in rows]
     return generate_excel_response(headers, data_rows, "subscribers.xlsx", "Subscribers")
 
 # ----------------------------------------------------
