@@ -16,54 +16,29 @@
         </p>
         <!-- Interactive Quick-Launch Dock -->
         <div class="hero-quick-dock animate-up delay-2" aria-label="Quick Navigation Hub">
-            <a href="/events" class="dock-card">
+            <a href="#events" class="dock-card">
                 <span class="dock-card-icon">📅</span>
-                <div class="dock-card-info">
-                    <span class="dock-card-title">Upcoming Events</span>
-                    <span class="dock-card-sub">Halaqas, socials &amp; workshops</span>
-                </div>
+                <span class="dock-card-title">Upcoming Events</span>
             </a>
-            <a href="/register" class="dock-card">
-                <span class="dock-card-icon">🤝</span>
-                <div class="dock-card-info">
-                    <span class="dock-card-title">Become a Member</span>
-                    <span class="dock-card-sub">Join the ASM POLIMI family</span>
-                </div>
-            </a>
-            <a href="/halal" class="dock-card">
-                <span class="dock-card-icon">🥗</span>
-                <div class="dock-card-info">
-                    <span class="dock-card-title">Halal Scanner</span>
-                    <span class="dock-card-sub">E-codes &amp; grocery check</span>
-                </div>
-            </a>
-            <a href="/support" class="dock-card">
-                <span class="dock-card-icon">💬</span>
-                <div class="dock-card-info">
-                    <span class="dock-card-title">Ask an Imam</span>
-                    <span class="dock-card-sub">Confidential guidance</span>
-                </div>
-            </a>
-            <a href="/jumuah" class="dock-card">
+            <a href="#prayer-times" class="dock-card">
                 <span class="dock-card-icon">🕌</span>
-                <div class="dock-card-info">
-                    <span class="dock-card-title">Prayer &amp; Jumu'ah</span>
-                    <span class="dock-card-sub">Campus locations &amp; times</span>
-                </div>
+                <span class="dock-card-title">Prayer Times</span>
             </a>
-            <a href="/gallery" class="dock-card">
-                <span class="dock-card-icon">📸</span>
-                <div class="dock-card-info">
-                    <span class="dock-card-title">Gallery</span>
-                    <span class="dock-card-sub">Campus life &amp; moments</span>
-                </div>
+            <a href="#halal-scanner" class="dock-card">
+                <span class="dock-card-icon">🥗</span>
+                <span class="dock-card-title">Halal Scanner</span>
             </a>
-            <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer" class="dock-card">
-                <span class="dock-card-icon">📖</span>
-                <div class="dock-card-info">
-                    <span class="dock-card-title">Quran Irtaqi</span>
-                    <span class="dock-card-sub">Listen &amp; read online &nearr;</span>
-                </div>
+            <a href="#ask-imam" class="dock-card">
+                <span class="dock-card-icon">💬</span>
+                <span class="dock-card-title">Ask an Imam</span>
+            </a>
+            <a href="#join" class="dock-card">
+                <span class="dock-card-icon">🤝</span>
+                <span class="dock-card-title">Become a Member</span>
+            </a>
+            <a href="#about" class="dock-card">
+                <span class="dock-card-icon">👥</span>
+                <span class="dock-card-title">About Us</span>
             </a>
         </div>
     </div>
@@ -164,10 +139,15 @@
             <p class="text-center w-100" style="grid-column: 1 / -1;">Loading events...</p>
         </div>
 
-        <div class="text-center" style="margin-top: 1rem;">
+        <div class="events-cta-group text-center" style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
             <a href="/events" class="btn btn-primary"
-                style="padding: 1.25rem 2.5rem; font-size: 1.2rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; transition: all 0.3s ease;">👉
-                See All Events & Register Now 👈</a>
+                style="padding: 1.15rem 2.25rem; font-size: 1.15rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
+                <span>👉 See All Events &amp; Register</span>
+            </a>
+            <a href="/gallery" class="btn btn-outline-primary events-gallery-btn"
+                style="padding: 1.15rem 2.25rem; font-size: 1.15rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                <span>📸 Explore Photo Gallery</span>
+            </a>
         </div>
     </div>
 </section>
@@ -218,20 +198,19 @@
                     </span>
                 </div>
                 <div class="next-prayer-status-right">
-                    <button type="button" class="qibla-compass-btn open-qibla-modal-btn" aria-label="Open Qibla Direction Compass for Milan" title="Click to view Milan Qibla Direction (124° SE)">
-                        <svg class="qibla-dial-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button type="button" class="qibla-compass-btn open-qibla-modal-btn"
+                        aria-label="Open Qibla Direction Compass for Milan"
+                        title="Click to view Milan Qibla Direction (124° SE)">
+                        <svg class="qibla-dial-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
-                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="var(--color-secondary)" stroke="currentColor"></polygon>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+                                fill="var(--color-secondary)" stroke="currentColor"></polygon>
                         </svg>
                         <span class="qibla-btn-label">Qibla: <strong>124° SE</strong></span>
                     </button>
                 </div>
             </div>
-
-            <a href="/jumuah" class="jumuah-info" id="jumuah-prayer-info">
-                Check our <span style="text-decoration: underline; font-weight: 500;">Jumu'ah page</span> for
-                Jumu'ah timings and prayer locations
-            </a>
         </div>
 
         <div class="text-center" style="margin-top: 1rem;">

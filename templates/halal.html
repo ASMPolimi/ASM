@@ -273,7 +273,7 @@
                 <form id="barcode-form" onsubmit="handleBarcodeSubmit(event)">
                     <div class="form-group">
                         <label for="barcode-input">Product Barcode (EAN/UPC Number)</label>
-                        <input type="text" id="barcode-input" placeholder="e.g. 3017670986872" required>
+                        <input type="text" id="barcode-input" placeholder="e.g. 20305062" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Look Up Product</button>
                 </form>
@@ -547,14 +547,14 @@
                     result = await response.json();
                     if (result && result.success && result.data) break;
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
         if (result && result.success && result.data) {
             CUSTOM_BARCODES = result.data;
             console.log("Loaded custom barcodes successfully.");
         }
     }
-    
+
     // Call it when the script loads
     loadCustomBarcodes();
 
