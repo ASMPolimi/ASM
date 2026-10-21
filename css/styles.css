@@ -134,9 +134,46 @@ a {
     transition: padding-top 0.5s ease;
 }
 
-#announcement-banner:not(.hidden)~.first-section {
-    padding-top: 3rem !important;
+/* Fixed Announcement Banner that stays stuck at the top under the navbar while scrolling */
+#announcement-banner {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: rgba(251, 191, 36, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--color-text);
+    text-align: center;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    z-index: 990;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(251, 191, 36, 0.35);
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
+
+#announcement-banner.hidden {
+    display: none !important;
+}
+
+/* Adjust page content so it does not get covered by the fixed banner */
+body.has-announcement-banner .hero,
+#announcement-banner:not(.hidden) ~ .hero {
+    padding-top: calc(80px + 48px + 1.5rem) !important;
+}
+
+body.has-announcement-banner .first-section,
+#announcement-banner:not(.hidden) ~ .first-section {
+    padding-top: calc(80px + 48px + 1.5rem) !important;
+}
+
+body.has-announcement-banner .admin-container,
+#announcement-banner:not(.hidden) ~ .admin-container {
+    margin-top: calc(80px + 48px + 2rem) !important;
+}
+
 
 /* Announcement Banner Interactive Links */
 .announcement-link {

@@ -677,15 +677,7 @@
                 text.innerHTML = typeof formatAnnouncementHtml === 'function' ? formatAnnouncementHtml(data.announcement) : data.announcement;
                 banner.classList.remove('hidden');
                 banner.style.display = 'block';
-
-                setTimeout(() => {
-                    banner.style.transition = 'opacity 0.5s ease';
-                    banner.style.opacity = '0';
-                    setTimeout(() => {
-                        banner.classList.add('hidden');
-                        banner.style.display = 'none';
-                    }, 500);
-                }, 20000);
+                document.body.classList.add('has-announcement-banner');
             }
         }
 

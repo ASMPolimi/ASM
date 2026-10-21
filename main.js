@@ -79,11 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileNavLinksContainer.appendChild(divider);
 
         const adminLinks = [
-            { text: 'Admin: Events', href: 'https://admin.asmpolimi.it/admin' },
-            { text: 'Admin: Members & Mailing', href: 'https://admin.asmpolimi.it/admin_members' },
-            { text: "Admin: Jumu'ah", href: 'https://admin.asmpolimi.it/admin_jumuah' },
-            { text: 'Admin: Questions', href: 'https://admin.asmpolimi.it/admin_questions' },
-            { text: 'Admin: Users', href: 'https://admin.asmpolimi.it/admin_users' }
+            { text: 'Admin', href: 'https://admin.asmpolimi.it/admin' },
         ];
 
         adminLinks.forEach(linkInfo => {
@@ -269,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const result = await response.json();
                     if (result && result.success && result.data) timings = result.data;
                 }
-            } catch (e) {}
+            } catch (e) { }
 
             if (!timings) {
                 // Direct call for GitHub Pages / static hosting
@@ -336,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const btn = form.querySelector('button');
             const originalText = btn.textContent;
-            
+
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const year = document.getElementById('year').value;

@@ -1170,19 +1170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         text.innerHTML = formatAnnouncementHtml(data.announcement);
                         banner.classList.remove('hidden');
                         banner.style.display = 'block';
-
-                        setTimeout(() => {
-                            banner.style.transition = 'opacity 0.5s ease, max-height 0.5s ease, padding 0.5s ease, margin 0.5s ease';
-                            banner.style.opacity = '0';
-                            banner.style.maxHeight = '0px';
-                            banner.style.paddingTop = '0px';
-                            banner.style.paddingBottom = '0px';
-                            banner.style.overflow = 'hidden';
-                            setTimeout(() => {
-                                banner.classList.add('hidden');
-                                banner.style.display = 'none';
-                            }, 500);
-                        }, 25000);
+                        document.body.classList.add('has-announcement-banner');
                     }
                 }
             } catch (err) {}
@@ -1190,6 +1178,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initAnnouncementBanner();
+
+    // Close announcement banner button
+    const closeBannerBtn = document.getElementById('close-announcement-btn');
+    if (closeBannerBtn) {
+        closeBannerBtn.addEventListener('click', () => {
+            const banner = document.getElementById('announcement-banner');
+            if (banner) {
+                banner.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                banner.style.opacity = '0';
+                banner.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    banner.classList.add('hidden');
+                    banner.style.display = 'none';
+                    document.body.classList.remove('has-announcement-banner');
+                }, 300);
+            }
+        });
+    }
 
 });
 
