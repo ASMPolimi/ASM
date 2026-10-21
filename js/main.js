@@ -1144,4 +1144,105 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Universal Announcement Banner Loader
+    async function initAnnouncementBanner() {
+        const banner = document.getElementById('announcement-banner');
+        const text = document.getElementById('announcement-text');
+        if (!banner || !text) return;
+
+        // Give page-specific scripts 120ms to populate if present
+        setTimeout(async () => {
+            if (text.innerHTML.trim() !== '') return;
+
+            try {
+                let data = null;
+                for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', '/data/content.json', 'data/content.json', 'api/content.json']) {
+                    try {
+                        const res = await fetch(url);
+                        if (res.ok) {
+                            data = await res.json();
+                            break;
+                        }
+                    } catch (e) {}
+                }
+                if (data && data.announcement && data.announcement.trim() !== '') {
+                    if (text.innerHTML.trim() === '') {
+                        text.innerHTML = formatAnnouncementHtml(data.announcement);
+                        banner.classList.remove('hidden');
+                        banner.style.display = 'block';
+
+                        setTimeout(() => {
+                            banner.style.transition = 'opacity 0.5s ease, max-height 0.5s ease, padding 0.5s ease, margin 0.5s ease';
+                            banner.style.opacity = '0';
+                            banner.style.maxHeight = '0px';
+                            banner.style.paddingTop = '0px';
+                            banner.style.paddingBottom = '0px';
+                            banner.style.overflow = 'hidden';
+                            setTimeout(() => {
+                                banner.classList.add('hidden');
+                                banner.style.display = 'none';
+                            }, 500);
+                        }, 25000);
+                    }
+                }
+            } catch (err) {}
+        }, 120);
+    }
+
+    initAnnouncementBanner();
+
 });
+
+// Universal Announcement Link Formatter (supports Markdown links [Text](url), raw URLs, or <a> tags)
+function formatAnnouncementHtml(rawText) {
+    if (!rawText) return '';
+    let text = rawText.trim();
+
+    // Check if it already contains HTML <a> tags
+    const hasHtmlLink = /<a\s+[^>]*href=["'][^"']+["'][^>]*>.*?<\/a>/i.test(text);
+
+    if (hasHtmlLink) {
+        return text.replace(/<a\s+([^>]*?)href=(["'])(.*?)\2([^>]*)>(.*?)<\/a>/gi, (match, before, quote, href, after, innerText) => {
+            const isExternal = href.startsWith('http://') || href.startsWith('https://');
+            const targetAttr = isExternal && !/target=/i.test(match) ? ' target="_blank" rel="noopener noreferrer"' : '';
+            const classAttr = /class=/i.test(match) ? '' : ' class="announcement-link"';
+            return `<a ${before}href="${href}"${classAttr}${targetAttr}${after}>${innerText}</a>`;
+        });
+    }
+
+    // Escape basic HTML entities to avoid broken tags, but preserve emojis & unicode
+    let escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+    // Convert Markdown links: [Label](URL)
+    const mdLinkRegex = /\[([^\]]+)\]\(([^)\s]+)\)/g;
+    const hasMarkdownLink = mdLinkRegex.test(escaped);
+    mdLinkRegex.lastIndex = 0;
+
+    if (hasMarkdownLink) {
+        escaped = escaped.replace(mdLinkRegex, (match, label, url) => {
+            const cleanUrl = url.trim();
+            const isExternal = cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://');
+            const targetAttr = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+            return `<a href="${cleanUrl}" class="announcement-link"${targetAttr}>${label}</a>`;
+        });
+    } else {
+        // Smart fallback: If admin didn't use brackets, automatically link "JOIN US" or "Join Us" to /register
+        const joinUsRegex = /\b(JOIN\s+US|Join\s+Us|join\s+us)\b/gi;
+        escaped = escaped.replace(joinUsRegex, (match) => {
+            return `<a href="/register" class="announcement-link">${match}</a>`;
+        });
+    }
+
+    // Auto-link standalone URLs not preceded by href="
+    const standaloneUrlRegex = /(^|[\s])(https?:\/\/[^\s<]+)/g;
+    escaped = escaped.replace(standaloneUrlRegex, (match, space, url) => {
+        return `${space}<a href="${url}" class="announcement-link" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    });
+
+    return escaped;
+}
+window.formatAnnouncementHtml = formatAnnouncementHtml;
+

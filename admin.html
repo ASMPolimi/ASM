@@ -150,8 +150,25 @@
         <div id="update-message" class="hidden"></div>
         <form id="update-form">
             <div class="form-group">
-                <label for="announcement">Latest Announcement</label>
-                <textarea id="announcement" rows="4" required></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <label for="announcement" style="margin: 0; font-weight: 600;">Latest Announcement</label>
+                    <button type="button" id="btn-insert-link" class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.82rem; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid #cbd5e1; background: #ffffff; color: var(--color-text);">
+                        <span>🔗</span> <span>Insert Clickable Link</span>
+                    </button>
+                </div>
+                <textarea id="announcement" rows="3" placeholder="e.g. Membership application open 🎉🎊 [JOIN US](/register)" required></textarea>
+                
+                <div style="font-size: 0.82rem; color: var(--color-text-light); margin-top: 0.45rem; line-height: 1.5; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.6rem 0.85rem;">
+                    <strong>💡 How to create clickable links:</strong> Write <code>[Text](URL)</code> anywhere in your announcement.<br>
+                    • <em>Internal page:</em> <code>Membership application open 🎉🎊 [JOIN US](/register)</code><br>
+                    • <em>External link:</em> <code>New survey available [Fill Form](https://forms.gle/...)</code><br>
+                    • <em>Tip:</em> You can also click the <strong>🔗 Insert Clickable Link</strong> button above.
+                </div>
+
+                <div id="announcement-preview-box" style="margin-top: 0.6rem; padding: 0.65rem 1rem; background: rgba(251, 191, 36, 0.18); border-left: 4px solid #f59e0b; border-radius: 6px; font-size: 0.88rem;">
+                    <span style="font-weight: 700; color: #92400e; margin-right: 0.35rem;">Banner Live Preview:</span>
+                    <span id="announcement-live-preview" style="color: var(--color-text);"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="mission-text-input">Our Mission Text</label>
@@ -390,6 +407,7 @@
             const response = await fetch('/api/content');
             const data = await response.json();
             document.getElementById('announcement').value = data.announcement || '';
+            updateAnnouncementLivePreview();
             document.getElementById('mission-text-input').value = data.mission_text || '';
             document.getElementById('global-event-reg-link').value = data.global_event_reg_link || '';
             events = data.events || [];
@@ -401,6 +419,53 @@
         } catch (err) {
             console.error("Failed to load content", err);
         }
+    }
+
+    function updateAnnouncementLivePreview() {
+        const val = document.getElementById('announcement').value;
+        const previewEl = document.getElementById('announcement-live-preview');
+        if (previewEl) {
+            if (!val || val.trim() === '') {
+                previewEl.innerHTML = '<span style="color: #94a3b8; font-style: italic;">No announcement text entered</span>';
+            } else {
+                previewEl.innerHTML = typeof formatAnnouncementHtml === 'function'
+                    ? formatAnnouncementHtml(val)
+                    : val;
+            }
+        }
+    }
+
+    const announcementInput = document.getElementById('announcement');
+    if (announcementInput) {
+        announcementInput.addEventListener('input', updateAnnouncementLivePreview);
+    }
+
+    const insertLinkBtn = document.getElementById('btn-insert-link');
+    if (insertLinkBtn) {
+        insertLinkBtn.addEventListener('click', () => {
+            const textToDisplay = prompt('Enter link text to show user (e.g. JOIN US):', 'JOIN US');
+            if (textToDisplay === null) return;
+            const targetUrl = prompt('Enter link destination (e.g. /register or https://forms.gle/...):', '/register');
+            if (targetUrl === null) return;
+
+            const snippet = `[${textToDisplay.trim() || 'Link'}](${targetUrl.trim() || '/'})`;
+            const textarea = document.getElementById('announcement');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const currentVal = textarea.value;
+
+            if (start !== undefined && end !== undefined && start !== end) {
+                textarea.value = currentVal.substring(0, start) + snippet + currentVal.substring(end);
+            } else if (start !== undefined) {
+                const prefix = start > 0 && currentVal[start - 1] !== ' ' ? ' ' : '';
+                const suffix = start < currentVal.length && currentVal[start] !== ' ' ? ' ' : '';
+                textarea.value = currentVal.substring(0, start) + prefix + snippet + suffix + currentVal.substring(start);
+            } else {
+                textarea.value = currentVal ? `${currentVal} ${snippet}` : snippet;
+            }
+            textarea.focus();
+            updateAnnouncementLivePreview();
+        });
     }
 
     function renderEvents() {

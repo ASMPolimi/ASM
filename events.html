@@ -252,7 +252,7 @@
             const banner = document.getElementById('announcement-banner');
             const text = document.getElementById('announcement-text');
             if (banner && text) {
-                text.textContent = data.announcement;
+                text.innerHTML = typeof formatAnnouncementHtml === 'function' ? formatAnnouncementHtml(data.announcement) : data.announcement;
                 banner.classList.remove('hidden');
                 banner.style.display = 'block';
 
