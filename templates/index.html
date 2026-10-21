@@ -13,13 +13,22 @@
     <div class="container hero-content">
         <h1 class="animate-up">Welcome to your community.</h1>
         <p class="animate-up delay-1">Fostering faith, brotherhood, sisterhood, and excellence at Politecnico di Milano.</p>
-        <div class="hero-buttons animate-up delay-2">
-            <a href="/events" class="btn btn-primary">Upcoming Events</a>
-            <a href="/register" class="btn btn-secondary">Become a Member</a>
-        </div>
-        
         <!-- Interactive Quick-Launch Dock -->
         <div class="hero-quick-dock animate-up delay-2" aria-label="Quick Navigation Hub">
+            <a href="/events" class="dock-card">
+                <span class="dock-card-icon">📅</span>
+                <div class="dock-card-info">
+                    <span class="dock-card-title">Upcoming Events</span>
+                    <span class="dock-card-sub">Halaqas, socials &amp; workshops</span>
+                </div>
+            </a>
+            <a href="/register" class="dock-card">
+                <span class="dock-card-icon">🤝</span>
+                <div class="dock-card-info">
+                    <span class="dock-card-title">Become a Member</span>
+                    <span class="dock-card-sub">Join the ASM POLIMI family</span>
+                </div>
+            </a>
             <a href="/halal" class="dock-card">
                 <span class="dock-card-icon">🥗</span>
                 <div class="dock-card-info">
@@ -41,6 +50,13 @@
                     <span class="dock-card-sub">Campus locations &amp; times</span>
                 </div>
             </a>
+            <a href="/gallery" class="dock-card">
+                <span class="dock-card-icon">📸</span>
+                <div class="dock-card-info">
+                    <span class="dock-card-title">Gallery</span>
+                    <span class="dock-card-sub">Campus life &amp; moments</span>
+                </div>
+            </a>
             <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer" class="dock-card">
                 <span class="dock-card-icon">📖</span>
                 <div class="dock-card-info">
@@ -48,25 +64,6 @@
                     <span class="dock-card-sub">Listen &amp; read online &nearr;</span>
                 </div>
             </a>
-        </div>
-    </div>
-
-    <!-- Sleek Glassmorphic Hero Status Bar -->
-    <div class="hero-status-bar">
-        <div class="container hero-status-inner">
-            <div class="hero-status-left">
-                <span class="hero-pulse-dot" aria-hidden="true"></span>
-                <span class="hero-status-icon">🕌</span>
-                <span class="hero-status-text">
-                    Next Prayer: <strong id="hero-next-prayer-name">Loading...</strong>
-                    <span class="hero-countdown-pill" id="hero-next-prayer-countdown">--:--</span>
-                    <span class="hero-prayer-time-sub" id="hero-next-prayer-time"></span>
-                </span>
-            </div>
-            <div class="hero-status-right">
-                <span class="hero-campus-badge">📍 Leonardo &amp; Bovisa</span>
-                <a href="#prayer-times" class="hero-status-link">Full Schedule &rarr;</a>
-            </div>
         </div>
     </div>
 </section>
@@ -77,7 +74,6 @@
     <div class="container">
         <div class="daily-ayah-card">
             <div class="daily-ayah-header">
-                <span class="ayah-bismillah-badge">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</span>
                 <div class="ayah-actions">
                     <button type="button" id="shuffle-ayah-btn" class="ayah-action-btn" title="Get another inspirational Ayah">
                         <svg class="ayah-action-icon sync-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -203,6 +199,22 @@
                 <div class="prayer-item">
                     <div class="prayer-name">Isha</div>
                     <div class="prayer-time" id="isha-time">--:-- PM</div>
+                </div>
+            </div>
+
+            <!-- Next Prayer Status Bar under Daily Prayer Times -->
+            <div class="next-prayer-status-bar" id="next-prayer-card-bar">
+                <div class="next-prayer-status-left">
+                    <span class="hero-pulse-dot" aria-hidden="true"></span>
+                    <span class="next-prayer-icon">🕌</span>
+                    <span class="next-prayer-text">
+                        Next Prayer: <strong class="next-prayer-name" id="card-next-prayer-name">Loading...</strong>
+                        <span class="hero-countdown-pill" id="card-next-prayer-countdown">--:--</span>
+                        <span class="next-prayer-time-sub" id="card-next-prayer-time"></span>
+                    </span>
+                </div>
+                <div class="next-prayer-status-right">
+                    <span class="next-prayer-campus-badge">📍 Leonardo &amp; Bovisa</span>
                 </div>
             </div>
 

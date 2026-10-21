@@ -509,10 +509,10 @@ body.dark-mode .daily-ayah-translation-text {
     min-height: 100dvh;
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-top: calc(80px + 3.5rem);
-    padding-bottom: 0;
+    align-items: center;
+    justify-content: center;
+    padding-top: calc(80px + 2.5rem);
+    padding-bottom: 3.5rem;
     box-sizing: border-box;
     transition: padding-top 0.4s ease;
     background-image: url('../assets/hero_bg.png');
@@ -567,8 +567,8 @@ body.dark-mode .daily-ayah-translation-text {
     position: relative;
     z-index: 10;
     color: white;
-    max-width: 980px;
-    margin: auto auto 2rem auto;
+    max-width: 1100px;
+    margin: auto auto;
     width: 100%;
 }
 
@@ -586,17 +586,11 @@ body.dark-mode .daily-ayah-translation-text {
     max-width: 720px;
 }
 
-.hero-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
 /* Quick-Launch Dock */
 .hero-quick-dock {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.9rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.85rem;
     margin-top: 2rem;
     width: 100%;
 }
@@ -605,18 +599,18 @@ body.dark-mode .daily-ayah-translation-text {
     display: flex;
     align-items: center;
     gap: 0.85rem;
-    padding: 0.9rem 1.15rem;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 0.95rem 1.15rem;
+    background: linear-gradient(135deg, rgba(14, 54, 71, 0.9) 0%, rgba(10, 40, 54, 0.94) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(255, 255, 255, 0.22);
     border-radius: 1rem;
     color: #ffffff !important;
     text-decoration: none;
     transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
 }
 
 .dock-card::before {
@@ -626,7 +620,7 @@ body.dark-mode .daily-ayah-translation-text {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), transparent 70%);
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.22), transparent 70%);
     opacity: 0;
     transition: opacity 0.28s ease;
     border-radius: 1rem;
@@ -634,10 +628,10 @@ body.dark-mode .daily-ayah-translation-text {
 }
 
 .dock-card:hover {
-    background: rgba(255, 255, 255, 0.22);
+    background: linear-gradient(135deg, rgba(18, 74, 97, 0.98) 0%, rgba(14, 54, 71, 0.98) 100%);
     transform: translateY(-4px) scale(1.02);
-    border-color: rgba(251, 191, 36, 0.75);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22), 0 0 20px rgba(251, 191, 36, 0.35);
+    border-color: rgba(251, 191, 36, 0.85);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32), 0 0 20px rgba(251, 191, 36, 0.3);
 }
 
 .dock-card:hover::before {
@@ -650,7 +644,7 @@ body.dark-mode .daily-ayah-translation-text {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     transition: transform 0.25s ease;
 }
 
@@ -685,34 +679,81 @@ body.dark-mode .daily-ayah-translation-text {
     text-overflow: ellipsis;
 }
 
-/* Sleek Glassmorphic Hero Status Bar */
-.hero-status-bar {
-    width: 100%;
-    position: relative;
-    z-index: 15;
-    background: rgba(18, 74, 97, 0.58);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.12);
-}
-
-.hero-status-inner {
+/* Next Prayer Status Bar under Daily Prayer Times */
+.next-prayer-status-bar {
+    margin-top: 1.75rem;
+    padding: 0.9rem 1.35rem;
+    background: linear-gradient(135deg, rgba(18, 74, 97, 0.05) 0%, rgba(251, 191, 36, 0.08) 100%);
+    border: 1px solid rgba(18, 74, 97, 0.12);
+    border-radius: 0.85rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.85rem 1.5rem;
-    gap: 1rem;
     flex-wrap: wrap;
+    gap: 0.75rem;
 }
 
-.hero-status-left {
+body.dark-mode .next-prayer-status-bar {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(251, 191, 36, 0.08) 100%);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.next-prayer-status-left {
     display: flex;
     align-items: center;
     gap: 0.65rem;
-    color: #ffffff;
-    font-size: 0.95rem;
+    color: var(--color-primary);
+    font-size: 0.98rem;
+}
+
+body.dark-mode .next-prayer-status-left {
+    color: #f1f5f9;
+}
+
+.next-prayer-icon {
+    font-size: 1.25rem;
+}
+
+.next-prayer-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-weight: 500;
+}
+
+.next-prayer-name {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+body.dark-mode .next-prayer-name {
+    color: var(--color-secondary);
+}
+
+.next-prayer-time-sub {
+    color: var(--color-text-light);
+    font-size: 0.88rem;
+}
+
+body.dark-mode .next-prayer-time-sub {
+    color: #94a3b8;
+}
+
+.next-prayer-campus-badge {
+    background: rgba(18, 74, 97, 0.08);
+    border: 1px solid rgba(18, 74, 97, 0.15);
+    color: var(--color-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+body.dark-mode .next-prayer-campus-badge {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #f1f5f9;
 }
 
 .hero-pulse-dot {
@@ -737,22 +778,10 @@ body.dark-mode .daily-ayah-translation-text {
     }
 }
 
-.hero-status-icon {
-    font-size: 1.15rem;
-}
-
-.hero-status-text {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    font-weight: 500;
-}
-
 .hero-countdown-pill {
-    background: rgba(251, 191, 36, 0.25);
-    border: 1px solid rgba(251, 191, 36, 0.5);
-    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.22);
+    border: 1px solid rgba(251, 191, 36, 0.55);
+    color: #b45309;
     font-weight: 700;
     padding: 0.15rem 0.55rem;
     border-radius: 1rem;
@@ -760,41 +789,9 @@ body.dark-mode .daily-ayah-translation-text {
     letter-spacing: 0.3px;
 }
 
-.hero-prayer-time-sub {
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 0.85rem;
-}
-
-.hero-status-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.hero-campus-badge {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.9);
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-size: 0.82rem;
-    font-weight: 500;
-}
-
-.hero-status-link {
+body.dark-mode .hero-countdown-pill {
     color: #fbbf24;
-    font-size: 0.88rem;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.hero-status-link:hover {
-    color: #f59e0b;
-    transform: translateX(3px);
+    background: rgba(251, 191, 36, 0.18);
 }
 
 @media (max-width: 992px) {
@@ -813,15 +810,15 @@ body.dark-mode .daily-ayah-translation-text {
     .hero h1 {
         font-size: 2.35rem;
     }
-    .hero-status-inner {
+    .next-prayer-status-bar {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.65rem;
-        padding: 0.75rem 1rem;
     }
-    .hero-status-right {
+    .next-prayer-status-right {
         width: 100%;
-        justify-content: space-between;
+        display: flex;
+        justify-content: flex-start;
     }
 }
 
@@ -831,7 +828,7 @@ body.dark-mode .daily-ayah-translation-text {
         gap: 0.65rem;
     }
     .dock-card {
-        padding: 0.75rem 1rem;
+        padding: 0.85rem 1rem;
     }
 }
 

@@ -275,7 +275,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     countdownStr = 'Soon';
                 }
 
-                // Update Hero Status Bar elements
+                // Update Daily Prayer Card Status Bar elements (Home & Jumu'ah pages)
+                const cardNameEl = document.getElementById('card-next-prayer-name') || document.querySelector('.next-prayer-name');
+                const cardCountdownEl = document.getElementById('card-next-prayer-countdown');
+                const cardTimeEl = document.getElementById('card-next-prayer-time');
+
+                if (cardNameEl) cardNameEl.textContent = nextPrayer.name;
+                if (cardCountdownEl) cardCountdownEl.textContent = countdownStr;
+                if (cardTimeEl) cardTimeEl.textContent = `(${formatTime(nextPrayer.time)})`;
+
+                // Also update any hero elements if present
                 const heroNameEl = document.getElementById('hero-next-prayer-name');
                 const heroCountdownEl = document.getElementById('hero-next-prayer-countdown');
                 const heroTimeEl = document.getElementById('hero-next-prayer-time');
