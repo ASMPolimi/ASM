@@ -183,24 +183,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updatePrayerUI = (timings) => {
             // Helper to convert 24h API time to 12h format
-            const formatTime = (time24) => {
+            const formatTime = (time24, asHtml = false) => {
                 const [hours, minutes] = time24.split(':');
                 const h = parseInt(hours, 10);
                 const ampm = h >= 12 ? 'PM' : 'AM';
                 const h12 = h % 12 || 12;
+                if (asHtml) {
+                    return `${h12}:${minutes} <span class="prayer-ampm">${ampm}</span>`;
+                }
                 return `${h12}:${minutes} ${ampm}`;
             };
 
             const fajrEl = document.getElementById('fajr-time');
-            if (fajrEl) fajrEl.textContent = formatTime(timings.Fajr);
+            if (fajrEl) fajrEl.innerHTML = formatTime(timings.Fajr, true);
             const dhuhrEl = document.getElementById('dhuhr-time');
-            if (dhuhrEl) dhuhrEl.textContent = formatTime(timings.Dhuhr);
+            if (dhuhrEl) dhuhrEl.innerHTML = formatTime(timings.Dhuhr, true);
             const asrEl = document.getElementById('asr-time');
-            if (asrEl) asrEl.textContent = formatTime(timings.Asr);
+            if (asrEl) asrEl.innerHTML = formatTime(timings.Asr, true);
             const maghribEl = document.getElementById('maghrib-time');
-            if (maghribEl) maghribEl.textContent = formatTime(timings.Maghrib);
+            if (maghribEl) maghribEl.innerHTML = formatTime(timings.Maghrib, true);
             const ishaEl = document.getElementById('isha-time');
-            if (ishaEl) ishaEl.textContent = formatTime(timings.Isha);
+            if (ishaEl) ishaEl.innerHTML = formatTime(timings.Isha, true);
 
             // Highlight the next coming prayer
             const updateHighlight = () => {

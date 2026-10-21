@@ -91,6 +91,14 @@
         </p>
         <!-- Interactive Quick-Launch Dock -->
         <div class="hero-quick-dock animate-up delay-2" aria-label="Quick Navigation Hub">
+            <a href="#about" class="dock-card">
+                <span class="dock-card-icon">👥</span>
+                <span class="dock-card-title">About Us</span>
+            </a>
+            <a href="/register" class="dock-card">
+                <span class="dock-card-icon">🤝</span>
+                <span class="dock-card-title">Become a Member</span>
+            </a>
             <a href="#events" class="dock-card">
                 <span class="dock-card-icon">📅</span>
                 <span class="dock-card-title">Upcoming Events</span>
@@ -107,14 +115,6 @@
                 <span class="dock-card-icon">💬</span>
                 <span class="dock-card-title">Ask an Imam</span>
             </a>
-            <a href="#join" class="dock-card">
-                <span class="dock-card-icon">🤝</span>
-                <span class="dock-card-title">Become a Member</span>
-            </a>
-            <a href="#about" class="dock-card">
-                <span class="dock-card-icon">👥</span>
-                <span class="dock-card-title">About Us</span>
-            </a>
         </div>
     </div>
 </section>
@@ -125,6 +125,10 @@
     <div class="container">
         <div class="daily-ayah-card">
             <div class="daily-ayah-header">
+                <div class="ayah-theme-tag" id="daily-ayah-theme">
+                    <span class="ayah-theme-icon">✨</span>
+                    <span class="ayah-theme-text" id="daily-ayah-theme-label">Daily Inspiration</span>
+                </div>
                 <div class="ayah-actions">
                     <button type="button" id="shuffle-ayah-btn" class="ayah-action-btn"
                         title="Get another inspirational Ayah">
@@ -214,7 +218,8 @@
             <p class="text-center w-100" style="grid-column: 1 / -1;">Loading events...</p>
         </div>
 
-        <div class="events-cta-group text-center" style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
+        <div class="events-cta-group text-center"
+            style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
             <a href="/events" class="btn btn-primary"
                 style="padding: 1.15rem 2.25rem; font-size: 1.15rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
                 <span>👉 See All Events &amp; Register</span>
@@ -241,23 +246,23 @@
             <div class="prayer-grid stagger-children">
                 <div class="prayer-item">
                     <div class="prayer-name">Fajr</div>
-                    <div class="prayer-time" id="fajr-time">--:-- AM</div>
+                    <div class="prayer-time" id="fajr-time">--:-- <span class="prayer-ampm">AM</span></div>
                 </div>
                 <div class="prayer-item">
                     <div class="prayer-name">Dhuhr</div>
-                    <div class="prayer-time" id="dhuhr-time">--:-- PM</div>
+                    <div class="prayer-time" id="dhuhr-time">--:-- <span class="prayer-ampm">PM</span></div>
                 </div>
                 <div class="prayer-item">
                     <div class="prayer-name">Asr</div>
-                    <div class="prayer-time" id="asr-time">--:-- PM</div>
+                    <div class="prayer-time" id="asr-time">--:-- <span class="prayer-ampm">PM</span></div>
                 </div>
                 <div class="prayer-item">
                     <div class="prayer-name">Maghrib</div>
-                    <div class="prayer-time" id="maghrib-time">--:-- PM</div>
+                    <div class="prayer-time" id="maghrib-time">--:-- <span class="prayer-ampm">PM</span></div>
                 </div>
                 <div class="prayer-item">
                     <div class="prayer-name">Isha</div>
-                    <div class="prayer-time" id="isha-time">--:-- PM</div>
+                    <div class="prayer-time" id="isha-time">--:-- <span class="prayer-ampm">PM</span></div>
                 </div>
             </div>
 

@@ -183,24 +183,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updatePrayerUI = (timings) => {
             // Helper to convert 24h API time to 12h format
-            const formatTime = (time24) => {
+            const formatTime = (time24, asHtml = false) => {
                 const [hours, minutes] = time24.split(':');
                 const h = parseInt(hours, 10);
                 const ampm = h >= 12 ? 'PM' : 'AM';
                 const h12 = h % 12 || 12;
+                if (asHtml) {
+                    return `${h12}:${minutes} <span class="prayer-ampm">${ampm}</span>`;
+                }
                 return `${h12}:${minutes} ${ampm}`;
             };
 
             const fajrEl = document.getElementById('fajr-time');
-            if (fajrEl) fajrEl.textContent = formatTime(timings.Fajr);
+            if (fajrEl) fajrEl.innerHTML = formatTime(timings.Fajr, true);
             const dhuhrEl = document.getElementById('dhuhr-time');
-            if (dhuhrEl) dhuhrEl.textContent = formatTime(timings.Dhuhr);
+            if (dhuhrEl) dhuhrEl.innerHTML = formatTime(timings.Dhuhr, true);
             const asrEl = document.getElementById('asr-time');
-            if (asrEl) asrEl.textContent = formatTime(timings.Asr);
+            if (asrEl) asrEl.innerHTML = formatTime(timings.Asr, true);
             const maghribEl = document.getElementById('maghrib-time');
-            if (maghribEl) maghribEl.textContent = formatTime(timings.Maghrib);
+            if (maghribEl) maghribEl.innerHTML = formatTime(timings.Maghrib, true);
             const ishaEl = document.getElementById('isha-time');
-            if (ishaEl) ishaEl.textContent = formatTime(timings.Isha);
+            if (ishaEl) ishaEl.innerHTML = formatTime(timings.Isha, true);
 
             // Highlight the next coming prayer and update Hero Status Bar countdown
             const prayers = [
@@ -357,13 +360,225 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.showAsmToast = showAsmToast;
 
-    // Fetch daily Ayah using AlQuran API with Shuffle and Copy support
+    // Curated uplifting, inspirational, and student-relevant Ayat
+    const CURATED_STUDENT_AYAT = [
+        // Seeking Knowledge & Wisdom
+        {
+            surah: 20, ayah: "114",
+            theme: "📚 Seeking Knowledge",
+            surahName: "Taha",
+            arabic: "وَقُل رَّبِّ زِدْنِي عِلْمًا",
+            english: "And say: 'My Lord, increase me in knowledge.'"
+        },
+        {
+            surah: 39, ayah: "9",
+            theme: "💡 Wisdom & Reflection",
+            surahName: "Az-Zumar",
+            arabic: "قُلْ هَلْ يَسْتَوِي الَّذِينَ يَعْلَمُونَ وَالَّذِينَ لَا يَعْلَمُونَ ۗ إِنَّمَا يَتَذَكَّرُ أُولُو الْأَلْبَابِ",
+            english: "Say: 'Are those who know equal to those who do not know?' Only they will remember who are people of understanding."
+        },
+        {
+            surah: 58, ayah: "11",
+            theme: "🎓 Status of Knowledge",
+            surahName: "Al-Mujadila",
+            arabic: "يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ",
+            english: "Allah will raise those who have believed among you and those who were given knowledge, by degrees."
+        },
+        {
+            surah: 96, ayah: "1-5",
+            theme: "🖋️ Seeking Knowledge",
+            surahName: "Al-Alaq",
+            arabic: "اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ ۝ اقْرَأْ وَرَبُّكَ الْأَكْرَمُ ۝ الَّذِي عَلَّمَ بِالْقَلَمِ ۝ عَلَّمَ الْإِنسَانَ مَا لَمْ يَعْلَمْ",
+            english: "Recite in the name of your Lord who created... taught by the pen, taught man that which he knew not."
+        },
+        // Effort, Hardship & Perseverance (Exams & Studies)
+        {
+            surah: 94, ayah: "5-6",
+            theme: "🌱 Perseverance & Ease",
+            surahName: "Ash-Sharh",
+            arabic: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا",
+            english: "For indeed, with hardship [will be] ease. Indeed, with hardship [will be] ease."
+        },
+        {
+            surah: 53, ayah: "39-40",
+            theme: "🎯 Dedication & Effort",
+            surahName: "An-Najm",
+            arabic: "وَأَن لَّيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَىٰ ۝ وَأَنَّ سَعْيَهُ سَوْفَ يُرَىٰ",
+            english: "And that there is not for man except that [good] for which he strives, and that his effort is going to be seen."
+        },
+        {
+            surah: 2, ayah: "286",
+            theme: "💪 Inner Strength",
+            surahName: "Al-Baqarah",
+            arabic: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا",
+            english: "Allah does not burden a soul beyond that it can bear."
+        },
+        {
+            surah: 2, ayah: "153",
+            theme: "🤲 Patience & Prayer",
+            surahName: "Al-Baqarah",
+            arabic: "يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
+            english: "O you who have believed, seek help through patience and prayer. Indeed, Allah is with the patient."
+        },
+        {
+            surah: 3, ayah: "200",
+            theme: "🏆 Steadfastness",
+            surahName: "Ali 'Imran",
+            arabic: "يَا أَيُّهَا الَّذِينَ آمَنُوا اصْبِرُوا وَصَابِرُوا وَرَابِطُوا وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُفْلِحُونَ",
+            english: "O you who have believed, persevere and endure and remain steadfast and conscious of Allah that you may succeed."
+        },
+        {
+            surah: 3, ayah: "139",
+            theme: "✨ Resilience & Dignity",
+            surahName: "Ali 'Imran",
+            arabic: "وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ",
+            english: "So do not weaken and do not grieve, and you will be superior if you are [true] believers."
+        },
+        // Tawakkul & Overcoming Academic Anxiety
+        {
+            surah: 65, ayah: "3",
+            theme: "🛡️ Trust in Allah (Tawakkul)",
+            surahName: "At-Talaq",
+            arabic: "وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ ۚ إِنَّ اللَّهَ بَالِغُ أَمْرِهِ",
+            english: "And whoever relies upon Allah - then He is sufficient for him. Indeed, Allah will accomplish His purpose."
+        },
+        {
+            surah: 3, ayah: "159",
+            theme: "🎯 Focus & Reliance",
+            surahName: "Ali 'Imran",
+            arabic: "فَإِذَا عَزَمْتَ فَتَوَكَّلْ عَلَى اللَّهِ ۚ إِنَّ اللَّهَ يُحِبُّ الْمُتَوَكِّلِينَ",
+            english: "And when you have decided, then rely upon Allah. Indeed, Allah loves those who rely [upon Him]."
+        },
+        {
+            surah: 13, ayah: "28",
+            theme: "🕊️ Inner Peace",
+            surahName: "Ar-Ra'd",
+            arabic: "الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
+            english: "Those who believe and whose hearts find rest in the remembrance of Allah. Unquestionably, by the remembrance of Allah hearts find peace."
+        },
+        {
+            surah: 2, ayah: "186",
+            theme: "🤲 Divine Nearness",
+            surahName: "Al-Baqarah",
+            arabic: "وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ ۖ أُجِيبُ دَعْوَةَ الدَّاعِ إِذَا دَعَانِ",
+            english: "And when My servants ask you concerning Me - indeed I am near. I respond to the call of the caller when he calls upon Me."
+        },
+        {
+            surah: 3, ayah: "173",
+            theme: "🛡️ Supreme Protector",
+            surahName: "Ali 'Imran",
+            arabic: "الَّذِينَ قَالَ لَهُمُ النَّاسُ إِنَّ النَّاسَ قَدْ جَمَعُوا لَكُمْ فَاخْشَوْهُمْ فَزَادَهُمْ إِيمَانًا وَقَالُوا حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
+            english: "Sufficient for us is Allah, and [He is] the best Disposer of affairs."
+        },
+        // Dua for Mental Clarity & Academic Success
+        {
+            surah: 20, ayah: "25-28",
+            theme: "📖 Dua for Clarity & Ease",
+            surahName: "Taha",
+            arabic: "رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي ۝ وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي ۝ يَفْقَهُوا قَوْلِي",
+            english: "My Lord, expand for me my chest [with assurance], and ease for me my task, and untie the knot from my tongue that they may understand my speech."
+        },
+        {
+            surah: 2, ayah: "201",
+            theme: "⚖️ Balanced Success",
+            surahName: "Al-Baqarah",
+            arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+            english: "Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire."
+        },
+        // Hope & Relief
+        {
+            surah: 93, ayah: "3-5",
+            theme: "🌅 Brighter Tomorrow",
+            surahName: "Ad-Duha",
+            arabic: "مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ ۝ وَلَلْآخِرَةُ خَيْرٌ لَّكَ مِنَ الْأُولَىٰ ۝ وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ",
+            english: "Your Lord has not forsaken you, nor has He detested. And what is to come is better for you than what has passed. And your Lord is going to give you, and you will be well-pleased."
+        },
+        {
+            surah: 39, ayah: "53",
+            theme: "💖 Boundless Mercy",
+            surahName: "Az-Zumar",
+            arabic: "قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ۚ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا",
+            english: "Say: 'O My servants who have transgressed against themselves, do not despair of the mercy of Allah. Indeed, Allah forgives all sins.'"
+        },
+        // Excellence (Ihsan) & Gratitude
+        {
+            surah: 18, ayah: "30",
+            theme: "🌟 Excellence (Ihsan)",
+            surahName: "Al-Kahf",
+            arabic: "إِنَّ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ إِنَّا لَا نُضِيعُ أَجْرَ مَنْ أَحْسَنَ عَمَلًا",
+            english: "Indeed, those who have believed and done righteous deeds - We will not allow to be lost the reward of any who did well in deeds."
+        },
+        {
+            surah: 55, ayah: "60",
+            theme: "✨ Goodness Rewarded",
+            surahName: "Ar-Rahman",
+            arabic: "هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ",
+            english: "Is the reward for goodness [anything] other than goodness?"
+        },
+        {
+            surah: 14, ayah: "7",
+            theme: "📈 Gratitude & Growth",
+            surahName: "Ibrahim",
+            arabic: "وَإِذْ تَأَذَّنَ رَبُّكُمْ لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ",
+            english: "And [remember] when your Lord proclaimed: 'If you are grateful, I will surely increase you [in favor].'"
+        },
+        {
+            surah: 2, ayah: "152",
+            theme: "🌿 Mindfulness & Gratitude",
+            surahName: "Al-Baqarah",
+            arabic: "فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ",
+            english: "So remember Me; I will remember you. And be grateful to Me and do not deny Me."
+        },
+        // Brotherhood & Mutual Support
+        {
+            surah: 49, ayah: "10",
+            theme: "🤝 Brotherhood & Unity",
+            surahName: "Al-Hujurat",
+            arabic: "إِنَّمَا الْمُؤْمِنُونَ إِخْوَةٌ فَأَصْلِحُوا بَيْنَ أَخَوَيْكُمْ ۚ وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُرْحَمُونَ",
+            english: "The believers are but brothers, so make settlement between your brothers. And fear Allah that you may receive mercy."
+        },
+        {
+            surah: 3, ayah: "103",
+            theme: "🔗 Holding Together",
+            surahName: "Ali 'Imran",
+            arabic: "وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا",
+            english: "And hold firmly to the rope of Allah all together and do not become divided."
+        },
+        {
+            surah: 5, ayah: "2",
+            theme: "🤝 Cooperation in Good",
+            surahName: "Al-Ma'idah",
+            arabic: "وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ ۖ وَلَا تَعَاوَنُوا عَلَى الْإِثْمِ وَالْعُدْوَانِ",
+            english: "And cooperate in righteousness and piety, but do not cooperate in sin and aggression."
+        },
+        // Time & Purpose
+        {
+            surah: 103, ayah: "1-3",
+            theme: "⏳ Value of Time",
+            surahName: "Al-'Asr",
+            arabic: "وَالْعَصْرِ ۝ إِنَّ الْإِنسَانَ لَفِي خُسْرٍ ۝ إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ",
+            english: "By time, indeed mankind is in loss, except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience."
+        }
+    ];
+
+    let currentAyahIndex = -1;
     let currentAyahData = null;
 
-    async function fetchDailyAyah(isShuffle = false) {
+    // Deterministic daily Ayah index based on day of the year
+    function getDailyAyahIndex() {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        const dayOfYear = Math.floor(diff / oneDay);
+        return dayOfYear % CURATED_STUDENT_AYAT.length;
+    }
+
+    function renderCuratedAyah(ayahItem, isShuffle = false) {
         const arabicDisplay = document.getElementById('daily-ayah-arabic');
         const englishDisplay = document.getElementById('daily-ayah-text');
         const ayahRef = document.getElementById('daily-ayah-ref');
+        const themeLabel = document.getElementById('daily-ayah-theme-label');
         const contentWrap = document.getElementById('daily-ayah-content-wrap');
         const shuffleBtn = document.getElementById('shuffle-ayah-btn');
 
@@ -376,54 +591,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (contentWrap) {
-            contentWrap.style.transition = 'opacity 0.2s ease';
-            contentWrap.style.opacity = '0.4';
+            contentWrap.style.transition = 'opacity 0.22s ease';
+            contentWrap.style.opacity = '0.3';
         }
 
-        try {
-            // Get a random ayah between 1 and 6236
-            const randomAyah = Math.floor(Math.random() * 6236) + 1;
-            const response = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyah}/editions/quran-uthmani,en.asad`);
-            const result = await response.json();
+        setTimeout(() => {
+            currentAyahData = {
+                arabic: ayahItem.arabic,
+                english: ayahItem.english,
+                surah: ayahItem.surahName,
+                ayahNumber: ayahItem.ayah
+            };
 
-            if (result && result.data && result.data.length === 2) {
-                const arabicData = result.data[0];
-                const englishData = result.data[1];
+            if (arabicDisplay) arabicDisplay.textContent = ayahItem.arabic;
+            if (englishDisplay) englishDisplay.textContent = `"${ayahItem.english}"`;
+            if (ayahRef) ayahRef.textContent = `— Surah ${ayahItem.surahName} (${ayahItem.surah}:${ayahItem.ayah})`;
+            if (themeLabel) themeLabel.textContent = ayahItem.theme;
 
-                const arabicText = arabicData.text;
-                const englishText = englishData.text;
-                const surahName = englishData.surah.englishName;
-                const ayahNumber = englishData.numberInSurah;
-
-                currentAyahData = {
-                    arabic: arabicText,
-                    english: englishText,
-                    surah: surahName,
-                    ayahNumber: ayahNumber
-                };
-
-                if (arabicDisplay) arabicDisplay.textContent = arabicText;
-                if (englishDisplay) englishDisplay.textContent = `"${englishText}"`;
-                if (ayahRef) ayahRef.textContent = `— Surah ${surahName} (${ayahNumber})`;
-            }
-        } catch (error) {
-            console.error('Error fetching Ayah:', error);
-            if (englishDisplay) englishDisplay.textContent = '"Verily, with hardship comes ease."';
-            if (ayahRef) ayahRef.textContent = '— Surah Ash-Sharh (94:6)';
-        } finally {
             if (contentWrap) {
                 contentWrap.style.opacity = '1';
             }
-        }
+        }, isShuffle ? 180 : 0);
     }
 
-    fetchDailyAyah();
+    function shuffleCuratedAyah() {
+        if (CURATED_STUDENT_AYAT.length <= 1) return;
+        let nextIndex;
+        do {
+            nextIndex = Math.floor(Math.random() * CURATED_STUDENT_AYAT.length);
+        } while (nextIndex === currentAyahIndex);
+        currentAyahIndex = nextIndex;
+        renderCuratedAyah(CURATED_STUDENT_AYAT[currentAyahIndex], true);
+    }
+
+    // Initialize daily ayah
+    if (document.getElementById('daily-ayah-content-wrap')) {
+        currentAyahIndex = getDailyAyahIndex();
+        renderCuratedAyah(CURATED_STUDENT_AYAT[currentAyahIndex], false);
+    }
 
     // Wire up Shuffle Ayah Button
     const shuffleAyahBtn = document.getElementById('shuffle-ayah-btn');
     if (shuffleAyahBtn) {
         shuffleAyahBtn.addEventListener('click', () => {
-            fetchDailyAyah(true);
+            shuffleCuratedAyah();
         });
     }
 
