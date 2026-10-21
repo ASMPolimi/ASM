@@ -202,25 +202,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const ishaEl = document.getElementById('isha-time');
             if (ishaEl) ishaEl.textContent = formatTime(timings.Isha);
 
-            // Highlight the next coming prayer
-            const updateHighlight = () => {
+            // Highlight the next coming prayer and update Hero Status Bar countdown
+            const prayers = [
+                { name: 'Fajr', id: 'fajr-time', time: timings.Fajr },
+                { name: 'Dhuhr', id: 'dhuhr-time', time: timings.Dhuhr },
+                { name: 'Asr', id: 'Asr', idTarget: 'asr-time', time: timings.Asr },
+                { name: 'Maghrib', id: 'maghrib-time', time: timings.Maghrib },
+                { name: 'Isha', id: 'isha-time', time: timings.Isha }
+            ];
+
+            const getMinutes = (time24) => {
+                if (!time24) return 0;
+                const [hours, minutes] = time24.split(':');
+                return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+            };
+
+            const updatePrayerCountdownAndHighlights = () => {
                 const now = new Date();
                 const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-                const getMinutes = (time24) => {
-                    const [hours, minutes] = time24.split(':');
-                    return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
-                };
-
-                const prayers = [
-                    { id: 'fajr-time', time: timings.Fajr },
-                    { id: 'dhuhr-time', time: timings.Dhuhr },
-                    { id: 'asr-time', time: timings.Asr },
-                    { id: 'maghrib-time', time: timings.Maghrib },
-                    { id: 'isha-time', time: timings.Isha }
-                ];
-
                 let nextPrayer = null;
+                let isTomorrow = false;
+
                 for (const prayer of prayers) {
                     if (getMinutes(prayer.time) > currentMinutes) {
                         nextPrayer = prayer;
@@ -228,14 +231,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                // If all prayers today have passed, the next prayer is Fajr (tomorrow)
+                // If all prayers today have passed, the next prayer is Fajr tomorrow
                 if (!nextPrayer) {
                     nextPrayer = prayers[0];
+                    isTomorrow = true;
                 }
 
-                // Remove highlight from all prayer items
+                // Remove highlight from all prayer items in schedule card
                 prayers.forEach(p => {
-                    const element = document.getElementById(p.id);
+                    const targetId = p.idTarget || p.id;
+                    const element = document.getElementById(targetId);
                     if (element) {
                         const prayerItem = element.closest('.prayer-item');
                         if (prayerItem) {
@@ -244,17 +249,47 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                // Add highlight to the next prayer item
-                const nextElement = document.getElementById(nextPrayer.id);
+                // Highlight next prayer in prayer schedule
+                const nextTargetId = nextPrayer.idTarget || nextPrayer.id;
+                const nextElement = document.getElementById(nextTargetId);
                 if (nextElement) {
                     const nextPrayerItem = nextElement.closest('.prayer-item');
                     if (nextPrayerItem) {
                         nextPrayerItem.classList.add('highlight');
                     }
                 }
+
+                // Calculate countdown time for Hero Status Bar
+                let diffMinutes = isTomorrow
+                    ? (1440 - currentMinutes) + getMinutes(nextPrayer.time)
+                    : getMinutes(nextPrayer.time) - currentMinutes;
+
+                let countdownStr = '';
+                if (diffMinutes <= 0 && diffMinutes >= -15) {
+                    countdownStr = 'Now';
+                } else if (diffMinutes > 0) {
+                    const hours = Math.floor(diffMinutes / 60);
+                    const mins = diffMinutes % 60;
+                    countdownStr = hours > 0 ? `in ${hours}h ${mins}m` : `in ${mins}m`;
+                } else {
+                    countdownStr = 'Soon';
+                }
+
+                // Update Hero Status Bar elements
+                const heroNameEl = document.getElementById('hero-next-prayer-name');
+                const heroCountdownEl = document.getElementById('hero-next-prayer-countdown');
+                const heroTimeEl = document.getElementById('hero-next-prayer-time');
+
+                if (heroNameEl) heroNameEl.textContent = nextPrayer.name;
+                if (heroCountdownEl) heroCountdownEl.textContent = countdownStr;
+                if (heroTimeEl) heroTimeEl.textContent = `(${formatTime(nextPrayer.time)})`;
             };
 
-            updateHighlight();
+            updatePrayerCountdownAndHighlights();
+
+            // Keep countdown live every 30 seconds
+            if (window._prayerTickerInterval) clearInterval(window._prayerTickerInterval);
+            window._prayerTickerInterval = setInterval(updatePrayerCountdownAndHighlights, 30000);
         };
 
         try {
@@ -292,8 +327,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchPrayerTimes();
 
-    // Fetch daily Ayah using AlQuran API
-    async function fetchDailyAyah() {
+    // Universal Toast Notification Helper
+    function showAsmToast(message) {
+        let toast = document.getElementById('asm-global-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'asm-global-toast';
+            toast.className = 'asm-toast-notification';
+            toast.setAttribute('role', 'status');
+            toast.setAttribute('aria-live', 'polite');
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = `<span>✓</span> <span>${message}</span>`;
+        toast.classList.add('show');
+
+        clearTimeout(window._asmToastTimeout);
+        window._asmToastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2800);
+    }
+    window.showAsmToast = showAsmToast;
+
+    // Fetch daily Ayah using AlQuran API with Shuffle and Copy support
+    let currentAyahData = null;
+
+    async function fetchDailyAyah(isShuffle = false) {
+        const arabicDisplay = document.getElementById('daily-ayah-arabic');
+        const englishDisplay = document.getElementById('daily-ayah-text');
+        const ayahRef = document.getElementById('daily-ayah-ref');
+        const contentWrap = document.getElementById('daily-ayah-content-wrap');
+        const shuffleBtn = document.getElementById('shuffle-ayah-btn');
+
+        if (isShuffle && shuffleBtn) {
+            const syncIcon = shuffleBtn.querySelector('.sync-icon');
+            if (syncIcon) {
+                syncIcon.classList.add('spinning');
+                setTimeout(() => syncIcon.classList.remove('spinning'), 700);
+            }
+        }
+
+        if (contentWrap) {
+            contentWrap.style.transition = 'opacity 0.2s ease';
+            contentWrap.style.opacity = '0.4';
+        }
+
         try {
             // Get a random ayah between 1 and 6236
             const randomAyah = Math.floor(Math.random() * 6236) + 1;
@@ -309,22 +386,64 @@ document.addEventListener('DOMContentLoaded', () => {
                 const surahName = englishData.surah.englishName;
                 const ayahNumber = englishData.numberInSurah;
 
-                const arabicDisplay = document.getElementById('daily-ayah-arabic');
-                const englishDisplay = document.getElementById('daily-ayah-text');
-                const ayahRef = document.getElementById('daily-ayah-ref');
+                currentAyahData = {
+                    arabic: arabicText,
+                    english: englishText,
+                    surah: surahName,
+                    ayahNumber: ayahNumber
+                };
 
-                if (arabicDisplay && englishDisplay && ayahRef) {
-                    arabicDisplay.textContent = arabicText;
-                    englishDisplay.textContent = `"${englishText}"`;
-                    ayahRef.textContent = `- Surah ${surahName} (${ayahNumber})`;
-                }
+                if (arabicDisplay) arabicDisplay.textContent = arabicText;
+                if (englishDisplay) englishDisplay.textContent = `"${englishText}"`;
+                if (ayahRef) ayahRef.textContent = `— Surah ${surahName} (${ayahNumber})`;
             }
         } catch (error) {
             console.error('Error fetching Ayah:', error);
+            if (englishDisplay) englishDisplay.textContent = '"Verily, with hardship comes ease."';
+            if (ayahRef) ayahRef.textContent = '— Surah Ash-Sharh (94:6)';
+        } finally {
+            if (contentWrap) {
+                contentWrap.style.opacity = '1';
+            }
         }
     }
 
     fetchDailyAyah();
+
+    // Wire up Shuffle Ayah Button
+    const shuffleAyahBtn = document.getElementById('shuffle-ayah-btn');
+    if (shuffleAyahBtn) {
+        shuffleAyahBtn.addEventListener('click', () => {
+            fetchDailyAyah(true);
+        });
+    }
+
+    // Wire up Copy Ayah Button
+    const copyAyahBtn = document.getElementById('copy-ayah-btn');
+    if (copyAyahBtn) {
+        copyAyahBtn.addEventListener('click', () => {
+            const arabicEl = document.getElementById('daily-ayah-arabic');
+            const englishEl = document.getElementById('daily-ayah-text');
+            const refEl = document.getElementById('daily-ayah-ref');
+
+            const arabic = arabicEl ? arabicEl.textContent.trim() : '';
+            const english = englishEl ? englishEl.textContent.trim() : '';
+            const ref = refEl ? refEl.textContent.trim() : '';
+
+            const shareText = `${arabic}\n\n${english}\n${ref}\n\n(ASM POLIMI - https://asmpolimi.it)`;
+
+            copyTextToClipboard(shareText, () => {
+                showAsmToast('Ayah & translation copied to clipboard! 📋');
+                const btnText = document.getElementById('copy-ayah-btn-text');
+                if (btnText) {
+                    btnText.textContent = 'Copied!';
+                    setTimeout(() => { btnText.textContent = 'Copy Ayah'; }, 2000);
+                }
+            }, (err) => {
+                console.error('Failed to copy Ayah:', err);
+            });
+        });
+    }
 
     // Form submission
     const form = document.querySelector('.contact-form');
