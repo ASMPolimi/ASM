@@ -3581,8 +3581,8 @@ body.dark-mode .privacy-modal-footer {
         padding: 0.65rem 0.5rem;
     }
 
-    /* Span the 5th item across both columns so it looks balanced, or make all 1 col */
-    .social-brand-btn.facebook {
+    /* Span the last (5th) item across both columns so it stays centered and balanced */
+    .social-brand-btn:last-child {
         grid-column: span 2;
     }
 }
