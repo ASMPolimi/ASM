@@ -578,7 +578,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const arabicDisplay = document.getElementById('daily-ayah-arabic');
         const englishDisplay = document.getElementById('daily-ayah-text');
         const ayahRef = document.getElementById('daily-ayah-ref');
-        const themeLabel = document.getElementById('daily-ayah-theme-label');
         const contentWrap = document.getElementById('daily-ayah-content-wrap');
         const shuffleBtn = document.getElementById('shuffle-ayah-btn');
 
@@ -606,7 +605,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (arabicDisplay) arabicDisplay.textContent = ayahItem.arabic;
             if (englishDisplay) englishDisplay.textContent = `"${ayahItem.english}"`;
             if (ayahRef) ayahRef.textContent = `— Surah ${ayahItem.surahName} (${ayahItem.surah}:${ayahItem.ayah})`;
-            if (themeLabel) themeLabel.textContent = ayahItem.theme;
 
             if (contentWrap) {
                 contentWrap.style.opacity = '1';
