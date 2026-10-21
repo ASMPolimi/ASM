@@ -559,6 +559,112 @@ document.addEventListener('DOMContentLoaded', () => {
         window.closePrivacyModal = closePrivacyModal;
     }
 
+    // Qibla Compass Modal & Live Orientation Controller
+    const qiblaModal = document.getElementById('qibla-modal');
+    if (qiblaModal) {
+        const openQiblaBtns = document.querySelectorAll('.open-qibla-modal-btn');
+        const closeQiblaBtns = document.querySelectorAll('.close-qibla-modal-btn');
+        const compassDial = document.getElementById('compass-dial-ring');
+        const sensorBtn = document.getElementById('start-live-compass-btn');
+        const sensorMsg = document.getElementById('qibla-sensor-text');
+        let sensorActive = false;
+        let orientationHandler = null;
+
+        function openQiblaModal(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            qiblaModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQiblaModal(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            qiblaModal.classList.remove('active');
+            document.body.style.overflow = '';
+            if (sensorActive && orientationHandler) {
+                window.removeEventListener('deviceorientation', orientationHandler);
+                sensorActive = false;
+                if (sensorBtn) sensorBtn.textContent = '🔄 Enable Phone Sensor';
+                if (compassDial) compassDial.style.transform = 'rotate(0deg)';
+                if (sensorMsg) sensorMsg.textContent = 'Fixed compass mode for Milan. Tap below for phone orientation mode.';
+            }
+        }
+
+        openQiblaBtns.forEach(btn => btn.addEventListener('click', openQiblaModal));
+        closeQiblaBtns.forEach(btn => btn.addEventListener('click', closeQiblaModal));
+
+        qiblaModal.addEventListener('click', (e) => {
+            if (e.target === qiblaModal) closeQiblaModal(e);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && qiblaModal.classList.contains('active')) {
+                closeQiblaModal(e);
+            }
+        });
+
+        // Live Phone Sensor Orientation
+        if (sensorBtn) {
+            sensorBtn.addEventListener('click', async () => {
+                if (sensorActive) {
+                    if (orientationHandler) window.removeEventListener('deviceorientation', orientationHandler);
+                    sensorActive = false;
+                    sensorBtn.textContent = '🔄 Enable Phone Sensor';
+                    if (compassDial) compassDial.style.transform = 'rotate(0deg)';
+                    if (sensorMsg) sensorMsg.textContent = 'Fixed compass mode for Milan. Tap below for phone orientation mode.';
+                    return;
+                }
+
+                const setupOrientationListener = () => {
+                    orientationHandler = (event) => {
+                        let heading = null;
+                        if (typeof event.webkitCompassHeading !== 'undefined') {
+                            heading = event.webkitCompassHeading; // iOS True North heading
+                        } else if (event.alpha !== null) {
+                            heading = 360 - event.alpha; // Android approximation
+                        }
+
+                        if (heading !== null && compassDial) {
+                            // Rotate dial counter to heading so North points toward True North
+                            compassDial.style.transform = `rotate(${-heading}deg)`;
+                            if (sensorMsg) {
+                                const diff = Math.abs((heading - 124 + 360) % 360);
+                                if (diff < 8 || diff > 352) {
+                                    sensorMsg.innerHTML = '<strong style="color: #10b981;">Aligned with Qibla! 🕋 You are facing Makkah.</strong>';
+                                } else {
+                                    sensorMsg.textContent = `Turn phone until 🕋 Kaaba aligns with the top (Heading: ${Math.round(heading)}°)`;
+                                }
+                            }
+                        }
+                    };
+
+                    window.addEventListener('deviceorientation', orientationHandler, true);
+                    sensorActive = true;
+                    sensorBtn.textContent = '⏹ Disable Sensor';
+                    if (sensorMsg) sensorMsg.textContent = 'Live phone compass active! Rotate phone to align.';
+                };
+
+                // Request permission if needed (iOS 13+)
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    try {
+                        const response = await DeviceOrientationEvent.requestPermission();
+                        if (response === 'granted') {
+                            setupOrientationListener();
+                        } else {
+                            alert('Permission to access device orientation was denied.');
+                        }
+                    } catch (err) {
+                        console.warn('Device orientation error:', err);
+                        alert('Could not access device sensors on this browser.');
+                    }
+                } else if ('ondeviceorientation' in window) {
+                    setupOrientationListener();
+                } else {
+                    alert('Device orientation sensors are not supported on this device/browser.');
+                }
+            });
+        }
+    }
+
     // Friday Sunnah checklist functionality
     const sunnahList = document.getElementById('sunnah-checklist');
     if (sunnahList) {
