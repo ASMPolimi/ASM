@@ -402,7 +402,7 @@
         <div class="qibla-modal-dialog">
             <div class="qibla-modal-header">
                 <h3 id="qibla-modal-title">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-secondary); vertical-align: middle;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-secondary); vertical-align: middle;">
                         <circle cx="12" cy="12" r="10"></circle>
                         <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="var(--color-secondary)"></polygon>
                     </svg>
@@ -429,27 +429,16 @@
 
                 <div class="qibla-readout-card">
                     <div class="qibla-angle-big">124° <span class="qibla-dir-text">SE (South-East)</span></div>
-                    <div class="qibla-city-sub">Politecnico di Milano &bull; Milan, Italy</div>
-                    <div class="qibla-coordinates-sub">45.4642° N, 9.1900° E &bull; Distance: ~3,820 km</div>
-                </div>
-
-                <div class="qibla-guidance-tip">
-                    <div class="tip-icon">💡</div>
-                    <div class="tip-text">
-                        <strong>How to align:</strong> From anywhere on campus, orient yourself toward True North, then turn <strong>124° clockwise</strong> toward the South-East (towards Makkah). Keep your phone away from metal desks and laptops for accuracy.
-                    </div>
+                    <div class="qibla-city-sub">Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km</div>
                 </div>
 
                 <div id="sensor-status-msg" class="qibla-sensor-note">
-                    <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text">Fixed compass mode for Milan. Tap below for phone orientation mode.</span>
+                    <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text">Align phone until the 🕋 Kaaba points to the top.</span>
                 </div>
             </div>
             <div class="qibla-modal-footer">
-                <button type="button" id="start-live-compass-btn" class="btn btn-secondary qibla-sensor-btn">
-                    🔄 Enable Phone Sensor
-                </button>
-                <button type="button" class="btn btn-primary close-qibla-modal-btn" style="padding: 0.5rem 1.4rem; font-size: 0.88rem;">
-                    Done
+                <button type="button" class="btn btn-primary close-qibla-modal-btn w-100" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                    Close Compass
                 </button>
             </div>
         </div>
