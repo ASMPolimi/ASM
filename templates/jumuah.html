@@ -678,6 +678,9 @@
                 banner.classList.remove('hidden');
                 banner.style.display = 'block';
                 document.body.classList.add('has-announcement-banner');
+                if (typeof scheduleAnnouncementAutoHide === 'function') {
+                    scheduleAnnouncementAutoHide(20000);
+                }
             }
         }
 

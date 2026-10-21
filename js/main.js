@@ -79,11 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileNavLinksContainer.appendChild(divider);
 
         const adminLinks = [
-            { text: 'Admin: Events', href: 'https://admin.asmpolimi.it/admin' },
-            { text: 'Admin: Members & Mailing', href: 'https://admin.asmpolimi.it/admin_members' },
-            { text: "Admin: Jumu'ah", href: 'https://admin.asmpolimi.it/admin_jumuah' },
-            { text: 'Admin: Questions', href: 'https://admin.asmpolimi.it/admin_questions' },
-            { text: 'Admin: Users', href: 'https://admin.asmpolimi.it/admin_users' }
+            { text: 'Admin', href: 'https://admin.asmpolimi.it/admin' },
         ];
 
         adminLinks.forEach(linkInfo => {
@@ -313,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const result = await response.json();
                     if (result && result.success && result.data) timings = result.data;
                 }
-            } catch (e) {}
+            } catch (e) { }
 
             if (!timings) {
                 // Direct call for GitHub Pages / static hosting
@@ -670,7 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const btn = form.querySelector('button');
             const originalText = btn.textContent;
-            
+
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const year = document.getElementById('year').value;
@@ -1163,7 +1159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             data = await res.json();
                             break;
                         }
-                    } catch (e) {}
+                    } catch (e) { }
                 }
                 if (data && data.announcement && data.announcement.trim() !== '') {
                     if (text.innerHTML.trim() === '') {
@@ -1171,9 +1167,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         banner.classList.remove('hidden');
                         banner.style.display = 'block';
                         document.body.classList.add('has-announcement-banner');
+                        window.scheduleAnnouncementAutoHide(20000);
                     }
                 }
-            } catch (err) {}
+            } catch (err) { }
         }, 120);
     }
 
@@ -1183,21 +1180,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBannerBtn = document.getElementById('close-announcement-btn');
     if (closeBannerBtn) {
         closeBannerBtn.addEventListener('click', () => {
-            const banner = document.getElementById('announcement-banner');
-            if (banner) {
-                banner.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                banner.style.opacity = '0';
-                banner.style.transform = 'translateY(-10px)';
-                setTimeout(() => {
-                    banner.classList.add('hidden');
-                    banner.style.display = 'none';
-                    document.body.classList.remove('has-announcement-banner');
-                }, 300);
-            }
+            window.hideAnnouncementBanner();
         });
     }
 
 });
+
+// Global Auto-hide & Dismiss Controller for Announcement Banner
+window.scheduleAnnouncementAutoHide = function (durationMs = 20000) {
+    if (window.announcementAutoHideTimer) {
+        clearTimeout(window.announcementAutoHideTimer);
+    }
+    window.announcementAutoHideTimer = setTimeout(() => {
+        window.hideAnnouncementBanner();
+    }, durationMs);
+};
+
+window.hideAnnouncementBanner = function () {
+    const banner = document.getElementById('announcement-banner');
+    if (!banner || banner.classList.contains('hidden')) return;
+    if (window.announcementAutoHideTimer) {
+        clearTimeout(window.announcementAutoHideTimer);
+        window.announcementAutoHideTimer = null;
+    }
+    banner.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    banner.style.opacity = '0';
+    banner.style.transform = 'translateY(-15px)';
+    setTimeout(() => {
+        banner.classList.add('hidden');
+        banner.style.display = 'none';
+        document.body.classList.remove('has-announcement-banner');
+    }, 500);
+};
 
 // Universal Announcement Link Formatter (supports Markdown links [Text](url), raw URLs, or <a> tags)
 function formatAnnouncementHtml(rawText) {
