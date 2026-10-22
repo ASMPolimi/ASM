@@ -239,21 +239,21 @@
 <section class="section first-section">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Halal Product Scanner</h2>
+            <h2 data-i18n="halal_page_heading">Halal Product Scanner</h2>
             <div class="divider"></div>
-            <p>Check products instantly via barcode scanning or manual ingredients analysis.</p>
+            <p data-i18n="halal_page_sub">Check products instantly via barcode scanning or manual ingredients analysis.</p>
         </div>
 
         <div class="scanner-card">
             <div class="tab-buttons">
-                <button class="tab-btn active" onclick="switchTab('camera-tab')">📷 Live Camera Scan</button>
-                <button class="tab-btn" onclick="switchTab('barcode-tab')">🔢 Enter Barcode</button>
-                <button class="tab-btn" onclick="switchTab('ingredients-tab')">📝 Ingredients Analyzer</button>
+                <button class="tab-btn active" onclick="switchTab('camera-tab')" data-i18n="halal_tab_cam">📷 Live Camera Scan</button>
+                <button class="tab-btn" onclick="switchTab('barcode-tab')" data-i18n="halal_tab_barcode">🔢 Enter Barcode</button>
+                <button class="tab-btn" onclick="switchTab('ingredients-tab')" data-i18n="halal_tab_ingredients">📝 Ingredients Analyzer</button>
             </div>
 
             <!-- Tab 1: Camera Scanner -->
             <div id="camera-tab" class="tab-content active">
-                <p class="text-center mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;">
+                <p class="text-center mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;" data-i18n="halal_cam_instruction">
                     Align the barcode inside the camera viewpoint to scan automatically.
                 </p>
                 <div style="position: relative; max-width: 500px; margin: 0 auto 1.5rem auto;">
@@ -261,10 +261,9 @@
                     <div class="scan-overlay-laser" id="laser-line" style="display: none;"></div>
                 </div>
                 <div class="text-center">
-                    <button id="start-camera-btn" class="btn btn-primary">Start Camera Scanner</button>
+                    <button id="start-camera-btn" class="btn btn-primary" data-i18n="halal_cam_start">Start Camera Scanner</button>
                     <button id="stop-camera-btn" class="btn btn-secondary"
-                        style="display: none; border-color: var(--color-primary); color: var(--color-primary);">Stop
-                        Camera</button>
+                        style="display: none; border-color: var(--color-primary); color: var(--color-primary);" data-i18n="halal_cam_stop">Stop Camera</button>
                 </div>
             </div>
 
@@ -272,32 +271,32 @@
             <div id="barcode-tab" class="tab-content">
                 <form id="barcode-form" onsubmit="handleBarcodeSubmit(event)">
                     <div class="form-group">
-                        <label for="barcode-input">Product Barcode (EAN/UPC Number)</label>
-                        <input type="text" id="barcode-input" placeholder="e.g. 20305062" required>
+                        <label for="barcode-input" data-i18n="halal_barcode_label">Product Barcode (EAN/UPC Number)</label>
+                        <input type="text" id="barcode-input" placeholder="e.g. 20305062" data-i18n-placeholder="halal_barcode_ph" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Look Up Product</button>
+                    <button type="submit" class="btn btn-primary w-100" data-i18n="halal_barcode_btn">Look Up Product</button>
                 </form>
             </div>
 
             <!-- Tab 3: Ingredients Text Analyzer -->
             <div id="ingredients-tab" class="tab-content">
-                <p class="mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;">
+                <p class="mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;" data-i18n="halal_ing_instruction">
                     Paste the ingredients list of any product below. Our system will highlight any Haram or doubtful
                     (Mashbuh) substances.
                 </p>
                 <form id="ingredients-form" onsubmit="handleIngredientsSubmit(event)">
                     <div class="form-group">
-                        <label for="ingredients-input">Ingredients Text</label>
-                        <textarea id="ingredients-input" rows="6" placeholder="Paste ingredients list here..." required
+                        <label for="ingredients-input" data-i18n="halal_ing_label">Ingredients Text</label>
+                        <textarea id="ingredients-input" rows="6" placeholder="Paste ingredients list here..." data-i18n-placeholder="halal_ing_ph" required
                             style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-family: var(--font-body);"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Analyze Ingredients</button>
+                    <button type="submit" class="btn btn-primary w-100" data-i18n="halal_ing_btn">Analyze Ingredients</button>
                 </form>
             </div>
 
             <!-- Loader -->
             <div id="scanner-loader" class="text-center mt-4 hidden" style="margin-top: 2rem;">
-                <div style="font-size: 1.25rem; font-weight: 600; color: var(--color-primary);">Querying Database...
+                <div style="font-size: 1.25rem; font-weight: 600; color: var(--color-primary);" data-i18n="halal_querying">Querying Database...
                 </div>
             </div>
 
@@ -314,7 +313,8 @@
     </div>
     <div class="text-center" style="margin-top: 1rem;">
         <a href="/support" class="btn btn-primary"
-            style="padding: 1.25rem 2.5rem; font-size: 1.2rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; transition: all 0.3s ease;">
+            style="padding: 1.25rem 2.5rem; font-size: 1.2rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; transition: all 0.3s ease;"
+            data-i18n="halal_ask_imam_cta">
             Ask an Imam</a>
     </div>
 </section>
@@ -476,29 +476,33 @@
         const labels = product.labels || '';
         const analysis = customAnalysis || analyzeProductIngredients(ingredients, name + ' ' + labels);
 
+        window._lastHalalResult = { product, customAnalysis };
+        const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+        const isIt = currentLang === 'it';
+
         let statusClass = 'status-halal';
-        let statusText = 'Halal';
+        let statusText = isIt ? 'Halal' : 'Halal';
         let reasonListHtml = '';
 
         if (analysis.status === 'haram') {
             statusClass = 'status-haram';
-            statusText = 'Haram';
-            reasonListHtml = `<h4 style="margin-top: 1rem; color: #842029;">Reasons:</h4>
+            statusText = isIt ? 'Haram (Non Halal)' : 'Haram / Non-Halal';
+            reasonListHtml = `<h4 style="margin-top: 1rem; color: #842029;">${isIt ? 'Motivazioni:' : 'Reasons:'}</h4>
                     <ul style="margin-left: 1.5rem; color: var(--color-text);">
                         ${analysis.reasons.map(r => `<li style="margin-bottom: 0.25rem;"><strong>${r.word}</strong>: ${r.reason}</li>`).join('')}
                     </ul>`;
         } else if (analysis.status === 'mashbuh') {
             statusClass = 'status-mashbuh';
-            statusText = 'Mashbuh (Doubtful)';
-            reasonListHtml = `<h4 style="margin-top: 1rem; color: #664d03;">Doubtful Ingredients Found:</h4>
+            statusText = isIt ? 'Mashbuh (Dubbio)' : 'Mashbuh (Doubtful)';
+            reasonListHtml = `<h4 style="margin-top: 1rem; color: #664d03;">${isIt ? 'Ingredienti Dubbi Rilevati:' : 'Doubtful Ingredients Found:'}</h4>
                     <ul style="margin-left: 1.5rem; color: var(--color-text);">
                         ${analysis.reasons.map(r => `<li style="margin-bottom: 0.25rem;"><strong>${r.word}</strong>: ${r.reason}</li>`).join('')}
                     </ul>`;
         } else {
-            reasonListHtml = `<p style="margin-top: 1rem; color: var(--color-text);">No Haram or doubtful ingredients were detected in the ingredients list.</p>`;
+            reasonListHtml = `<p style="margin-top: 1rem; color: var(--color-text);">${isIt ? 'Nessun ingrediente Haram o dubbio è stato rilevato nell\'elenco degli ingredienti.' : 'No Haram or doubtful ingredients were detected in the ingredients list.'}</p>`;
             if (analysis.certified) {
-                statusText = 'Certified Halal';
-                reasonListHtml += `<p style="color: #0f5132; font-weight: 600; margin-top: 0.5rem;">✓ Product is listed as Halal-Certified.</p>`;
+                statusText = isIt ? 'Certificato Halal' : 'Certified Halal';
+                reasonListHtml += `<p style="color: #0f5132; font-weight: 600; margin-top: 0.5rem;">${isIt ? '✓ Il prodotto risulta Certificato Halal.' : '✓ Product is listed as Halal-Certified.'}</p>`;
             }
         }
 
@@ -510,12 +514,12 @@
                     <div class="result-info">
                         <div class="status-badge ${statusClass}">${statusText}</div>
                         <h3 style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 0.25rem;">${name}</h3>
-                        <p style="color: var(--color-text-light); font-weight: 500; margin-bottom: 1rem;">Brand: ${brand}</p>
+                        <p style="color: var(--color-text-light); font-weight: 500; margin-bottom: 1rem;">${isIt ? 'Marca:' : 'Brand:'} ${brand}</p>
                         
                         ${reasonListHtml}
 
                         <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #e5e7eb;">
-                        <h4 style="margin-bottom: 0.5rem; color: var(--color-primary);">Ingredients List:</h4>
+                        <h4 style="margin-bottom: 0.5rem; color: var(--color-primary);">${isIt ? 'Elenco Ingredienti:' : 'Ingredients List:'}</h4>
                         <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5; font-style: italic;">
                             ${highlightedIngredients}
                         </p>
@@ -524,6 +528,12 @@
             `;
         resultsDiv.scrollIntoView({ behavior: 'smooth' });
     }
+
+    window.addEventListener('asmLanguageChanged', () => {
+        if (window._lastHalalResult) {
+            displayResults(window._lastHalalResult.product, window._lastHalalResult.customAnalysis);
+        }
+    });
 
     // Search by Barcode Form Submit
     function handleBarcodeSubmit(e) {

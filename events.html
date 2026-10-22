@@ -30,21 +30,20 @@
             </a>
 
             <nav class="nav-links">
-                <a href="/#home">Home</a>
-                <a href="/events">Events</a>
-                <a href="/halal">Halal Scanner</a>
-                <a href="/support">Ask an Imam</a>
-                <a href="/gallery">Gallery</a>
-                <a href="/jumuah">Jumu'ah</a>
-                <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer">Quran Irtaqi</a>
-                <a href="/register" class="btn btn-primary" style="padding: 0.5rem 1rem; margin-left: 1rem;">Join
-                    Us</a>
+                <a href="/#home" data-i18n="nav_home">Home</a>
+                <a href="/events" data-i18n="nav_events">Events</a>
+                <a href="/halal" data-i18n="nav_halal">Halal Scanner</a>
+                <a href="/support" data-i18n="nav_support">Ask an Imam</a>
+                <a href="/gallery" data-i18n="nav_gallery">Gallery</a>
+                <a href="/jumuah" data-i18n="nav_jumuah">Jumu'ah</a>
+                <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer" data-i18n="nav_quran">Quran Irtaqi</a>
+                <a href="/register" class="btn btn-primary" style="padding: 0.5rem 1rem; margin-left: 1rem;" data-i18n="nav_join">Join Us</a>
                 <div class="dropdown">
                     <button class="dropbtn" aria-label="Settings">
                         &#8942;
                     </button>
                     <div class="dropdown-content">
-                        <a href="https://admin.asmpolimi.it/admin">Admin</a>
+                        <a href="https://admin.asmpolimi.it/admin" data-i18n="nav_admin">Admin</a>
                     </div>
                 </div>
             </nav>
@@ -68,14 +67,14 @@
     <!-- Mobile Navigation Overlay -->
     <div class="mobile-nav-overlay">
         <nav class="mobile-nav-links">
-            <a href="/#home">Home</a>
-            <a href="/events">Events</a>
-            <a href="/halal">Halal Scanner</a>
-            <a href="/support">Ask an Imam</a>
-            <a href="/gallery">Gallery</a>
-            <a href="/jumuah">Jumu'ah</a>
-            <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer">Quran Irtaqi</a>
-            <a href="/register">Join Us</a>
+            <a href="/#home" data-i18n="nav_home">Home</a>
+            <a href="/events" data-i18n="nav_events">Events</a>
+            <a href="/halal" data-i18n="nav_halal">Halal Scanner</a>
+            <a href="/support" data-i18n="nav_support">Ask an Imam</a>
+            <a href="/gallery" data-i18n="nav_gallery">Gallery</a>
+            <a href="/jumuah" data-i18n="nav_jumuah">Jumu'ah</a>
+            <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer" data-i18n="nav_quran">Quran Irtaqi</a>
+            <a href="/register" data-i18n="nav_join">Join Us</a>
         </nav>
     </div>
 
@@ -83,14 +82,14 @@
 <section id="events" class="section first-section bg-light">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Featured Events</h2>
+            <h2 data-i18n="events_page_heading">Featured Events</h2>
             <div class="divider"></div>
-            <p>Stay updated with our latest halaqas, socials, and activities.</p>
+            <p data-i18n="events_page_sub">Stay updated with our latest halaqas, socials, and activities.</p>
         </div>
 
         <div id="dynamic-events-container" class="team-grid stagger-children">
             <!-- Events will be populated here by JS -->
-            <p class="text-center w-100" style="grid-column: 1 / -1;">Loading events...</p>
+            <p class="text-center w-100" style="grid-column: 1 / -1;" data-i18n="events_loading">Loading events...</p>
         </div>
     </div>
 </section>
@@ -99,9 +98,9 @@
 <section id="register-form" class="section" style="min-height: 80vh; scroll-margin-top: 100px;">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Register for an Event</h2>
+            <h2 data-i18n="events_reg_heading">Register for an Event</h2>
             <div class="divider"></div>
-            <p>Reserve your spot by filling out the form below.</p>
+            <p data-i18n="events_reg_sub">Reserve your spot by filling out the form below.</p>
         </div>
 
         <div class="contact-form-container" style="max-width: 800px; margin: 0 auto; padding: 0;">
@@ -109,7 +108,8 @@
                 <a id="open-form-btn"
                     href="https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true"
                     target="_blank" class="btn btn-secondary"
-                    style="display: inline-flex; align-items: center; gap: 0.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px; border-color: var(--color-primary); color: var(--color-primary); font-weight: 600;">
+                    style="display: inline-flex; align-items: center; gap: 0.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px; border-color: var(--color-primary); color: var(--color-primary); font-weight: 600;"
+                    data-i18n="events_open_tab_btn">
                     <span>📋</span> Open Form in New Tab
                 </a>
             </div>
@@ -146,7 +146,7 @@
                         <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
                             fill="var(--color-secondary)"></polygon>
                     </svg>
-                    Milan Qibla Compass
+                    <span data-i18n="qibla_title">Milan Qibla Compass</span>
                 </h3>
                 <button type="button" class="qibla-modal-close close-qibla-modal-btn"
                     aria-label="Close dialog">&times;</button>
@@ -170,17 +170,17 @@
 
                 <div class="qibla-readout-card">
                     <div class="qibla-angle-big">124° <span class="qibla-dir-text">SE (South-East)</span></div>
-                    <div class="qibla-city-sub">Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km</div>
+                    <div class="qibla-city-sub" data-i18n="qibla_city_sub">Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km</div>
                 </div>
 
                 <div id="sensor-status-msg" class="qibla-sensor-note">
-                    <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text">Align phone until the 🕋
+                    <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text" data-i18n="qibla_sensor_text">Align phone until the 🕋
                         Kaaba points to the top.</span>
                 </div>
             </div>
             <div class="qibla-modal-footer">
                 <button type="button" class="btn btn-primary close-qibla-modal-btn w-100"
-                    style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                    style="padding: 0.5rem 1rem; font-size: 0.9rem;" data-i18n="qibla_close_btn">
                     Close Compass
                 </button>
             </div>
@@ -195,7 +195,7 @@
                     <img src="/assets/asm_logo.png" alt="ASM Logo" width="40">
                     <span>ASM POLIMI</span>
                 </div>
-                <div class="footer-copyright">
+                <div class="footer-copyright" data-i18n="footer_copyright">
                     &copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.
                     <br> All rights reserved.
                 </div>
@@ -267,6 +267,8 @@
         // Render Events
         const eventsContainer = document.getElementById('dynamic-events-container');
         if (eventsContainer) {
+            const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+            const t = (window.ASM_I18N && window.ASM_I18N[currentLang]) ? window.ASM_I18N[currentLang] : (window.ASM_I18N ? window.ASM_I18N.en : {});
             if (data.events && data.events.length > 0) {
                 eventsContainer.innerHTML = ''; // Clear loading
                 data.events.forEach(event => {
@@ -279,8 +281,8 @@
                         card.style.cursor = 'pointer';
                         card.innerHTML = `
                                 <div class="team-info">
-                                    <h3 style="color: var(--color-primary);">${event.title || 'Untitled Event'}</h3>
-                                    <p style="color: var(--color-secondary); font-weight: 500; margin-bottom: 0.5rem;">${event.date || 'Date TBD'}</p>
+                                    <h3 style="color: var(--color-primary);">${event.title || t.events_untitled || 'Untitled Event'}</h3>
+                                    <p style="color: var(--color-secondary); font-weight: 500; margin-bottom: 0.5rem;">${event.date || t.events_date_tbd || 'Date TBD'}</p>
                                     <p style="color: var(--color-text-light); font-size: 0.95rem;">${event.desc || ''}</p>
                                 </div>
                             `;
@@ -291,12 +293,13 @@
                     }
                 });
             } else {
-                eventsContainer.innerHTML = '<p class="text-center w-100" style="grid-column: 1 / -1;">No upcoming events at this time. Check back later!</p>';
+                eventsContainer.innerHTML = `<p class="text-center w-100" style="grid-column: 1 / -1;">${t.events_empty_msg || 'No upcoming events at this time. Check back later!'}</p>`;
             }
         }
     }
 
     loadEventsContent().catch(err => console.error('Error fetching events/announcements:', err));
+    window.addEventListener('asmLanguageChanged', () => loadEventsContent());
 </script>
 
 </body>

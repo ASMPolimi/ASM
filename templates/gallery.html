@@ -57,9 +57,9 @@
 <section class="section first-section" style="min-height: 80vh;">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Media Gallery</h2>
+            <h2 data-i18n="gallery_heading">Media Gallery</h2>
             <div class="divider"></div>
-            <p>Memories from our past events, halaqas, and community gatherings.</p>
+            <p data-i18n="gallery_sub">Memories from our past events, halaqas, and community gatherings.</p>
         </div>
 
         <div class="gallery-grid stagger-children" id="dynamic-gallery-container">
@@ -73,16 +73,16 @@
                 </div>
                 {% endfor %}
             {% else %}
-                <p class="text-center w-100" style="grid-column: 1 / -1; color: var(--color-text-light);">Loading gallery...</p>
+                <p class="text-center w-100" style="grid-column: 1 / -1; color: var(--color-text-light);" data-i18n="gallery_loading">Loading gallery...</p>
             {% endif %}
         </div>
 
         <div class="text-center mt-4" style="margin-top: 4rem;">
-            <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Halaqa Recordings</h3>
-            <p style="color: var(--color-text-light); margin-bottom: 2rem;">Would like to see more pictures? Visit our
+            <h3 style="color: var(--color-primary); margin-bottom: 1rem;" data-i18n="gallery_recordings_heading">Halaqa Recordings</h3>
+            <p style="color: var(--color-text-light); margin-bottom: 2rem;" data-i18n="gallery_recordings_sub">Would like to see more pictures? Visit our
                 One drive channel.</p>
             <a href="https://drive.google.com/drive/folders/1GhQIIkkX7YGqXYGeQ_l-ivXWjE3IrCqw"
-                class="btn btn-primary">Visit our One drive</a>
+                class="btn btn-primary" data-i18n="gallery_onedrive_btn">Visit our One drive</a>
         </div>
     </div>
 </section>

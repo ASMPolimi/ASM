@@ -11,42 +11,42 @@
     <div class="hero-overlay"></div>
     <div class="hero-ambient-glow" aria-hidden="true"></div>
     <div class="container hero-content">
-        <h1 class="animate-up">Welcome to your community.</h1>
-        <p class="animate-up delay-1">Fostering faith, brotherhood, sisterhood, and excellence at Politecnico di Milano.
+        <h1 class="animate-up" data-i18n="hero_title">Welcome to your community.</h1>
+        <p class="animate-up delay-1" data-i18n="hero_subtitle">Fostering faith, brotherhood, sisterhood, and excellence at Politecnico di Milano.
         </p>
         <!-- Interactive Quick-Launch Dock -->
         <div class="hero-quick-dock animate-up delay-2" aria-label="Quick Navigation Hub">
             <a href="#about" class="dock-card">
                 <span class="dock-card-icon">👥</span>
-                <span class="dock-card-title">About Us</span>
+                <span class="dock-card-title" data-i18n="dock_about">About Us</span>
             </a>
             <a href="/register" class="dock-card">
                 <span class="dock-card-icon">🤝</span>
-                <span class="dock-card-title">Become a Member</span>
+                <span class="dock-card-title" data-i18n="dock_member">Become a Member</span>
             </a>
             <a href="#events" class="dock-card">
                 <span class="dock-card-icon">📅</span>
-                <span class="dock-card-title">Upcoming Events</span>
+                <span class="dock-card-title" data-i18n="dock_events">Upcoming Events</span>
             </a>
             <a href="#prayer-times" class="dock-card">
                 <span class="dock-card-icon">🕌</span>
-                <span class="dock-card-title">Prayer</span>
+                <span class="dock-card-title" data-i18n="dock_prayer">Prayer</span>
             </a>
             <a href="#halal-scanner" class="dock-card">
                 <span class="dock-card-icon">🥗</span>
-                <span class="dock-card-title">Halal Scanner</span>
+                <span class="dock-card-title" data-i18n="dock_halal">Halal Scanner</span>
             </a>
             <a href="#ask-imam" class="dock-card">
                 <span class="dock-card-icon">💬</span>
-                <span class="dock-card-title">Ask an Imam</span>
+                <span class="dock-card-title" data-i18n="dock_support">Ask an Imam</span>
             </a>
             <a href="https://quran.asmpolimi.it" class="dock-card">
                 <span class="dock-card-icon">📖</span>
-                <span class="dock-card-title">Quran Irtaqi</span>
+                <span class="dock-card-title" data-i18n="dock_quran">Quran Irtaqi</span>
             </a>
             <a href="#contact" class="dock-card">
                 <span class="dock-card-icon">✉️</span>
-                <span class="dock-card-title">Get in touch</span>
+                <span class="dock-card-title" data-i18n="dock_contact">Get in touch</span>
             </a>
         </div>
     </div>
@@ -67,7 +67,7 @@
                             <polyline points="1 20 1 14 7 14"></polyline>
                             <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
                         </svg>
-                        <span>Shuffle Ayah</span>
+                        <span data-i18n="ayah_shuffle_btn">Shuffle Ayah</span>
                     </button>
                     <button type="button" id="copy-ayah-btn" class="ayah-action-btn" title="Copy Ayah and translation">
                         <svg class="ayah-action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -75,7 +75,7 @@
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                         </svg>
-                        <span id="copy-ayah-btn-text">Copy Ayah</span>
+                        <span id="copy-ayah-btn-text" data-i18n="ayah_copy_btn">Copy Ayah</span>
                     </button>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                 <div class="ayah-divider-ornament">
                     <span>✦</span>
                 </div>
-                <p id="daily-ayah-text" class="daily-ayah-translation-text">
+                <p id="daily-ayah-text" class="daily-ayah-translation-text" data-i18n="ayah_loading">
                     Loading Ayah of the day...
                 </p>
                 <p id="daily-ayah-ref" class="daily-ayah-reference-text"></p>
@@ -100,25 +100,25 @@
 <section id="about" class="section fade-in">
     <div class="container">
         <div class="section-header text-center">
-            <h2>About Us</h2>
+            <h2 data-i18n="about_heading">About Us</h2>
             <div class="divider"></div>
         </div>
         <div class="about-grid stagger-children">
             <div class="about-text">
-                <h3>Our Mission</h3>
-                <p id="mission-text">The Muslim Student Association (ASM) strives to facilitate a welcoming and active
+                <h3 data-i18n="mission_heading">Our Mission</h3>
+                <p id="mission-text" data-i18n="mission_text">The Muslim Student Association (ASM) strives to facilitate a welcoming and active
                     community for
                     Muslim
                     students on campus. We aim to support our members in balancing their academic pursuits with
                     their spiritual growth, while fostering an inclusive environment that promotes understanding and
                     dialogue.</p>
 
-                <h3>What We Do</h3>
+                <h3 data-i18n="what_we_do_heading">What We Do</h3>
                 <ul class="feature-list">
-                    <li><strong>Spiritual:</strong> Weekly Halaqas, daily prayers, and Jummah services.</li>
-                    <li><strong>Social:</strong> Brotherhood/Sisterhood events, dinners, and game nights.</li>
-                    <li><strong>Service:</strong> Community service projects and charity fundraisers.</li>
-                    <li><strong>Education:</strong> Islam Awareness Week, guest speakers, and workshops.</li>
+                    <li data-i18n="what_we_do_spiritual"><strong>Spiritual:</strong> Weekly Halaqas, daily prayers, and Jummah services.</li>
+                    <li data-i18n="what_we_do_social"><strong>Social:</strong> Brotherhood/Sisterhood events, dinners, and game nights.</li>
+                    <li data-i18n="what_we_do_service"><strong>Service:</strong> Community service projects and charity fundraisers.</li>
+                    <li data-i18n="what_we_do_education"><strong>Education:</strong> Islam Awareness Week, guest speakers, and workshops.</li>
                 </ul>
             </div>
             <div class="about-image">
@@ -126,7 +126,7 @@
                 <div class="image-placeholder" style="position: relative; overflow: hidden;">
                     <img src="assets/community.png" alt="ASM POLIMI Community" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-                    <span>Community Photo</span>
+                    <span data-i18n="about_community_photo">Community Photo</span>
                 </div>
             </div>
         </div>
@@ -137,25 +137,25 @@
 <section id="events" class="section bg-light fade-in">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Featured Events</h2>
+            <h2 data-i18n="events_heading">Featured Events</h2>
             <div class="divider"></div>
-            <p>Stay updated with our latest halaqas, socials, and activities.</p>
+            <p data-i18n="events_subhead">Stay updated with our latest halaqas, socials, and activities.</p>
         </div>
 
         <div id="dynamic-events-container" class="team-grid stagger-children" style="margin-bottom: 3rem;">
             <!-- Events will be populated here by JS -->
-            <p class="text-center w-100" style="grid-column: 1 / -1;">Loading events...</p>
+            <p class="text-center w-100" style="grid-column: 1 / -1;" data-i18n="events_loading">Loading events...</p>
         </div>
 
         <div class="events-cta-group text-center"
             style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
             <a href="/events" class="btn btn-primary"
                 style="padding: 1.15rem 2.25rem; font-size: 1.15rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
-                <span>👉 See All Events &amp; Register</span>
+                <span data-i18n="events_cta_all">👉 See All Events &amp; Register</span>
             </a>
             <a href="/gallery" class="btn btn-outline-primary events-gallery-btn"
                 style="padding: 1.15rem 2.25rem; font-size: 1.15rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;">
-                <span>📸 Explore Photo Gallery</span>
+                <span data-i18n="events_cta_gallery">📸 Explore Photo Gallery</span>
             </a>
         </div>
     </div>
@@ -165,32 +165,32 @@
 <section id="prayer-times" class="section fade-in">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Daily Prayer Times</h2>
+            <h2 data-i18n="prayer_heading">Daily Prayer Times</h2>
             <div class="divider"></div>
         </div>
 
         <div class="prayer-times-card">
-            <div class="date-display" id="current-date">Loading date...</div>
+            <div class="date-display" id="current-date" data-i18n="prayer_date_loading">Loading date...</div>
 
             <div class="prayer-grid stagger-children">
                 <div class="prayer-item">
-                    <div class="prayer-name">Fajr</div>
+                    <div class="prayer-name" data-i18n="prayer_fajr">Fajr</div>
                     <div class="prayer-time" id="fajr-time">--:-- <span class="prayer-ampm">AM</span></div>
                 </div>
                 <div class="prayer-item">
-                    <div class="prayer-name">Dhuhr</div>
+                    <div class="prayer-name" data-i18n="prayer_dhuhr">Dhuhr</div>
                     <div class="prayer-time" id="dhuhr-time">--:-- <span class="prayer-ampm">PM</span></div>
                 </div>
                 <div class="prayer-item">
-                    <div class="prayer-name">Asr</div>
+                    <div class="prayer-name" data-i18n="prayer_asr">Asr</div>
                     <div class="prayer-time" id="asr-time">--:-- <span class="prayer-ampm">PM</span></div>
                 </div>
                 <div class="prayer-item">
-                    <div class="prayer-name">Maghrib</div>
+                    <div class="prayer-name" data-i18n="prayer_maghrib">Maghrib</div>
                     <div class="prayer-time" id="maghrib-time">--:-- <span class="prayer-ampm">PM</span></div>
                 </div>
                 <div class="prayer-item">
-                    <div class="prayer-name">Isha</div>
+                    <div class="prayer-name" data-i18n="prayer_isha">Isha</div>
                     <div class="prayer-time" id="isha-time">--:-- <span class="prayer-ampm">PM</span></div>
                 </div>
             </div>
@@ -201,7 +201,7 @@
                     <span class="hero-pulse-dot" aria-hidden="true"></span>
                     <span class="next-prayer-icon">🕌</span>
                     <span class="next-prayer-text">
-                        Next Prayer: <strong class="next-prayer-name" id="card-next-prayer-name">Loading...</strong>
+                        <span data-i18n="prayer_next_prefix">Next Prayer:</span> <strong class="next-prayer-name" id="card-next-prayer-name">Loading...</strong>
                         <span class="hero-countdown-pill" id="card-next-prayer-countdown">--:--</span>
                         <span class="next-prayer-time-sub" id="card-next-prayer-time"></span>
                     </span>
@@ -224,7 +224,8 @@
 
         <div class="text-center" style="margin-top: 1rem;">
             <a href="/jumuah" class="btn btn-primary"
-                style="padding: 1.25rem 2.5rem; font-size: 1.2rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; transition: all 0.3s ease;">
+                style="padding: 1.25rem 2.5rem; font-size: 1.2rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; transition: all 0.3s ease;"
+                data-i18n="prayer_jumuah_btn">
                 Jumu'ah Info </a>
         </div>
 
@@ -235,10 +236,10 @@
 <section id="services" class="section bg-light fade-in">
     <div class="container">
         <div class="section-header text-center">
-            <span class="section-badge">Student Services</span>
-            <h2>Campus Resources & Guidance</h2>
+            <span class="section-badge" data-i18n="services_badge">Student Services</span>
+            <h2 data-i18n="services_heading">Campus Resources & Guidance</h2>
             <div class="divider"></div>
-            <p>Essential services tailored to support your daily student life, faith, and well-being at Politecnico di
+            <p data-i18n="services_subhead">Essential services tailored to support your daily student life, faith, and well-being at Politecnico di
                 Milano.</p>
         </div>
 
@@ -247,21 +248,21 @@
             <div class="service-card" id="halal-scanner">
                 <div>
                     <div class="service-card-icon">🥗</div>
-                    <span class="service-category">Food & Groceries</span>
-                    <h3 class="service-title">Halal Product Scanner</h3>
-                    <p class="service-desc">
+                    <span class="service-category" data-i18n="service_halal_category">Food & Groceries</span>
+                    <h3 class="service-title" data-i18n="service_halal_title">Halal Product Scanner</h3>
+                    <p class="service-desc" data-i18n="service_halal_desc">
                         Unsure about snacks, cafeteria food, or supermarket groceries in Milan? Our scanner checks
                         barcodes against 500,000+ products using your camera, highlighting non-halal additives, pork
                         gelatin, and alcohol in seconds.
                     </p>
                     <ul class="service-points">
-                        <li>📷 Live camera barcode scanner</li>
-                        <li>🏷️ Search Italian & global databases</li>
-                        <li>⚠️ Automatic E-number & additive detection</li>
+                        <li data-i18n="service_halal_pt1">📷 Live camera barcode scanner</li>
+                        <li data-i18n="service_halal_pt2">🏷️ Search Italian & global databases</li>
+                        <li data-i18n="service_halal_pt3">⚠️ Automatic E-number & additive detection</li>
                     </ul>
                 </div>
                 <div class="service-card-action">
-                    <a href="/halal" class="btn btn-primary w-100">Open Halal Scanner &rarr;</a>
+                    <a href="/halal" class="btn btn-primary w-100" data-i18n="service_halal_btn">Open Halal Scanner &rarr;</a>
                 </div>
             </div>
 
@@ -269,21 +270,21 @@
             <div class="service-card" id="ask-imam">
                 <div>
                     <div class="service-card-icon">💬</div>
-                    <span class="service-category">Religious & Student Support</span>
-                    <h3 class="service-title">Ask an Imam</h3>
-                    <p class="service-desc">
+                    <span class="service-category" data-i18n="service_imam_category">Religious & Student Support</span>
+                    <h3 class="service-title" data-i18n="service_imam_title">Ask an Imam</h3>
+                    <p class="service-desc" data-i18n="service_imam_desc">
                         Have questions about daily prayers, fasting during exams, campus relationships, or personal
                         struggles? Submit your inquiry confidentially to receive authentic guidance directly from our
                         affiliated local scholar.
                     </p>
                     <ul class="service-points">
-                        <li>🔒 100% confidential and private</li>
-                        <li>📖 Verified answers rooted in Islamic Fiqh</li>
-                        <li>🎓 Attuned to university student life in Milan</li>
+                        <li data-i18n="service_imam_pt1">🔒 100% confidential and private</li>
+                        <li data-i18n="service_imam_pt2">📖 Verified answers rooted in Islamic Fiqh</li>
+                        <li data-i18n="service_imam_pt3">🎓 Attuned to university student life in Milan</li>
                     </ul>
                 </div>
                 <div class="service-card-action">
-                    <a href="/support" class="btn btn-primary w-100">Ask an Imam &rarr;</a>
+                    <a href="/support" class="btn btn-primary w-100" data-i18n="service_imam_btn">Ask an Imam &rarr;</a>
                 </div>
             </div>
         </div>
@@ -294,7 +295,7 @@
 <section id="leadership" class="section bg-light fade-in">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Our Board members</h2>
+            <h2 data-i18n="board_heading">Our Board members</h2>
             <div class="divider"></div>
         </div>
 
@@ -322,19 +323,19 @@
 <section id="contact" class="section fade-in">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Get in Touch</h2>
+            <h2 data-i18n="contact_heading">Get in Touch</h2>
             <div class="divider"></div>
         </div>
 
         <div class="contact-grid stagger-children">
             <div class="contact-info">
-                <h3>Contact Information</h3>
-                <p>Have questions? Want to collaborate? Reach out to us!</p>
+                <h3 data-i18n="contact_info_title">Contact Information</h3>
+                <p data-i18n="contact_info_sub">Have questions? Want to collaborate? Reach out to us!</p>
 
                 <div class="info-item">
                     <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
                         <span style="font-size: 1.1rem; line-height: 1;">✉️</span>
-                        <strong>Email:</strong>
+                        <strong data-i18n="contact_email_label">Email:</strong>
                     </div>
                     <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                         <span class="copyable-iban" data-copy="info@asmpolimi.it" title="Click to copy email">
@@ -353,7 +354,7 @@
                                 <line x1="22" y1="2" x2="11" y2="13"></line>
                                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                             </svg>
-                            <span>Send Email</span>
+                            <span data-i18n="contact_email_send">Send Email</span>
                         </a>
                     </div>
                 </div>
@@ -361,7 +362,7 @@
                 <div class="info-item">
                     <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
                         <span style="font-size: 1.1rem; line-height: 1;">💳</span>
-                        <strong>PayPal Email:</strong>
+                        <strong data-i18n="contact_paypal_label">PayPal Email:</strong>
                     </div>
                     <div>
                         <span class="copyable-iban" data-copy="asm.polimi@gmail.com" title="Click to copy PayPal email">
@@ -379,24 +380,24 @@
                 <div class="info-item">
                     <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
                         <span style="font-size: 1.1rem; line-height: 1;">🏦</span>
-                        <strong>Bank Transfer:</strong>
+                        <strong data-i18n="contact_bank_label">Bank Transfer:</strong>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 0.35rem;">
                         <div style="font-size: 0.95rem;">
-                            <strong>Name:</strong>
+                            <strong data-i18n="contact_name_label">Name:</strong>
                             <span class="copyable-iban is-iban" id="iban-copy" data-copy="Mariam abou el seod"
                                 title="Click to copy Name">
                                 Mariam abou el seod
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                                     style="display: inline-block; vertical-align: middle;">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
                             </span>
                         </div>
                         <div style="font-size: 0.95rem;">
-                            <strong>IBAN:</strong>
+                            <strong data-i18n="contact_iban_label">IBAN:</strong>
                             <span class="copyable-iban is-iban" id="iban-copy" data-copy="BE46967888148736"
                                 title="Click to copy IBAN">
                                 BE46 9678 8814 8736
@@ -411,8 +412,8 @@
                     </div>
                 </div>
 
-                <h3 class="mt-4">Follow Us</h3>
-                <p style="color: var(--color-text-light); font-size: 0.95rem; margin-bottom: 1.25rem;">Stay connected
+                <h3 class="mt-4" data-i18n="contact_follow_title">Follow Us</h3>
+                <p data-i18n="contact_follow_sub" style="color: var(--color-text-light); font-size: 0.95rem; margin-bottom: 1.25rem;">Stay connected
                     with announcements, student halaqas, and events across all platforms:</p>
                 <div class="social-icons-grid">
                     <!-- Instagram -->
@@ -483,26 +484,26 @@
             </div>
 
             <div class="contact-form-container" id="join">
-                <h3>Join Our Mailing List</h3>
+                <h3 data-i18n="form_join_title">Join Our Mailing List</h3>
                 <form class="contact-form">
                     <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" placeholder="e.g. Huthayfah Samir" required>
+                        <label for="name" data-i18n="form_name_label">Full Name</label>
+                        <input type="text" id="name" data-i18n-placeholder="form_name_placeholder" placeholder="e.g. Huthayfah Samir" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">University Email</label>
-                        <input type="email" id="email" placeholder="name.surname@mail.polimi.it" required>
+                        <label for="email" data-i18n="form_email_label">University Email</label>
+                        <input type="email" id="email" data-i18n-placeholder="form_email_placeholder" placeholder="name.surname@mail.polimi.it" required>
                     </div>
                     <div class="form-group">
-                        <label for="year">Graduation Year</label>
+                        <label for="year" data-i18n="form_year_label">Graduation Year</label>
                         <select id="year">
-                            <option value="">Select Year...</option>
+                            <option value="" data-i18n="form_year_placeholder">Select Year...</option>
                             <option value="2030">2030</option>
                             <option value="2029">2029</option>
                             <option value="2028">2028</option>
                             <option value="2027">2027</option>
                             <option value="2026">2026</option>
-                            <option value="grad">Graduate Student</option>
+                            <option value="grad" data-i18n="form_year_grad">Graduate Student</option>
                         </select>
                     </div>
 
@@ -514,15 +515,15 @@
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                 <path d="m9 12 2 2 4-4" />
                             </svg>
-                            <span>Privacy &amp; Data Protection Notice</span>
+                            <span data-i18n="gdpr_notice_header">Privacy &amp; Data Protection Notice</span>
                         </div>
-                        <p class="gdpr-notice-text">
+                        <p class="gdpr-notice-text" data-i18n="gdpr_notice_text">
                             <strong>ASM Politecnico di Milano</strong> processes your personal data (name, email, year)
                             exclusively to send association newsletters, campus event updates, prayer schedules, and
                             educational initiatives pursuant to <strong>EU Regulation 2016/679 (GDPR)</strong>. Your
                             data is stored securely and never shared with third parties.
                         </p>
-                        <button type="button" class="gdpr-details-btn open-privacy-modal-btn">
+                        <button type="button" class="gdpr-details-btn open-privacy-modal-btn" data-i18n="gdpr_details_btn">
                             Read Full Privacy Policy (Art. 13 GDPR) &rarr;
                         </button>
                     </div>
@@ -531,7 +532,7 @@
                     <div class="form-group gdpr-consent-group">
                         <label class="gdpr-consent-label" for="newsletter-gdpr-consent">
                             <input type="checkbox" id="newsletter-gdpr-consent" required>
-                            <span class="gdpr-consent-text">
+                            <span class="gdpr-consent-text" id="gdpr-consent-label-text" data-i18n="gdpr_consent_text">
                                 I consent to ASM POLIMI processing my personal data to receive newsletter communications
                                 and event updates in accordance with the <a href="#privacy-notice-modal"
                                     class="open-privacy-modal-btn"
@@ -541,11 +542,11 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                    <button type="submit" class="btn btn-primary w-100" data-i18n="form_subscribe_btn">Subscribe</button>
 
                     <div class="gdpr-trust-badge">
                         <span>🔒</span>
-                        <span>Zero spam. Unsubscribe at any time with one click or email.</span>
+                        <span data-i18n="form_trust_badge">Zero spam. Unsubscribe at any time with one click or email.</span>
                     </div>
                 </form>
             </div>
@@ -564,15 +565,15 @@
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     <path d="m9 12 2 2 4-4" />
                 </svg>
-                Privacy Notice &amp; GDPR Information
+                <span data-i18n="gdpr_modal_title">Privacy Notice &amp; GDPR Information</span>
             </h3>
             <button type="button" class="privacy-modal-close close-privacy-modal-btn"
                 aria-label="Close dialog">&times;</button>
         </div>
         <div class="privacy-modal-body">
             <div class="privacy-section">
-                <h4>1. Data Controller</h4>
-                <p>
+                <h4 data-i18n="gdpr_art1_title">1. Data Controller</h4>
+                <p data-i18n="gdpr_art1_body">
                     The Data Controller is <strong>Associazione Studenti Musulmani - Politecnico di Milano (ASM
                         POLIMI)</strong>, with registered activities at Politecnico di Milano (Piazza Leonardo da Vinci
                     32, 20133 Milano, Italy). For any inquiries regarding your personal data, you can reach the Data
@@ -584,16 +585,16 @@
             </div>
 
             <div class="privacy-section">
-                <h4>2. Categories of Data Collected</h4>
-                <p>
+                <h4 data-i18n="gdpr_art2_title">2. Categories of Data Collected</h4>
+                <p data-i18n="gdpr_art2_body">
                     When subscribing to the mailing list, we collect: full name, university email address, and
                     graduation year (optional).
                 </p>
             </div>
 
             <div class="privacy-section">
-                <h4>3. Purpose and Legal Basis of Processing</h4>
-                <p>
+                <h4 data-i18n="gdpr_art3_title">3. Purpose and Legal Basis of Processing</h4>
+                <p data-i18n="gdpr_art3_body">
                     Your personal data is collected and processed solely for the purpose of sending informational emails
                     regarding ASM POLIMI initiatives, including Friday prayer (Jumu'ah) locations, academic guides,
                     social events, workshops, Halal services updates, and general student welfare announcements. The
@@ -603,8 +604,8 @@
             </div>
 
             <div class="privacy-section">
-                <h4>4. Data Storage, Security &amp; Third Parties</h4>
-                <p>
+                <h4 data-i18n="gdpr_art4_title">4. Data Storage, Security &amp; Third Parties</h4>
+                <p data-i18n="gdpr_art4_body">
                     Your data is stored securely on protected servers and encrypted databases. We do not sell, rent,
                     disclose, or transfer your personal data to commercial third parties or non-EU organizations. Only
                     authorized board members of ASM POLIMI have administrative access for managing communication
@@ -613,8 +614,8 @@
             </div>
 
             <div class="privacy-section">
-                <h4>5. Retention Period</h4>
-                <p>
+                <h4 data-i18n="gdpr_art5_title">5. Retention Period</h4>
+                <p data-i18n="gdpr_art5_body">
                     Your personal data will be kept for as long as you maintain your subscription to the mailing list,
                     or until you exercise your right to withdraw consent. Upon receiving an unsubscription request, your
                     data will be permanently removed from our active distribution lists within 7 days.
@@ -622,20 +623,20 @@
             </div>
 
             <div class="privacy-section">
-                <h4>6. Your Rights under GDPR</h4>
-                <p>
+                <h4 data-i18n="gdpr_art6_title">6. Your Rights under GDPR</h4>
+                <p data-i18n="gdpr_art6_intro">
                     Under Articles 15 to 22 of the GDPR, you have the right to:
                 </p>
                 <ul style="margin: 0.5rem 0 0 1.25rem; padding: 0; font-size: 0.86rem; line-height: 1.55;">
-                    <li><strong>Access:</strong> Request confirmation of whether your data is being processed and obtain
+                    <li data-i18n="gdpr_right_access"><strong>Access:</strong> Request confirmation of whether your data is being processed and obtain
                         a copy.</li>
-                    <li><strong>Rectification:</strong> Request correction of inaccurate or incomplete personal
+                    <li data-i18n="gdpr_right_rect"><strong>Rectification:</strong> Request correction of inaccurate or incomplete personal
                         information.</li>
-                    <li><strong>Erasure ("Right to be Forgotten"):</strong> Request total deletion of your personal data
+                    <li data-i18n="gdpr_right_erase"><strong>Erasure ("Right to be Forgotten"):</strong> Request total deletion of your personal data
                         from our systems.</li>
-                    <li><strong>Withdrawal of Consent:</strong> Withdraw your consent at any time without affecting
+                    <li data-i18n="gdpr_right_withdraw"><strong>Withdrawal of Consent:</strong> Withdraw your consent at any time without affecting
                         prior lawful processing.</li>
-                    <li><strong>Lodge a Complaint:</strong> File a complaint with the competent supervisory authority
+                    <li data-i18n="gdpr_right_complaint"><strong>Lodge a Complaint:</strong> File a complaint with the competent supervisory authority
                         (in Italy: <em>Garante per la protezione dei dati personali</em> - <a
                             href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer"
                             style="color: var(--color-primary); text-decoration: underline;">garanteprivacy.it</a>).
@@ -645,7 +646,7 @@
         </div>
         <div class="privacy-modal-footer">
             <button type="button" class="btn btn-primary close-privacy-modal-btn"
-                style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">
+                style="padding: 0.5rem 1.5rem; font-size: 0.9rem;" data-i18n="gdpr_modal_close">
                 Understood &amp; Close
             </button>
         </div>
@@ -673,8 +674,9 @@
             if (!data) return;
 
             if (data.mission_text && data.mission_text.trim() !== '') {
+                window._customMissionText = data.mission_text;
                 const missionEl = document.getElementById('mission-text');
-                if (missionEl) {
+                if (missionEl && (localStorage.getItem('site_lang') || 'en') === 'en') {
                     missionEl.textContent = data.mission_text;
                 }
             }
@@ -698,7 +700,7 @@
                 const eventsContainer = document.getElementById('dynamic-events-container');
                 if (eventsContainer) {
                     if (data.events.length === 0) {
-                        eventsContainer.innerHTML = '<p class="text-center w-100" style="grid-column: 1 / -1; color: var(--color-text-light);">No upcoming events scheduled at the moment.</p>';
+                        eventsContainer.innerHTML = '<p class="text-center w-100" style="grid-column: 1 / -1; color: var(--color-text-light);" data-i18n="events_empty">No upcoming events scheduled at the moment.</p>';
                     } else {
                         eventsContainer.innerHTML = '';
                         data.events.forEach(ev => {
@@ -736,7 +738,7 @@
                                 <span>${member.avatar}</span>
                             </div>
                             <h3 class="team-name">${member.name}</h3>
-                            <p class="team-role">${member.title}</p>
+                            <p class="team-role" data-board-role="${member.role}">${member.title}</p>
                         `;
                         boardContainer.appendChild(card);
                     });
