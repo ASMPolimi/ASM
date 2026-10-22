@@ -70,7 +70,7 @@ const ASM_I18N = {
         prayer_time_now: "Now",
         prayer_time_soon: "Soon",
         prayer_time_in_prefix: "in",
-        prayer_jumuah_btn: "Jumu'ah Info",
+        prayer_jumuah_btn: "Jumu'ah Info & Prayer Map",
 
         services_badge: "Student Services",
         services_heading: "Campus Resources & Guidance",
@@ -209,6 +209,7 @@ const ASM_I18N = {
 
         // Jumu'ah Page
         jumuah_heading: "Jumu'ah Prayers",
+        jumuah_map_cta_btn: "🗺️ Prayer &amp; Mosque Map &darr;",
         jumuah_ayah_trans: "O you who have believed, when [the adhan] is called for the prayer on the day of Jumu'ah (Friday), then proceed to the remembrance of Allah and leave trade. That is better for you, if you only knew. (Quran 62:9)",
         jumuah_details_prefix: "Prayer Details for",
         jumuah_bovisa_title: "Bovisa Campus",
@@ -293,16 +294,16 @@ const ASM_I18N = {
 
         prayer_heading: "Orari delle Preghiere Quotidiane",
         prayer_date_loading: "Caricamento data...",
-        prayer_fajr: "Fajr (Alba)",
-        prayer_dhuhr: "Dhuhr (Mezzogiorno)",
-        prayer_asr: "Asr (Pomeriggio)",
-        prayer_maghrib: "Maghrib (Tramonto)",
-        prayer_isha: "Isha (Notte)",
+        prayer_fajr: "Fajr",
+        prayer_dhuhr: "Dhuhr",
+        prayer_asr: "Asr",
+        prayer_maghrib: "Maghrib",
+        prayer_isha: "Isha",
         prayer_next_prefix: "Prossima Preghiera:",
         prayer_time_now: "Adesso",
         prayer_time_soon: "A breve",
         prayer_time_in_prefix: "tra",
-        prayer_jumuah_btn: "Info Jumu'ah",
+        prayer_jumuah_btn: "Info Jumu'ah & Mappa Preghiere",
 
         services_badge: "Servizi per gli Studenti",
         services_heading: "Risorse di Campus e Supporto",
@@ -441,6 +442,7 @@ const ASM_I18N = {
 
         // Jumu'ah Page
         jumuah_heading: "Preghiera del Venerdì (Jumu'ah)",
+        jumuah_map_cta_btn: "🗺️ Mappa Spazi di Preghiera e Moschee &darr;",
         jumuah_ayah_trans: "O voi che credete! Quando viene chiamato alla preghiera nel Giorno del Venerdì (Jumu'ah), accorrete al ricordo di Allah e lasciate ogni commercio. Ciò è meglio per voi, se solo lo sapeste. (Corano 62:9)",
         jumuah_details_prefix: "Dettagli Preghiera per",
         jumuah_bovisa_title: "Campus Bovisa",
@@ -1318,8 +1320,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const btnText = document.getElementById('copy-ayah-btn-text');
                 if (btnText) {
                     btnText.textContent = t.ayah_copied_btn || 'Copied!';
-                    setTimeout(() => { 
-                        btnText.textContent = t.ayah_copy_btn || 'Copy Ayah'; 
+                    setTimeout(() => {
+                        btnText.textContent = t.ayah_copy_btn || 'Copy Ayah';
                     }, 2000);
                 }
             }, (err) => {
