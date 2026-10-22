@@ -24,4 +24,5 @@ users.json
 
 # Nested standalone repositories
 asm-admin/
+BackendASM/
 ASM_Local/
