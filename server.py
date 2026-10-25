@@ -132,6 +132,14 @@ def init_db():
         c.execute("CREATE INDEX IF NOT EXISTS idx_scanned_barcode ON scanned_products (barcode)")
     except Exception:
         pass
+    try:
+        c.execute("ALTER TABLE scanned_products ADD COLUMN user_flagged_review INTEGER DEFAULT 0")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE scanned_products ADD COLUMN user_notes TEXT DEFAULT ''")
+    except Exception:
+        pass
 
     conn.commit()
     conn.close()
@@ -1158,14 +1166,16 @@ def handle_scanned_products():
             query += " AND LOWER(status) = ?"
             params.append(filter_status)
 
-        if filter_review and filter_review != 'all':
+        if filter_review == 'flagged':
+            query += " AND user_flagged_review = 1"
+        elif filter_review and filter_review != 'all':
             query += " AND LOWER(admin_status) = ?"
             params.append(filter_review)
 
         if search_query:
-            query += " AND (LOWER(barcode) LIKE ? OR LOWER(product_name) LIKE ? OR LOWER(brand) LIKE ? OR LOWER(ingredients_text) LIKE ?)"
+            query += " AND (LOWER(barcode) LIKE ? OR LOWER(product_name) LIKE ? OR LOWER(brand) LIKE ? OR LOWER(ingredients_text) LIKE ? OR LOWER(user_notes) LIKE ?)"
             like_term = f"%{search_query}%"
-            params.extend([like_term, like_term, like_term, like_term])
+            params.extend([like_term, like_term, like_term, like_term, like_term])
 
         sort_by = request.args.get('sort', 'newest').strip().lower()
         if sort_by == 'scans':
@@ -1183,6 +1193,8 @@ def handle_scanned_products():
         total_scans = c.fetchone()['cnt']
         c.execute("SELECT COUNT(*) as cnt FROM scanned_products WHERE status = 'not_listed' OR admin_status = 'pending'")
         needs_review = c.fetchone()['cnt']
+        c.execute("SELECT COUNT(*) as cnt FROM scanned_products WHERE user_flagged_review = 1")
+        flagged_count = c.fetchone()['cnt']
         c.execute("SELECT COUNT(*) as cnt FROM scanned_products WHERE status = 'halal'")
         halal_count = c.fetchone()['cnt']
         c.execute("SELECT COUNT(*) as cnt FROM scanned_products WHERE status = 'mashbuh'")
@@ -1197,6 +1209,7 @@ def handle_scanned_products():
             "stats": {
                 "total": total_scans,
                 "needs_review": needs_review,
+                "flagged": flagged_count,
                 "halal": halal_count,
                 "mashbuh": mashbuh_count,
                 "haram": haram_count
@@ -1205,6 +1218,51 @@ def handle_scanned_products():
     except Exception as e:
         conn.close()
         print("Error fetching scanned products:", e)
+        return jsonify({"success": False, "message": str(e)}), 500
+
+@app.route('/api/scanned_products/flag', methods=['POST'])
+def flag_scanned_product():
+    data = request.json or {}
+    barcode = str(data.get('barcode', '')).strip()
+    if not barcode:
+        return jsonify({"success": False, "message": "Barcode is required"}), 400
+
+    user_note = str(data.get('note', '')).strip()[:1000]
+    product_name = str(data.get('product_name', '')).strip()[:200]
+    brand = str(data.get('brand', '')).strip()[:150]
+    status = str(data.get('status', 'not_listed')).strip().lower()
+
+    conn = get_db()
+    c = conn.cursor()
+    try:
+        c.execute("SELECT id, user_notes FROM scanned_products WHERE barcode = ?", (barcode,))
+        row = c.fetchone()
+        now_str = datetime.datetime.now().strftime('%d/%m %H:%M')
+        new_note_entry = f"[{now_str}] {user_note}" if user_note else f"[{now_str}] Flagged as incorrect by user"
+
+        if row:
+            existing_notes = row['user_notes'] or ''
+            combined = (existing_notes + " | " + new_note_entry).strip(" | ") if existing_notes else new_note_entry
+            c.execute('''
+                UPDATE scanned_products
+                SET user_flagged_review = 1,
+                    user_notes = ?,
+                    admin_status = 'pending',
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+            ''', (combined, row['id']))
+        else:
+            c.execute('''
+                INSERT INTO scanned_products (barcode, product_name, brand, status, admin_status, user_flagged_review, user_notes, scan_count)
+                VALUES (?, ?, ?, ?, 'pending', 1, ?, 1)
+            ''', (barcode, product_name or 'Unlisted Product', brand or 'Unknown', status or 'not_listed', new_note_entry))
+
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True, "message": "Product flagged for admin review successfully"})
+    except Exception as e:
+        conn.close()
+        print("Error flagging product:", e)
         return jsonify({"success": False, "message": str(e)}), 500
 
 @app.route('/api/scanned_products/<int:prod_id>', methods=['PUT', 'DELETE'])
@@ -1234,6 +1292,7 @@ def manage_scanned_product(prod_id):
         product_name = data.get('product_name')
         brand = data.get('brand')
         ingredients_text = data.get('ingredients_text')
+        user_flagged_review = data.get('user_flagged_review')
 
         c.execute("SELECT * FROM scanned_products WHERE id = ?", (prod_id,))
         row = c.fetchone()
@@ -1247,6 +1306,7 @@ def manage_scanned_product(prod_id):
         new_name = product_name if product_name is not None else row['product_name']
         new_brand = brand if brand is not None else row['brand']
         new_ing = ingredients_text if ingredients_text is not None else row['ingredients_text']
+        new_flag = int(user_flagged_review) if user_flagged_review is not None else (row['user_flagged_review'] or 0)
 
         c.execute('''
             UPDATE scanned_products
@@ -1256,9 +1316,10 @@ def manage_scanned_product(prod_id):
                 product_name = ?,
                 brand = ?,
                 ingredients_text = ?,
+                user_flagged_review = ?,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
-        ''', (new_status, new_admin_status, new_admin_notes, new_name, new_brand, new_ing, prod_id))
+        ''', (new_status, new_admin_status, new_admin_notes, new_name, new_brand, new_ing, new_flag, prod_id))
         conn.commit()
         conn.close()
         return jsonify({"success": True, "message": "Product updated successfully"})
@@ -1275,13 +1336,13 @@ def export_scanned_products():
 
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT id, barcode, product_name, brand, status, admin_status, admin_notes, scan_count, created_at, updated_at, ingredients_text FROM scanned_products ORDER BY updated_at DESC")
+    c.execute("SELECT id, barcode, product_name, brand, status, admin_status, user_flagged_review, user_notes, admin_notes, scan_count, created_at, updated_at, ingredients_text FROM scanned_products ORDER BY updated_at DESC")
     rows = c.fetchall()
     conn.close()
 
     headers = [
         'ID', 'Barcode', 'Product Name', 'Brand', 'Halal Status', 'Admin Review Status',
-        'Scan Count', 'First Scanned', 'Last Scanned', 'Admin Notes', 'Ingredients'
+        'User Flagged Review', 'User Notes', 'Scan Count', 'First Scanned', 'Last Scanned', 'Admin Notes', 'Ingredients'
     ]
     data_rows = [
         [
@@ -1291,6 +1352,8 @@ def export_scanned_products():
             r['brand'] or '',
             str(r['status'] or '').upper(),
             str(r['admin_status'] or '').capitalize(),
+            'YES' if r['user_flagged_review'] else 'NO',
+            r['user_notes'] or '',
             r['scan_count'] or 1,
             r['created_at'] or '',
             r['updated_at'] or '',

@@ -620,14 +620,156 @@
                         <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5;">
                             ${highlightedIngredients}
                         </p>
+
+                        <!-- User Flag / Review Request Section -->
+                        <div id="user-review-section" style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed #cbd5e1;">
+                            <div id="flag-prompt-container">
+                                <button type="button" id="btn-toggle-flag-form" onclick="toggleUserFlagForm()" style="background: white; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 0.55rem 1rem; color: #334155; font-size: 0.88rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                    <span style="font-size: 1.05rem;">🚩</span>
+                                    <span>${isIt ? 'Ritieni che questo risultato sia errato? Segnalalo per revisione' : 'Think this result is incorrect? Request review'}</span>
+                                </button>
+                            </div>
+
+                            <div id="flag-form-container" class="hidden" style="margin-top: 0.85rem; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 1.15rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                <h4 style="margin: 0 0 0.4rem 0; font-size: 0.95rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem;">
+                                    <span>🚩</span>
+                                    <span>${isIt ? 'Segnala Risultato Errato agli Amministratori ASM' : 'Report Incorrect Result to ASM Administrators'}</span>
+                                </h4>
+                                <p style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #64748b; line-height: 1.45;">
+                                    ${isIt 
+                                        ? 'Aiutaci a garantire la massima affidabilità! Se noti ingredienti errati, dubbi o certificazioni mancanti, inviaci una nota. Controlleremo il prodotto nella pagina di amministrazione.' 
+                                        : 'Help us maintain accurate classifications! If you noticed missing or incorrect ingredients, questionable additives, or halal certifications, add an explanatory note for our admin team.'}
+                                </p>
+                                <div style="margin-bottom: 0.75rem;">
+                                    <textarea id="flag-user-note" rows="3" placeholder="${isIt ? 'Aggiungi una nota (es. contiene gelatina di maiale tra gli ingredienti, o la confezione riporta certificato Halal Italia...)' : 'Add your note (e.g. package shows animal gelatin not parsed, or package has certified Halal stamp...)'}" style="width: 100%; box-sizing: border-box; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem; font-family: inherit; resize: vertical; line-height: 1.4;"></textarea>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                                    <button type="button" id="btn-submit-flag" onclick="submitProductFlag()" style="background: #0284c7; color: white; border: none; padding: 0.55rem 1.15rem; border-radius: 6px; font-weight: 600; font-size: 0.88rem; cursor: pointer; transition: background 0.2s ease;">
+                                        ${isIt ? 'Invia Segnalazione' : 'Submit Review Request'}
+                                    </button>
+                                    <button type="button" onclick="toggleUserFlagForm()" style="background: white; border: 1px solid #cbd5e1; padding: 0.55rem 0.85rem; border-radius: 6px; font-size: 0.88rem; color: #64748b; cursor: pointer;">
+                                        ${isIt ? 'Annulla' : 'Cancel'}
+                                    </button>
+                                </div>
+                                <div id="flag-status-msg" class="hidden" style="margin-top: 0.75rem; font-size: 0.85rem; font-weight: 600;"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
         resultsDiv.scrollIntoView({ behavior: 'smooth' });
 
+        // Save active scan info for user flagging
+        window._currentScan = {
+            barcode: String(product.code || '').trim(),
+            name: name,
+            brand: brand,
+            status: (analysis && analysis.status) ? analysis.status : 'not_listed'
+        };
+
         // Asynchronously report to admin backend
         reportScannedProduct(product, analysis);
     }
+
+    // Toggle user review request form
+    window.toggleUserFlagForm = function() {
+        const form = document.getElementById('flag-form-container');
+        const prompt = document.getElementById('flag-prompt-container');
+        if (!form) return;
+        const isHidden = form.classList.contains('hidden');
+        if (isHidden) {
+            form.classList.remove('hidden');
+            if (prompt) prompt.classList.add('hidden');
+            const ta = document.getElementById('flag-user-note');
+            if (ta) ta.focus();
+        } else {
+            form.classList.add('hidden');
+            if (prompt) prompt.classList.remove('hidden');
+        }
+    };
+
+    // Submit user flag and note
+    window.submitProductFlag = async function() {
+        const scan = window._currentScan;
+        if (!scan || !scan.barcode) {
+            alert('No barcode detected for this item.');
+            return;
+        }
+
+        const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+        const isIt = currentLang === 'it';
+
+        const noteInput = document.getElementById('flag-user-note');
+        const submitBtn = document.getElementById('btn-submit-flag');
+        const msgDiv = document.getElementById('flag-status-msg');
+        const note = (noteInput ? noteInput.value : '').trim();
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = isIt ? 'Invio in corso...' : 'Submitting...';
+        }
+
+        const payload = {
+            barcode: scan.barcode,
+            product_name: scan.name || '',
+            brand: scan.brand || '',
+            status: scan.status || 'not_listed',
+            note: note
+        };
+
+        const endpoints = [
+            window.location.origin.includes('localhost') ? '/api/scanned_products/flag' : 'https://admin.asmpolimi.it/api/scanned_products/flag',
+            '/api/scanned_products/flag'
+        ];
+
+        let success = false;
+        for (const ep of endpoints) {
+            try {
+                const resp = await fetch(ep, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.success) {
+                        success = true;
+                        break;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        if (submitBtn) submitBtn.disabled = false;
+
+        if (success) {
+            const formContainer = document.getElementById('flag-form-container');
+            if (formContainer) {
+                formContainer.innerHTML = `
+                    <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.85rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.65rem;">
+                        <span style="font-size: 1.35rem;">✅</span>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.95rem;">
+                                ${isIt ? 'Grazie! Segnalazione registrata con successo.' : 'Thank you! Flagged for review.'}
+                            </div>
+                            <div style="font-size: 0.85rem; margin-top: 0.2rem; color: #047857;">
+                                ${isIt ? 'Gli amministratori ASM esamineranno la tua nota e aggiorneranno la classificazione del prodotto.' : 'The ASM admin team will review your notes and verify this product.'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        } else {
+            if (msgDiv) {
+                msgDiv.classList.remove('hidden');
+                msgDiv.style.color = '#dc2626';
+                msgDiv.textContent = isIt ? 'Impossibile inviare la segnalazione al momento. Riprova più tardi.' : 'Unable to submit review request. Please try again later.';
+            }
+            if (submitBtn) {
+                submitBtn.textContent = isIt ? 'Invia Segnalazione' : 'Submit Review Request';
+            }
+        }
+    };
 
     window.addEventListener('asmLanguageChanged', () => {
         if (window._lastHalalResult) {
