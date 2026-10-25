@@ -23,6 +23,8 @@ const ASM_I18N = {
         qibla_city_sub: "Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km",
         qibla_sensor_text: "Align phone until the 🕋 Kaaba points to the top.",
         qibla_close_btn: "Close Compass",
+        qibla_recalibrate: "Reset / Calibrate",
+        qibla_calib_hint: "💡 Hold phone flat or move in a <strong>figure-8</strong> motion if direction drifts.",
 
         hero_title: "Welcome to your community.",
         hero_subtitle: "Fostering faith, brotherhood, sisterhood, and excellence at Politecnico di Milano.",
@@ -256,6 +258,8 @@ const ASM_I18N = {
         qibla_city_sub: "Milano, Italia &bull; 45.46° N, 9.19° E &bull; ~3.820 km",
         qibla_sensor_text: "Allinea il telefono finché la Kaaba 🕋 non punta in alto.",
         qibla_close_btn: "Chiudi Bussola",
+        qibla_recalibrate: "Reimposta / Calibra",
+        qibla_calib_hint: "💡 Tieni il telefono piatto o muovilo a forma di <strong>8</strong> se la direzione devia.",
 
         hero_title: "Benvenuto nella tua comunità.",
         hero_subtitle: "Promuoviamo la fede, la fratellanza e l'eccellenza al Politecnico di Milano.",
@@ -1442,43 +1446,142 @@ document.addEventListener('DOMContentLoaded', () => {
         const closeQiblaBtns = document.querySelectorAll('.close-qibla-modal-btn');
         const compassDial = document.getElementById('compass-dial-ring');
         const sensorMsg = document.getElementById('qibla-sensor-text');
+        const recalibrateBtn = document.getElementById('btn-recalibrate-compass');
+
         let sensorActive = false;
         let orientationHandler = null;
+        let currentListenerType = null;
+        let currentDialRotation = 0; // Continuous angle tracking to prevent 360° whip spin
+
+        // Screen orientation helper (portrait vs landscape)
+        const getScreenOrientationAngle = () => {
+            if (screen.orientation && typeof screen.orientation.angle === 'number') {
+                return screen.orientation.angle;
+            }
+            if (typeof window.orientation === 'number') {
+                return window.orientation;
+            }
+            return 0;
+        };
+
+        // 3D Tilt Compensation for Android alpha/beta/gamma
+        const computeCompassHeading = (alpha, beta, gamma) => {
+            if (alpha === null) return null;
+            // When flat or near-flat
+            if (Math.abs(beta || 0) < 6 && Math.abs(gamma || 0) < 6) {
+                return (360 - alpha) % 360;
+            }
+
+            const degToRad = Math.PI / 180;
+            const radToDeg = 180 / Math.PI;
+
+            const x = (beta || 0) * degToRad; // pitch
+            const y = (gamma || 0) * degToRad; // roll
+            const z = (alpha || 0) * degToRad; // yaw
+
+            const cX = Math.cos(x);
+            const cY = Math.cos(y);
+            const cZ = Math.cos(z);
+            const sX = Math.sin(x);
+            const sY = Math.sin(y);
+            const sZ = Math.sin(z);
+
+            // Device pointing vector components
+            const Vx = -cZ * sY - sZ * sX * cY;
+            const Vy = -sZ * sY + cZ * sX * cY;
+
+            let heading = Math.atan2(Vx, Vy) * radToDeg;
+            if (heading < 0) heading += 360;
+            return heading;
+        };
+
+        // Smooth continuous dial rotation (shortest path interpolation)
+        const setDialHeading = (heading) => {
+            if (!compassDial) return;
+            const target = -heading;
+            let diff = (target - currentDialRotation) % 360;
+            if (diff < -180) diff += 360;
+            if (diff > 180) diff -= 360;
+            currentDialRotation += diff;
+            compassDial.style.transform = `rotate(${currentDialRotation}deg)`;
+        };
+
+        const stopSensor = () => {
+            if (orientationHandler && currentListenerType) {
+                window.removeEventListener(currentListenerType, orientationHandler, true);
+            }
+            // Also ensure regular deviceorientation is cleared
+            if (orientationHandler) {
+                window.removeEventListener('deviceorientation', orientationHandler, true);
+                window.removeEventListener('deviceorientationabsolute', orientationHandler, true);
+            }
+            orientationHandler = null;
+            currentListenerType = null;
+            sensorActive = false;
+        };
 
         const startSensor = async () => {
+            stopSensor();
+
             const setupOrientationListener = () => {
-                if (orientationHandler) {
-                    window.removeEventListener('deviceorientation', orientationHandler, true);
-                }
                 orientationHandler = (event) => {
                     let heading = null;
-                    if (typeof event.webkitCompassHeading !== 'undefined') {
-                        heading = event.webkitCompassHeading; // iOS True North heading
-                    } else if (event.alpha !== null) {
-                        heading = (360 - event.alpha) % 360; // Android approximation
+
+                    // 1. iOS True North (webkitCompassHeading)
+                    if (typeof event.webkitCompassHeading !== 'undefined' && event.webkitCompassHeading !== null) {
+                        heading = event.webkitCompassHeading;
+                    }
+                    // 2. Android deviceorientationabsolute or absolute alpha
+                    else if (event.alpha !== null) {
+                        const isAbsolute = Boolean(event.absolute || currentListenerType === 'deviceorientationabsolute');
+                        if (isAbsolute) {
+                            heading = computeCompassHeading(event.alpha, event.beta, event.gamma);
+                        } else {
+                            heading = (360 - event.alpha) % 360;
+                        }
                     }
 
-                    if (heading !== null && compassDial) {
-                        compassDial.style.transform = `rotate(${-heading}deg)`;
+                    if (heading !== null && !isNaN(heading)) {
+                        const screenAngle = getScreenOrientationAngle();
+                        heading = (heading + screenAngle + 360) % 360;
+
+                        setDialHeading(heading);
+
                         if (sensorMsg) {
                             const diff = Math.abs((heading - 124 + 360) % 360);
-                            if (diff < 8 || diff > 352) {
-                                sensorMsg.innerHTML = '<strong style="color: #10b981;">Aligned with Qibla! 🕋 Facing Makkah.</strong>';
+                            const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+                            const isIt = currentLang === 'it';
+                            if (diff < 7 || diff > 353) {
+                                sensorMsg.innerHTML = `<strong style="color: #10b981;">🕋 ${isIt ? 'Allineato con la Qibla! Sei rivolto verso la Mecca.' : 'Aligned with Qibla! Facing Makkah.'}</strong>`;
                             } else {
-                                sensorMsg.textContent = `Turn phone until 🕋 Kaaba aligns with the top (${Math.round(heading)}°)`;
+                                const rounded = Math.round(heading);
+                                sensorMsg.textContent = isIt 
+                                    ? `Ruota il telefono finché la Kaaba 🕋 non punta in alto (${rounded}°)`
+                                    : `Turn phone until 🕋 Kaaba aligns with the top (${rounded}°)`;
                             }
                         }
                     }
                 };
 
-                window.addEventListener('deviceorientation', orientationHandler, true);
+                // Determine whether to use deviceorientationabsolute (Android Chrome) or deviceorientation
+                if ('ondeviceorientationabsolute' in window) {
+                    currentListenerType = 'deviceorientationabsolute';
+                    window.addEventListener('deviceorientationabsolute', orientationHandler, true);
+                } else {
+                    currentListenerType = 'deviceorientation';
+                    window.addEventListener('deviceorientation', orientationHandler, true);
+                }
+
                 sensorActive = true;
                 if (sensorMsg) {
-                    sensorMsg.textContent = 'Phone sensor active. Rotate phone to align with 🕋 Kaaba.';
+                    const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+                    sensorMsg.textContent = currentLang === 'it' 
+                        ? 'Sensore bussola attivo. Ruota il telefono per allinearti con la Kaaba 🕋.' 
+                        : 'Phone compass active. Rotate phone to align with 🕋 Kaaba.';
                 }
             };
 
-            // Request permission if needed (iOS 13+)
+            // Request permission on iOS 13+ devices
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 try {
                     const response = await DeviceOrientationEvent.requestPermission();
@@ -1488,30 +1591,51 @@ document.addEventListener('DOMContentLoaded', () => {
                         sensorMsg.textContent = 'Fixed mode (124° SE for Milan). Orientation access not granted.';
                     }
                 } catch (err) {
-                    console.warn('Device orientation error:', err);
+                    console.warn('Device orientation permission error:', err);
                     if (sensorMsg) sensorMsg.textContent = 'Fixed compass mode (124° SE for Milan).';
                 }
-            } else if ('ondeviceorientation' in window || 'DeviceOrientationEvent' in window) {
+            } else if ('ondeviceorientationabsolute' in window || 'ondeviceorientation' in window || 'DeviceOrientationEvent' in window) {
                 setupOrientationListener();
             } else if (sensorMsg) {
                 sensorMsg.textContent = 'Fixed compass mode (124° SE for Milan).';
             }
         };
 
-        const stopSensor = () => {
-            if (sensorActive && orientationHandler) {
-                window.removeEventListener('deviceorientation', orientationHandler, true);
-                orientationHandler = null;
-                sensorActive = false;
-            }
+        const recalibrateCompass = () => {
+            stopSensor();
+            currentDialRotation = 0;
             if (compassDial) compassDial.style.transform = 'rotate(0deg)';
-            if (sensorMsg) sensorMsg.textContent = 'Align phone until the 🕋 Kaaba points to the top.';
+            if (sensorMsg) {
+                const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+                sensorMsg.innerHTML = `<span style="color: #0284c7;">🔄 ${currentLang === 'it' ? 'Calibrazione in corso... Tieni il telefono piatto o muovilo a forma di 8.' : 'Calibrating... Hold phone flat or move in a figure-8 motion.'}</span>`;
+            }
+            setTimeout(() => {
+                if (qiblaModal.classList.contains('active')) {
+                    startSensor();
+                }
+            }, 300);
         };
+
+        if (recalibrateBtn) {
+            recalibrateBtn.addEventListener('click', recalibrateCompass);
+        }
+
+        // Auto-recalibrate upon screen unlock / tab visibility resume
+        document.addEventListener('visibilitychange', () => {
+            if (!qiblaModal.classList.contains('active')) return;
+            if (document.visibilityState === 'visible') {
+                // When user unlocks or returns to phone, re-sync sensors cleanly
+                recalibrateCompass();
+            } else {
+                stopSensor();
+            }
+        });
 
         function openQiblaModal(e) {
             if (e && e.preventDefault) e.preventDefault();
             qiblaModal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            currentDialRotation = 0;
             startSensor();
         }
 
@@ -1520,6 +1644,7 @@ document.addEventListener('DOMContentLoaded', () => {
             qiblaModal.classList.remove('active');
             document.body.style.overflow = '';
             stopSensor();
+            if (compassDial) compassDial.style.transform = 'rotate(0deg)';
         }
 
         openQiblaBtns.forEach(btn => btn.addEventListener('click', openQiblaModal));

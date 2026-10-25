@@ -326,10 +326,16 @@
                     <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text" data-i18n="qibla_sensor_text">Align phone until the 🕋
                         Kaaba points to the top.</span>
                 </div>
+                <div class="qibla-calib-hint" style="font-size: 0.74rem; color: #64748b; margin-top: 0.25rem;" data-i18n="qibla_calib_hint">
+                    💡 Hold phone flat or move in a <strong>figure-8</strong> motion if direction drifts.
+                </div>
             </div>
-            <div class="qibla-modal-footer">
-                <button type="button" class="btn btn-primary close-qibla-modal-btn w-100"
-                    style="padding: 0.5rem 1rem; font-size: 0.9rem;" data-i18n="qibla_close_btn">
+            <div class="qibla-modal-footer" style="display: flex; gap: 0.5rem; justify-content: space-between; align-items: center;">
+                <button type="button" id="btn-recalibrate-compass" class="btn" style="background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; padding: 0.45rem 0.85rem; font-size: 0.82rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; font-weight: 600;">
+                    <span>🔄</span> <span data-i18n="qibla_recalibrate">Reset / Calibrate</span>
+                </button>
+                <button type="button" class="btn btn-primary close-qibla-modal-btn"
+                    style="padding: 0.45rem 1.15rem; font-size: 0.85rem; border-radius: 6px;" data-i18n="qibla_close_btn">
                     Close Compass
                 </button>
             </div>

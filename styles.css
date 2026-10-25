@@ -4201,6 +4201,24 @@ body.dark-mode .qibla-modal-footer {
     border-top-color: #334155;
 }
 
+#btn-recalibrate-compass:hover {
+    background: #e2e8f0;
+}
+
+body.dark-mode #btn-recalibrate-compass {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+body.dark-mode #btn-recalibrate-compass:hover {
+    background: #334155;
+}
+
+body.dark-mode .qibla-calib-hint {
+    color: #94a3b8 !important;
+}
+
 /* ==========================================================================
    Language Switcher Styles (EN / IT)
    ========================================================================== */
