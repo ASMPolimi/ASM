@@ -165,6 +165,12 @@
         border: 1px solid #ffecb5;
     }
 
+    .status-not-listed {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+
     .highlight-haram {
         color: #ef4444;
         font-weight: 700;
@@ -546,7 +552,7 @@
     };
 
     // Main parser/analyzer logic
-    function analyzeProductIngredients(ingredientsText, labelsText = '') {
+    function analyzeProductIngredients(ingredientsText, labelsText = '', hasIngredients = true) {
         const text = (ingredientsText + ' ' + labelsText).toLowerCase();
         const foundHaram = [];
         const foundMashbuh = [];
@@ -579,12 +585,31 @@
 
         // Return state
         if (foundHaram.length > 0) {
-            return { status: 'haram', reasons: foundHaram };
+            return { status: 'haram', reasons: foundHaram, certified: false };
         } else if (foundMashbuh.length > 0) {
-            return { status: 'mashbuh', reasons: foundMashbuh };
+            return { status: 'mashbuh', reasons: foundMashbuh, certified: false };
+        } else if (isHalalCertified) {
+            return { status: 'halal', certified: true, reasons: [] };
+        } else if (!hasIngredients) {
+            // No ingredients were provided or available in online repositories
+            return {
+                status: 'not_listed',
+                certified: false,
+                reasons: [{
+                    word: 'No ingredients listed',
+                    reason: 'No ingredients list is available in online databases for this product. Halal status cannot be verified without ingredient data.'
+                }]
+            };
         } else {
-            return { status: 'halal', certified: isHalalCertified, reasons: [] };
+            return { status: 'halal', certified: false, reasons: [] };
         }
+    }
+
+    // Safe HTML escaper
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return String(text).replace(/[&<>"']/g, m => map[m]);
     }
 
     // Highlight matched keywords in ingredients text
@@ -606,30 +631,73 @@
         return highlighted;
     }
 
+    // Send anonymous scan report to backend admin log
+    async function reportScannedProduct(product, analysis) {
+        if (!product || !product.code) return;
+        try {
+            const payload = {
+                barcode: String(product.code).trim(),
+                product_name: product.product_name || product.product_name_en || '',
+                brand: product.brands || '',
+                ingredients_text: (product.ingredients_text && !product.ingredients_text.includes('No ingredients list available')) ? product.ingredients_text : '',
+                status: (analysis && analysis.status) ? analysis.status : 'not_listed',
+                image_url: product.image_url || '',
+                source: product.source || 'scanner'
+            };
+
+            const endpoints = [
+                window.location.origin.includes('localhost') ? '/api/scanned_products' : 'https://admin.asmpolimi.it/api/scanned_products',
+                '/api/scanned_products'
+            ];
+
+            for (const ep of endpoints) {
+                try {
+                    const resp = await fetch(ep, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (resp.ok) break;
+                } catch (e) {}
+            }
+        } catch (err) {
+            console.error('Anonymous scan reporting notice:', err);
+        }
+    }
+
     // Display results block
     function displayResults(product, customAnalysis = null) {
         const resultsDiv = document.getElementById('scanner-results');
         resultsDiv.classList.remove('hidden');
 
-        const name = product.product_name || product.product_name_en || 'Unknown Product';
-        const brand = product.brands || 'Unknown Brand';
+        const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+        const isIt = currentLang === 'it';
+
+        const name = product.product_name || product.product_name_en || (isIt ? 'Prodotto Non in Lista' : 'Product Not Listed');
+        const brand = product.brands || (isIt ? 'Marca non specificata' : 'Unknown Brand');
         const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
-        const ingredients = product.ingredients_text || 'No ingredients list available for this product in Open Food Facts.';
+        
+        const rawIngredients = product.ingredients_text;
+        const placeholderNotice = isIt ? 'Nessun elenco ingredienti disponibile per questo prodotto in Open Food Facts o nel database locale.' : 'No ingredients list available for this product in Open Food Facts or local database.';
+        const hasIngredients = Boolean(rawIngredients && rawIngredients.trim().length > 0 && !rawIngredients.includes('No ingredients list available'));
+        const ingredients = hasIngredients ? rawIngredients : placeholderNotice;
 
         // Run analysis
         const labels = product.labels || '';
-        const analysis = customAnalysis || analyzeProductIngredients(ingredients, name + ' ' + labels);
+        const analysis = customAnalysis || analyzeProductIngredients(hasIngredients ? ingredients : '', (name + ' ' + labels).trim(), hasIngredients);
 
         window._lastHalalResult = { product, customAnalysis };
-        const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
-        const isIt = currentLang === 'it';
 
         let statusClass = 'status-halal';
         let statusText = isIt ? 'Halal' : 'Halal';
         let reasonListHtml = '';
+        let cardBorderColor = '#badbcc';
+        let cardBgColor = '#fcfdfc';
 
         if (analysis.status === 'haram') {
             statusClass = 'status-haram';
+            cardBorderColor = '#f5c2c7';
+            cardBgColor = '#fff8f8';
             statusText = isIt ? 'Haram (Non Halal)' : 'Haram / Non-Halal';
             reasonListHtml = `<h4 style="margin-top: 1rem; color: #842029;">${isIt ? 'Motivazioni:' : 'Reasons:'}</h4>
                     <ul style="margin-left: 1.5rem; color: var(--color-text);">
@@ -637,12 +705,38 @@
                     </ul>`;
         } else if (analysis.status === 'mashbuh') {
             statusClass = 'status-mashbuh';
+            cardBorderColor = '#ffecb5';
+            cardBgColor = '#fffdf5';
             statusText = isIt ? 'Mashbuh (Dubbio)' : 'Mashbuh (Doubtful)';
             reasonListHtml = `<h4 style="margin-top: 1rem; color: #664d03;">${isIt ? 'Ingredienti Dubbi Rilevati:' : 'Doubtful Ingredients Found:'}</h4>
                     <ul style="margin-left: 1.5rem; color: var(--color-text);">
                         ${analysis.reasons.map(r => `<li style="margin-bottom: 0.25rem;"><strong>${r.word}</strong>: ${r.reason}</li>`).join('')}
                     </ul>`;
+        } else if (analysis.status === 'not_listed') {
+            statusClass = 'status-not-listed';
+            cardBorderColor = '#cbd5e1';
+            cardBgColor = '#f8fafc';
+            statusText = isIt ? 'Non in Lista / Da Verificare' : 'Not Listed / Needs Review';
+            reasonListHtml = `
+                <div style="background: rgba(100, 116, 139, 0.08); border-left: 4px solid #64748b; padding: 0.85rem 1rem; border-radius: 6px; margin-top: 1rem;">
+                    <h4 style="margin: 0 0 0.35rem 0; color: #334155; font-size: 0.95rem;">
+                        ⚠️ ${isIt ? 'Ingredienti non disponibili o prodotto non censito' : 'Ingredients list not available or product unlisted'}
+                    </h4>
+                    <p style="margin: 0; color: var(--color-text); font-size: 0.9rem; line-height: 1.5;">
+                        ${isIt 
+                            ? 'Nessun elenco degli ingredienti è presente nei database online per questo prodotto. Lo stato Halal non può essere determinato senza ingredienti verificabili.' 
+                            : 'No ingredients list is available in online databases for this product. Halal status cannot be determined without verifiable ingredients.'}
+                    </p>
+                    <p style="margin: 0.5rem 0 0 0; color: #0284c7; font-size: 0.85rem; font-weight: 600;">
+                        📬 ${isIt 
+                            ? '✓ Prodotto inoltrato anonimamente agli amministratori ASM per revisione.' 
+                            : '✓ Product forwarded anonymously to ASM administrators for review.'}
+                    </p>
+                </div>
+            `;
         } else {
+            cardBorderColor = '#badbcc';
+            cardBgColor = '#fcfdfc';
             reasonListHtml = `<p style="margin-top: 1rem; color: var(--color-text);">${isIt ? 'Nessun ingrediente Haram o dubbio è stato rilevato nell\'elenco degli ingredienti.' : 'No Haram or doubtful ingredients were detected in the ingredients list.'}</p>`;
             if (analysis.certified) {
                 statusText = isIt ? 'Certificato Halal' : 'Certified Halal';
@@ -650,27 +744,33 @@
             }
         }
 
-        const highlightedIngredients = highlightIngredients(ingredients);
+        const highlightedIngredients = hasIngredients 
+            ? highlightIngredients(ingredients) 
+            : `<span style="color: #64748b; font-style: italic;">${placeholderNotice}</span>`;
 
         resultsDiv.innerHTML = `
-                <div class="result-card" style="border: 2px solid ${analysis.status === 'haram' ? '#f5c2c7' : (analysis.status === 'mashbuh' ? '#ffecb5' : '#badbcc')}; background-color: ${analysis.status === 'haram' ? '#fff8f8' : (analysis.status === 'mashbuh' ? '#fffdf5' : '#fcfdfc')};">
-                    <img class="result-image" src="${img}" alt="${name}" onerror="this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
+                <div class="result-card" style="border: 2px solid ${cardBorderColor}; background-color: ${cardBgColor};">
+                    <img class="result-image" src="${img}" alt="${escapeHtml(name)}" onerror="this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
                     <div class="result-info">
                         <div class="status-badge ${statusClass}">${statusText}</div>
-                        <h3 style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 0.25rem;">${name}</h3>
-                        <p style="color: var(--color-text-light); font-weight: 500; margin-bottom: 1rem;">${isIt ? 'Marca:' : 'Brand:'} ${brand}</p>
+                        <h3 style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 0.25rem;">${escapeHtml(name)}</h3>
+                        <p style="color: var(--color-text-light); font-weight: 500; margin-bottom: 0.75rem;">${isIt ? 'Marca:' : 'Brand:'} ${escapeHtml(brand)}</p>
+                        ${product.code ? `<p style="color: #64748b; font-size: 0.82rem; font-family: monospace; margin: -0.25rem 0 0.85rem 0;">Barcode: ${escapeHtml(product.code)}</p>` : ''}
                         
                         ${reasonListHtml}
 
                         <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #e5e7eb;">
                         <h4 style="margin-bottom: 0.5rem; color: var(--color-primary);">${isIt ? 'Elenco Ingredienti:' : 'Ingredients List:'}</h4>
-                        <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5; font-style: italic;">
+                        <p style="font-size: 0.95rem; color: var(--color-text-light); line-height: 1.5;">
                             ${highlightedIngredients}
                         </p>
                     </div>
                 </div>
             `;
         resultsDiv.scrollIntoView({ behavior: 'smooth' });
+
+        // Asynchronously report to admin backend
+        reportScannedProduct(product, analysis);
     }
 
     window.addEventListener('asmLanguageChanged', () => {
@@ -726,10 +826,12 @@
         if (CUSTOM_BARCODES[barcode]) {
             const customData = CUSTOM_BARCODES[barcode];
             const product = {
+                code: barcode,
                 product_name: customData.product_name,
                 brands: customData.brands,
                 image_url: customData.image_url || '',
-                ingredients_text: customData.ingredients_text || 'Custom Database Entry'
+                ingredients_text: customData.ingredients_text || 'Custom Database Entry',
+                source: 'custom_db'
             };
             const customAnalysis = {
                 status: customData.status,
@@ -752,15 +854,53 @@
             loader.classList.add('hidden');
 
             if (data.status === 1 && data.product) {
-                displayResults(data.product);
+                const prod = data.product;
+                prod.code = barcode;
+                prod.source = 'openfoodfacts';
+                displayResults(prod);
             } else {
-                errorDiv.textContent = `Product not found (Barcode: ${barcode}). You can still analyze it by copying the ingredients into the 'Ingredients Analyzer' tab.`;
-                errorDiv.classList.remove('hidden');
+                // Product not found in Open Food Facts or Custom DB -> Display Not Listed Card & Report to Admin
+                const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+                const isIt = currentLang === 'it';
+                const unlistedProduct = {
+                    code: barcode,
+                    product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
+                    brands: isIt ? 'Barcode non censito' : 'Barcode not in database',
+                    image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
+                    ingredients_text: '',
+                    source: 'unlisted'
+                };
+                const unlistedAnalysis = {
+                    status: 'not_listed',
+                    reasons: [{
+                        word: barcode,
+                        reason: isIt 
+                            ? `Nessun dato o ingrediente disponibile per il barcode ${barcode}. Inviato agli amministratori.` 
+                            : `No product or ingredient records found for barcode ${barcode}. Forwarded to administrators.`
+                    }]
+                };
+                displayResults(unlistedProduct, unlistedAnalysis);
             }
         } catch (err) {
             loader.classList.add('hidden');
-            errorDiv.textContent = "Unable to connect to Open Food Facts database. Please check your network connection.";
-            errorDiv.classList.remove('hidden');
+            const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+            const isIt = currentLang === 'it';
+            const unlistedProduct = {
+                code: barcode,
+                product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
+                brands: isIt ? 'Barcode non trovato (Errore connessione)' : 'Barcode unverified (Connection Issue)',
+                image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
+                ingredients_text: '',
+                source: 'unlisted_offline'
+            };
+            const unlistedAnalysis = {
+                status: 'not_listed',
+                reasons: [{
+                    word: barcode,
+                    reason: isIt ? 'Impossibile verificare online. Inviato anonimamente agli amministratori.' : 'Unable to verify online. Forwarded anonymously to administrators.'
+                }]
+            };
+            displayResults(unlistedProduct, unlistedAnalysis);
             console.error(err);
         }
     }

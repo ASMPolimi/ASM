@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanned Products & Barcodes &bull; Admin Portal</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/asm_logo.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .admin-nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-decoration: none;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .admin-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .admin-portal-badge {
+            background: rgba(18, 74, 97, 0.1);
+            color: var(--color-primary);
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .admin-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .admin-link:hover {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.05);
+        }
+
+        .admin-link.active {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.1);
+            font-weight: 700;
+        }
+
+        .btn-public-site {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0284c7;
+            background: rgba(2, 132, 199, 0.1);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            text-decoration: none;
+            margin-left: 0.5rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-public-site:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .btn-admin-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #dc2626;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            cursor: pointer;
+            margin-left: 0.25rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-admin-logout:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .admin-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 900px) {
+            .admin-mobile-toggle {
+                display: block;
+            }
+
+            .admin-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 1rem 1.5rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                align-items: stretch;
+            }
+
+            .admin-links.open {
+                display: flex;
+            }
+
+            .btn-public-site,
+            .btn-admin-logout {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                justify-content: center;
+            }
+        }
+
+        /* Footer */
+        .admin-footer {
+            margin-top: auto;
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+    </style>
+    
+<style>
+    .admin-scanner-container {
+        max-width: 1200px;
+        margin: 30px auto 4rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    .toast-msg {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 10000;
+        box-shadow: var(--shadow-lg);
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        animation: slideInToast 0.3s ease;
+    }
+
+    .toast-error {
+        color: #991b1b;
+        background: #fee2e2;
+        border-left: 5px solid #dc2626;
+    }
+
+    .toast-success {
+        color: #166534;
+        background: #dcfce7;
+        border-left: 5px solid #16a34a;
+    }
+
+    @keyframes slideInToast {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* KPI Summary Cards */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .kpi-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .kpi-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .kpi-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .kpi-info h4 {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .kpi-info .kpi-value {
+        margin: 0.25rem 0 0 0;
+        font-size: 1.65rem;
+        font-weight: 800;
+        color: var(--color-primary);
+        line-height: 1.1;
+    }
+
+    /* Controls and search */
+    .toolbar-container {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin-bottom: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .toolbar-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .search-box-wrap {
+        flex: 1;
+        min-width: 260px;
+        position: relative;
+    }
+
+    .search-box-wrap input {
+        width: 100%;
+        padding: 0.65rem 1rem 0.65rem 2.5rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.92rem;
+        background: #ffffff;
+        transition: border-color 0.2s;
+    }
+
+    .search-box-wrap input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(18, 74, 97, 0.15);
+    }
+
+    .search-box-icon {
+        position: absolute;
+        left: 0.85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 1rem;
+    }
+
+    .toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .pill-filter-group {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-pill {
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .filter-pill:hover {
+        background: #f1f5f9;
+        color: var(--color-primary);
+    }
+
+    .filter-pill.active {
+        background: var(--color-primary);
+        color: #ffffff;
+        border-color: var(--color-primary);
+    }
+
+    /* Product Cards / Table */
+    .products-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 1rem;
+    }
+
+    .products-table th {
+        background: #f1f5f9;
+        color: #475569;
+        font-weight: 700;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 0.75rem 1rem;
+        border-bottom: 2px solid #cbd5e1;
+        text-align: left;
+    }
+
+    .products-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+        font-size: 0.92rem;
+    }
+
+    .products-table tr:hover td {
+        background: #f8fafc;
+    }
+
+    .product-thumb {
+        width: 52px;
+        height: 52px;
+        border-radius: 8px;
+        object-fit: contain;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        flex-shrink: 0;
+    }
+
+    .barcode-badge {
+        font-family: monospace;
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid #cbd5e1;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .copy-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: #64748b;
+        padding: 0;
+        line-height: 1;
+    }
+
+    .copy-btn:hover {
+        color: var(--color-primary);
+    }
+
+    /* Status Badges */
+    .badge-status {
+        display: inline-block;
+        padding: 0.25rem 0.65rem;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .badge-halal {
+        background: #dcfce7;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+    }
+
+    .badge-mashbuh {
+        background: #fef3c7;
+        color: #b45309;
+        border: 1px solid #fde68a;
+    }
+
+    .badge-haram {
+        background: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+
+    .badge-not-listed {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+
+    .badge-review-pending {
+        background: #fff7ed;
+        color: #c2410c;
+        border: 1px solid #ffedd5;
+        font-size: 0.72rem;
+        padding: 2px 7px;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+    .badge-review-verified {
+        background: #ecfdf5;
+        color: #047857;
+        border: 1px solid #d1fae5;
+        font-size: 0.72rem;
+        padding: 2px 7px;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+    /* Modal styling */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 1rem;
+    }
+
+    .modal-card {
+        background: #ffffff;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 580px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        border: 1px solid #e2e8f0;
+        padding: 2rem;
+        position: relative;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .modal-close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+    }
+
+    .modal-close-btn:hover {
+        color: #1e293b;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3.5rem 1rem;
+        color: #64748b;
+    }
+
+    .empty-state-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
+</head>
+
+<body class="bg-light" style="min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- Dedicated Admin Portal Navbar -->
+    <header class="admin-nav">
+        <div class="admin-nav-container">
+            <a href="https://asmpolimi.it" class="admin-brand" title="Go to ASM POLIMI website (asmpolimi.it)">
+                <img src="assets/asm_logo.png" alt="ASM Logo">
+                <span>ASM POLIMI</span>
+                <span class="admin-portal-badge">Admin</span>
+            </a>
+
+            <button type="button" class="admin-mobile-toggle" id="admin-nav-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+
+            <nav class="admin-links" id="admin-nav-menu">
+                <a href="/admin" class="admin-link ">
+                    <span>📅</span> Events & News
+                </a>
+                <a href="/admin_members" class="admin-link ">
+                    <span>📋</span> Members & Mailing
+                </a>
+                <a href="/admin_jumuah" class="admin-link ">
+                    <span>🕌</span> Jumu'ah
+                </a>
+                <a href="/admin_questions" class="admin-link ">
+                    <span>❓</span> Questions
+                </a>
+                <a href="/admin_scanner" class="admin-link active">
+                    <span>🥫</span> Scanned Products
+                </a>
+                <a href="/admin_users" id="nav-users-link" class="admin-link ">
+                    <span>👥</span> Users & Accounts
+                </a>
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                    title="Open live public website (asmpolimi.it) in a new tab">
+                    <span>🌐</span> View Website ↗
+                </a>
+                <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
+                    <span>🚪</span> Logout
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Admin Content -->
+    <main style="flex: 1;">
+        
+<div class="container">
+
+    <!-- Login section if unauthenticated -->
+    <div class="admin-scanner-container hidden" id="login-section" style="max-width: 480px; margin-top: 80px;">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🥫</div>
+            <h2 style="color: var(--color-primary); margin-bottom: 0.5rem;">Scanned Products Admin</h2>
+            <p style="color: var(--color-text-light); font-size: 0.9rem;">Sign in to review user-scanned products and update the Halal database.</p>
+        </div>
+        <div id="login-error" class="hidden" style="background: #fee2e2; color: #b91c1c; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.88rem;"></div>
+        <form id="login-form">
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="username" style="display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem;">Username</label>
+                <input type="text" id="username" required style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+            </div>
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label for="password" style="display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem;">Password</label>
+                <input type="password" id="password" required style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+            </div>
+            <button type="submit" class="btn btn-primary w-100" style="padding: 0.75rem; border-radius: 8px; font-weight: 600;">Sign In</button>
+        </form>
+    </div>
+
+    <!-- Main Dashboard Section -->
+    <div class="admin-scanner-container hidden" id="dashboard-section">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                    <span style="font-size: 1.75rem;">🥫</span>
+                    <h2 style="color: var(--color-primary); margin: 0; font-size: 1.65rem;">Scanned Products & Barcode Review</h2>
+                </div>
+                <p style="color: var(--color-text-light); margin: 0; font-size: 0.92rem;">
+                    Live repository of barcodes scanned by website users. Review missing ingredients, unlisted items, and verify Halal compliance.
+                </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button type="button" class="btn" id="btn-export-excel" style="background: #0284c7; color: white; border: none; padding: 0.55rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                    <span>📥</span> Export to Excel
+                </button>
+                <button type="button" class="btn" id="btn-refresh" style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 0.55rem 0.9rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                    🔄 Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background: rgba(18, 74, 97, 0.1); color: var(--color-primary);">📊</div>
+                <div class="kpi-info">
+                    <h4>Total Products Scanned</h4>
+                    <p class="kpi-value" id="kpi-total">0</p>
+                </div>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid #f59e0b;">
+                <div class="kpi-icon" style="background: #fef3c7; color: #b45309;">⚠️</div>
+                <div class="kpi-info">
+                    <h4>Needs Review / Unlisted</h4>
+                    <p class="kpi-value" id="kpi-review" style="color: #b45309;">0</p>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background: #dcfce7; color: #15803d;">✅</div>
+                <div class="kpi-info">
+                    <h4>Halal</h4>
+                    <p class="kpi-value" id="kpi-halal" style="color: #15803d;">0</p>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background: #fef3c7; color: #d97706;">❓</div>
+                <div class="kpi-info">
+                    <h4>Mashbuh (Doubtful)</h4>
+                    <p class="kpi-value" id="kpi-mashbuh" style="color: #d97706;">0</p>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background: #fee2e2; color: #b91c1c;">🚫</div>
+                <div class="kpi-info">
+                    <h4>Haram / Non-Halal</h4>
+                    <p class="kpi-value" id="kpi-haram" style="color: #b91c1c;">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="toolbar-container">
+            <div class="toolbar-top">
+                <div class="search-box-wrap">
+                    <span class="search-box-icon">🔍</span>
+                    <input type="text" id="search-input" placeholder="Search by barcode, product name, brand, or ingredient...">
+                </div>
+                <div class="toolbar-actions">
+                    <label for="sort-select" style="font-size: 0.85rem; font-weight: 600; color: #64748b; margin-right: 0.25rem;">Sort:</label>
+                    <select id="sort-select" style="padding: 0.55rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.85rem; background: white;">
+                        <option value="newest">Most Recent Scans</option>
+                        <option value="scans">Most Scanned (Count)</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                <div class="pill-filter-group" id="status-filter-pills">
+                    <button type="button" class="filter-pill active" data-status="all">All Products</button>
+                    <button type="button" class="filter-pill" data-status="not_listed">⚠️ Not Listed / Needs Review</button>
+                    <button type="button" class="filter-pill" data-status="halal">✅ Halal</button>
+                    <button type="button" class="filter-pill" data-status="mashbuh">❓ Mashbuh</button>
+                    <button type="button" class="filter-pill" data-status="haram">🚫 Haram</button>
+                </div>
+
+                <div class="pill-filter-group" id="review-filter-pills">
+                    <span style="font-size: 0.82rem; font-weight: 600; color: #64748b; margin-right: 0.25rem;">Admin Review:</span>
+                    <button type="button" class="filter-pill active" data-review="all">All</button>
+                    <button type="button" class="filter-pill" data-review="pending">Pending</button>
+                    <button type="button" class="filter-pill" data-review="reviewed">Reviewed / Verified</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products List Table / Cards -->
+        <div style="overflow-x: auto;">
+            <table class="products-table" id="products-table">
+                <thead>
+                    <tr>
+                        <th style="width: 70px;">Item</th>
+                        <th>Product & Brand</th>
+                        <th>Barcode</th>
+                        <th>Halal Status</th>
+                        <th>Review State</th>
+                        <th>Scans</th>
+                        <th>Last Scanned</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="products-tbody">
+                    <!-- Populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state hidden" id="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <h3 style="color: var(--color-primary); margin-bottom: 0.5rem;">No Scanned Products Found</h3>
+            <p style="margin: 0;">No products match the selected filters or search query.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Edit / Review Modal -->
+<div class="modal-overlay hidden" id="review-modal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div>
+                <h3 style="color: var(--color-primary); margin: 0 0 0.25rem 0;" id="modal-title">Review Scanned Product</h3>
+                <span class="barcode-badge" id="modal-barcode-badge"></span>
+            </div>
+            <button type="button" class="modal-close-btn" onclick="closeReviewModal()">&times;</button>
+        </div>
+
+        <form id="review-form">
+            <input type="hidden" id="edit-prod-id">
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="edit-prod-name" style="display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem;">Product Name</label>
+                <input type="text" id="edit-prod-name" required style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="edit-prod-brand" style="display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem;">Brand / Manufacturer</label>
+                <input type="text" id="edit-prod-brand" style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="form-group">
+                    <label for="edit-prod-status" style="display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem;">Halal Classification</label>
+                    <select id="edit-prod-status" style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; background: white; font-weight: 600;">
+                        <option value="halal">✅ Halal (Permissible)</option>
+                        <option value="mashbuh">❓ Mashbuh (Doubtful)</option>
+                        <option value="haram">🚫 Haram (Forbidden)</option>
+                        <option value="not_listed">⚠️ Not Listed / Needs Review</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-admin-status" style="display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem;">Admin Verification State</label>
+                    <select id="edit-admin-status" style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; background: white;">
+                        <option value="pending">Pending Review</option>
+                        <option value="reviewed">Reviewed & Verified</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="edit-prod-ingredients" style="display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem;">Ingredients List</label>
+                <textarea id="edit-prod-ingredients" rows="4" placeholder="Enter or paste ingredients list..." style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.88rem; font-family: inherit;"></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label for="edit-admin-notes" style="display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.35rem;">Admin Notes (Internal)</label>
+                <textarea id="edit-admin-notes" rows="2" placeholder="e.g. Slaughterhouse certification verified, or non-halal gelatin detected..." style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.88rem;"></textarea>
+                <p style="margin: 0.25rem 0 0 0; font-size: 0.78rem; color: #64748b;">
+                    💡 Marking as <strong>Reviewed & Verified</strong> immediately adds this barcode to the website's verified database for future scans!
+                </p>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                <button type="button" class="btn" onclick="closeReviewModal()" style="padding: 0.65rem 1.25rem; border: 1px solid #cbd5e1; background: white; border-radius: 8px; cursor: pointer;">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.5rem; border-radius: 8px; font-weight: 600;">Save & Update Status</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Ingredients Viewer Modal -->
+<div class="modal-overlay hidden" id="ingredients-modal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div>
+                <h3 style="color: var(--color-primary); margin: 0 0 0.25rem 0;" id="view-ing-title">Ingredients List</h3>
+                <span class="barcode-badge" id="view-ing-barcode"></span>
+            </div>
+            <button type="button" class="modal-close-btn" onclick="closeIngredientsModal()">&times;</button>
+        </div>
+        <div id="view-ing-content" style="font-size: 0.95rem; line-height: 1.6; color: var(--color-text); background: #f8fafc; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0; max-height: 350px; overflow-y: auto;">
+        </div>
+        <div style="margin-top: 1.5rem; text-align: right;">
+            <button type="button" class="btn btn-primary" onclick="closeIngredientsModal()" style="padding: 0.5rem 1.25rem; border-radius: 8px;">Close</button>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="container">
+            <p style="margin: 0;"><strong>ASM POLIMI Admin Portal</strong> &bull; Authenticated Administration Area</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('admin-nav-toggle');
+        const navMenu = document.getElementById('admin-nav-menu');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('open');
+            });
+        }
+
+        // Hide Users tab for non-superadmin users
+        try {
+            const currentRole = localStorage.getItem('adminRole');
+            if (currentRole && currentRole !== 'superadmin') {
+                const navUsers = document.getElementById('nav-users-link');
+                if (navUsers) navUsers.style.display = 'none';
+            }
+        } catch (err) {}
+
+        // Global admin logout helper
+        function globalAdminLogout(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            try {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminRole');
+            } catch (err) {}
+
+            // Trigger in-page logout UI if available
+            if (typeof logout === 'function') {
+                try { logout(); } catch (err) {}
+            }
+
+            // Immediately switch views if on a single-page view
+            const dash = document.getElementById('dashboard-section');
+            const login = document.getElementById('login-section');
+            if (dash && login) {
+                dash.classList.add('hidden');
+                login.classList.remove('hidden');
+            }
+
+            // Redirect with cache busting to guarantee clean logout state
+            window.location.href = '/admin?logout=' + Date.now();
+        }
+    </script>
+    
+<script>
+    let token = localStorage.getItem('adminToken');
+    let role = localStorage.getItem('adminRole');
+    let allProducts = [];
+    let currentStatusFilter = 'all';
+    let currentReviewFilter = 'all';
+
+    // DOM Elements
+    const loginSection = document.getElementById('login-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const searchInput = document.getElementById('search-input');
+    const sortSelect = document.getElementById('sort-select');
+    const productsTbody = document.getElementById('products-tbody');
+    const emptyState = document.getElementById('empty-state');
+
+    // Modals
+    const reviewModal = document.getElementById('review-modal');
+    const reviewForm = document.getElementById('review-form');
+    const ingredientsModal = document.getElementById('ingredients-modal');
+
+    // KPI Elements
+    const kpiTotal = document.getElementById('kpi-total');
+    const kpiReview = document.getElementById('kpi-review');
+    const kpiHalal = document.getElementById('kpi-halal');
+    const kpiMashbuh = document.getElementById('kpi-mashbuh');
+    const kpiHaram = document.getElementById('kpi-haram');
+
+    // Auth check
+    if (token) {
+        showDashboard();
+    } else {
+        loginSection.classList.remove('hidden');
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        try {
+            const resp = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                token = data.token;
+                role = data.role || 'admin';
+                localStorage.setItem('adminToken', token);
+                localStorage.setItem('adminRole', role);
+                loginSection.classList.add('hidden');
+                showDashboard();
+            } else {
+                loginError.textContent = data.message || "Invalid credentials.";
+                loginError.classList.remove('hidden');
+            }
+        } catch (err) {
+            loginError.textContent = "Server connection error.";
+            loginError.classList.remove('hidden');
+        }
+    });
+
+    function showDashboard() {
+        loginSection.classList.add('hidden');
+        dashboardSection.classList.remove('hidden');
+        fetchScannedProducts();
+    }
+
+    async function fetchScannedProducts() {
+        try {
+            const sort = sortSelect.value;
+            const resp = await fetch(`/api/scanned_products?sort=${encodeURIComponent(sort)}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (resp.status === 401) {
+                localStorage.removeItem('adminToken');
+                token = null;
+                dashboardSection.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+                return;
+            }
+
+            const data = await resp.json();
+            if (data.success) {
+                allProducts = data.products || [];
+                // Update stats
+                if (data.stats) {
+                    kpiTotal.textContent = data.stats.total || 0;
+                    kpiReview.textContent = data.stats.needs_review || 0;
+                    kpiHalal.textContent = data.stats.halal || 0;
+                    kpiMashbuh.textContent = data.stats.mashbuh || 0;
+                    kpiHaram.textContent = data.stats.haram || 0;
+                }
+                renderFilteredProducts();
+            } else {
+                showToast(data.message || "Failed to load scanned products", true);
+            }
+        } catch (err) {
+            showToast("Network error loading products", true);
+        }
+    }
+
+    function renderFilteredProducts() {
+        const query = (searchInput.value || '').trim().toLowerCase();
+        let filtered = allProducts.filter(p => {
+            // Status filter
+            if (currentStatusFilter !== 'all' && (p.status || '').toLowerCase() !== currentStatusFilter) {
+                return false;
+            }
+            // Review filter
+            if (currentReviewFilter !== 'all' && (p.admin_status || 'pending').toLowerCase() !== currentReviewFilter) {
+                return false;
+            }
+            // Search query
+            if (query) {
+                const matchBarcode = (p.barcode || '').toLowerCase().includes(query);
+                const matchName = (p.product_name || '').toLowerCase().includes(query);
+                const matchBrand = (p.brand || '').toLowerCase().includes(query);
+                const matchIng = (p.ingredients_text || '').toLowerCase().includes(query);
+                if (!matchBarcode && !matchName && !matchBrand && !matchIng) return false;
+            }
+            return true;
+        });
+
+        productsTbody.innerHTML = '';
+        if (filtered.length === 0) {
+            emptyState.classList.remove('hidden');
+            return;
+        }
+        emptyState.classList.add('hidden');
+
+        filtered.forEach(p => {
+            const tr = document.createElement('tr');
+            
+            // Status Badge
+            const status = (p.status || 'not_listed').toLowerCase();
+            let statusBadgeHtml = '';
+            if (status === 'halal') {
+                statusBadgeHtml = '<span class="badge-status badge-halal">Halal</span>';
+            } else if (status === 'mashbuh') {
+                statusBadgeHtml = '<span class="badge-status badge-mashbuh">Mashbuh</span>';
+            } else if (status === 'haram') {
+                statusBadgeHtml = '<span class="badge-status badge-haram">Haram</span>';
+            } else {
+                statusBadgeHtml = '<span class="badge-status badge-not-listed">Not Listed</span>';
+            }
+
+            // Review Badge
+            const isVerified = (p.admin_status === 'reviewed' || p.admin_status === 'verified');
+            const reviewBadgeHtml = isVerified 
+                ? '<span class="badge-review-verified">✓ Verified</span>' 
+                : '<span class="badge-review-pending">⚠️ Pending Review</span>';
+
+            // Image
+            const img = p.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
+            const name = p.product_name || 'Unknown Product';
+            const brand = p.brand || 'Unknown Brand';
+            const barcode = p.barcode || '';
+            const scans = p.scan_count || 1;
+            const updatedDate = p.updated_at ? new Date(p.updated_at).toLocaleString() : 'N/A';
+
+            tr.innerHTML = `
+                <td>
+                    <img class="product-thumb" src="${img}" alt="${escapeHtml(name)}" onerror="this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
+                </td>
+                <td>
+                    <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 0.15rem;">${escapeHtml(name)}</div>
+                    <div style="font-size: 0.82rem; color: #64748b;">${escapeHtml(brand)}</div>
+                    ${p.admin_notes ? `<div style="font-size: 0.78rem; color: #0284c7; margin-top: 0.25rem;">📝 ${escapeHtml(p.admin_notes)}</div>` : ''}
+                </td>
+                <td>
+                    <span class="barcode-badge">
+                        <span>${escapeHtml(barcode)}</span>
+                        <button type="button" class="copy-btn" onclick="copyBarcode('${escapeHtml(barcode)}', event)" title="Copy barcode">📋</button>
+                    </span>
+                </td>
+                <td>${statusBadgeHtml}</td>
+                <td>${reviewBadgeHtml}</td>
+                <td>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #475569; background: #f1f5f9; padding: 2px 8px; border-radius: 999px;">
+                        ${scans} ${scans === 1 ? 'scan' : 'scans'}
+                    </span>
+                </td>
+                <td style="font-size: 0.82rem; color: #64748b;">${updatedDate}</td>
+                <td style="text-align: right; white-space: nowrap;">
+                    <button type="button" class="btn" onclick="openReviewModal(${p.id})" style="padding: 0.35rem 0.75rem; font-size: 0.82rem; font-weight: 600; border-radius: 6px; background: #0284c7; color: white; border: none; cursor: pointer; margin-right: 0.35rem;">
+                        Review & Edit
+                    </button>
+                    <button type="button" class="btn" onclick="viewIngredients(${p.id})" style="padding: 0.35rem 0.6rem; font-size: 0.82rem; border-radius: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; cursor: pointer; margin-right: 0.35rem;" title="View ingredients">
+                        📄
+                    </button>
+                    <button type="button" class="btn" onclick="deleteProduct(${p.id})" style="padding: 0.35rem 0.6rem; font-size: 0.82rem; border-radius: 6px; background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c; cursor: pointer;" title="Delete log">
+                        🗑️
+                    </button>
+                </td>
+            `;
+            productsTbody.appendChild(tr);
+        });
+    }
+
+    // Modal Operations
+    function openReviewModal(prodId) {
+        const prod = allProducts.find(p => p.id === prodId);
+        if (!prod) return;
+
+        document.getElementById('edit-prod-id').value = prod.id;
+        document.getElementById('modal-title').textContent = `Review: ${prod.product_name || 'Product'}`;
+        document.getElementById('modal-barcode-badge').textContent = `Barcode: ${prod.barcode}`;
+        document.getElementById('edit-prod-name').value = prod.product_name || '';
+        document.getElementById('edit-prod-brand').value = prod.brand || '';
+        document.getElementById('edit-prod-status').value = prod.status || 'not_listed';
+        document.getElementById('edit-admin-status').value = prod.admin_status || 'reviewed';
+        document.getElementById('edit-prod-ingredients').value = prod.ingredients_text || '';
+        document.getElementById('edit-admin-notes').value = prod.admin_notes || '';
+
+        reviewModal.classList.remove('hidden');
+    }
+
+    function closeReviewModal() {
+        reviewModal.classList.add('hidden');
+    }
+
+    reviewForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-prod-id').value;
+        const payload = {
+            product_name: document.getElementById('edit-prod-name').value.trim(),
+            brand: document.getElementById('edit-prod-brand').value.trim(),
+            status: document.getElementById('edit-prod-status').value,
+            admin_status: document.getElementById('edit-admin-status').value,
+            ingredients_text: document.getElementById('edit-prod-ingredients').value.trim(),
+            admin_notes: document.getElementById('edit-admin-notes').value.trim()
+        };
+
+        try {
+            const resp = await fetch(`/api/scanned_products/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+            const data = await resp.json();
+            if (data.success) {
+                showToast("Product updated and status saved!");
+                closeReviewModal();
+                fetchScannedProducts();
+            } else {
+                showToast(data.message || "Failed to update product", true);
+            }
+        } catch (err) {
+            showToast("Server error updating product", true);
+        }
+    });
+
+    function viewIngredients(prodId) {
+        const prod = allProducts.find(p => p.id === prodId);
+        if (!prod) return;
+
+        document.getElementById('view-ing-title').textContent = prod.product_name || 'Ingredients';
+        document.getElementById('view-ing-barcode').textContent = `Barcode: ${prod.barcode}`;
+        const content = document.getElementById('view-ing-content');
+        if (prod.ingredients_text && prod.ingredients_text.trim().length > 0) {
+            content.textContent = prod.ingredients_text;
+        } else {
+            content.innerHTML = '<em style="color: #94a3b8;">No ingredients list available for this product.</em>';
+        }
+        ingredientsModal.classList.remove('hidden');
+    }
+
+    function closeIngredientsModal() {
+        ingredientsModal.classList.add('hidden');
+    }
+
+    async function deleteProduct(prodId) {
+        if (!confirm("Are you sure you want to delete this scanned product entry?")) return;
+
+        try {
+            const resp = await fetch(`/api/scanned_products/${prodId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await resp.json();
+            if (data.success) {
+                showToast("Product deleted");
+                fetchScannedProducts();
+            } else {
+                showToast(data.message || "Failed to delete product", true);
+            }
+        } catch (err) {
+            showToast("Server error deleting product", true);
+        }
+    }
+
+    // Filter Listeners
+    document.querySelectorAll('#status-filter-pills .filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#status-filter-pills .filter-pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentStatusFilter = btn.dataset.status;
+            renderFilteredProducts();
+        });
+    });
+
+    document.querySelectorAll('#review-filter-pills .filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#review-filter-pills .filter-pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentReviewFilter = btn.dataset.review;
+            renderFilteredProducts();
+        });
+    });
+
+    searchInput.addEventListener('input', renderFilteredProducts);
+    sortSelect.addEventListener('change', fetchScannedProducts);
+
+    document.getElementById('btn-refresh').addEventListener('click', fetchScannedProducts);
+
+    document.getElementById('btn-export-excel').addEventListener('click', () => {
+        window.location.href = `/api/scanned_products/export?token=${encodeURIComponent(token.replace('token-', ''))}`;
+    });
+
+    function copyBarcode(barcode, e) {
+        if (e) e.stopPropagation();
+        navigator.clipboard.writeText(barcode).then(() => {
+            showToast(`Copied barcode ${barcode} to clipboard!`);
+        });
+    }
+
+    function showToast(msg, isError = false) {
+        const toast = document.createElement('div');
+        toast.className = `toast-msg ${isError ? 'toast-error' : 'toast-success'}`;
+        toast.innerHTML = `<span>${isError ? '❌' : '✓'}</span> <span>${escapeHtml(msg)}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return text.replace(/[&<>"']/g, m => map[m]);
+    }
+</script>
+
+</body>
+
+</html>
