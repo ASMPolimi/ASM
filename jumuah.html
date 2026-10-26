@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jumu'ah | ASM POLIMI</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/asm_logo.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <meta name="description"
         content="Welcome to the University Muslim Student Association. Find out about our events, prayer times, and community.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,14 +100,21 @@
                 then proceed to the remembrance of Allah and leave trade. That is better for you, if you only knew.
                 (Quran 62:9)
             </p>
+
+            <div class="jumuah-map-cta-wrap" style="margin-top: 1.75rem;">
+                <a href="#locations" class="btn btn-primary"
+                    style="padding: 0.85rem 1.85rem; font-size: 1.05rem; font-weight: 700; border-radius: 9999px; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); display: inline-flex; align-items: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;"
+                    data-i18n="jumuah_map_cta_btn">
+                    🗺️ Prayer &amp; Mosque Map &darr;
+                </a>
+            </div>
         </div>
 
 
         <div class="contact-grid stagger-children">
             <!-- Location & Timing -->
             <div class="contact-info">
-                <h3 style="color: var(--color-primary); margin-bottom: 1.5rem;"><span data-i18n="jumuah_details_prefix">Prayer Details for</span> <span
-                        id="next-friday-date" style="color: var(--color-secondary);"></span></h3>
+                <h3 class="jumuah-details-title"><span data-i18n="jumuah_details_prefix">Prayer Details for</span> <span id="next-friday-date"></span></h3>
 
                 <div class="jumuah-campus-card">
                     <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;" data-i18n="jumuah_bovisa_title">Bovisa
@@ -315,10 +326,16 @@
                     <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text" data-i18n="qibla_sensor_text">Align phone until the 🕋
                         Kaaba points to the top.</span>
                 </div>
+                <div class="qibla-calib-hint" style="font-size: 0.74rem; color: #64748b; margin-top: 0.25rem;" data-i18n="qibla_calib_hint">
+                    💡 Hold phone flat or move in a <strong>figure-8</strong> motion if direction drifts.
+                </div>
             </div>
-            <div class="qibla-modal-footer">
-                <button type="button" class="btn btn-primary close-qibla-modal-btn w-100"
-                    style="padding: 0.5rem 1rem; font-size: 0.9rem;" data-i18n="qibla_close_btn">
+            <div class="qibla-modal-footer" style="display: flex; gap: 0.5rem; justify-content: space-between; align-items: center;">
+                <button type="button" id="btn-recalibrate-compass" class="btn" style="background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; padding: 0.45rem 0.85rem; font-size: 0.82rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; font-weight: 600;">
+                    <span>🔄</span> <span data-i18n="qibla_recalibrate">Reset / Calibrate</span>
+                </button>
+                <button type="button" class="btn btn-primary close-qibla-modal-btn"
+                    style="padding: 0.45rem 1.15rem; font-size: 0.85rem; border-radius: 6px;" data-i18n="qibla_close_btn">
                     Close Compass
                 </button>
             </div>
@@ -344,6 +361,7 @@
     
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet-rotate@0.2.8/dist/leaflet-rotate-src.js"></script>
 <script>
     // Prayer locations dataset
     const PRAYER_LOCATIONS = [
@@ -539,18 +557,37 @@
         const mapContainer = document.getElementById('prayer-leaflet-map');
         if (!mapContainer || typeof L === 'undefined') return;
 
-        // Initialize map centered to cover all locations across Milan
+        // Bounding box for Milan metropolitan area to keep map focused
+        const milanBounds = L.latLngBounds(
+            L.latLng(45.28, 8.85),
+            L.latLng(45.68, 9.55)
+        );
+
+        // Initialize map centered to cover all locations across Milan with rotation enabled
         prayerMap = L.map('prayer-leaflet-map', {
             center: [45.474, 9.208],
             zoom: 12,
+            minZoom: 10.5, // Restrict excessive zooming out
+            maxZoom: 19,
+            maxBounds: milanBounds,
+            maxBoundsViscosity: 0.85,
+            zoomControl: false,
+            rotate: true,
+            touchRotate: true,
+            shiftKeyRotate: true,
+            rotateControl: false,
             scrollWheelZoom: false
         });
 
         // Add official OpenStreetMap tile layer (100% free, no API key required, no watermarks)
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 10.5,
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
         }).addTo(prayerMap);
+
+        // Add custom navigation (+, -, compass) & fullscreen controls
+        addCustomMapControls();
 
         // Add pins to map
         renderMarkers();
@@ -562,6 +599,302 @@
         setTimeout(() => {
             recenterMapCategory();
         }, 100);
+    }
+
+    function addCustomMapControls() {
+        if (!prayerMap) return;
+
+        const CustomMapControls = L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function () {
+                const wrapper = L.DomUtil.create('div', 'map-custom-controls-wrapper');
+                L.DomEvent.disableClickPropagation(wrapper);
+                L.DomEvent.disableScrollPropagation(wrapper);
+
+                // Group 1: Zoom in (+), Zoom out (-), Compass / Reset North
+                const navGroup = L.DomUtil.create('div', 'map-ctrl-group map-ctrl-nav', wrapper);
+
+                // 1. Zoom In Button
+                const btnZoomIn = document.createElement('button');
+                btnZoomIn.type = 'button';
+                btnZoomIn.className = 'map-ctrl-btn map-btn-zoomin';
+                btnZoomIn.title = 'Zoom in';
+                btnZoomIn.setAttribute('aria-label', 'Zoom in');
+                btnZoomIn.innerHTML = `
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 2.5v11M2.5 8h11" stroke="#2c2c2c" stroke-width="2.6" stroke-linecap="round"/>
+                    </svg>`;
+                btnZoomIn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    prayerMap.zoomIn();
+                });
+                navGroup.appendChild(btnZoomIn);
+
+                // 2. Zoom Out Button
+                const btnZoomOut = document.createElement('button');
+                btnZoomOut.type = 'button';
+                btnZoomOut.className = 'map-ctrl-btn map-btn-zoomout';
+                btnZoomOut.title = 'Zoom out';
+                btnZoomOut.setAttribute('aria-label', 'Zoom out');
+                btnZoomOut.innerHTML = `
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 8h10" stroke="#2c2c2c" stroke-width="2.6" stroke-linecap="round"/>
+                    </svg>`;
+                btnZoomOut.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (prayerMap.getZoom() > 10.5) {
+                        prayerMap.zoomOut();
+                    }
+                });
+                navGroup.appendChild(btnZoomOut);
+
+                // Update visual state of zoom buttons when limits are hit
+                const updateZoomBtnState = () => {
+                    const currentZ = prayerMap.getZoom();
+                    const isAtMin = currentZ <= 10.5;
+                    const isAtMax = currentZ >= 19;
+                    if (btnZoomOut) {
+                        btnZoomOut.style.opacity = isAtMin ? '0.35' : '1';
+                        btnZoomOut.style.cursor = isAtMin ? 'not-allowed' : 'pointer';
+                    }
+                    if (btnZoomIn) {
+                        btnZoomIn.style.opacity = isAtMax ? '0.35' : '1';
+                        btnZoomIn.style.cursor = isAtMax ? 'not-allowed' : 'pointer';
+                    }
+                };
+                prayerMap.on('zoomend', updateZoomBtnState);
+                setTimeout(updateZoomBtnState, 250);
+
+                // 3. Compass / Reset North / Recenter Button (Rotates live with the map & draggable)
+                const btnCompass = document.createElement('button');
+                btnCompass.type = 'button';
+                btnCompass.className = 'map-ctrl-btn map-btn-compass';
+                btnCompass.title = 'Drag to rotate | Click to reset North';
+                btnCompass.setAttribute('aria-label', 'Drag to rotate or click to reset North');
+                btnCompass.innerHTML = `
+                    <svg class="compass-svg" width="15" height="17" viewBox="0 0 16 18" fill="none" style="transition: transform 0.15s ease-out; transform-origin: center;">
+                        <polygon points="8,1.5 13.5,8 2.5,8" fill="#2c2c2c"/>
+                        <polygon points="2.5,10 13.5,10 8,16.5" fill="#b5b5b5"/>
+                    </svg>`;
+
+                const compassSvg = btnCompass.querySelector('.compass-svg');
+
+                // Update compass needle whenever map rotates
+                prayerMap.on('rotate', () => {
+                    const bearing = typeof prayerMap.getBearing === 'function' ? prayerMap.getBearing() : 0;
+                    if (compassSvg) {
+                        compassSvg.style.transform = `rotate(${-bearing}deg)`;
+                    }
+                });
+
+                // Allow dragging the compass button directly to rotate the map
+                let isDraggingCompass = false;
+                let startX = 0;
+                let startBearing = 0;
+                let dragMoved = false;
+
+                const onCompassMove = (e) => {
+                    if (!isDraggingCompass) return;
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const deltaX = clientX - startX;
+                    if (Math.abs(deltaX) > 2) {
+                        dragMoved = true;
+                    }
+                    if (dragMoved && typeof prayerMap.setBearing === 'function') {
+                        prayerMap.setBearing(startBearing + deltaX * 1.5);
+                    }
+                };
+
+                const onCompassUp = () => {
+                    if (!isDraggingCompass) return;
+                    isDraggingCompass = false;
+                    btnCompass.style.cursor = 'pointer';
+                    document.removeEventListener('mousemove', onCompassMove);
+                    document.removeEventListener('mouseup', onCompassUp);
+                    document.removeEventListener('touchmove', onCompassMove);
+                    document.removeEventListener('touchend', onCompassUp);
+                };
+
+                const onCompassDown = (e) => {
+                    isDraggingCompass = true;
+                    dragMoved = false;
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    startX = clientX;
+                    startBearing = typeof prayerMap.getBearing === 'function' ? prayerMap.getBearing() : 0;
+                    btnCompass.style.cursor = 'ew-resize';
+                    document.addEventListener('mousemove', onCompassMove);
+                    document.addEventListener('mouseup', onCompassUp);
+                    document.addEventListener('touchmove', onCompassMove, { passive: false });
+                    document.addEventListener('touchend', onCompassUp);
+                };
+
+                btnCompass.addEventListener('mousedown', onCompassDown);
+                btnCompass.addEventListener('touchstart', onCompassDown, { passive: true });
+
+                btnCompass.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (dragMoved) {
+                        dragMoved = false;
+                        return;
+                    }
+                    const currentBearing = typeof prayerMap.getBearing === 'function' ? prayerMap.getBearing() : 0;
+                    if (Math.abs(currentBearing) > 0.5) {
+                        if (typeof prayerMap.setBearing === 'function') {
+                            prayerMap.setBearing(0);
+                        }
+                    } else {
+                        clearActiveMarkers();
+                        recenterMapCategory();
+                    }
+                });
+                navGroup.appendChild(btnCompass);
+
+                // Desktop map rotation via Right-Click drag or Alt+drag on the map canvas
+                const mapEl = document.getElementById('prayer-leaflet-map');
+                if (mapEl) {
+                    let isRightDragging = false;
+                    let rightStartX = 0;
+                    let rightStartBearing = 0;
+
+                    mapEl.addEventListener('contextmenu', (e) => {
+                        if (isRightDragging) {
+                            e.preventDefault();
+                        }
+                    });
+
+                    mapEl.addEventListener('mousedown', (e) => {
+                        if (e.button === 2 || (e.button === 0 && (e.altKey || e.ctrlKey))) {
+                            e.preventDefault();
+                            isRightDragging = true;
+                            rightStartX = e.clientX;
+                            rightStartBearing = typeof prayerMap.getBearing === 'function' ? prayerMap.getBearing() : 0;
+
+                            const onMapDragMove = (ev) => {
+                                if (!isRightDragging) return;
+                                ev.preventDefault();
+                                const dx = ev.clientX - rightStartX;
+                                if (typeof prayerMap.setBearing === 'function') {
+                                    prayerMap.setBearing(rightStartBearing + dx * 0.8);
+                                }
+                            };
+
+                            const onMapDragUp = () => {
+                                if (isRightDragging) {
+                                    isRightDragging = false;
+                                    document.removeEventListener('mousemove', onMapDragMove);
+                                    document.removeEventListener('mouseup', onMapDragUp);
+                                }
+                            };
+
+                            document.addEventListener('mousemove', onMapDragMove);
+                            document.addEventListener('mouseup', onMapDragUp);
+                        }
+                    });
+                }
+
+                // Group 2: Fullscreen Button
+                const fsGroup = L.DomUtil.create('div', 'map-ctrl-group map-ctrl-fullscreen', wrapper);
+                const btnFs = document.createElement('button');
+                btnFs.type = 'button';
+                btnFs.className = 'map-ctrl-btn map-btn-fs';
+                btnFs.title = 'Toggle Fullscreen';
+                btnFs.setAttribute('aria-label', 'Toggle Fullscreen');
+                btnFs.innerHTML = `
+                    <svg class="fs-icon-enter" width="16" height="16" viewBox="0 0 16 16" fill="#2c2c2c">
+                        <path d="M2 2h4v1.5H3.56l2.47 2.47-1.06 1.06L2.5 4.56V6H2V2z"/>
+                        <path d="M14 2v4h-1.5V4.56l-2.47 2.47-1.06-1.06L11.44 3.5H10V2h4z"/>
+                        <path d="M2 14v-4h1.5v1.44l2.47-2.47 1.06 1.06L4.56 12.5H6V14H2z"/>
+                        <path d="M14 14h-4v-1.5h1.44l-2.47-2.47 1.06-1.06 2.47 2.47V10H14v4z"/>
+                    </svg>
+                    <svg class="fs-icon-exit" width="16" height="16" viewBox="0 0 16 16" fill="#2c2c2c" style="display:none;">
+                        <path d="M6 6H2V4.5h2.44L1.97 2.03l1.06-1.06L5.5 3.44V2H6v4z"/>
+                        <path d="M10 6h4V4.5h-2.44l2.47-2.47-1.06-1.06L10.5 3.44V2H10v4z"/>
+                        <path d="M6 10H2v1.5h2.44l-2.47 2.47 1.06 1.06L5.5 12.56V14H6v-4z"/>
+                        <path d="M10 10h4v1.5h-2.44l2.47 2.47-1.06 1.06-2.47-2.47V14H10v-4z"/>
+                    </svg>`;
+
+                const mapFrame = document.querySelector('.map-frame-wrapper');
+                const updateFsIcons = (isFs) => {
+                    const enterIcon = btnFs.querySelector('.fs-icon-enter');
+                    const exitIcon = btnFs.querySelector('.fs-icon-exit');
+                    if (enterIcon && exitIcon) {
+                        enterIcon.style.display = isFs ? 'none' : 'block';
+                        exitIcon.style.display = isFs ? 'block' : 'none';
+                    }
+                };
+
+                const toggleFullscreen = () => {
+                    if (!mapFrame) return;
+                    const isNativeFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+                    const isPseudoFs = mapFrame.classList.contains('is-pseudo-fullscreen');
+
+                    if (!isNativeFs && !isPseudoFs) {
+                        if (mapFrame.requestFullscreen) {
+                            mapFrame.requestFullscreen().catch(() => {
+                                mapFrame.classList.add('is-pseudo-fullscreen');
+                                document.body.style.overflow = 'hidden';
+                                updateFsIcons(true);
+                                setTimeout(() => prayerMap.invalidateSize(), 150);
+                            });
+                        } else if (mapFrame.webkitRequestFullscreen) {
+                            mapFrame.webkitRequestFullscreen();
+                        } else {
+                            mapFrame.classList.add('is-pseudo-fullscreen');
+                            document.body.style.overflow = 'hidden';
+                            updateFsIcons(true);
+                            setTimeout(() => prayerMap.invalidateSize(), 150);
+                        }
+                    } else {
+                        if (isNativeFs) {
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen();
+                            } else if (document.webkitExitFullscreen) {
+                                document.webkitExitFullscreen();
+                            }
+                        }
+                        if (isPseudoFs) {
+                            mapFrame.classList.remove('is-pseudo-fullscreen');
+                            document.body.style.overflow = '';
+                            updateFsIcons(false);
+                            setTimeout(() => prayerMap.invalidateSize(), 150);
+                        }
+                    }
+                };
+
+                btnFs.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleFullscreen();
+                });
+
+                document.addEventListener('fullscreenchange', () => {
+                    const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+                    updateFsIcons(isFs);
+                    setTimeout(() => prayerMap.invalidateSize(), 150);
+                });
+                document.addEventListener('webkitfullscreenchange', () => {
+                    const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+                    updateFsIcons(isFs);
+                    setTimeout(() => prayerMap.invalidateSize(), 150);
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && mapFrame && mapFrame.classList.contains('is-pseudo-fullscreen')) {
+                        mapFrame.classList.remove('is-pseudo-fullscreen');
+                        document.body.style.overflow = '';
+                        updateFsIcons(false);
+                        setTimeout(() => prayerMap.invalidateSize(), 150);
+                    }
+                });
+
+                fsGroup.appendChild(btnFs);
+
+                return wrapper;
+            }
+        });
+
+        new CustomMapControls().addTo(prayerMap);
     }
 
     function createCustomMarkerIcon(loc) {

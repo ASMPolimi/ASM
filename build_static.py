@@ -64,6 +64,24 @@ if os.path.exists('HalalScanner.xlsx'):
                 'reasons': []
             }
 
+try:
+    conn_sc = sqlite3.connect('asm.db')
+    conn_sc.row_factory = sqlite3.Row
+    c_sc = conn_sc.cursor()
+    c_sc.execute("SELECT barcode, product_name, brand, ingredients_text, status FROM scanned_products WHERE admin_status IN ('verified', 'reviewed')")
+    for row in c_sc.fetchall():
+        b = str(row['barcode']).strip()
+        barcodes[b] = {
+            'product_name': row['product_name'] or 'Verified Product',
+            'brands': row['brand'] or '',
+            'ingredients_text': row['ingredients_text'] or 'Admin Verified Entry',
+            'status': (row['status'] or 'halal').lower().strip(),
+            'reasons': []
+        }
+    conn_sc.close()
+except Exception as e:
+    pass
+
 with open('data/custom_barcodes.json', 'w', encoding='utf-8') as f:
     json.dump({'success': True, 'data': barcodes}, f, indent=2, ensure_ascii=False)
 with open('api/custom_barcodes.json', 'w', encoding='utf-8') as f:
@@ -83,6 +101,7 @@ template_names = [
     'admin_members.html',
     'admin_jumuah.html',
     'admin_questions.html',
+    'admin_scanner.html',
     'admin_users.html'
 ]
 
