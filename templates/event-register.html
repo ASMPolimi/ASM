@@ -536,7 +536,7 @@
             </div>
 
             <div class="step-actions-bar">
-                <a href="/events" class="btn btn-secondary btn-step-prev" data-i18n="event_back_to_list">&larr; Back to Events</a>
+                <a href="/events" class="btn btn-secondary btn-step-prev" id="btn-back-to-events-list" data-i18n="event_back_to_list">&larr; Back to Events</a>
                 <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-1" data-i18n="event_btn_continue">Continue to Attendee Info &rarr;</button>
             </div>
         </div>
@@ -573,7 +573,7 @@
             </div>
 
             <div class="step-actions-bar">
-                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-2" data-i18n="event_btn_prev">&larr; Back</button>
+                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-2">&larr; Back to Step 1</button>
                 <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-2" data-i18n="event_btn_continue_pricing">Next: Membership & Pricing &rarr;</button>
             </div>
         </div>
@@ -623,7 +623,7 @@
             </div>
 
             <div class="step-actions-bar">
-                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-3" data-i18n="event_btn_prev">&larr; Back</button>
+                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-3">&larr; Back to Step 2</button>
                 <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-3" data-i18n="event_btn_continue_logistics">Next: Logistics &amp; Dietary &rarr;</button>
             </div>
         </div>
@@ -663,7 +663,7 @@
             </div>
 
             <div class="step-actions-bar">
-                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-4" data-i18n="event_btn_prev">&larr; Back</button>
+                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-4">&larr; Back to Step 3</button>
                 <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-4" data-i18n="event_btn_continue_review">Review &amp; Confirm &rarr;</button>
             </div>
         </div>
@@ -730,7 +730,7 @@
             </div>
 
             <div class="step-actions-bar">
-                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-5" data-i18n="event_btn_prev">&larr; Back</button>
+                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-5">&larr; Back to Step 4</button>
                 <button type="button" class="btn btn-primary btn-step-next" id="btn-confirm-submit" style="font-size: 1.1rem; padding: 0.9rem 2.2rem; box-shadow: 0 4px 15px rgba(18, 74, 97, 0.25);" data-i18n="event_btn_submit">
                     🎟️ Confirm &amp; Complete Registration
                 </button>
@@ -777,12 +777,25 @@
     let selectedEvent = null;
     let currentStep = 1;
     let isMemberSelected = true;
+    let isSubmitted = false;
 
     document.addEventListener('DOMContentLoaded', async () => {
+        // Initialize history state so popstate can intercept back button
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState({ step: 1 }, '', '#step1');
+        }
+
         await loadEventsData();
         setupStepNavigation();
         setupMembershipTiers();
+        setupAccidentalExitGuard();
     });
+
+    function getEventStatus(ev) {
+        if (!ev) return 'closed';
+        if (ev.registration_status) return ev.registration_status;
+        return (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1') ? 'open' : 'closed';
+    }
 
     async function loadEventsData() {
         let data = null;
@@ -808,7 +821,7 @@
         if (eventId) {
             selectEventByIdOrTitle(eventId);
         } else if (siteEvents.length > 0) {
-            const firstOpen = siteEvents.find(e => e.registration_open === 1 || e.registration_open === true || e.registration_open === '1') || siteEvents[0];
+            const firstOpen = siteEvents.find(e => getEventStatus(e) === 'open') || siteEvents[0];
             selectEvent(firstOpen);
         }
     }
@@ -819,12 +832,21 @@
         select.innerHTML = '<option value="">-- Choose an Upcoming Event --</option>';
 
         siteEvents.forEach(ev => {
-            const isRegOpen = (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1');
+            const status = getEventStatus(ev);
             const opt = document.createElement('option');
             opt.value = ev.id || ev.title;
             const priceText = (ev.price_member === ev.price_non_member) ? (ev.price_member || 'Free') : `Members: ${ev.price_member || 'Free'} / Non-Members: ${ev.price_non_member || 'Free'}`;
-            opt.textContent = `${ev.title} (${ev.date || 'TBD'}) — [${priceText}] ${!isRegOpen ? ' (Closed)' : ''}`;
-            if (!isRegOpen) opt.disabled = true;
+            
+            let statusSuffix = '';
+            if (status === 'soon') {
+                statusSuffix = ' — ⏳ [Opening Soon]';
+                opt.disabled = true;
+            } else if (status === 'closed') {
+                statusSuffix = ' — [Closed]';
+                opt.disabled = true;
+            }
+
+            opt.textContent = `${ev.title} (${ev.date || 'TBD'}) — [${priceText}]${statusSuffix}`;
             select.appendChild(opt);
         });
 
@@ -864,11 +886,21 @@
         else if (cat.includes('Cultural')) { catBadge.style.background = '#fdf2f8'; catBadge.style.color = '#be185d'; }
         else { catBadge.style.background = '#f3f4f6'; catBadge.style.color = '#374151'; }
 
-        const isRegOpen = (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1');
+        const status = getEventStatus(ev);
         const statusBadge = document.getElementById('preview-event-status');
-        statusBadge.textContent = isRegOpen ? '● Registration Open' : '○ Registration Closed';
-        statusBadge.style.background = isRegOpen ? '#dcfce7' : '#fee2e2';
-        statusBadge.style.color = isRegOpen ? '#15803d' : '#b91c1c';
+        if (status === 'open') {
+            statusBadge.textContent = '● Registration Open';
+            statusBadge.style.background = '#dcfce7';
+            statusBadge.style.color = '#15803d';
+        } else if (status === 'soon') {
+            statusBadge.textContent = '⏳ Opening Soon';
+            statusBadge.style.background = '#fef3c7';
+            statusBadge.style.color = '#b45309';
+        } else {
+            statusBadge.textContent = '○ Registration Closed';
+            statusBadge.style.background = '#fee2e2';
+            statusBadge.style.color = '#b91c1c';
+        }
 
         // Update Member vs Non-Member Pricing Display
         const pMember = ev.price_member || ev.cost || 'Free';
@@ -883,6 +915,49 @@
     function selectEventByIdOrTitle(idOrTitle) {
         const found = siteEvents.find(e => String(e.id) === String(idOrTitle) || e.title === idOrTitle);
         if (found) selectEvent(found);
+    }
+
+    function isFormDirty() {
+        if (isSubmitted) return false;
+        const name = document.getElementById('input-full-name')?.value.trim();
+        const email = document.getElementById('input-email')?.value.trim();
+        const phone = document.getElementById('input-phone')?.value.trim();
+        const matricola = document.getElementById('input-matricola')?.value.trim();
+        return Boolean(name || email || phone || matricola || currentStep > 1);
+    }
+
+    function setupAccidentalExitGuard() {
+        // Prevent accidental browser/tab close
+        window.addEventListener('beforeunload', (e) => {
+            if (isFormDirty()) {
+                e.preventDefault();
+                e.returnValue = 'You have unsaved changes in your application. Are you sure you want to exit?';
+                return e.returnValue;
+            }
+        });
+
+        // Intercept click on Back to Events button
+        const backBtn = document.getElementById('btn-back-to-events-list');
+        if (backBtn) {
+            backBtn.addEventListener('click', (e) => {
+                if (isFormDirty()) {
+                    const confirmLeave = confirm("Are you sure you want to leave? Any information you have entered will be lost.");
+                    if (!confirmLeave) {
+                        e.preventDefault();
+                    }
+                }
+            });
+        }
+
+        // Intercept browser back button (PopState)
+        window.addEventListener('popstate', (e) => {
+            if (isSubmitted) return;
+            if (e.state && typeof e.state.step === 'number') {
+                goToStep(e.state.step, false);
+            } else if (currentStep > 1) {
+                goToStep(currentStep - 1, false);
+            }
+        });
     }
 
     function setupMembershipTiers() {
@@ -939,7 +1014,7 @@
             errorAlert.style.display = 'none';
         }
 
-        function goToStep(step) {
+        window.goToStep = function(step, pushHistory = true) {
             hideError();
             for (let i = 1; i <= 5; i++) {
                 const panel = document.getElementById(`step-panel-${i}`);
@@ -951,8 +1026,11 @@
                 }
             }
             currentStep = step;
+            if (pushHistory && window.history && window.history.pushState) {
+                window.history.pushState({ step: step }, '', '#step' + step);
+            }
             window.scrollTo({ top: 120, behavior: 'smooth' });
-        }
+        };
 
         // STEP 1 -> STEP 2
         document.getElementById('btn-next-step-1').addEventListener('click', () => {
@@ -960,9 +1038,13 @@
                 showError("Please select an upcoming event to register for.");
                 return;
             }
-            const isRegOpen = (selectedEvent.registration_open === 1 || selectedEvent.registration_open === true || selectedEvent.registration_open === '1');
-            if (!isRegOpen) {
-                showError("Registration for this event is currently closed.");
+            const status = getEventStatus(selectedEvent);
+            if (status === 'soon') {
+                showError("⏳ Registration for this event will be opening soon! Please check back shortly.");
+                return;
+            }
+            if (status === 'closed') {
+                showError("🔴 Registration for this event is currently closed.");
                 return;
             }
             goToStep(2);
@@ -1007,6 +1089,7 @@
 
         // Register another person
         document.getElementById('btn-register-another').addEventListener('click', () => {
+            isSubmitted = false;
             document.getElementById('input-full-name').value = '';
             document.getElementById('input-email').value = '';
             document.getElementById('input-phone').value = '';
@@ -1117,6 +1200,7 @@
         submitBtn.innerHTML = '🎟️ Confirm & Complete Registration';
 
         if (success) {
+            isSubmitted = true;
             // Hide stepper and steps, show celebration card
             document.getElementById('step-panel-5').classList.add('hidden');
             document.getElementById('event-stepper').classList.add('hidden');

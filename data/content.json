@@ -18,7 +18,8 @@
       "registration_open": 1,
       "max_capacity": 80,
       "price_member": "Free",
-      "price_non_member": "Free"
+      "price_non_member": "Free",
+      "registration_status": "open"
     },
     {
       "id": 15,
@@ -33,7 +34,8 @@
       "registration_open": 1,
       "max_capacity": 150,
       "price_member": "Free",
-      "price_non_member": "€5"
+      "price_non_member": "€5",
+      "registration_status": "open"
     },
     {
       "id": 16,
@@ -48,7 +50,8 @@
       "registration_open": 1,
       "max_capacity": 40,
       "price_member": "€10",
-      "price_non_member": "€18"
+      "price_non_member": "€18",
+      "registration_status": "open"
     },
     {
       "id": 17,
@@ -60,10 +63,11 @@
       "cost": "Free",
       "location": "Student Association Room, Campus Leonardo",
       "time": "5:30 PM - 7:30 PM",
-      "registration_open": 1,
+      "registration_open": 0,
       "max_capacity": 35,
       "price_member": "Free",
-      "price_non_member": "€3"
+      "price_non_member": "€3",
+      "registration_status": "soon"
     }
   ],
   "board_members": [

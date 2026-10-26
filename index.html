@@ -225,9 +225,12 @@
             <p data-i18n="events_subhead">Stay updated with our latest halaqas, socials, and activities.</p>
         </div>
 
-        <div id="dynamic-events-container" class="team-grid stagger-children" style="margin-bottom: 3rem;">
-            <!-- Events will be populated here by JS -->
-            <p class="text-center w-100" style="grid-column: 1 / -1;" data-i18n="events_loading">Loading events...</p>
+        <!-- Horizontal Scrolling Featured Events (Islamic Events Style) -->
+        <div class="islamic-events-scroll-wrap" style="margin-bottom: 2.5rem;">
+            <div id="dynamic-events-container" class="islamic-events-grid stagger-children">
+                <!-- Events will be populated here by JS -->
+                <p class="text-center w-100" style="padding: 2rem; color: var(--color-text-light);" data-i18n="events_loading">Loading events...</p>
+            </div>
         </div>
 
         <div class="events-cta-group text-center"
@@ -1005,77 +1008,98 @@
                 }
             }
 
-            // Render Featured Events
+            // Render Featured Events (Islamic Events Horizontal Scroll Style)
             if (data.events) {
                 const eventsContainer = document.getElementById('dynamic-events-container');
                 if (eventsContainer) {
                     if (data.events.length === 0) {
-                        eventsContainer.innerHTML = '<p class="text-center w-100" style="grid-column: 1 / -1; color: var(--color-text-light);" data-i18n="events_empty">No upcoming events scheduled at the moment.</p>';
+                        eventsContainer.innerHTML = '<p class="text-center w-100" style="padding: 2.5rem; color: var(--color-text-light);" data-i18n="events_empty">No upcoming events scheduled at the moment.</p>';
                     } else {
                         eventsContainer.innerHTML = '';
                         data.events.forEach(ev => {
                             const card = document.createElement('div');
-                            card.className = 'team-card';
-                            card.style.textAlign = 'left';
-                            card.style.display = 'flex';
-                            card.style.flexDirection = 'column';
-                            card.style.justifyContent = 'space-between';
-                            card.style.position = 'relative';
+                            card.className = 'islamic-event-card';
 
                             const cat = ev.category || 'Islamic Event';
+                            let topBorderColor = '#10b981';
                             let catColor = '#047857';
                             let catBg = '#ecfdf5';
                             let catBorder = '#a7f3d0';
-                            let catIcon = '🌟';
-                            if (cat.includes('Islamic')) { catIcon = '🕌'; catColor = '#047857'; catBg = '#ecfdf5'; catBorder = '#a7f3d0'; }
-                            else if (cat.includes('Ramadiamo') || cat.includes('Iftar')) { catIcon = '🌙'; catColor = '#b45309'; catBg = '#fffbeb'; catBorder = '#fde68a'; }
-                            else if (cat.includes('Physical') || cat.includes('Hike') || cat.includes('Laser')) { catIcon = '🧗'; catColor = '#1d4ed8'; catBg = '#eff6ff'; catBorder = '#bfdbfe'; }
-                            else if (cat.includes('Cultural') || cat.includes('Calligraphy') || cat.includes('Henna')) { catIcon = '🎨'; catColor = '#be185d'; catBg = '#fdf2f8'; catBorder = '#fbcfe8'; }
+                            let catIcon = '🕌';
+                            if (cat.includes('Islamic')) { topBorderColor = '#10b981'; catIcon = '🕌'; catColor = '#047857'; catBg = '#ecfdf5'; catBorder = '#a7f3d0'; }
+                            else if (cat.includes('Ramadiamo') || cat.includes('Iftar')) { topBorderColor = '#f59e0b'; catIcon = '🌙'; catColor = '#b45309'; catBg = '#fffbeb'; catBorder = '#fde68a'; }
+                            else if (cat.includes('Physical') || cat.includes('Hike') || cat.includes('Sport') || cat.includes('Laser')) { topBorderColor = '#3b82f6'; catIcon = '🧗'; catColor = '#1d4ed8'; catBg = '#eff6ff'; catBorder = '#bfdbfe'; }
+                            else if (cat.includes('Cultural') || cat.includes('Calligraphy') || cat.includes('Henna')) { topBorderColor = '#ec4899'; catIcon = '🎨'; catColor = '#be185d'; catBg = '#fdf2f8'; catBorder = '#fbcfe8'; }
+                            else { topBorderColor = '#06b6d4'; catIcon = '🌟'; catColor = '#0e7490'; catBg = '#ecfeff'; catBorder = '#a5f3fc'; }
 
-                            const isRegOpen = ev.registration_open !== false && ev.registration_open !== 0 && ev.registration_open !== '0';
+                            card.style.cssText = `border-top: 4px solid ${topBorderColor} !important; flex: 0 0 310px; min-width: 285px; max-width: 340px; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: space-between;`;
+
+                            let status = 'closed';
+                            if (ev.registration_status) {
+                                status = ev.registration_status;
+                            } else if (ev.registration_open === true || ev.registration_open === 1 || ev.registration_open === '1') {
+                                status = 'open';
+                            }
+
+                            let statusBadgeHtml = '';
+                            let actionBtnHtml = '';
                             const regUrl = `/event-register?event=${encodeURIComponent(ev.id || ev.title)}`;
+
+                            if (status === 'open') {
+                                statusBadgeHtml = '<span class="event-status-pill status-open" style="font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 999px;">🟢 Open</span>';
+                                actionBtnHtml = `
+                                    <a href="${regUrl}" class="btn btn-primary w-100 text-center" style="display: block; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; text-decoration: none;">
+                                        🎟️ Register Now
+                                    </a>
+                                `;
+                            } else if (status === 'soon') {
+                                statusBadgeHtml = '<span class="event-status-pill" style="font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: #fef3c7; color: #b45309; border: 1px solid #fde68a;">⏳ Soon</span>';
+                                actionBtnHtml = `
+                                    <button type="button" class="btn w-100 text-center" disabled style="display: block; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; background: #fef3c7; color: #b45309; border: 1.5px solid #fde68a; cursor: not-allowed;">
+                                        ⏳ Opening Soon
+                                    </button>
+                                `;
+                            } else {
+                                statusBadgeHtml = '<span class="event-status-pill status-closed" style="font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 999px;">🔴 Closed</span>';
+                                actionBtnHtml = `
+                                    <button type="button" class="btn btn-secondary w-100 text-center" disabled style="display: block; padding: 0.65rem 1rem; font-size: 0.92rem; opacity: 0.65; cursor: not-allowed; border-color: #cbd5e1; color: #94a3b8; border-radius: 8px;">
+                                        Registration Closed
+                                    </button>
+                                `;
+                            }
 
                             card.innerHTML = `
                                 <div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                                    <div class="islamic-event-badge-strip" style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; margin-bottom: 0.75rem;">
                                         <span style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 999px; text-transform: uppercase; background: ${catBg}; color: ${catColor}; border: 1px solid ${catBorder};">
-                                            ${catIcon} ${ev.category || 'Event'}
+                                            ${catIcon} ${cat}
                                         </span>
-                                        <span style="font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 999px; background: ${isRegOpen ? '#dcfce7' : '#fee2e2'}; color: ${isRegOpen ? '#15803d' : '#b91c1c'};">
-                                            ${isRegOpen ? '● Registration Open' : '○ Closed'}
-                                        </span>
+                                        ${statusBadgeHtml}
                                     </div>
-                                    <h3 style="color: var(--color-primary); margin-bottom: 0.5rem; font-size: 1.25rem; font-weight: 700; line-height: 1.3;">${ev.title}</h3>
+
+                                    <div class="islamic-event-icon" style="font-size: 2.2rem; margin: 0.35rem 0 0.5rem 0;">${catIcon}</div>
+
+                                    <h3 class="islamic-event-title" style="color: var(--color-primary); margin-bottom: 0.45rem; font-size: 1.25rem; font-weight: 700; line-height: 1.35;">${ev.title}</h3>
                                     
-                                    <div style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.85rem; font-size: 0.88rem; color: #475569;">
-                                        <div style="display: flex; align-items: center; gap: 0.4rem;">
-                                            <span>📅</span> <strong>${ev.date || 'TBA'}</strong> ${ev.time ? `• ${ev.time}` : ''}
-                                        </div>
-                                        ${ev.location ? `<div style="display: flex; align-items: center; gap: 0.4rem;"><span>📍</span> <span>${ev.location}</span></div>` : ''}
+                                    <div class="islamic-event-hijri" style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.35rem; color: #334155;">
+                                        📅 ${ev.date || 'TBA'} ${ev.time ? `• ${ev.time}` : ''}
                                     </div>
+                                    ${ev.location ? `<div class="islamic-event-gregorian" style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.85rem;">📍 ${ev.location}</div>` : ''}
 
-                                    <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
-                                        <span style="font-size: 0.76rem; font-weight: 700; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 0.2rem 0.55rem; border-radius: 999px;">
-                                            🏅 Members: ${ev.price_member || ev.cost || 'Free'}
-                                        </span>
-                                        <span style="font-size: 0.76rem; font-weight: 700; color: #1e40af; background: #eff6ff; border: 1px solid #bfdbfe; padding: 0.2rem 0.55rem; border-radius: 999px;">
-                                            👥 Non-Members: ${ev.price_non_member || ev.cost || 'Free'}
-                                        </span>
-                                    </div>
-
-                                    <p style="color: var(--color-text-light); font-size: 0.92rem; line-height: 1.5; margin-bottom: 1.25rem;">${ev.desc || ''}</p>
+                                    <p class="islamic-event-desc" style="color: var(--color-text-light); font-size: 0.88rem; line-height: 1.5; margin: 0 0 1rem 0;">${ev.desc || ''}</p>
                                 </div>
 
-                                <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid #f1f5f9;">
-                                    ${isRegOpen ? `
-                                        <a href="${regUrl}" class="btn btn-primary w-100 text-center" style="display: block; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px;">
-                                            🎟️ Register Now
-                                        </a>
-                                    ` : `
-                                        <a href="/events" class="btn btn-secondary w-100 text-center" style="display: block; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 600; border-radius: 8px; border-color: #cbd5e1; color: #64748b;">
-                                            View Event Details
-                                        </a>
-                                    `}
+                                <div style="margin-top: auto; padding-top: 0.85rem; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 0.75rem;">
+                                    <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 0.2rem 0.55rem; border-radius: 999px;">
+                                            🏅 Members: ${ev.price_member || ev.cost || 'Free'}
+                                        </span>
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #1e40af; background: #eff6ff; border: 1px solid #bfdbfe; padding: 0.2rem 0.55rem; border-radius: 999px;">
+                                            👥 Guests: ${ev.price_non_member || ev.cost || 'Free'}
+                                        </span>
+                                    </div>
+
+                                    ${actionBtnHtml}
                                 </div>
                             `;
                             eventsContainer.appendChild(card);

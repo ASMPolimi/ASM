@@ -97,6 +97,7 @@ def init_db():
         ('location', 'TEXT', "'Campus Leonardo'"),
         ('time', 'TEXT', "''"),
         ('registration_open', 'INTEGER', '1'),
+        ('registration_status', 'TEXT', "'open'"),
         ('max_capacity', 'INTEGER', '0')
     ]:
         try:
@@ -115,6 +116,7 @@ def init_db():
             is_guest INTEGER DEFAULT 0,
             is_member INTEGER DEFAULT 0,
             price_applied TEXT DEFAULT 'Free',
+            paid INTEGER DEFAULT 0,
             email TEXT NOT NULL,
             phone TEXT NOT NULL,
             dietary TEXT DEFAULT '',
@@ -129,7 +131,8 @@ def init_db():
 
     for col, col_type, default_val in [
         ('is_member', 'INTEGER', '0'),
-        ('price_applied', 'TEXT', "'Free'")
+        ('price_applied', 'TEXT', "'Free'"),
+        ('paid', 'INTEGER', '0')
     ]:
         try:
             c.execute(f"ALTER TABLE event_applications ADD COLUMN {col} {col_type} DEFAULT {default_val}")
@@ -377,12 +380,15 @@ def update_content():
         if 'events' in data:
             c.execute("DELETE FROM events")
             for ev in data['events']:
-                reg_open = 1 if ev.get('registration_open') in (1, True, '1', 'true', 'on', None) else 0
+                reg_status = str(ev.get('registration_status') or ('open' if ev.get('registration_open') in (1, True, '1', 'true', 'on', None) else 'closed')).lower().strip()
+                if reg_status not in ('open', 'soon', 'closed'):
+                    reg_status = 'open'
+                reg_open = 1 if reg_status == 'open' else 0
                 price_mem = str(ev.get('price_member', ev.get('cost', 'Free'))).strip() or 'Free'
                 price_non = str(ev.get('price_non_member', ev.get('cost', 'Free'))).strip() or 'Free'
                 c.execute("""
-                    INSERT INTO events (title, date, desc, reg_link, category, cost, location, time, registration_open, max_capacity, price_member, price_non_member)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO events (title, date, desc, reg_link, category, cost, location, time, registration_open, max_capacity, price_member, price_non_member, registration_status)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     ev.get('title', ''),
                     ev.get('date', ''),
@@ -395,7 +401,8 @@ def update_content():
                     reg_open,
                     int(ev.get('max_capacity') or 0),
                     price_mem,
-                    price_non
+                    price_non,
+                    reg_status
                 ))
         
         # update setting fields
@@ -1508,6 +1515,7 @@ def get_event_applications():
     for a in apps:
         a['is_guest'] = bool(a.get('is_guest', 0))
         a['is_member'] = bool(a.get('is_member', 0))
+        a['paid'] = bool(a.get('paid', 0))
     return jsonify({"success": True, "applications": apps})
 
 @app.route('/api/event-applications/export', methods=['GET'])
@@ -1524,20 +1532,25 @@ def export_event_applications():
     conn = get_db()
     c = conn.cursor()
     if event_id and str(event_id).strip() != '':
-        c.execute("SELECT event_title, full_name, matricola, is_member, is_guest, price_applied, email, phone, dietary, emergency_contact, notes, payment_method, status, created_at FROM event_applications WHERE event_id = ? ORDER BY created_at DESC", (event_id,))
+        c.execute("SELECT event_title, full_name, matricola, is_member, is_guest, price_applied, paid, email, phone, dietary, emergency_contact, notes, payment_method, status, created_at FROM event_applications WHERE event_id = ? ORDER BY created_at DESC", (event_id,))
     else:
-        c.execute("SELECT event_title, full_name, matricola, is_member, is_guest, price_applied, email, phone, dietary, emergency_contact, notes, payment_method, status, created_at FROM event_applications ORDER BY created_at DESC")
+        c.execute("SELECT event_title, full_name, matricola, is_member, is_guest, price_applied, paid, email, phone, dietary, emergency_contact, notes, payment_method, status, created_at FROM event_applications ORDER BY created_at DESC")
     rows = c.fetchall()
     conn.close()
         
-    headers = ['Event Title', 'Attendee Name', 'Matricola', 'Membership Status', 'Price Applied', 'Email', 'Phone', 'Dietary / Allergies', 'Emergency Contact', 'Notes', 'Status', 'Registered At']
-    data_rows = [
-        [
+    headers = ['Event Title', 'Attendee Name', 'Matricola', 'Membership Status', 'Price Applied', 'Fee Paid', 'Email', 'Phone', 'Dietary / Allergies', 'Emergency Contact', 'Notes', 'Status', 'Registered At']
+    data_rows = []
+    for r in rows:
+        price_str = str(r['price_applied'] or r['payment_method'] or 'Free').lower().strip()
+        is_free = not price_str or price_str in ('0', 'free', '€0', 'gratis', '0.0')
+        paid_label = 'FREE / WAIVED' if is_free else ('PAID' if r['paid'] else 'PENDING')
+        data_rows.append([
             r['event_title'] or '',
             r['full_name'] or '',
             r['matricola'] or '',
             'ASM Member' if r['is_member'] else ('Guest' if r['is_guest'] else 'Non-Member'),
             r['price_applied'] or r['payment_method'] or 'Free',
+            paid_label,
             r['email'] or '',
             r['phone'] or '',
             r['dietary'] or 'None',
@@ -1545,11 +1558,38 @@ def export_event_applications():
             r['notes'] or '',
             r['status'] or 'confirmed',
             r['created_at'] or ''
-        ]
-        for r in rows
-    ]
+        ])
     filename = f"event_attendees_{event_id}.xlsx" if event_id else "all_event_attendees.xlsx"
     return generate_excel_response(headers, data_rows, filename, "Event Attendees")
+
+@app.route('/api/event-applications/toggle-paid', methods=['POST'])
+def toggle_event_application_paid():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    data = request.json or {}
+    app_id = data.get('id')
+    if not app_id:
+        return jsonify({"success": False, "message": "Application ID required"}), 400
+
+    conn = get_db()
+    c = conn.cursor()
+    if 'paid' in data:
+        new_paid = 1 if data['paid'] in (1, True, '1', 'true') else 0
+    else:
+        c.execute("SELECT paid FROM event_applications WHERE id = ?", (app_id,))
+        row = c.fetchone()
+        if not row:
+            conn.close()
+            return jsonify({"success": False, "message": "Application not found"}), 404
+        new_paid = 0 if row['paid'] else 1
+
+    c.execute("UPDATE event_applications SET paid = ? WHERE id = ?", (new_paid, app_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "paid": new_paid})
 
 @app.route('/api/event-applications/toggle-status', methods=['POST'])
 def toggle_event_application_status():

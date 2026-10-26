@@ -604,17 +604,24 @@
                     <textarea id="event-input-desc" rows="3" placeholder="Describe the program, what is included, interactive activities, gadgets, and instructions..."></textarea>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 0.5rem; border-top: 1px solid #e2e8f0;">
-                    <div style="display: flex; align-items: center; gap: 0.65rem;">
-                        <input type="checkbox" id="event-input-reg-open" checked style="width: 1.15rem; height: 1.15rem; cursor: pointer;">
-                        <label for="event-input-reg-open" style="font-weight: 600; cursor: pointer; margin: 0;">
-                            🟢 Enable Application Form / Registration for this event
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; padding-top: 0.85rem; border-top: 1px solid #e2e8f0;">
+                    <div style="flex: 1; min-width: 260px;">
+                        <label for="event-input-status" style="font-weight: 700; color: var(--color-primary); margin-bottom: 0.35rem; display: block; font-size: 0.92rem;">
+                            Registration Status: *
                         </label>
+                        <select id="event-input-status" style="padding: 0.6rem 0.85rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-weight: 600; width: 100%; max-width: 320px; font-size: 0.92rem; background: #ffffff;">
+                            <option value="open">🟢 Open (Active Registration)</option>
+                            <option value="soon">⏳ Opening Soon (Teaser / Coming Soon)</option>
+                            <option value="closed">🔴 Closed (Registration Full / Ended)</option>
+                        </select>
+                        <small style="color: #64748b; font-size: 0.78rem; display: block; margin-top: 0.25rem;">
+                            Choose whether attendees can register now, see "Opening Soon", or "Closed".
+                        </small>
                     </div>
 
-                    <div style="display: flex; gap: 0.5rem;">
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
                         <button type="button" id="btn-cancel-edit" class="btn btn-secondary hidden" style="padding: 0.5rem 1rem;">Cancel</button>
-                        <button type="button" id="btn-submit-event" class="btn btn-primary" style="padding: 0.55rem 1.4rem; font-weight: 700;">Add Event to List</button>
+                        <button type="button" id="btn-submit-event" class="btn btn-primary" style="padding: 0.6rem 1.4rem; font-weight: 700;">Add Event to List</button>
                     </div>
                 </div>
             </div>
@@ -630,7 +637,7 @@
         <!-- ============================================================ -->
         <div id="tab-attendees" class="tab-content hidden">
             <!-- Stats Grid -->
-            <div class="stats-grid">
+            <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
                 <div class="stat-card">
                     <div class="stat-val" id="stat-total-apps">0</div>
                     <div class="stat-label">Total Applications</div>
@@ -642,6 +649,14 @@
                 <div class="stat-card">
                     <div class="stat-val" id="stat-guests">0</div>
                     <div class="stat-label">External Guests</div>
+                </div>
+                <div class="stat-card" style="border-left: 3px solid #10b981;">
+                    <div class="stat-val" id="stat-paid-count" style="color: #047857;">0</div>
+                    <div class="stat-label">💰 Paid Attendees</div>
+                </div>
+                <div class="stat-card" style="border-left: 3px solid #f59e0b;">
+                    <div class="stat-val" id="stat-unpaid-count" style="color: #b45309;">0</div>
+                    <div class="stat-label">⏳ Pending Payments</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-val" id="stat-dietary-count">0</div>
@@ -655,7 +670,7 @@
                     <select id="filter-event-select" style="padding: 0.55rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem; font-weight: 600; min-width: 220px;">
                         <option value="">🔍 All Events</option>
                     </select>
-                    <input type="text" id="search-attendees-input" placeholder="Search by name, matricola, email, or phone..." style="flex: 1; min-width: 200px; padding: 0.55rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem;">
+                    <input type="text" id="search-attendees-input" placeholder="Search by name, matricola, email, phone, paid..." style="flex: 1; min-width: 200px; padding: 0.55rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem;">
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <button type="button" id="btn-export-excel" class="btn btn-secondary" style="background: #10b981; color: white; border: none; font-weight: 600; font-size: 0.85rem; padding: 0.55rem 0.95rem; display: inline-flex; align-items: center; gap: 0.35rem;">
@@ -674,18 +689,19 @@
                         <tr>
                             <th>Event</th>
                             <th>Attendee</th>
-                            <th>Membership & Fee</th>
                             <th>Matricola / Guest</th>
-                            <th>Email & Phone</th>
+                            <th>Contact</th>
+                            <th>Membership & Fee</th>
+                            <th>Payment Status (Mark Paid)</th>
                             <th>Dietary / Allergies</th>
-                            <th>Emergency Contact</th>
-                            <th>Status</th>
+                            <th>Notes</th>
+                            <th>Attendance</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="attendees-table-body">
                         <tr>
-                            <td colspan="8" style="text-align: center; padding: 2rem; color: #64748b;">Loading applications...</td>
+                            <td colspan="10" style="text-align: center; padding: 2rem; color: #64748b;">Loading applications...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -928,6 +944,17 @@
         return `<span class="event-cat-badge ${cls}">${icon} ${escapeHtml(c)}</span>`;
     }
 
+    function getEventStatus(ev) {
+        if (!ev) return 'closed';
+        if (ev.registration_status) return ev.registration_status;
+        return (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1') ? 'open' : 'closed';
+    }
+
+    function isFreeFee(fee) {
+        const f = (fee || '').toLowerCase().trim();
+        return !f || f === 'free' || f === '0' || f === '€0' || f === 'gratis';
+    }
+
     function renderEvents() {
         const list = document.getElementById('admin-events-list');
         const countBadge = document.getElementById('tab-events-count');
@@ -960,16 +987,23 @@
 
         list.innerHTML = '';
         events.forEach((ev, idx) => {
-            const isRegOpen = (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1');
+            const status = getEventStatus(ev);
+            let statusPill = '';
+            if (status === 'open') {
+                statusPill = '<span class="reg-status-pill reg-open">🟢 Registration Open</span>';
+            } else if (status === 'soon') {
+                statusPill = '<span class="reg-status-pill" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a;">⏳ Opening Soon</span>';
+            } else {
+                statusPill = '<span class="reg-status-pill reg-closed">🔴 Registration Closed</span>';
+            }
+
             const card = document.createElement('div');
             card.className = 'admin-event-card';
             card.innerHTML = `
                 <div class="admin-event-header">
                     <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
                         ${getCategoryBadge(ev.category)}
-                        <span class="reg-status-pill ${isRegOpen ? 'reg-open' : 'reg-closed'}">
-                            ${isRegOpen ? '🟢 Registration Open' : '🔴 Registration Closed'}
-                        </span>
+                        ${statusPill}
                         <span style="font-size: 0.8rem; font-weight: 700; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 0.2rem 0.55rem; border-radius: 4px;">🏅 Member: ${escapeHtml(ev.price_member || ev.cost || 'Free')}</span>
                         <span style="font-size: 0.8rem; font-weight: 700; color: #1e40af; background: #eff6ff; border: 1px solid #bfdbfe; padding: 0.2rem 0.55rem; border-radius: 4px;">👥 Non-Member: ${escapeHtml(ev.price_non_member || ev.cost || 'Free')}</span>
                     </div>
@@ -1026,7 +1060,7 @@
         document.getElementById('event-input-price-member').value = 'Free';
         document.getElementById('event-input-price-non-member').value = 'Free';
         document.getElementById('event-input-desc').value = '';
-        document.getElementById('event-input-reg-open').checked = true;
+        document.getElementById('event-input-status').value = 'open';
     }
 
     window.editEvent = function(idx) {
@@ -1045,7 +1079,7 @@
         document.getElementById('event-input-price-member').value = ev.price_member || ev.cost || 'Free';
         document.getElementById('event-input-price-non-member').value = ev.price_non_member || ev.cost || 'Free';
         document.getElementById('event-input-desc').value = ev.desc || '';
-        document.getElementById('event-input-reg-open').checked = (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1');
+        document.getElementById('event-input-status').value = getEventStatus(ev);
         
         editorCard.scrollIntoView({ behavior: 'smooth' });
     };
@@ -1066,7 +1100,8 @@
         const price_member = document.getElementById('event-input-price-member').value.trim() || 'Free';
         const price_non_member = document.getElementById('event-input-price-non-member').value.trim() || 'Free';
         const desc = document.getElementById('event-input-desc').value.trim();
-        const reg_open = document.getElementById('event-input-reg-open').checked ? 1 : 0;
+        const reg_status = document.getElementById('event-input-status').value;
+        const reg_open = (reg_status === 'open') ? 1 : 0;
 
         if (!title) {
             alert("Please enter an event title.");
@@ -1084,6 +1119,7 @@
             price_non_member,
             desc,
             reg_link: '/event-register',
+            registration_status: reg_status,
             registration_open: reg_open
         };
 
@@ -1139,7 +1175,7 @@
     async function loadAttendees() {
         const tbody = document.getElementById('attendees-table-body');
         const countBadge = document.getElementById('tab-attendees-count');
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #64748b;">Loading applications...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 2rem; color: #64748b;">Loading applications...</td></tr>';
 
         try {
             const filterVal = document.getElementById('filter-event-select').value;
@@ -1154,10 +1190,10 @@
                 updateAttendeeStats();
                 renderAttendeesTable();
             } else {
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #dc2626;">${data.message || 'Error loading applications'}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 2rem; color: #dc2626;">${data.message || 'Error loading applications'}</td></tr>`;
             }
         } catch (err) {
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #dc2626;">Failed to connect to backend server.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 2rem; color: #dc2626;">Failed to connect to backend server.</td></tr>';
         }
     }
 
@@ -1166,10 +1202,15 @@
         const students = attendees.filter(a => !a.is_guest && a.matricola && a.matricola.toLowerCase() !== 'external guest');
         const guests = attendees.filter(a => a.is_guest || (a.matricola && a.matricola.toLowerCase() === 'external guest'));
         const dietaryCount = attendees.filter(a => a.dietary && a.dietary.trim() !== '' && a.dietary.toLowerCase() !== 'none' && a.dietary.toLowerCase() !== 'no');
+        
+        const paidCount = attendees.filter(a => Boolean(a.paid)).length;
+        const unpaidCount = attendees.filter(a => !a.paid && !isFreeFee(a.price_applied)).length;
 
         document.getElementById('stat-polimi-students').textContent = students.length;
         document.getElementById('stat-guests').textContent = guests.length;
         document.getElementById('stat-dietary-count').textContent = dietaryCount.length;
+        document.getElementById('stat-paid-count').textContent = paidCount;
+        document.getElementById('stat-unpaid-count').textContent = unpaidCount;
     }
 
     function renderAttendeesTable() {
@@ -1178,17 +1219,19 @@
 
         const filtered = attendees.filter(a => {
             if (!query) return true;
+            const paidStr = a.paid ? 'paid' : 'unpaid';
             return (a.full_name && a.full_name.toLowerCase().includes(query)) ||
                    (a.matricola && a.matricola.toLowerCase().includes(query)) ||
                    (a.email && a.email.toLowerCase().includes(query)) ||
                    (a.phone && a.phone.toLowerCase().includes(query)) ||
-                   (a.event_title && a.event_title.toLowerCase().includes(query));
+                   (a.event_title && a.event_title.toLowerCase().includes(query)) ||
+                   paidStr.includes(query);
         });
 
         if (filtered.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="8" style="text-align: center; padding: 2.5rem; color: #64748b;">
+                    <td colspan="10" style="text-align: center; padding: 2.5rem; color: #64748b;">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
                         ${attendees.length === 0 ? 'No event registrations received yet.' : 'No attendees match your search query.'}
                     </td>
@@ -1202,15 +1245,31 @@
             const tr = document.createElement('tr');
             const hasDietary = app.dietary && app.dietary.trim() !== '' && app.dietary.toLowerCase() !== 'none';
             const isConfirmed = (app.status || 'confirmed') === 'confirmed';
+            const isFree = isFreeFee(app.price_applied);
+            const isPaid = Boolean(app.paid);
+
+            let paymentBadge = '';
+            if (isFree) {
+                paymentBadge = `<span style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 3px 8px; border-radius: 999px; font-weight: 700; font-size: 0.76rem;">🟢 Free / Waived</span>`;
+            } else if (isPaid) {
+                paymentBadge = `
+                    <button type="button" class="btn" style="padding: 0.25rem 0.65rem; font-size: 0.78rem; font-weight: 700; border-radius: 6px; background: #dcfce7; color: #166534; border: 1px solid #86efac; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem;" onclick="toggleAttendeePaid(${app.id}, 0)" title="Click to mark as unpaid">
+                        ✅ Paid (${escapeHtml(app.price_applied || '')})
+                    </button>
+                `;
+            } else {
+                paymentBadge = `
+                    <button type="button" class="btn" style="padding: 0.3rem 0.75rem; font-size: 0.78rem; font-weight: 700; border-radius: 6px; background: #fff7ed; color: #c2410c; border: 1.5px solid #fdba74; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);" onclick="toggleAttendeePaid(${app.id}, 1)" title="Click to mark as paid">
+                        💵 Mark Paid (${escapeHtml(app.price_applied || '')})
+                    </button>
+                `;
+            }
 
             tr.innerHTML = `
                 <td><strong>${escapeHtml(app.event_title)}</strong></td>
                 <td>
                     <div style="font-weight: 700; color: #0f172a;">${escapeHtml(app.full_name)}</div>
                     <div style="font-size: 0.78rem; color: #64748b;">${app.created_at || ''}</div>
-                </td>
-                <td>
-                    ${app.is_member ? `<span style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 999px; font-weight: 700; font-size: 0.76rem;">🏅 Member (${escapeHtml(app.price_applied || 'Free')})</span>` : `<span style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; padding: 2px 8px; border-radius: 999px; font-weight: 700; font-size: 0.76rem;">👥 Non-Member (${escapeHtml(app.price_applied || 'Free')})</span>`}
                 </td>
                 <td>
                     ${app.is_guest ? '<span class="guest-tag">External Guest</span>' : `<strong>${escapeHtml(app.matricola || 'N/A')}</strong>`}
@@ -1220,11 +1279,17 @@
                     <div style="font-size: 0.82rem; color: #475569;"><a href="https://wa.me/${escapeHtml(app.phone).replace(/\D/g,'')}" target="_blank" style="color: #15803d; text-decoration: none;">💬 ${escapeHtml(app.phone)}</a></div>
                 </td>
                 <td>
+                    ${app.is_member ? `<span style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 999px; font-weight: 700; font-size: 0.76rem;">🏅 Member (${escapeHtml(app.price_applied || 'Free')})</span>` : `<span style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; padding: 2px 8px; border-radius: 999px; font-weight: 700; font-size: 0.76rem;">👥 Non-Member (${escapeHtml(app.price_applied || 'Free')})</span>`}
+                </td>
+                <td>
+                    ${paymentBadge}
+                </td>
+                <td>
                     ${hasDietary ? `<span class="dietary-tag">${escapeHtml(app.dietary)}</span>` : '<span style="color: #94a3b8;">None</span>'}
                 </td>
                 <td>
-                    ${app.emergency_contact ? `<div style="font-size: 0.85rem;"><strong>${escapeHtml(app.emergency_contact)}</strong></div>` : ''}
-                    ${app.notes ? `<div style="font-size: 0.8rem; color: #64748b; font-style: italic;">"${escapeHtml(app.notes)}"</div>` : '<span style="color: #94a3b8;">-</span>'}
+                    ${app.emergency_contact ? `<div style="font-size: 0.82rem;"><strong>Emerg:</strong> ${escapeHtml(app.emergency_contact)}</div>` : ''}
+                    ${app.notes ? `<div style="font-size: 0.78rem; color: #64748b; font-style: italic;">"${escapeHtml(app.notes)}"</div>` : '<span style="color: #94a3b8;">-</span>'}
                 </td>
                 <td>
                     <button type="button" class="btn" style="padding: 0.25rem 0.65rem; font-size: 0.78rem; font-weight: 700; border-radius: 999px; cursor: pointer; border: 1px solid ${isConfirmed ? '#86efac' : '#cbd5e1'}; background: ${isConfirmed ? '#dcfce7' : '#f1f5f9'}; color: ${isConfirmed ? '#166534' : '#475569'};" onclick="toggleAttendeeStatus(${app.id}, '${app.status}')">
@@ -1240,6 +1305,31 @@
             tbody.appendChild(tr);
         });
     }
+
+    window.toggleAttendeePaid = async function(id, newPaidVal) {
+        try {
+            const res = await fetch('/api/event-applications/toggle-paid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ id, paid: newPaidVal })
+            });
+            const data = await res.json();
+            if (data.success) {
+                const target = attendees.find(a => a.id === id);
+                if (target) target.paid = Boolean(newPaidVal);
+                updateAttendeeStats();
+                renderAttendeesTable();
+                showMessage(newPaidVal ? "Payment marked as PAID! ✅" : "Payment reverted to UNPAID ⏳", true);
+            } else {
+                alert(data.message || "Failed to update payment status");
+            }
+        } catch (err) {
+            alert("Error updating payment status");
+        }
+    };
 
     window.toggleAttendeeStatus = async function(id, currentStatus) {
         const newStatus = (currentStatus === 'confirmed') ? 'attended' : (currentStatus === 'attended' ? 'cancelled' : 'confirmed');
