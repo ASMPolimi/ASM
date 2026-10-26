@@ -32,15 +32,15 @@ const ASM_I18N = {
         dock_member: "Become a Member",
         dock_events: "Upcoming Events",
         dock_prayer: "Prayer",
-        dock_hijri: "Islamic Calendar",
+        dock_hijri: "Islamic Events",
         dock_halal: "Halal Scanner",
         dock_support: "Ask an Imam",
         dock_quran: "Quran Irtaqi",
         dock_contact: "Get in touch",
 
-        hijri_badge: "Hijri Calendar 1448 AH",
-        hijri_heading: "Islamic Calendar &amp; Upcoming Events",
-        hijri_subhead: "Track the Islamic lunar calendar and count down to major holy celebrations across the academic year.",
+        hijri_badge: "Upcoming Events",
+        hijri_heading: "Major Islamic Events",
+        hijri_subhead: "Major Islamic celebrations and spiritual milestones across the academic year.",
         hijri_today_label: "Current Hijri Date",
         hijri_phase_label: "Current Lunar Phase",
         hijri_scroll_hint: "👈 Swipe horizontally to view all upcoming events 👉",
@@ -97,7 +97,7 @@ const ASM_I18N = {
         prayer_jumuah_btn: "Jumu'ah Info & Prayer Map",
 
         services_badge: "Student Services",
-        services_heading: "Campus Resources & Guidance",
+        services_heading: "Student Services & Guidance",
         services_subhead: "Essential services tailored to support your daily student life, faith, and well-being at Politecnico di Milano.",
         service_halal_category: "Food & Groceries",
         service_halal_title: "Halal Product Scanner",
@@ -289,15 +289,15 @@ const ASM_I18N = {
         dock_member: "Diventa Socio",
         dock_events: "Prossimi Eventi",
         dock_prayer: "Preghiera",
-        dock_hijri: "Calendario Islamico",
+        dock_hijri: "Eventi Islamici",
         dock_halal: "Scanner Halal",
         dock_support: "Chiedi all'Imam",
         dock_quran: "Corano Irtaqi",
         dock_contact: "Contattaci",
 
-        hijri_badge: "Calendario Hijri 1448 AH",
-        hijri_heading: "Calendario Islamico ed Eventi Sacri",
-        hijri_subhead: "Segui il calendario lunare islamico e il conto alla rovescia per le principali celebrazioni dell'anno accademico.",
+        hijri_badge: "Prossimi Eventi",
+        hijri_heading: "Principali Eventi Islamici",
+        hijri_subhead: "Le principali celebrazioni e festività islamiche dell'anno accademico.",
         hijri_today_label: "Data Hijri di Oggi",
         hijri_phase_label: "Fase Lunare Attuale",
         hijri_scroll_hint: "👈 Scorri orizzontalmente per vedere tutti gli eventi 👉",
@@ -354,7 +354,7 @@ const ASM_I18N = {
         prayer_jumuah_btn: "Info Jumu'ah & Mappa Preghiere",
 
         services_badge: "Servizi per gli Studenti",
-        services_heading: "Risorse di Campus e Supporto",
+        services_heading: "Servizi per Studenti e Supporto",
         services_subhead: "Servizi essenziali pensati per supportare la tua vita universitaria, la fede e il benessere al Politecnico di Milano.",
         service_halal_category: "Alimentazione e Spesa",
         service_halal_title: "Scanner Prodotti Halal",
@@ -770,9 +770,8 @@ document.addEventListener('DOMContentLoaded', () => {
         adminLinks.forEach(linkInfo => {
             const a = document.createElement('a');
             a.href = linkInfo.href;
-            a.textContent = linkInfo.text;
-            a.setAttribute('data-i18n', 'nav_admin');
-            a.style.cssText = 'font-size: 1.1rem; opacity: 0.8;';
+            a.innerHTML = `<span class="mobile-nav-icon">⚙️</span><span data-i18n="nav_admin">${linkInfo.text}</span>`;
+            a.style.cssText = 'font-size: 1.15rem; opacity: 0.85;';
             mobileNavLinksContainer.appendChild(a);
         });
     }
@@ -1159,6 +1158,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const prayerMoonBadge = document.querySelector('#prayer-hijri-badge .hijri-badge-icon');
         if (prayerMoonBadge) prayerMoonBadge.textContent = moonPhase.emoji;
+        const prayerMoonArt = document.getElementById('prayer-moon-phase-art');
+        if (prayerMoonArt) prayerMoonArt.textContent = moonPhase.emoji;
 
         // 4. Calculate Upcoming Islamic Events
         const eventsData = [
@@ -1280,21 +1281,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Islamic Events Horizontal Scrolling Track Nav Buttons
-    document.querySelectorAll('.islamic-events-scroll-wrap').forEach(wrap => {
-        const grid = wrap.querySelector('.islamic-events-grid');
-        const prevBtn = wrap.querySelector('.events-nav-btn.prev');
-        const nextBtn = wrap.querySelector('.events-nav-btn.next');
-        if (grid && prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                grid.scrollBy({ left: -320, behavior: 'smooth' });
-            });
-        }
-        if (grid && nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                grid.scrollBy({ left: 320, behavior: 'smooth' });
-            });
-        }
+    // Islamic Events Horizontal Scrolling Drag Helper
+    document.querySelectorAll('.islamic-events-grid').forEach(slider => {
+        let isDown = false;
+        let startX, scrollLeft;
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            slider.classList.add('is-dragging');
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+            slider.classList.remove('is-dragging');
+        });
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.classList.remove('is-dragging');
+        });
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            slider.scrollLeft = scrollLeft - walk;
+        });
     });
 
     fetchPrayerTimes();

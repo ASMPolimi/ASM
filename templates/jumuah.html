@@ -106,7 +106,20 @@
         </div>
 
         <div class="prayer-times-card">
-            <div class="date-display" id="current-date" data-i18n="prayer_date_loading">Loading date...</div>
+            <div class="date-display prayer-date-display">
+                <div class="prayer-hijri-hero" id="prayer-hijri-badge" title="Umm al-Qura Islamic Hijri Date">
+                    <div class="hijri-moon-emblem prayer-moon-emblem">
+                        <span class="moon-icon-art hijri-badge-icon" id="prayer-moon-phase-art">🌕</span>
+                    </div>
+                    <div class="prayer-hijri-meta">
+                        <div class="prayer-hijri-date" id="current-hijri-date">Loading Hijri date...</div>
+                        <div class="prayer-hijri-arabic" id="current-hijri-ar" dir="rtl" lang="ar"></div>
+                    </div>
+                </div>
+                <div class="date-display-main">
+                    <span id="current-date" data-i18n="prayer_date_loading">Loading date...</span>
+                </div>
+            </div>
 
             <div class="prayer-grid stagger-children">
                 <div class="prayer-item">
@@ -164,10 +177,6 @@
 <section id="locations" class="section bg-light fade-in" style="padding-top: 2rem; padding-bottom: 4rem;">
     <div class="container">
         <div class="section-header text-center">
-            <span class="section-badge"
-                style="display: inline-block; padding: 0.35rem 1rem; border-radius: 2rem; background: rgba(18, 74, 97, 0.1); color: var(--color-primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;"
-                data-i18n="map_badge">Campus
-                & Milan Guide</span>
             <h2 data-i18n="map_heading">Locations & Mosques Map</h2>
             <div class="divider"></div>
             <p data-i18n="map_sub">Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location card
