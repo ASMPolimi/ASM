@@ -119,6 +119,14 @@ init_db()
 def index():
     return render_template('index.html')
 
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory('.', 'sitemap.xml', mimetype='application/xml')
+
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory('.', 'robots.txt', mimetype='text/plain')
+
 @app.route('/<path:path>')
 def serve_file(path):
     if path in ALLOWED_FILES:
