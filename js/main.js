@@ -32,10 +32,32 @@ const ASM_I18N = {
         dock_member: "Become a Member",
         dock_events: "Upcoming Events",
         dock_prayer: "Prayer",
+        dock_hijri: "Islamic Calendar",
         dock_halal: "Halal Scanner",
         dock_support: "Ask an Imam",
         dock_quran: "Quran Irtaqi",
         dock_contact: "Get in touch",
+
+        hijri_badge: "Hijri Calendar 1448 AH",
+        hijri_heading: "Islamic Calendar &amp; Upcoming Events",
+        hijri_subhead: "Track the Islamic lunar calendar and count down to major holy celebrations across the academic year.",
+        hijri_today_label: "Current Hijri Date",
+        hijri_phase_label: "Current Lunar Phase",
+        hijri_scroll_hint: "👈 Swipe horizontally to view all upcoming events 👉",
+        hijri_sighting_note: "🌙 Months follow confirmed moon sighting (Hilal). Dates may vary by &plusmn;1 day.",
+        hijri_explorer_btn: "Explore the 12 Islamic Hijri Months",
+        event_ramadan_badge: "Holy Month of Fasting",
+        event_ramadan_title: "Ramadan",
+        event_ramadan_desc: "The sacred month of fasting from dawn to sunset, daily Quran recitation, nightly Taraweeh prayers, and community Iftar dinners.",
+        event_eid_fitr_badge: "Festival of Breaking the Fast",
+        event_eid_fitr_title: "Eid al-Fitr",
+        event_eid_fitr_desc: "The joyous celebration marking the end of Ramadan, celebrated with morning Eid congregational prayer, charity, and festive campus gatherings.",
+        event_arafah_badge: "Pinnacle of Hajj",
+        event_arafah_title: "Day of Arafah",
+        event_arafah_desc: "The most sacred day of the Islamic year. Pilgrims gather on Mount Arafat in prayer. Fasting is highly recommended for non-pilgrims.",
+        event_eid_adha_badge: "Feast of the Sacrifice",
+        event_eid_adha_title: "Eid al-Adha",
+        event_eid_adha_desc: "Commemorates Prophet Ibrahim’s (AS) devotion and sacrifice. Celebrated with morning Eid prayer, Qurbani charity, and community feasts.",
 
         ayah_shuffle_btn: "Shuffle Ayah",
         ayah_copy_btn: "Copy Ayah",
@@ -267,10 +289,32 @@ const ASM_I18N = {
         dock_member: "Diventa Socio",
         dock_events: "Prossimi Eventi",
         dock_prayer: "Preghiera",
+        dock_hijri: "Calendario Islamico",
         dock_halal: "Scanner Halal",
         dock_support: "Chiedi all'Imam",
         dock_quran: "Corano Irtaqi",
         dock_contact: "Contattaci",
+
+        hijri_badge: "Calendario Hijri 1448 AH",
+        hijri_heading: "Calendario Islamico ed Eventi Sacri",
+        hijri_subhead: "Segui il calendario lunare islamico e il conto alla rovescia per le principali celebrazioni dell'anno accademico.",
+        hijri_today_label: "Data Hijri di Oggi",
+        hijri_phase_label: "Fase Lunare Attuale",
+        hijri_scroll_hint: "👈 Scorri orizzontalmente per vedere tutti gli eventi 👉",
+        hijri_sighting_note: "🌙 I mesi seguono l'avvistamento della luna crescente (Hilal). Le date possono variare di &plusmn;1 giorno.",
+        hijri_explorer_btn: "Esplora i 12 Mesi del Calendario Islamico",
+        event_ramadan_badge: "Mese Sacro del Digiuno",
+        event_ramadan_title: "Ramadan",
+        event_ramadan_desc: "Il mese sacro del digiuno dall'alba al tramonto, lettura del Corano, preghiere notturne di Taraweeh e cene comunitarie di Iftar.",
+        event_eid_fitr_badge: "Festa della Fine del Digiuno",
+        event_eid_fitr_title: "Eid al-Fitr",
+        event_eid_fitr_desc: "La gioiosa festa che celebra il completamento del Ramadan con la preghiera mattutina comunitaria, la carità (Zakat) e momenti conviviali.",
+        event_arafah_badge: "Culmine del Pellegrinaggio",
+        event_arafah_title: "Giorno di Arafah",
+        event_arafah_desc: "Il giorno più sacro dell'anno islamico. I pellegrini si raccolgono sul monte Arafat. Il digiuno è fortemente raccomandato per chi non è in Hajj.",
+        event_eid_adha_badge: "Festa del Sacrificio",
+        event_eid_adha_title: "Eid al-Adha",
+        event_eid_adha_desc: "Celebra la devozione e il sacrificio del Profeta Abramo (Ibrahim AS). Si festeggia con la preghiera dell'Eid, carità e banchetti comunitari.",
 
         ayah_shuffle_btn: "Altra Ayah",
         ayah_copy_btn: "Copia Ayah",
@@ -671,6 +715,11 @@ document.addEventListener('DOMContentLoaded', () => {
             window.updatePrayerCountdownAndHighlights();
         }
 
+        // Refresh Islamic Hijri Calendar and key holy events
+        if (typeof window.updateIslamicCalendarUI === 'function') {
+            window.updateIslamicCalendarUI();
+        }
+
         // Dispatch custom event for any other component
         window.dispatchEvent(new CustomEvent('asmLanguageChanged', { detail: { lang: currentLang } }));
     }
@@ -942,11 +991,15 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Fetch cached prayer times from backend API or fallback to direct Aladhan API for static hosting
             let timings = null;
+            let hijriData = null;
             try {
                 const response = await fetch('/api/prayer_times');
                 if (response.ok) {
                     const result = await response.json();
-                    if (result && result.success && result.data) timings = result.data;
+                    if (result && result.success && result.data) {
+                        timings = result.data;
+                        if (result.hijri) hijriData = result.hijri;
+                    }
                 }
             } catch (e) { }
 
@@ -957,6 +1010,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const directData = await directRes.json();
                     if (directData && directData.data && directData.data.timings) {
                         timings = directData.data.timings;
+                        if (directData.data.date && directData.data.date.hijri) {
+                            hijriData = directData.data.date.hijri;
+                        }
                     }
                 }
             }
@@ -966,11 +1022,280 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 updatePrayerUI(defaultTimings);
             }
+
+            updateIslamicCalendarUI(hijriData);
         } catch (error) {
             console.warn('Error fetching live prayer times, using Milan defaults:', error);
             updatePrayerUI(defaultTimings);
+            updateIslamicCalendarUI(null);
         }
     }
+
+    // ========================================================
+    // Islamic Hijri Calendar & Key Holy Events System
+    // ========================================================
+    const HIJRI_MONTHS_INFO = [
+        { number: 1, en: "Muharram", it: "Muharram", ar: "مُحَرَّم", sacred: true, notesEn: "Islamic New Year & Ashura (10th)", notesIt: "Capodanno Islamico & Ashura (10°)" },
+        { number: 2, en: "Safar", it: "Safar", ar: "صَفَر", sacred: false, notesEn: "Second month of the lunar year", notesIt: "Secondo mese lunare" },
+        { number: 3, en: "Rabi' al-Awwal", it: "Rabi' al-Awwal", ar: "رَبِيع الأَوَّل", sacred: false, notesEn: "Birth of Prophet Muhammad ﷺ (Mawlid)", notesIt: "Nascita del Profeta Muhammad ﷺ (Mawlid)" },
+        { number: 4, en: "Rabi' al-Thani", it: "Rabi' al-Thani", ar: "رَبِيع الآخِر", sacred: false, notesEn: "Fourth lunar month", notesIt: "Quarto mese lunare" },
+        { number: 5, en: "Jumada al-Ula", it: "Jumada al-Ula", ar: "جُمَادَى الأُولَى", sacred: false, notesEn: "Fifth lunar month", notesIt: "Quinto mese lunare" },
+        { number: 6, en: "Jumada al-Akhirah", it: "Jumada al-Akhirah", ar: "جُمَادَى الآخِرَة", sacred: false, notesEn: "Sixth lunar month", notesIt: "Sesto mese lunare" },
+        { number: 7, en: "Rajab", it: "Rajab", ar: "رَجَب", sacred: true, notesEn: "Sacred Month & Al-Isra' wal-Mi'raj (27th)", notesIt: "Mese Sacro & Al-Isra' wal-Mi'raj (27°)" },
+        { number: 8, en: "Sha'ban", it: "Sha'ban", ar: "شَعْبَان", sacred: false, notesEn: "Preparation for Ramadan", notesIt: "Mese di preparazione al Ramadan" },
+        { number: 9, en: "Ramadan", it: "Ramadan", ar: "رَمَضَان", sacred: false, blessed: true, notesEn: "Holy Month of Fasting & Laylat al-Qadr", notesIt: "Mese Sacro del Digiuno & Laylat al-Qadr" },
+        { number: 10, en: "Shawwal", it: "Shawwal", ar: "شَوَّال", sacred: false, notesEn: "Eid al-Fitr & 6 Sunnah fasting days", notesIt: "Eid al-Fitr & 6 giorni di digiuno Sunnah" },
+        { number: 11, en: "Dhu al-Qi'dah", it: "Dhu al-Qi'dah", ar: "ذُو القَعْدَة", sacred: true, notesEn: "Sacred Month of truce before Hajj", notesIt: "Mese Sacro di tregua prima dell'Hajj" },
+        { number: 12, en: "Dhu al-Hijjah", it: "Dhu al-Hijjah", ar: "ذُو الحِجَّة", sacred: true, notesEn: "Hajj, Day of Arafah (9th) & Eid al-Adha (10th)", notesIt: "Hajj, Giorno di Arafah (9°) & Eid al-Adha (10°)" }
+    ];
+
+    function getNativeHijriParts(date = new Date()) {
+        try {
+            const parts = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+                day: 'numeric',
+                month: 'numeric',
+                year: 'numeric'
+            }).formatToParts(date);
+            const res = {};
+            for (const p of parts) {
+                if (p.type === 'day') res.day = parseInt(p.value, 10);
+                if (p.type === 'month') res.month = parseInt(p.value, 10);
+                if (p.type === 'year') res.year = parseInt(p.value.replace(/[^0-9]/g, ''), 10);
+            }
+            return res;
+        } catch (e) {
+            return { day: 15, month: 5, year: 1448 };
+        }
+    }
+
+    function findNextHijriTarget(targetMonth, targetDay) {
+        const todayMid = new Date();
+        todayMid.setHours(12, 0, 0, 0);
+        for (let i = 0; i <= 390; i++) {
+            const d = new Date(todayMid.getTime() + i * 86400000);
+            const h = getNativeHijriParts(d);
+            if (h.month === targetMonth && h.day === targetDay) {
+                return { date: d, daysLeft: i, hijriYear: h.year };
+            }
+        }
+        return null;
+    }
+
+    function getMoonPhaseForHijriDay(day) {
+        const d = parseInt(day, 10) || 1;
+        if (d <= 1) {
+            return { emoji: '🌒', nameEn: 'Waxing Crescent (Hilal)', nameIt: 'Luna Crescente (Hilal)', ar: 'هلال أول الشهر' };
+        } else if (d <= 6) {
+            return { emoji: '🌒', nameEn: 'Waxing Crescent (Hilal)', nameIt: 'Luna Crescente (Hilal)', ar: 'هلال متزايد' };
+        } else if (d <= 9) {
+            return { emoji: '🌓', nameEn: 'First Quarter', nameIt: 'Primo Quarto', ar: 'التربيع الأول' };
+        } else if (d <= 13) {
+            return { emoji: '🌔', nameEn: 'Waxing Gibbous', nameIt: 'Gibbosa Crescente', ar: 'أحدب متزايد' };
+        } else if (d <= 16) {
+            return { emoji: '🌕', nameEn: 'Full Moon (Badr)', nameIt: 'Luna Piena (Badr)', ar: 'بدر التمام' };
+        } else if (d <= 20) {
+            return { emoji: '🌖', nameEn: 'Waning Gibbous', nameIt: 'Gibbosa Calante', ar: 'أحدب متناقص' };
+        } else if (d <= 24) {
+            return { emoji: '🌗', nameEn: 'Third Quarter', nameIt: 'Ultimo Quarto', ar: 'التربيع الثاني' };
+        } else if (d <= 28) {
+            return { emoji: '🌘', nameEn: 'Waning Crescent', nameIt: 'Luna Calante', ar: 'هلال متناقص' };
+        } else {
+            return { emoji: '🌑', nameEn: 'New Moon', nameIt: 'Luna Nuova', ar: 'محاق' };
+        }
+    }
+
+    function updateIslamicCalendarUI(hijriData) {
+        if (hijriData) window._lastHijriData = hijriData;
+        const apiData = hijriData || window._lastHijriData;
+
+        let day = 15;
+        let monthNum = 5;
+        let year = 1448;
+        let monthObj = HIJRI_MONTHS_INFO[4];
+
+        if (apiData && apiData.month && apiData.month.number) {
+            day = parseInt(apiData.day, 10) || 15;
+            monthNum = parseInt(apiData.month.number, 10) || 5;
+            year = parseInt(apiData.year, 10) || 1448;
+            monthObj = HIJRI_MONTHS_INFO[monthNum - 1] || HIJRI_MONTHS_INFO[4];
+        } else {
+            const nativeParts = getNativeHijriParts(new Date());
+            day = nativeParts.day || 15;
+            monthNum = nativeParts.month || 5;
+            year = nativeParts.year || 1448;
+            monthObj = HIJRI_MONTHS_INFO[monthNum - 1] || HIJRI_MONTHS_INFO[4];
+        }
+
+        const isIt = (currentLang === 'it');
+        const monthName = isIt ? monthObj.it : monthObj.en;
+        const hijriFormatted = `${day} ${monthName} ${year} AH`;
+        const hijriArabicFormatted = `${day} ${monthObj.ar} ${year} هـ`;
+
+        // 1. Update Prayer Times Card Hijri Date Badge & Moon Icon
+        const prayerHijriEl = document.getElementById('current-hijri-date');
+        if (prayerHijriEl) prayerHijriEl.textContent = hijriFormatted;
+        const prayerHijriArEl = document.getElementById('current-hijri-ar');
+        if (prayerHijriArEl) prayerHijriArEl.textContent = hijriArabicFormatted;
+
+        // 2. Update Feature Card on Islamic Calendar section
+        const heroHijriEl = document.getElementById('hijri-full-display');
+        if (heroHijriEl) heroHijriEl.textContent = hijriFormatted;
+        const heroHijriArEl = document.getElementById('hijri-arabic-display');
+        if (heroHijriArEl) heroHijriArEl.textContent = hijriArabicFormatted;
+
+        // 3. Dynamic Moon Phase Emoji based on current day of month (🌑🌒🌓🌔🌕🌖🌗🌘)
+        const moonPhase = getMoonPhaseForHijriDay(day);
+        const moonArtEl = document.getElementById('hijri-moon-phase-art');
+        if (moonArtEl) moonArtEl.textContent = moonPhase.emoji;
+
+        const lunarEmojiEl = document.getElementById('hijri-lunar-emoji');
+        if (lunarEmojiEl) lunarEmojiEl.textContent = moonPhase.emoji;
+
+        const lunarTextEl = document.getElementById('hijri-lunar-phase-text');
+        if (lunarTextEl) {
+            const phaseName = isIt ? moonPhase.nameIt : moonPhase.nameEn;
+            lunarTextEl.textContent = `${phaseName} • ${moonPhase.ar}`;
+        }
+
+        const prayerMoonBadge = document.querySelector('#prayer-hijri-badge .hijri-badge-icon');
+        if (prayerMoonBadge) prayerMoonBadge.textContent = moonPhase.emoji;
+
+        // 4. Calculate Upcoming Islamic Events
+        const eventsData = [
+            {
+                id: 'ramadan',
+                targetMonth: 9,
+                targetDay: 1,
+                titleEn: '1 Ramadan',
+                titleIt: '1 Ramadan'
+            },
+            {
+                id: 'eid-fitr',
+                targetMonth: 10,
+                targetDay: 1,
+                titleEn: '1 Shawwal',
+                titleIt: '1 Shawwal'
+            },
+            {
+                id: 'arafah',
+                targetMonth: 12,
+                targetDay: 9,
+                titleEn: '9 Dhu al-Hijjah',
+                titleIt: '9 Dhu al-Hijjah'
+            },
+            {
+                id: 'eid-adha',
+                targetMonth: 12,
+                targetDay: 10,
+                titleEn: '10 Dhu al-Hijjah',
+                titleIt: '10 Dhu al-Hijjah'
+            }
+        ];
+
+        eventsData.forEach(ev => {
+            const target = findNextHijriTarget(ev.targetMonth, ev.targetDay);
+            if (!target) return;
+
+            const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+            const gregDateStr = '~ ' + target.date.toLocaleDateString(isIt ? 'it-IT' : 'en-US', dateOptions);
+            const hijriDateStr = `${isIt ? ev.titleIt : ev.titleEn} ${target.hijriYear} AH`;
+
+            let countdownText = '';
+            let isToday = false;
+            if (target.daysLeft === 0) {
+                countdownText = isIt ? '🎉 Oggi!' : '🎉 Today!';
+                isToday = true;
+            } else if (target.daysLeft === 1) {
+                countdownText = isIt ? '⏳ Domani!' : '⏳ Tomorrow!';
+            } else {
+                countdownText = isIt ? `⏳ tra ${target.daysLeft} giorni` : `⏳ in ${target.daysLeft} days`;
+            }
+
+            // Update Home card
+            const countEl = document.getElementById(`countdown-${ev.id}`);
+            if (countEl) {
+                countEl.textContent = countdownText;
+                if (isToday) countEl.classList.add('today');
+                else countEl.classList.remove('today');
+            }
+            const gregEl = document.getElementById(`date-greg-${ev.id}`);
+            if (gregEl) gregEl.textContent = gregDateStr;
+            const hijriEl = document.getElementById(`date-hijri-${ev.id}`);
+            if (hijriEl) hijriEl.textContent = hijriDateStr;
+
+            // Update Events page card if present
+            const evCountEl = document.getElementById(`events-countdown-${ev.id}`);
+            if (evCountEl) {
+                evCountEl.textContent = countdownText;
+                if (isToday) evCountEl.classList.add('today');
+                else evCountEl.classList.remove('today');
+            }
+            const evGregEl = document.getElementById(`events-date-greg-${ev.id}`);
+            if (evGregEl) evGregEl.textContent = gregDateStr;
+        });
+
+        // 4. Populate 12-Month Explorer Grid
+        const monthsContainer = document.getElementById('hijri-months-container');
+        if (monthsContainer) {
+            monthsContainer.innerHTML = HIJRI_MONTHS_INFO.map(m => {
+                const isCurrent = (m.number === monthNum);
+                const currentBadge = isCurrent
+                    ? `<span class="month-tag-current">${isIt ? 'Mese Attuale' : 'Current Month'}</span>`
+                    : '';
+                const sacredBadge = m.sacred
+                    ? `<span class="month-tag-sacred">${isIt ? 'Mese Sacro' : 'Sacred Month'}</span>`
+                    : '';
+                const notes = isIt ? m.notesIt : m.notesEn;
+
+                return `
+                    <div class="hijri-month-tile ${isCurrent ? 'current-active-month' : ''}">
+                        <div class="month-num-pill">${m.number} / 12</div>
+                        <div class="month-name-en">${isIt ? m.it : m.en}</div>
+                        <div class="month-name-ar" dir="rtl">${m.ar}</div>
+                        <div>${currentBadge}${sacredBadge}</div>
+                        <div class="month-brief-notes">${notes}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+    window.updateIslamicCalendarUI = updateIslamicCalendarUI;
+
+    // Instant local rendering
+    updateIslamicCalendarUI(null);
+
+    // Explorer Accordion Toggle
+    const explorerToggle = document.getElementById('hijri-explorer-toggle');
+    const explorerContainer = document.getElementById('hijri-months-container');
+    if (explorerToggle && explorerContainer) {
+        explorerToggle.addEventListener('click', () => {
+            const isHidden = explorerContainer.classList.contains('hidden');
+            if (isHidden) {
+                explorerContainer.classList.remove('hidden');
+                explorerToggle.setAttribute('aria-expanded', 'true');
+            } else {
+                explorerContainer.classList.add('hidden');
+                explorerToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    // Islamic Events Horizontal Scrolling Track Nav Buttons
+    document.querySelectorAll('.islamic-events-scroll-wrap').forEach(wrap => {
+        const grid = wrap.querySelector('.islamic-events-grid');
+        const prevBtn = wrap.querySelector('.events-nav-btn.prev');
+        const nextBtn = wrap.querySelector('.events-nav-btn.next');
+        if (grid && prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                grid.scrollBy({ left: -320, behavior: 'smooth' });
+            });
+        }
+        if (grid && nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                grid.scrollBy({ left: 320, behavior: 'smooth' });
+            });
+        }
+    });
 
     fetchPrayerTimes();
 

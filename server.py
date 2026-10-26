@@ -15,10 +15,11 @@ DB_FILE = 'asm.db'
 ALLOWED_FILES = ['index.html', 'register.html', 'admin.html', 'admin_members.html', 'admin_jumuah.html', 'admin_users.html', 'jumuah.html', 'support.html', 'gallery.html', 'events.html', 'admin_questions.html', 'halal.html', 'admin_scanner.html']
 ALLOWED_DIRS = ['assets', 'css', 'js']
 
-# Cache for prayer times
+# Cache for prayer times and Hijri date
 prayer_times_cache = {
     'date': None,
-    'data': None
+    'data': None,
+    'hijri': None
 }
 
 def get_db():
@@ -528,7 +529,7 @@ def delete_question():
 def prayer_times():
     today = datetime.datetime.now().strftime('%Y-%m-%d')
     if prayer_times_cache['date'] == today and prayer_times_cache['data']:
-        return jsonify({"success": True, "data": prayer_times_cache['data']})
+        return jsonify({"success": True, "data": prayer_times_cache['data'], "hijri": prayer_times_cache.get('hijri')})
         
     try:
         url = "https://api.aladhan.com/v1/timingsByCity?city=Milan&country=Italy&method=2"
@@ -538,7 +539,8 @@ def prayer_times():
             if data and data.get('code') == 200:
                 prayer_times_cache['date'] = today
                 prayer_times_cache['data'] = data['data']['timings']
-                return jsonify({"success": True, "data": prayer_times_cache['data']})
+                prayer_times_cache['hijri'] = data['data'].get('date', {}).get('hijri')
+                return jsonify({"success": True, "data": prayer_times_cache['data'], "hijri": prayer_times_cache.get('hijri')})
     except Exception as e:
         print("Error fetching prayer times:", e)
         

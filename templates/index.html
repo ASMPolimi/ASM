@@ -35,6 +35,10 @@
                 <span class="dock-card-icon">🕌</span>
                 <span class="dock-card-title" data-i18n="dock_prayer">Prayer</span>
             </a>
+            <a href="#islamic-calendar" class="dock-card">
+                <span class="dock-card-icon">🌙</span>
+                <span class="dock-card-title" data-i18n="dock_hijri">Islamic Calendar</span>
+            </a>
             <a href="#halal-scanner" class="dock-card">
                 <span class="dock-card-icon">🥗</span>
                 <span class="dock-card-title" data-i18n="dock_halal">Halal Scanner</span>
@@ -178,7 +182,17 @@
         </div>
 
         <div class="prayer-times-card">
-            <div class="date-display" id="current-date" data-i18n="prayer_date_loading">Loading date...</div>
+            <div class="date-display">
+                <div class="date-display-main">
+                    <span class="date-display-icon">📅</span>
+                    <span id="current-date" data-i18n="prayer_date_loading">Loading date...</span>
+                </div>
+                <div class="date-display-hijri" id="prayer-hijri-badge" title="Umm al-Qura Islamic Hijri Date">
+                    <span class="hijri-badge-icon">🌙</span>
+                    <span id="current-hijri-date">Loading Hijri date...</span>
+                    <span id="current-hijri-ar" class="hijri-arabic-pill" dir="rtl" lang="ar"></span>
+                </div>
+            </div>
 
             <div class="prayer-grid stagger-children">
                 <div class="prayer-item">
@@ -239,6 +253,141 @@
         </div>
 
 
+    </div>
+</section>
+
+<!-- Islamic Hijri Calendar & Key Events Section -->
+<section id="islamic-calendar" class="section bg-light fade-in">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-badge" data-i18n="hijri_badge">Hijri Calendar 1448 AH</span>
+            <h2 data-i18n="hijri_heading">Islamic Calendar &amp; Upcoming Events</h2>
+            <div class="divider"></div>
+            <p data-i18n="hijri_subhead">Track the Islamic lunar calendar and count down to major holy celebrations across the academic year.</p>
+        </div>
+
+        <!-- Today's Hijri Feature Card -->
+        <div class="hijri-today-card">
+            <div class="hijri-today-left">
+                <div class="hijri-moon-emblem">
+                    <span class="moon-icon-art" id="hijri-moon-phase-art">🌕</span>
+                </div>
+                <div class="hijri-today-meta">
+                    <span class="hijri-today-label" data-i18n="hijri_today_label">Current Hijri Date</span>
+                    <h3 class="hijri-today-date" id="hijri-full-display">Loading Hijri date...</h3>
+                    <div class="hijri-arabic-sub" id="hijri-arabic-display" dir="rtl" lang="ar">جاري التحميل...</div>
+                </div>
+            </div>
+            <div class="hijri-today-right">
+                <div class="hijri-lunar-phase-card">
+                    <div class="lunar-phase-badge-wrap">
+                        <span class="lunar-phase-badge-title" data-i18n="hijri_phase_label">Current Lunar Phase</span>
+                        <div class="lunar-phase-pill" id="hijri-lunar-phase-display">
+                            <span class="lunar-phase-emoji" id="hijri-lunar-emoji">🌕</span>
+                            <span class="lunar-phase-text" id="hijri-lunar-phase-text">Full Moon (Badr)</span>
+                        </div>
+                    </div>
+                    <div class="hijri-sighting-note" data-i18n="hijri_sighting_note">
+                        🌙 Months follow confirmed moon sighting (Hilal). Dates may vary by &plusmn;1 day.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Major Upcoming Islamic Events (Horizontal Scroll Track) -->
+        <div class="islamic-events-scroll-wrap">
+            <div class="events-scroll-header">
+                <span class="events-scroll-hint" data-i18n="hijri_scroll_hint">👉 Scroll / swipe to view all upcoming events</span>
+                <div class="events-scroll-nav">
+                    <button type="button" class="events-nav-btn prev" aria-label="Scroll left">‹</button>
+                    <button type="button" class="events-nav-btn next" aria-label="Scroll right">›</button>
+                </div>
+            </div>
+            <div class="islamic-events-grid stagger-children" id="islamic-events-cards">
+                <!-- Ramadan Card -->
+                <div class="islamic-event-card event-ramadan" id="event-card-ramadan">
+                    <div class="islamic-event-badge-strip">
+                        <span class="event-type-badge" data-i18n="event_ramadan_badge">Holy Month of Fasting</span>
+                        <span class="event-countdown-pill" id="countdown-ramadan">Calculating...</span>
+                    </div>
+                    <div class="islamic-event-icon">🌙</div>
+                    <h3 class="islamic-event-title" data-i18n="event_ramadan_title">Ramadan</h3>
+                    <div class="islamic-event-hijri" id="date-hijri-ramadan">1 Ramadan 1448 AH</div>
+                    <div class="islamic-event-gregorian" id="date-greg-ramadan">~ February 2027</div>
+                    <p class="islamic-event-desc" data-i18n="event_ramadan_desc">
+                        The sacred month of fasting from dawn to sunset, daily Quran recitation, nightly Taraweeh prayers, and community Iftar dinners.
+                    </p>
+                    <div class="islamic-event-footer">
+                        <span class="event-status-tag" id="status-ramadan">⏳ Approaching</span>
+                    </div>
+                </div>
+
+                <!-- Eid al-Fitr Card -->
+                <div class="islamic-event-card event-eid-fitr" id="event-card-eid-fitr">
+                    <div class="islamic-event-badge-strip">
+                        <span class="event-type-badge" data-i18n="event_eid_fitr_badge">Festival of Breaking the Fast</span>
+                        <span class="event-countdown-pill" id="countdown-eid-fitr">Calculating...</span>
+                    </div>
+                    <div class="islamic-event-icon">✨</div>
+                    <h3 class="islamic-event-title" data-i18n="event_eid_fitr_title">Eid al-Fitr</h3>
+                    <div class="islamic-event-hijri" id="date-hijri-eid-fitr">1 Shawwal 1448 AH</div>
+                    <div class="islamic-event-gregorian" id="date-greg-eid-fitr">~ March 2027</div>
+                    <p class="islamic-event-desc" data-i18n="event_eid_fitr_desc">
+                        The joyous celebration marking the end of Ramadan, celebrated with morning Eid congregational prayer, charity, and festive campus gatherings.
+                    </p>
+                    <div class="islamic-event-footer">
+                        <span class="event-status-tag" id="status-eid-fitr">⏳ Upcoming</span>
+                    </div>
+                </div>
+
+                <!-- Day of Arafah Card -->
+                <div class="islamic-event-card event-arafah" id="event-card-arafah">
+                    <div class="islamic-event-badge-strip">
+                        <span class="event-type-badge" data-i18n="event_arafah_badge">Pinnacle of Hajj</span>
+                        <span class="event-countdown-pill" id="countdown-arafah">Calculating...</span>
+                    </div>
+                    <div class="islamic-event-icon">⛰️</div>
+                    <h3 class="islamic-event-title" data-i18n="event_arafah_title">Day of Arafah</h3>
+                    <div class="islamic-event-hijri" id="date-hijri-arafah">9 Dhu al-Hijjah 1448 AH</div>
+                    <div class="islamic-event-gregorian" id="date-greg-arafah">~ May 2027</div>
+                    <p class="islamic-event-desc" data-i18n="event_arafah_desc">
+                        The most sacred day of the Islamic year. Pilgrims gather on Mount Arafat in prayer. Fasting is highly recommended for non-pilgrims.
+                    </p>
+                    <div class="islamic-event-footer">
+                        <span class="event-status-tag" id="status-arafah">⏳ Upcoming</span>
+                    </div>
+                </div>
+
+                <!-- Eid al-Adha Card -->
+                <div class="islamic-event-card event-eid-adha" id="event-card-eid-adha">
+                    <div class="islamic-event-badge-strip">
+                        <span class="event-type-badge" data-i18n="event_eid_adha_badge">Feast of the Sacrifice</span>
+                        <span class="event-countdown-pill" id="countdown-eid-adha">Calculating...</span>
+                    </div>
+                    <div class="islamic-event-icon">🕋</div>
+                    <h3 class="islamic-event-title" data-i18n="event_eid_adha_title">Eid al-Adha</h3>
+                    <div class="islamic-event-hijri" id="date-hijri-eid-adha">10 Dhu al-Hijjah 1448 AH</div>
+                    <div class="islamic-event-gregorian" id="date-greg-eid-adha">~ May 2027</div>
+                    <p class="islamic-event-desc" data-i18n="event_eid_adha_desc">
+                        Commemorates Prophet Ibrahim’s (AS) devotion and sacrifice. Celebrated with morning Eid prayer, Qurbani charity, and community feasts.
+                    </p>
+                    <div class="islamic-event-footer">
+                        <span class="event-status-tag" id="status-eid-adha">⏳ Upcoming</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12 Islamic Months Quick Reference Accordion / Drawer -->
+        <div class="hijri-months-explorer">
+            <button type="button" class="hijri-explorer-toggle-btn" id="hijri-explorer-toggle" aria-expanded="false">
+                <span>🗓️ <strong data-i18n="hijri_explorer_btn">Explore the 12 Islamic Hijri Months</strong></span>
+                <span class="toggle-arrow">▾</span>
+            </button>
+            <div class="hijri-months-grid-collapse hidden" id="hijri-months-container">
+                <!-- Populated dynamically via JS with active month highlight -->
+            </div>
+        </div>
     </div>
 </section>
 

@@ -4331,4 +4331,630 @@ body.dark-mode .lang-pill-btn.active {
     color: #0f172a;
     border-color: var(--color-secondary);
     box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4);
+}
+
+/* ========================================================
+   Islamic Hijri Calendar & Key Events Styles
+   ======================================================== */
+
+.date-display {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)) !important;
+    color: white;
+    text-align: center;
+    padding: 1.25rem 1.75rem !important;
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.date-display-main {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.date-display-hijri {
+    background: rgba(251, 191, 36, 0.2);
+    border: 1px solid rgba(251, 191, 36, 0.5);
+    color: #fbbf24;
+    padding: 0.35rem 0.9rem;
+    border-radius: 2rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.hijri-arabic-pill {
+    font-family: 'Amiri', serif;
+    font-size: 1.05rem;
+    margin-left: 0.4rem;
+    color: #fef08a;
+}
+
+/* Today's Hijri Feature Card */
+.hijri-today-card {
+    background: linear-gradient(135deg, #0e3647 0%, #124a61 60%, #175d7a 100%);
+    color: #ffffff;
+    border-radius: 1.25rem;
+    padding: 2.25rem 2.5rem;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25);
+    border: 1.5px solid rgba(251, 191, 36, 0.4);
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hijri-today-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.16) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hijri-today-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.hijri-moon-emblem {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(251, 191, 36, 0.15);
+    border: 2px solid rgba(251, 191, 36, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.25);
+}
+
+.hijri-today-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fbbf24;
+    margin-bottom: 0.35rem;
+}
+
+.hijri-today-date {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 0.35rem 0;
+    line-height: 1.2;
+}
+
+.hijri-arabic-sub {
+    font-family: 'Amiri', serif;
+    font-size: 1.35rem;
+    color: #fef08a;
+    direction: rtl;
+    line-height: 1.4;
+}
+
+.hijri-today-right {
+    position: relative;
+    z-index: 1;
+}
+
+.hijri-lunar-phase-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.85rem;
+}
+
+.lunar-phase-badge-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.lunar-phase-badge-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+.lunar-phase-pill {
+    background: rgba(251, 191, 36, 0.2);
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    color: #fef08a;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.3rem 0.75rem;
+    border-radius: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.2);
+}
+
+.lunar-phase-emoji {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.hijri-sighting-note {
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* Islamic Events Horizontal Scrolling */
+.islamic-events-scroll-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.events-scroll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding: 0 0.25rem;
+}
+
+.events-scroll-hint {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.events-scroll-nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.events-nav-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #ffffff;
+    color: var(--color-text-main);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .events-nav-btn {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #e2e8f0;
+}
+
+.events-nav-btn:hover {
+    background: var(--color-primary);
+    color: #ffffff;
+    border-color: var(--color-primary);
+    transform: scale(1.08);
+}
+
+.islamic-events-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1.25rem;
+    padding: 0.5rem 0.25rem 1.25rem 0.25rem;
+    margin-bottom: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(217, 119, 6, 0.5) rgba(0, 0, 0, 0.05);
+}
+
+.islamic-events-grid::-webkit-scrollbar {
+    height: 7px;
+}
+
+.islamic-events-grid::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 999px;
+}
+
+body.dark-mode .islamic-events-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.islamic-events-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #d97706, #fbbf24);
+    border-radius: 999px;
+}
+
+.islamic-events-grid::-webkit-scrollbar-thumb:hover {
+    background: #b45309;
+}
+
+.islamic-event-card {
+    flex: 0 0 clamp(270px, 80vw, 310px);
+    width: clamp(270px, 80vw, 310px);
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    background: #ffffff;
+    border-radius: 1.25rem;
+    padding: 1.6rem 1.4rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    border: 1.5px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+    overflow: hidden;
+}
+
+body.dark-mode .islamic-event-card {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.islamic-event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.14);
+    border-color: rgba(251, 191, 36, 0.6);
+}
+
+.event-ramadan {
+    border-top: 4px solid #f59e0b !important;
+}
+
+.event-eid-fitr {
+    border-top: 4px solid #10b981 !important;
+}
+
+.event-arafah {
+    border-top: 4px solid #8b5cf6 !important;
+}
+
+.event-eid-adha {
+    border-top: 4px solid #0284c7 !important;
+}
+
+.islamic-event-badge-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.15rem;
+    flex-wrap: wrap;
+}
+
+.event-type-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.5rem;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+body.dark-mode .event-type-badge {
+    background: #334155;
+    color: #cbd5e1;
+}
+
+.event-ramadan .event-type-badge {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.event-eid-fitr .event-type-badge {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.event-arafah .event-type-badge {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.event-eid-adha .event-type-badge {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.event-countdown-pill {
+    font-size: 0.76rem;
+    font-weight: 800;
+    padding: 0.25rem 0.65rem;
+    border-radius: 1rem;
+    background: #fef3c7;
+    color: #b45309;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    white-space: nowrap;
+}
+
+.event-countdown-pill.today {
+    background: #d1fae5;
+    color: #065f46;
+    border-color: #10b981;
+    animation: pulseGlow 1.8s infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+
+.islamic-event-icon {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.islamic-event-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0 0 0.35rem 0;
+}
+
+body.dark-mode .islamic-event-title {
+    color: #f1f5f9;
+}
+
+.islamic-event-hijri {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-bottom: 0.2rem;
+}
+
+.islamic-event-gregorian {
+    font-size: 0.88rem;
+    color: var(--color-text-light);
+    font-weight: 500;
+    margin-bottom: 0.85rem;
+}
+
+body.dark-mode .islamic-event-gregorian {
+    color: #94a3b8;
+}
+
+.islamic-event-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--color-text);
+    margin-bottom: 1.25rem;
+    flex-grow: 1;
+}
+
+body.dark-mode .islamic-event-desc {
+    color: #cbd5e1;
+}
+
+.islamic-event-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding-top: 0.85rem;
+}
+
+body.dark-mode .islamic-event-footer {
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.event-status-tag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+body.dark-mode .event-status-tag {
+    color: #94a3b8;
+}
+
+/* 12 Months Explorer */
+.hijri-months-explorer {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+body.dark-mode .hijri-months-explorer {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.hijri-explorer-toggle-btn {
+    width: 100%;
+    padding: 1.25rem 1.75rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    transition: background 0.2s ease;
+}
+
+body.dark-mode .hijri-explorer-toggle-btn {
+    color: #f1f5f9;
+}
+
+.hijri-explorer-toggle-btn:hover {
+    background: rgba(251, 191, 36, 0.06);
+}
+
+.toggle-arrow {
+    font-size: 1.15rem;
+    transition: transform 0.25s ease;
+}
+
+.hijri-explorer-toggle-btn[aria-expanded="true"] .toggle-arrow {
+    transform: rotate(180deg);
+}
+
+.hijri-months-grid-collapse {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    background: #f8fafc;
+}
+
+body.dark-mode .hijri-months-grid-collapse {
+    background: #0f172a;
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.hijri-month-tile {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 0.85rem;
+    padding: 1rem 1.1rem;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+body.dark-mode .hijri-month-tile {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.hijri-month-tile.current-active-month {
+    border: 2px solid var(--color-secondary);
+    background: rgba(251, 191, 36, 0.08);
+    box-shadow: 0 4px 14px rgba(251, 191, 36, 0.25);
+}
+
+.month-num-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 0.25rem;
+}
+
+.month-name-en {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.15rem;
+}
+
+body.dark-mode .month-name-en {
+    color: #f1f5f9;
+}
+
+.month-name-ar {
+    font-family: 'Amiri', serif;
+    font-size: 1.15rem;
+    color: var(--color-secondary);
+    direction: rtl;
+    margin-bottom: 0.35rem;
+}
+
+.month-tag-sacred {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.35rem;
+    background: #fef3c7;
+    color: #92400e;
+    display: inline-block;
+    margin-bottom: 0.3rem;
+}
+
+.month-tag-current {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.35rem;
+    background: #d1fae5;
+    color: #065f46;
+    display: inline-block;
+    margin-bottom: 0.3rem;
+}
+
+.month-brief-notes {
+    font-size: 0.78rem;
+    color: #64748b;
+    line-height: 1.35;
+}
+
+body.dark-mode .month-brief-notes {
+    color: #94a3b8;
+}
+
+@media (max-width: 768px) {
+    .hijri-today-card {
+        grid-template-columns: 1fr;
+        padding: 1.5rem 1.25rem;
+        gap: 1.5rem;
+    }
+    .hijri-today-left {
+        gap: 1rem;
+    }
+    .hijri-moon-emblem {
+        width: 58px;
+        height: 58px;
+        font-size: 1.8rem;
+    }
+    .date-display {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
