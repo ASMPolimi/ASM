@@ -5,22 +5,271 @@
 {% block canonical_url %}https://asmpolimi.it/events{% endblock %}
 
 {% block extra_head %}
+<style>
+    /* Event Cards Grid & Ticket Styling */
+    .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.75rem;
+        margin-top: 2rem;
+    }
+
+    .event-card {
+        background: #ffffff;
+        border-radius: 1.25rem;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .event-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(18, 74, 97, 0.12);
+        border-color: rgba(18, 74, 97, 0.3);
+    }
+
+    .event-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .event-cat-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .cat-islamic { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .cat-ramadiamo { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    .cat-physical { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .cat-cultural { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+    .cat-other { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+
+    .event-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.3rem 0.65rem;
+        border-radius: 999px;
+    }
+
+    .status-open { background: #dcfce7; color: #15803d; }
+    .status-closed { background: #fee2e2; color: #b91c1c; }
+
+    .event-title {
+        color: var(--color-primary);
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin: 0 0 0.85rem 0;
+        line-height: 1.35;
+        font-family: var(--font-heading);
+    }
+
+    .event-meta-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.92rem;
+        color: #475569;
+    }
+
+    .event-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+    }
+
+    .event-meta-icon {
+        font-size: 1.05rem;
+        width: 1.4rem;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    .event-desc {
+        color: #64748b;
+        font-size: 0.94rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .event-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #f1f5f9;
+        margin-top: auto;
+    }
+
+    .event-cost-pill {
+        font-weight: 700;
+        color: var(--color-primary);
+        background: rgba(18, 74, 97, 0.08);
+        padding: 0.35rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.88rem;
+    }
+
+    /* Native Registration Form Card */
+    .native-event-form-wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 1.5rem;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.07);
+        padding: 2.5rem;
+        position: relative;
+    }
+
+    @media (max-width: 640px) {
+        .native-event-form-wrap {
+            padding: 1.5rem;
+            border-radius: 1rem;
+        }
+    }
+
+    .selected-event-hero {
+        background: linear-gradient(135deg, rgba(18, 74, 97, 0.06), rgba(251, 191, 36, 0.1));
+        border: 1.5px solid rgba(18, 74, 97, 0.15);
+        border-radius: 1rem;
+        padding: 1.25rem 1.4rem;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .form-step-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--color-primary);
+        margin: 1.75rem 0 1rem 0;
+        padding-bottom: 0.4rem;
+        border-bottom: 1.5px solid #f1f5f9;
+    }
+
+    .form-step-num {
+        width: 1.85rem;
+        height: 1.85rem;
+        border-radius: 50%;
+        background: var(--color-primary);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .form-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .checkbox-pill-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 0.45rem;
+    }
+
+    .checkbox-pill-wrap:hover {
+        border-color: #cbd5e1;
+        background: #f1f5f9;
+    }
+
+    .free-celebration-banner {
+        background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+        border: 1.5px solid #a7f3d0;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .paid-instructions-banner {
+        background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+        border: 1.5px solid #bfdbfe;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    /* Success Card Screen */
+    .success-celebration-card {
+        text-align: center;
+        padding: 3rem 1.5rem;
+    }
+
+    .success-icon-badge {
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
+        background: #dcfce7;
+        color: #15803d;
+        font-size: 2.25rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 4px 15px rgba(34, 197, 94, 0.25);
+    }
+</style>
 {% endblock %}
 
-{% block header_style %}style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding:
-0;"{% endblock %}
+{% block header_style %}style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 0;"{% endblock %}
 
 {% block content %}
+<!-- Section: Featured Events -->
 <section id="events" class="section first-section bg-light">
     <div class="container">
         <div class="section-header text-center">
             <h2 data-i18n="events_page_heading">Featured Events</h2>
             <div class="divider"></div>
-            <p data-i18n="events_page_sub">Stay updated with our latest halaqas, socials, and activities.</p>
+            <p data-i18n="events_page_sub">Join our halaqas, Ramadan gatherings, sports trips, and cultural workshops across campus.</p>
         </div>
 
-        <div id="dynamic-events-container" class="team-grid stagger-children">
-            <!-- Events will be populated here by JS -->
+        <div id="dynamic-events-container" class="events-grid">
             <p class="text-center w-100" style="grid-column: 1 / -1;" data-i18n="events_loading">Loading events...</p>
         </div>
     </div>
@@ -65,9 +314,6 @@
                     <p class="islamic-event-desc" data-i18n="event_eid_fitr_desc">
                         The joyous celebration marking the end of Ramadan, celebrated with morning Eid congregational prayer, charity, and festive campus gatherings.
                     </p>
-                    <div class="islamic-event-footer">
-                        <span class="event-status-tag">⏳ Upcoming</span>
-                    </div>
                 </div>
 
                 <!-- Day of Arafah Card -->
@@ -83,9 +329,6 @@
                     <p class="islamic-event-desc" data-i18n="event_arafah_desc">
                         The most sacred day of the Islamic year. Pilgrims gather on Mount Arafat in prayer. Fasting is highly recommended for non-pilgrims.
                     </p>
-                    <div class="islamic-event-footer">
-                        <span class="event-status-tag">⏳ Upcoming</span>
-                    </div>
                 </div>
 
                 <!-- Eid al-Adha Card -->
@@ -101,75 +344,46 @@
                     <p class="islamic-event-desc" data-i18n="event_eid_adha_desc">
                         Commemorates Prophet Ibrahim’s (AS) devotion and sacrifice. Celebrated with morning Eid prayer, Qurbani charity, and community feasts.
                     </p>
-                    <div class="islamic-event-footer">
-                        <span class="event-status-tag">⏳ Upcoming</span>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Event Registration Form Section -->
-<section id="register-form" class="section" style="min-height: 80vh; scroll-margin-top: 100px;">
-    <div class="container">
-        <div class="section-header text-center">
-            <h2 data-i18n="events_reg_heading">Register for an Event</h2>
+<!-- ============================================================ -->
+<!-- DEDICATED EVENT REGISTRATION PORTAL CTA SECTION              -->
+<!-- ============================================================ -->
+<section id="register-cta" class="section bg-light" style="padding: 4.5rem 0;">
+    <div class="container text-center" style="max-width: 780px;">
+        <div style="background: white; border-radius: 1.5rem; padding: 3.5rem 2.2rem; border: 1.5px solid #e2e8f0; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 3rem; margin-bottom: 0.75rem;">🎟️</div>
+            <h2 style="color: var(--color-primary); font-size: 2rem; margin-bottom: 0.75rem;" data-i18n="events_portal_cta_title">Ready to Join an Event?</h2>
             <div class="divider"></div>
-            <p data-i18n="events_reg_sub">Reserve your spot by filling out the form below.</p>
-        </div>
-
-        <div class="contact-form-container" style="max-width: 800px; margin: 0 auto; padding: 0;">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <a id="open-form-btn"
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true"
-                    target="_blank" class="btn btn-secondary"
-                    style="display: inline-flex; align-items: center; gap: 0.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px; border-color: var(--color-primary); color: var(--color-primary); font-weight: 600;"
-                    data-i18n="events_open_tab_btn">
-                    <span>📋</span> Open Form in New Tab
-                </a>
-            </div>
-            <!-- Google Form Embed Placeholder -->
-            <div style="width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 1rem;">
-                <iframe
-                    src="https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true"
-                    width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-            </div>
-            <p style="text-align: center; margin: 1.5rem 0; color: var(--color-text-light); font-size: 0.95rem;">
-                <strong>Note for Admin:</strong> To make this form work for events, create a form at <a
-                    href="https://forms.google.com" target="_blank"
-                    style="color: var(--color-primary); text-decoration: underline;">Google Forms</a>, click "Send",
-                choose the `&lt; &gt;` embed icon, and replace the iframe `src` link in `events.html` with your
-                real form link.
+            <p style="color: #64748b; font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem;" data-i18n="events_portal_cta_desc">
+                Registration is completed through our dedicated step-by-step application portal. Browse all upcoming sessions, check membership tier discounts, and secure your spot online.
             </p>
+            <a href="/event-register" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.15rem; font-weight: 700; border-radius: 12px; display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; box-shadow: 0 4px 15px rgba(18, 74, 97, 0.25);" data-i18n="events_open_portal_btn">
+                <span>🚀</span> Open Event Application Portal &rarr;
+            </a>
         </div>
     </div>
 </section>
-
-<!-- Footer -->
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-    const DEFAULT_REG_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true';
-    let activeDefaultForm = DEFAULT_REG_FORM;
+    let siteEvents = [];
+    let selectedEvent = null;
 
-    function setRegistrationForm(url) {
-        const iframe = document.querySelector('#register-form iframe');
-        if (iframe) {
-            iframe.src = url;
-        }
-        const openBtn = document.getElementById('open-form-btn');
-        if (openBtn) {
-            openBtn.href = url;
-        }
-    }
-
-    // Check if registration link was passed as query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const queryRegLink = urlParams.get('reg_link');
-    if (queryRegLink) {
-        setRegistrationForm(decodeURIComponent(queryRegLink));
+    function getCategoryBadgeHtml(cat) {
+        const c = cat || 'Islamic Event';
+        let cls = 'cat-other';
+        let icon = '🌟';
+        if (c.includes('Islamic')) { cls = 'cat-islamic'; icon = '🕌'; }
+        else if (c.includes('Ramadiamo') || c.includes('Iftar')) { cls = 'cat-ramadiamo'; icon = '🌙'; }
+        else if (c.includes('Physical') || c.includes('Hike') || c.includes('Laser')) { cls = 'cat-physical'; icon = '🧗'; }
+        else if (c.includes('Cultural') || c.includes('Calligraphy') || c.includes('Henna')) { cls = 'cat-cultural'; icon = '🎨'; }
+        return `<span class="event-cat-badge ${cls}">${icon} ${escapeHtml(c)}</span>`;
     }
 
     async function loadEventsContent() {
@@ -185,15 +399,7 @@
         }
         if (!data) return;
 
-        // Set active default form from admin settings
-        if (data.global_event_reg_link && data.global_event_reg_link.trim() !== '') {
-            activeDefaultForm = data.global_event_reg_link;
-        }
-
-        // If no specific link query parameter exists, default the iframe to our active form
-        if (!queryRegLink) {
-            setRegistrationForm(activeDefaultForm);
-        }
+        siteEvents = data.events || [];
 
         // Announcement Banner
         if (data.announcement && data.announcement.trim() !== '') {
@@ -210,41 +416,102 @@
             }
         }
 
-        // Render Events
-        const eventsContainer = document.getElementById('dynamic-events-container');
-        if (eventsContainer) {
-            const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
-            const t = (window.ASM_I18N && window.ASM_I18N[currentLang]) ? window.ASM_I18N[currentLang] : (window.ASM_I18N ? window.ASM_I18N.en : {});
-            if (data.events && data.events.length > 0) {
-                eventsContainer.innerHTML = ''; // Clear loading
-                data.events.forEach(event => {
-                    if (event.title || event.date || event.desc) {
-                        const card = document.createElement('a');
-                        card.href = '#register-form';
-                        card.className = 'team-card animate-up';
-                        card.style.display = 'block';
-                        card.style.textDecoration = 'none';
-                        card.style.cursor = 'pointer';
-                        card.innerHTML = `
-                                <div class="team-info">
-                                    <h3 style="color: var(--color-primary);">${event.title || t.events_untitled || 'Untitled Event'}</h3>
-                                    <p style="color: var(--color-secondary); font-weight: 500; margin-bottom: 0.5rem;">${event.date || t.events_date_tbd || 'Date TBD'}</p>
-                                    <p style="color: var(--color-text-light); font-size: 0.95rem;">${event.desc || ''}</p>
-                                </div>
-                            `;
-                        card.addEventListener('click', () => {
-                            setRegistrationForm(event.reg_link && event.reg_link.trim() !== '' ? event.reg_link : activeDefaultForm);
-                        });
-                        eventsContainer.appendChild(card);
-                    }
-                });
-            } else {
-                eventsContainer.innerHTML = `<p class="text-center w-100" style="grid-column: 1 / -1;">${t.events_empty_msg || 'No upcoming events at this time. Check back later!'}</p>`;
-            }
+        renderEventsGrid();
+        populateEventDropdown();
+
+        // Check if event ID or reg_link was passed in URL query
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryEventId = urlParams.get('event') || urlParams.get('event_id');
+        if (queryEventId) {
+            selectEventByIdOrTitle(queryEventId);
+        } else if (siteEvents.length > 0) {
+            // Default select first open event
+            const firstOpen = siteEvents.find(e => e.registration_open === 1 || e.registration_open === true || e.registration_open === '1') || siteEvents[0];
+            selectEvent(firstOpen);
         }
     }
 
-    loadEventsContent().catch(err => console.error('Error fetching events/announcements:', err));
+    function renderEventsGrid() {
+        const container = document.getElementById('dynamic-events-container');
+        if (!container) return;
+
+        if (siteEvents.length === 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: white; border-radius: 1rem; border: 1px dashed #cbd5e1;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📅</div>
+                    <p style="color: #64748b; font-size: 1.05rem; margin: 0;">No upcoming events scheduled at this moment. Stay tuned for exciting announcements!</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = '';
+        siteEvents.forEach((ev, idx) => {
+            const isRegOpen = (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1');
+            const card = document.createElement('div');
+            card.className = 'event-card animate-up';
+
+            card.innerHTML = `
+                <div>
+                    <div class="event-card-top">
+                        ${getCategoryBadgeHtml(ev.category)}
+                        <span class="event-status-pill ${isRegOpen ? 'status-open' : 'status-closed'}">
+                            ${isRegOpen ? '🟢 Registration Open' : '🔴 Closed'}
+                        </span>
+                    </div>
+
+                    <h3 class="event-title">${escapeHtml(ev.title)}</h3>
+
+                    <div class="event-meta-list">
+                        <div class="event-meta-item">
+                            <span class="event-meta-icon">📅</span>
+                            <span><strong>${escapeHtml(ev.date || 'Date TBD')}</strong></span>
+                        </div>
+                        ${ev.time ? `
+                        <div class="event-meta-item">
+                            <span class="event-meta-icon">⏰</span>
+                            <span>${escapeHtml(ev.time)}</span>
+                        </div>` : ''}
+                        <div class="event-meta-item">
+                            <span class="event-meta-icon">📍</span>
+                            <span>${escapeHtml(ev.location || 'Campus Leonardo')}</span>
+                        </div>
+                    </div>
+
+                    <p class="event-desc">${escapeHtml(ev.desc || '')}</p>
+                </div>
+
+                <div class="event-footer" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: stretch;">
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.78rem; font-weight: 700; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 0.25rem 0.6rem; border-radius: 999px;">
+                            🏅 Members: ${escapeHtml(ev.price_member || ev.cost || 'Free')}
+                        </span>
+                        <span style="font-size: 0.78rem; font-weight: 700; color: #1e40af; background: #eff6ff; border: 1px solid #bfdbfe; padding: 0.25rem 0.6rem; border-radius: 999px;">
+                            👥 Non-Members: ${escapeHtml(ev.price_non_member || ev.cost || 'Free')}
+                        </span>
+                    </div>
+
+                    ${isRegOpen ? `
+                        <a href="/event-register?event=${encodeURIComponent(ev.id || ev.title)}" class="btn btn-primary text-center" style="display: block; padding: 0.65rem 1.15rem; font-size: 0.95rem; font-weight: 700; border-radius: 8px; text-decoration: none;">
+                            Register Now 🎟️
+                        </a>
+                    ` : `
+                        <button type="button" class="btn btn-secondary text-center" disabled style="display: block; width: 100%; padding: 0.65rem 1.15rem; font-size: 0.95rem; opacity: 0.6; cursor: not-allowed; border-color: #cbd5e1; color: #94a3b8;">
+                            Registration Full
+                        </button>
+                    `}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    loadEventsContent().catch(err => console.error('Error fetching events:', err));
     window.addEventListener('asmLanguageChanged', () => loadEventsContent());
 </script>
 {% endblock %}

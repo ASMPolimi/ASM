@@ -4,30 +4,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin: Events & Announcements | ASM</title>
+    <title>Events & Registrations &bull; Admin Portal</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/asm_logo.png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-    <meta name="description"
-        content="Official Muslim Student Association at Politecnico di Milano. Daily prayer times in Milan, Friday Jumu'ah at Bovisa and Leonardo campuses, and community events. Join us!">
-    <link rel="canonical" href="https://asmpolimi.it/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/main.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .admin-nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-decoration: none;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .admin-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .admin-portal-badge {
+            background: rgba(18, 74, 97, 0.1);
+            color: var(--color-primary);
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .admin-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .admin-link:hover {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.05);
+        }
+
+        .admin-link.active {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.1);
+            font-weight: 700;
+        }
+
+        .btn-public-site {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0284c7;
+            background: rgba(2, 132, 199, 0.1);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            text-decoration: none;
+            margin-left: 0.5rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-public-site:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .btn-admin-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #dc2626;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            cursor: pointer;
+            margin-left: 0.25rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-admin-logout:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .admin-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 900px) {
+            .admin-mobile-toggle {
+                display: block;
+            }
+
+            .admin-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 1rem 1.5rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                align-items: stretch;
+            }
+
+            .admin-links.open {
+                display: flex;
+            }
+
+            .btn-public-site,
+            .btn-admin-logout {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                justify-content: center;
+            }
+        }
+
+        /* Footer */
+        .admin-footer {
+            margin-top: auto;
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+    </style>
     
 <style>
     .admin-container {
-        max-width: 600px;
-        margin: 100px auto 4rem auto;
-        padding: 2rem;
+        max-width: 1000px;
+        margin: 30px auto 4rem auto;
+        padding: 2.2rem;
         background: white;
         border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-md);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
     }
 
     .hidden {
@@ -63,73 +231,263 @@
         border-left: 5px solid #198754;
         font-weight: 500;
     }
+
+    /* Segmented Tab Navigation */
+    .tab-pills-bar {
+        display: flex;
+        gap: 0.5rem;
+        background: #f1f5f9;
+        padding: 0.35rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border: 1px solid #e2e8f0;
+        flex-wrap: wrap;
+    }
+
+    .tab-pill-btn {
+        flex: 1;
+        min-width: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        border: none;
+        background: none;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #64748b;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .tab-pill-btn:hover {
+        color: var(--color-primary);
+        background: rgba(255, 255, 255, 0.6);
+    }
+
+    .tab-pill-btn.active {
+        color: var(--color-primary);
+        background: #ffffff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .tab-pill-badge {
+        font-size: 0.75rem;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+        font-weight: 700;
+        background: #e2e8f0;
+        color: #475569;
+    }
+
+    .tab-pill-btn.active .tab-pill-badge {
+        background: rgba(18, 74, 97, 0.12);
+        color: var(--color-primary);
+    }
+
+    /* Event Card in Admin */
+    .admin-event-card {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.25rem 1.4rem;
+        margin-bottom: 1rem;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .admin-event-card:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .admin-event-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .event-cat-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.25rem 0.65rem;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .cat-islamic { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .cat-ramadiamo { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    .cat-physical { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .cat-cultural { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+    .cat-other { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+
+    .reg-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.25rem 0.65rem;
+        border-radius: 999px;
+    }
+
+    .reg-open { background: #dcfce7; color: #15803d; }
+    .reg-closed { background: #fee2e2; color: #b91c1c; }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.15rem;
+        text-align: center;
+    }
+
+    .stat-val {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--color-primary);
+        line-height: 1.2;
+    }
+
+    .stat-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 0.35rem;
+    }
+
+    /* Data Table */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        margin-top: 1rem;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88rem;
+        background: #ffffff;
+    }
+
+    .admin-table th {
+        background: #124a61;
+        color: #ffffff;
+        font-weight: 600;
+        padding: 0.85rem 1rem;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .admin-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    .admin-table tr:hover {
+        background: #f8fafc;
+    }
+
+    .dietary-tag {
+        display: inline-block;
+        background: #fef3c7;
+        color: #92400e;
+        font-weight: 600;
+        font-size: 0.78rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        border: 1px solid #fde68a;
+    }
+
+    .guest-tag {
+        display: inline-block;
+        background: #e0f2fe;
+        color: #0369a1;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 4px;
+    }
 </style>
 
 </head>
 
-<body class="bg-light">
+<body class="bg-light" style="min-height: 100vh; display: flex; flex-direction: column;">
 
-    <!-- Header & Navigation -->
-    <header class="navbar" >
-        <div class="container nav-container">
-            <a href="/" class="logo">
-                <img src="/assets/asm_logo.png" alt="ASM Logo">
+    <!-- Dedicated Admin Portal Navbar -->
+    <header class="admin-nav">
+        <div class="admin-nav-container">
+            <a href="https://asmpolimi.it" class="admin-brand" title="Go to ASM POLIMI website (asmpolimi.it)">
+                <img src="assets/asm_logo.png" alt="ASM Logo">
                 <span>ASM POLIMI</span>
+                <span class="admin-portal-badge">Admin</span>
             </a>
 
-            <nav class="nav-links">
-                <a href="/#home" data-i18n="nav_home">Home</a>
-                <a href="/events" data-i18n="nav_events">Events</a>
-                <a href="/halal" data-i18n="nav_halal">Halal Scanner</a>
-                <a href="/support" data-i18n="nav_support">Ask an Imam</a>
-                <a href="/gallery" data-i18n="nav_gallery">Gallery</a>
-                <a href="/jumuah" data-i18n="nav_jumuah">Jumu'ah</a>
-                <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer" data-i18n="nav_quran">Quran Irtaqi</a>
-                <a href="/register" class="btn btn-primary" style="padding: 0.5rem 1rem; margin-left: 1rem;" data-i18n="nav_join">Join Us</a>
-                <div class="dropdown">
-                    <button class="dropbtn" aria-label="Settings">
-                        &#8942;
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="https://admin.asmpolimi.it/admin" data-i18n="nav_admin">Admin</a>
-                    </div>
-                </div>
-            </nav>
-
-            <button class="mobile-menu-btn" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button type="button" class="admin-mobile-toggle" id="admin-nav-toggle" aria-label="Toggle navigation">
+                ☰
             </button>
+
+            <nav class="admin-links" id="admin-nav-menu">
+                <a href="/admin" class="admin-link active">
+                    <span>📅</span> Events & News
+                </a>
+                <a href="/admin_members" class="admin-link ">
+                    <span>📋</span> Members & Mailing
+                </a>
+                <a href="/admin_jumuah" class="admin-link ">
+                    <span>🕌</span> Jumu'ah
+                </a>
+                <a href="/admin_questions" class="admin-link ">
+                    <span>❓</span> Questions
+                </a>
+                <a href="/admin_scanner" class="admin-link ">
+                    <span>🥫</span> Scanned Products
+                </a>
+                <a href="/admin_users" id="nav-users-link" class="admin-link ">
+                    <span>👥</span> Users & Accounts
+                </a>
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                    title="Open live public website (asmpolimi.it) in a new tab">
+                    <span>🌐</span> View Website ↗
+                </a>
+                <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
+                    <span>🚪</span> Logout
+                </button>
+            </nav>
         </div>
     </header>
 
-    <!-- Announcement Banner -->
-    <div id="announcement-banner" class="hidden">
-        <span class="announcement-content-wrap">
-            <span style="margin-right: 0.5rem;">&#128226;</span> <span id="announcement-text"></span>
-        </span>
-        <button type="button" id="close-announcement-btn" aria-label="Close Announcement" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; line-height: 1; cursor: pointer; color: var(--color-text); opacity: 0.7; padding: 0.25rem; transition: opacity 0.2s;">&times;</button>
-    </div>
-
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-nav-overlay">
-        <nav class="mobile-nav-links">
-            <a href="/#home"><span class="mobile-nav-icon">🏠</span><span data-i18n="nav_home">Home</span></a>
-            <a href="/events"><span class="mobile-nav-icon">📅</span><span data-i18n="nav_events">Events</span></a>
-            <a href="/halal"><span class="mobile-nav-icon">🥗</span><span data-i18n="nav_halal">Halal Scanner</span></a>
-            <a href="/support"><span class="mobile-nav-icon">💬</span><span data-i18n="nav_support">Ask an Imam</span></a>
-            <a href="/gallery"><span class="mobile-nav-icon">📸</span><span data-i18n="nav_gallery">Gallery</span></a>
-            <a href="/jumuah"><span class="mobile-nav-icon">🕌</span><span data-i18n="nav_jumuah">Jumu'ah</span></a>
-            <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer"><span class="mobile-nav-icon">📖</span><span data-i18n="nav_quran">Quran Irtaqi</span></a>
-            <a href="/register"><span class="mobile-nav-icon">🤝</span><span data-i18n="nav_join">Join Us</span></a>
-        </nav>
-    </div>
-
-    
+    <!-- Main Admin Content -->
+    <main style="flex: 1;">
+        
 <div class="container">
-    <div class="admin-container" id="login-section">
+    <!-- Login Section -->
+    <div class="admin-container" id="login-section" style="max-width: 520px;">
         <h2 class="text-center mb-2">Admin Login</h2>
+        <p class="text-center mb-4" style="color: #64748b; font-size: 0.92rem;">Sign in with your admin credentials to manage events & applications.</p>
         <div id="login-error" class="error-message hidden"></div>
         <form id="login-form">
             <div class="form-group">
@@ -140,275 +498,393 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <button type="submit" class="btn btn-primary w-100" style="padding: 0.85rem;">Login to Admin Portal</button>
         </form>
     </div>
 
+    <!-- Main Dashboard Section -->
     <div class="admin-container hidden" id="dashboard-section">
-        <h2 class="text-center mb-2">Events & Announcements Settings</h2>
-        <div class="text-center mb-4" style="margin-bottom: 2rem;">
-            <a href="admin_jumuah.html"
-                style="color: var(--color-primary); font-size: 0.9rem; text-decoration: underline;">Switch to
-                Jumu'ah Admin</a>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h2 style="margin: 0; color: var(--color-primary); font-size: 1.65rem;">Events & Registrations Hub</h2>
+                <p style="margin: 0.25rem 0 0 0; color: #64748b; font-size: 0.92rem;">Manage on-campus activities, attendee applications, and site announcements.</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button type="button" id="btn-save-all-events" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.25rem; font-weight: 700;">
+                    <span>💾</span> Save & Publish All
+                </button>
+            </div>
         </div>
-        <p class="text-center mb-2" style="color: var(--color-text-light);">Edit the content below to instantly
-            update the main website.</p>
+
         <div id="update-message" class="hidden"></div>
-        <form id="update-form">
-            <div class="form-group">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
-                    <label for="announcement" style="margin: 0; font-weight: 600;">Latest Announcement</label>
-                    <button type="button" id="btn-insert-link" class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.82rem; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid #cbd5e1; background: #ffffff; color: var(--color-text);">
-                        <span>🔗</span> <span>Insert Clickable Link</span>
+
+        <!-- Segmented Tab Navigation Bar -->
+        <div class="tab-pills-bar">
+            <button type="button" class="tab-pill-btn active" data-tab="tab-events">
+                <span>📅</span> <span>Events Manager</span>
+                <span class="tab-pill-badge" id="tab-events-count">0</span>
+            </button>
+            <button type="button" class="tab-pill-btn" data-tab="tab-attendees">
+                <span>📋</span> <span>Event Applications & Attendees</span>
+                <span class="tab-pill-badge" id="tab-attendees-count">0</span>
+            </button>
+            <button type="button" class="tab-pill-btn" data-tab="tab-announcement">
+                <span>📢</span> <span>Announcement & Mission</span>
+            </button>
+            <button type="button" class="tab-pill-btn" data-tab="tab-gallery">
+                <span>🖼️</span> <span>Media Gallery</span>
+            </button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TAB 1: EVENTS MANAGER                                        -->
+        <!-- ============================================================ -->
+        <div id="tab-events" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--color-primary);">Current Events List</h3>
+                <button type="button" id="btn-show-add-event" class="btn btn-secondary" style="border-color: var(--color-primary); color: var(--color-primary); font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
+                    <span>➕</span> Add New Event
+                </button>
+            </div>
+
+            <!-- Form: Add / Edit Event (Collapsible) -->
+            <div id="event-editor-card" class="admin-event-card" style="background: #f8fafc; border: 1.5px dashed #cbd5e1; margin-bottom: 1.75rem;">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.45rem;">
+                    <span>✨</span> <span id="event-editor-title">Create a New Event</span>
+                </h4>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+                    <div class="form-group" style="margin: 0;">
+                        <label for="event-input-title" style="font-weight: 600;">Event Title *</label>
+                        <input type="text" id="event-input-title" placeholder="e.g. Ramadiamo: Grand Community Iftar" required>
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                        <label for="event-input-category" style="font-weight: 600;">Category *</label>
+                        <select id="event-input-category" style="width: 100%; padding: 0.65rem; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 500;">
+                            <option value="Islamic Event">🕌 Islamic Event (Speeches, interactive activities & giveaways)</option>
+                            <option value="Ramadiamo">🌙 Ramadiamo (Ramadan group Iftar meal)</option>
+                            <option value="Physical Activity">🧗 Physical Activity (Hiking, canoa, horse riding, laser tag, escape room)</option>
+                            <option value="Cultural Event">🎨 Cultural Event (Arabic calligraphy, henna art, cultural exhibitions)</option>
+                            <option value="Academic Workshop">🎓 Academic & Career Workshop</option>
+                            <option value="Other">🌟 Other Special Event</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                    <div class="form-group" style="margin: 0;">
+                        <label for="event-input-date" style="font-weight: 600;">Date *</label>
+                        <input type="text" id="event-input-date" placeholder="e.g. Friday, Nov 14, 2026">
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                        <label for="event-input-time" style="font-weight: 600;">Time</label>
+                        <input type="text" id="event-input-time" placeholder="e.g. 6:00 PM - 8:30 PM">
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                        <label for="event-input-location" style="font-weight: 600;">Location</label>
+                        <input type="text" id="event-input-location" placeholder="e.g. Aula Rogers, Campus Leonardo">
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                        <label for="event-input-price-member" style="font-weight: 600; color: #047857;">🏅 Price for ASM Members</label>
+                        <input type="text" id="event-input-price-member" placeholder="e.g. Free or €5">
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                        <label for="event-input-price-non-member" style="font-weight: 600; color: #1e40af;">👥 Price for Non-Members</label>
+                        <input type="text" id="event-input-price-non-member" placeholder="e.g. €10 or Free">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label for="event-input-desc" style="font-weight: 600;">Description & Activities</label>
+                    <textarea id="event-input-desc" rows="3" placeholder="Describe the program, what is included, interactive activities, gadgets, and instructions..."></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 0.5rem; border-top: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; gap: 0.65rem;">
+                        <input type="checkbox" id="event-input-reg-open" checked style="width: 1.15rem; height: 1.15rem; cursor: pointer;">
+                        <label for="event-input-reg-open" style="font-weight: 600; cursor: pointer; margin: 0;">
+                            🟢 Enable Application Form / Registration for this event
+                        </label>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" id="btn-cancel-edit" class="btn btn-secondary hidden" style="padding: 0.5rem 1rem;">Cancel</button>
+                        <button type="button" id="btn-submit-event" class="btn btn-primary" style="padding: 0.55rem 1.4rem; font-weight: 700;">Add Event to List</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List of events rendered dynamically -->
+            <div id="admin-events-list">
+                <p style="color: #64748b; font-size: 0.95rem;">Loading events...</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TAB 2: ATTENDEE APPLICATIONS                                 -->
+        <!-- ============================================================ -->
+        <div id="tab-attendees" class="tab-content hidden">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-total-apps">0</div>
+                    <div class="stat-label">Total Applications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-polimi-students">0</div>
+                    <div class="stat-label">Polimi Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-guests">0</div>
+                    <div class="stat-label">External Guests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-dietary-count">0</div>
+                    <div class="stat-label">Dietary / Allergies</div>
+                </div>
+            </div>
+
+            <!-- Filter, Search & Export Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 1rem;">
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; flex: 1;">
+                    <select id="filter-event-select" style="padding: 0.55rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem; font-weight: 600; min-width: 220px;">
+                        <option value="">🔍 All Events</option>
+                    </select>
+                    <input type="text" id="search-attendees-input" placeholder="Search by name, matricola, email, or phone..." style="flex: 1; min-width: 200px; padding: 0.55rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem;">
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button type="button" id="btn-export-excel" class="btn btn-secondary" style="background: #10b981; color: white; border: none; font-weight: 600; font-size: 0.85rem; padding: 0.55rem 0.95rem; display: inline-flex; align-items: center; gap: 0.35rem;">
+                        <span>📥</span> Export Excel
+                    </button>
+                    <button type="button" id="btn-refresh-attendees" class="btn btn-secondary" style="border-color: #cbd5e1; font-size: 0.85rem; padding: 0.55rem 0.85rem;" title="Refresh list">
+                        🔄 Refresh
                     </button>
                 </div>
-                <textarea id="announcement" rows="3" placeholder="e.g. Membership application open 🎉🎊 [JOIN US](/register)" required></textarea>
-                
-                <div style="font-size: 0.82rem; color: var(--color-text-light); margin-top: 0.45rem; line-height: 1.5; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.6rem 0.85rem;">
-                    <strong>💡 How to create clickable links:</strong> Write <code>[Text](URL)</code> anywhere in your announcement.<br>
-                    • <em>Internal page:</em> <code>Membership application open 🎉🎊 [JOIN US](/register)</code><br>
-                    • <em>External link:</em> <code>New survey available [Fill Form](https://forms.gle/...)</code><br>
-                    • <em>Tip:</em> You can also click the <strong>🔗 Insert Clickable Link</strong> button above.
-                </div>
-
-                <div id="announcement-preview-box" style="margin-top: 0.6rem; padding: 0.65rem 1rem; background: rgba(251, 191, 36, 0.18); border-left: 4px solid #f59e0b; border-radius: 6px; font-size: 0.88rem;">
-                    <span style="font-weight: 700; color: #92400e; margin-right: 0.35rem;">Banner Live Preview:</span>
-                    <span id="announcement-live-preview" style="color: var(--color-text);"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="mission-text-input">Our Mission Text</label>
-                <textarea id="mission-text-input" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="global-event-reg-link">Global Event Registration Form Link</label>
-                <input type="text" id="global-event-reg-link" placeholder="e.g. https://docs.google.com/forms/...">
             </div>
 
-            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #e5e7eb;">
-            <h3 class="mb-2">Featured Events</h3>
-            <div id="events-list" style="margin-bottom: 1rem;"></div>
-
-            <div style="background: #f9fafb; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
-                <h4 class="mb-2" style="font-size: 1rem;">Add New Event</h4>
-                <div class="form-group">
-                    <label for="event-title">Event Title</label>
-                    <input type="text" id="event-title">
-                </div>
-                <div class="form-group">
-                    <label for="event-date">Date & Time</label>
-                    <input type="text" id="event-date" placeholder="e.g. Friday, Oct 20 at 6:00 PM">
-                </div>
-                <div class="form-group">
-                    <label for="event-desc">Description</label>
-                    <textarea id="event-desc" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="event-reg-link">Registration Form Link (Optional)</label>
-                    <input type="text" id="event-reg-link" placeholder="e.g. https://forms.google.com/...">
-                </div>
-                <button type="button" class="btn btn-secondary w-100"
-                    style="color: var(--color-primary); border-color: var(--color-primary);" id="add-event-btn">Add
-                    Event to List</button>
+            <!-- Table of Attendees -->
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Attendee</th>
+                            <th>Membership & Fee</th>
+                            <th>Matricola / Guest</th>
+                            <th>Email & Phone</th>
+                            <th>Dietary / Allergies</th>
+                            <th>Emergency Contact</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendees-table-body">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 2rem; color: #64748b;">Loading applications...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
 
-            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #e5e7eb;">
-            <button type="submit" class="btn btn-primary w-100">Publish Changes</button>
-        </form>
-
-        <!-- Manage Media Gallery Section -->
-        <div
-            style="background: #f9fafb; padding: 1.5rem; border-radius: var(--radius-sm); margin-top: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #e5e7eb;">
-            <h3 class="mb-2"
-                style="font-size: 1.2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 1rem;">
-                Manage Media Gallery</h3>
-            <form id="media-gallery-form">
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem;">
-                        <h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">Gallery Image 1
-                        </h4>
-                        <div class="form-group" style="margin-bottom: 0.5rem;">
-                            <label for="gallery-event1">Caption</label>
-                            <input type="text" id="gallery-event1" required>
-                        </div>
-
+        <!-- ============================================================ -->
+        <!-- TAB 3: ANNOUNCEMENT & MISSION                                -->
+        <!-- ============================================================ -->
+        <div id="tab-announcement" class="tab-content hidden">
+            <form id="announcement-form">
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <label for="announcement" style="margin: 0; font-weight: 600;">Latest Announcement Banner</label>
+                        <button type="button" id="btn-insert-link" class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.82rem; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid #cbd5e1; background: #ffffff; color: var(--color-text);">
+                            <span>🔗</span> <span>Insert Clickable Link</span>
+                        </button>
                     </div>
-                    <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem;">
-                        <h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">Gallery Image 2
-                        </h4>
-                        <div class="form-group" style="margin-bottom: 0.5rem;">
-                            <label for="gallery-event2">Caption</label>
-                            <input type="text" id="gallery-event2" required>
-                        </div>
-
-                    </div>
-                    <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem;">
-                        <h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">Gallery Image 3
-                        </h4>
-                        <div class="form-group" style="margin-bottom: 0.5rem;">
-                            <label for="gallery-event3">Caption</label>
-                            <input type="text" id="gallery-event3" required>
-                        </div>
-
-                    </div>
-                    <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem;">
-                        <h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">Gallery Image 4
-                        </h4>
-                        <div class="form-group" style="margin-bottom: 0.5rem;">
-                            <label for="gallery-event4">Caption</label>
-                            <input type="text" id="gallery-event4" required>
-                        </div>
-
-                    </div>
-                    <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem;">
-                        <h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">Gallery Image 5
-                        </h4>
-                        <div class="form-group" style="margin-bottom: 0.5rem;">
-                            <label for="gallery-event5">Caption</label>
-                            <input type="text" id="gallery-event5" required>
-                        </div>
-
-                    </div>
-                    <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem;">
-                        <h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">Gallery Image 6</h4>
-                        <div class="form-group" style="margin-bottom: 0.5rem;">
-                            <label for="gallery-event6">Caption</label>
-                            <input type="text" id="gallery-event6" required>
-                        </div>
-
+                    <textarea id="announcement" rows="3" placeholder="e.g. Ramadan Mubarak! Register for community Iftar 🎉 [REGISTER](/events)"></textarea>
+                    
+                    <div id="announcement-preview-box" style="margin-top: 0.6rem; padding: 0.65rem 1rem; background: rgba(251, 191, 36, 0.18); border-left: 4px solid #f59e0b; border-radius: 6px; font-size: 0.88rem;">
+                        <span style="font-weight: 700; color: #92400e; margin-right: 0.35rem;">Live Banner Preview:</span>
+                        <span id="announcement-live-preview" style="color: var(--color-text);"></span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-100" style="margin-top: 1.5rem;">Save Gallery
-                    Captions</button>
+
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label for="mission-text-input" style="font-weight: 600;">Our Mission Statement</label>
+                    <textarea id="mission-text-input" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="global-event-reg-link" style="font-weight: 600;">Fallback Google Form Link (Optional)</label>
+                    <input type="text" id="global-event-reg-link" placeholder="e.g. https://forms.google.com/...">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 1rem; padding: 0.75rem 1.5rem; font-weight: 700;">Save Announcements & Mission</button>
             </form>
         </div>
 
-        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #e5e7eb;">
-        <button type="button" class="btn btn-secondary w-100" id="logout-btn"
-            style="color: var(--color-primary); border-color: var(--color-primary);">Logout</button>
+        <!-- ============================================================ -->
+        <!-- TAB 4: MEDIA GALLERY                                         -->
+        <!-- ============================================================ -->
+        <div id="tab-gallery" class="tab-content hidden">
+            <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.25rem;">Media Gallery Captions</h3>
+            <p style="color: #64748b; font-size: 0.92rem; margin-bottom: 1.5rem;">Manage the titles and labels displayed across the 6 photos in the photo gallery.</p>
+            <form id="media-gallery-form">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--color-primary);">Photo 1: Escape Room</h4>
+                        <input type="text" id="gallery-event1" required style="width: 100%;">
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--color-primary);">Photo 2: Horse Riding</h4>
+                        <input type="text" id="gallery-event2" required style="width: 100%;">
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--color-primary);">Photo 3: Awareness Week</h4>
+                        <input type="text" id="gallery-event3" required style="width: 100%;">
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--color-primary);">Photo 4: Iftar Gathering</h4>
+                        <input type="text" id="gallery-event4" required style="width: 100%;">
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--color-primary);">Photo 5: Paintball / Laser Tag</h4>
+                        <input type="text" id="gallery-event5" required style="width: 100%;">
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: var(--color-primary);">Photo 6: Welcome Day</h4>
+                        <input type="text" id="gallery-event6" required style="width: 100%;">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.75rem 1.5rem; font-weight: 700;">Update Gallery Captions</button>
+            </form>
+        </div>
     </div>
 </div>
 
+    </main>
 
-    <!-- Qibla Compass Modal -->
-    <div id="qibla-modal" class="qibla-modal-overlay" role="dialog" aria-modal="true"
-        aria-labelledby="qibla-modal-title">
-        <div class="qibla-modal-dialog">
-            <div class="qibla-modal-header">
-                <h3 id="qibla-modal-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        style="color: var(--color-secondary); vertical-align: middle;">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
-                            fill="var(--color-secondary)"></polygon>
-                    </svg>
-                    <span data-i18n="qibla_title">Milan Qibla Compass</span>
-                </h3>
-                <button type="button" class="qibla-modal-close close-qibla-modal-btn"
-                    aria-label="Close dialog">&times;</button>
-            </div>
-            <div class="qibla-modal-body">
-                <div class="qibla-compass-visual">
-                    <div class="compass-dial" id="compass-dial-ring">
-                        <span class="compass-cardinal compass-n">N</span>
-                        <span class="compass-cardinal compass-e">E</span>
-                        <span class="compass-cardinal compass-s">S</span>
-                        <span class="compass-cardinal compass-w">W</span>
-                        <div class="compass-needle-kaaba" id="compass-needle-arm" style="transform: rotate(124deg);">
-                            <div class="kaaba-marker" title="Kaaba (Makkah)">
-                                <span class="kaaba-icon">🕋</span>
-                            </div>
-                            <div class="needle-arrow-line"></div>
-                        </div>
-                        <div class="compass-center-dot"></div>
-                    </div>
-                </div>
-
-                <div class="qibla-readout-card">
-                    <div class="qibla-angle-big">124° <span class="qibla-dir-text">SE (South-East)</span></div>
-                    <div class="qibla-city-sub" data-i18n="qibla_city_sub">Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km</div>
-                </div>
-
-                <div id="sensor-status-msg" class="qibla-sensor-note">
-                    <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text" data-i18n="qibla_sensor_text">Align phone until the 🕋
-                        Kaaba points to the top.</span>
-                </div>
-                <div class="qibla-calib-hint" style="font-size: 0.74rem; color: #64748b; margin-top: 0.25rem;" data-i18n="qibla_calib_hint">
-                    💡 Hold phone flat or move in a <strong>figure-8</strong> motion if direction drifts.
-                </div>
-            </div>
-            <div class="qibla-modal-footer" style="display: flex; gap: 0.5rem; justify-content: space-between; align-items: center;">
-                <button type="button" id="btn-recalibrate-compass" class="btn" style="background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; padding: 0.45rem 0.85rem; font-size: 0.82rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; font-weight: 600;">
-                    <span>🔄</span> <span data-i18n="qibla_recalibrate">Reset / Calibrate</span>
-                </button>
-                <button type="button" class="btn btn-primary close-qibla-modal-btn"
-                    style="padding: 0.45rem 1.15rem; font-size: 0.85rem; border-radius: 6px;" data-i18n="qibla_close_btn">
-                    Close Compass
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="/assets/asm_logo.png" alt="ASM Logo" width="40">
-                    <span>ASM POLIMI</span>
-                </div>
-                <div class="footer-copyright" data-i18n="footer_copyright">
-                    &copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.
-                    <br> All rights reserved.
-                </div>
-            </div>
+            <p style="margin: 0;"><strong>ASM POLIMI Admin Portal</strong> &bull; Authenticated Administration Area</p>
         </div>
     </footer>
 
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('admin-nav-toggle');
+        const navMenu = document.getElementById('admin-nav-menu');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('open');
+            });
+        }
+
+        // Hide Users tab for non-superadmin users
+        try {
+            const currentRole = localStorage.getItem('adminRole');
+            if (currentRole && currentRole !== 'superadmin') {
+                const navUsers = document.getElementById('nav-users-link');
+                if (navUsers) navUsers.style.display = 'none';
+            }
+        } catch (err) {}
+
+        // Global admin logout helper
+        function globalAdminLogout(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            try {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminRole');
+            } catch (err) {}
+
+            // Trigger in-page logout UI if available
+            if (typeof logout === 'function') {
+                try { logout(); } catch (err) {}
+            }
+
+            // Immediately switch views if on a single-page view
+            const dash = document.getElementById('dashboard-section');
+            const login = document.getElementById('login-section');
+            if (dash && login) {
+                dash.classList.add('hidden');
+                login.classList.remove('hidden');
+            }
+
+            // Redirect with cache busting to guarantee clean logout state
+            window.location.href = '/admin?logout=' + Date.now();
+        }
+    </script>
     
 <script>
+    let token = localStorage.getItem('adminToken');
     const loginSection = document.getElementById('login-section');
     const dashboardSection = document.getElementById('dashboard-section');
     const loginForm = document.getElementById('login-form');
-    const updateForm = document.getElementById('update-form');
     const loginError = document.getElementById('login-error');
     const updateMessage = document.getElementById('update-message');
-    const logoutBtn = document.getElementById('logout-btn');
 
-    let token = localStorage.getItem('adminToken');
     let events = [];
+    let attendees = [];
+    let editingEventIndex = null;
 
+    // Check existing auth
     if (token) {
         showDashboard();
+    } else {
+        loginSection.classList.remove('hidden');
     }
 
+    // Login Form Submit
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        loginError.classList.add('hidden');
 
         try {
-            const response = await fetch('/api/login', {
+            const res = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
-
-            const data = await response.json();
+            const data = await res.json();
             if (data.success) {
                 token = data.token;
                 localStorage.setItem('adminToken', token);
                 localStorage.setItem('adminRole', data.role);
                 showDashboard();
             } else {
-                loginError.textContent = data.message;
+                loginError.textContent = data.message || "Invalid credentials";
                 loginError.classList.remove('hidden');
             }
         } catch (err) {
             loginError.textContent = "Error connecting to server.";
             loginError.classList.remove('hidden');
         }
+    });
+
+    // Tab Navigation Logic
+    document.querySelectorAll('.tab-pill-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-pill-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            
+            btn.classList.add('active');
+            const targetId = btn.getAttribute('data-tab');
+            const targetEl = document.getElementById(targetId);
+            if (targetEl) targetEl.classList.remove('hidden');
+
+            if (targetId === 'tab-attendees') {
+                loadAttendees();
+            }
+        });
     });
 
     async function showDashboard() {
@@ -424,118 +900,217 @@
             document.getElementById('global-event-reg-link').value = data.global_event_reg_link || '';
             events = data.events || [];
             renderEvents();
-            // Load gallery captions
             fetchGalleryCaptions();
-            // Load board members
-            fetchBoardMembers();
+            loadAttendees();
         } catch (err) {
             console.error("Failed to load content", err);
         }
     }
 
-    function updateAnnouncementLivePreview() {
-        const val = document.getElementById('announcement').value;
-        const previewEl = document.getElementById('announcement-live-preview');
-        if (previewEl) {
-            if (!val || val.trim() === '') {
-                previewEl.innerHTML = '<span style="color: #94a3b8; font-style: italic;">No announcement text entered</span>';
-            } else {
-                previewEl.innerHTML = typeof formatAnnouncementHtml === 'function'
-                    ? formatAnnouncementHtml(val)
-                    : val;
-            }
-        }
+    function showMessage(msg, isSuccess) {
+        updateMessage.textContent = msg;
+        updateMessage.className = isSuccess ? "success-message" : "error-message";
+        updateMessage.classList.remove('hidden');
+        setTimeout(() => updateMessage.classList.add('hidden'), 3500);
     }
 
-    const announcementInput = document.getElementById('announcement');
-    if (announcementInput) {
-        announcementInput.addEventListener('input', updateAnnouncementLivePreview);
-    }
-
-    const insertLinkBtn = document.getElementById('btn-insert-link');
-    if (insertLinkBtn) {
-        insertLinkBtn.addEventListener('click', () => {
-            const textToDisplay = prompt('Enter link text to show user (e.g. JOIN US):', 'JOIN US');
-            if (textToDisplay === null) return;
-            const targetUrl = prompt('Enter link destination (e.g. /register or https://forms.gle/...):', '/register');
-            if (targetUrl === null) return;
-
-            const snippet = `[${textToDisplay.trim() || 'Link'}](${targetUrl.trim() || '/'})`;
-            const textarea = document.getElementById('announcement');
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const currentVal = textarea.value;
-
-            if (start !== undefined && end !== undefined && start !== end) {
-                textarea.value = currentVal.substring(0, start) + snippet + currentVal.substring(end);
-            } else if (start !== undefined) {
-                const prefix = start > 0 && currentVal[start - 1] !== ' ' ? ' ' : '';
-                const suffix = start < currentVal.length && currentVal[start] !== ' ' ? ' ' : '';
-                textarea.value = currentVal.substring(0, start) + prefix + snippet + suffix + currentVal.substring(start);
-            } else {
-                textarea.value = currentVal ? `${currentVal} ${snippet}` : snippet;
-            }
-            textarea.focus();
-            updateAnnouncementLivePreview();
-        });
+    // -------------------------------------------------------------
+    // Events Manager Logic
+    // -------------------------------------------------------------
+    function getCategoryBadge(cat) {
+        const c = cat || 'Islamic Event';
+        let cls = 'cat-other';
+        let icon = '🌟';
+        if (c.includes('Islamic')) { cls = 'cat-islamic'; icon = '🕌'; }
+        else if (c.includes('Ramadiamo') || c.includes('Iftar')) { cls = 'cat-ramadiamo'; icon = '🌙'; }
+        else if (c.includes('Physical') || c.includes('Hike') || c.includes('Laser')) { cls = 'cat-physical'; icon = '🧗'; }
+        else if (c.includes('Cultural') || c.includes('Calligraphy') || c.includes('Henna')) { cls = 'cat-cultural'; icon = '🎨'; }
+        return `<span class="event-cat-badge ${cls}">${icon} ${escapeHtml(c)}</span>`;
     }
 
     function renderEvents() {
-        const list = document.getElementById('events-list');
-        list.innerHTML = '';
+        const list = document.getElementById('admin-events-list');
+        const countBadge = document.getElementById('tab-events-count');
+        const filterSelect = document.getElementById('filter-event-select');
+        
+        if (countBadge) countBadge.textContent = events.length;
+
+        // Populate filter dropdown
+        if (filterSelect) {
+            const currentVal = filterSelect.value;
+            filterSelect.innerHTML = '<option value="">🔍 All Events</option>';
+            events.forEach(ev => {
+                const opt = document.createElement('option');
+                opt.value = ev.id || ev.title;
+                opt.textContent = ev.title;
+                filterSelect.appendChild(opt);
+            });
+            filterSelect.value = currentVal;
+        }
+
         if (events.length === 0) {
-            list.innerHTML = '<p style="color: #6b7280; font-size: 0.9rem;">No featured events.</p>';
+            list.innerHTML = `
+                <div style="text-align: center; padding: 2.5rem; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📅</div>
+                    <p style="color: #64748b; font-size: 1rem; margin: 0;">No events configured yet. Click <strong>"Add New Event"</strong> above to create your first event!</p>
+                </div>
+            `;
             return;
         }
-        events.forEach((ev, index) => {
-            const div = document.createElement('div');
-            div.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding: 1rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 0.75rem; box-shadow: var(--shadow-sm);';
-            div.innerHTML = `
-                    <div style="flex-grow: 1; margin-right: 1rem; min-width: 0; display: flex; flex-direction: column; gap: 0.5rem;">
-                        <input type="text" value="${ev.title}" onchange="updateEvent(${index}, 'title', this.value)" style="font-weight: 600; border: 1px solid #e5e7eb; border-radius: 4px; padding: 0.5rem; width: 100%; font-family: var(--font-heading);">
-                        <input type="text" value="${ev.date}" onchange="updateEvent(${index}, 'date', this.value)" style="color: #6b7280; font-size: 0.9rem; border: 1px solid #e5e7eb; border-radius: 4px; padding: 0.5rem; width: 100%;">
-                        <input type="text" value="${ev.reg_link || ''}" onchange="updateEvent(${index}, 'reg_link', this.value)" placeholder="Registration Link (Optional)" style="color: var(--color-primary); font-size: 0.9rem; border: 1px solid #e5e7eb; border-radius: 4px; padding: 0.5rem; width: 100%;">
+
+        list.innerHTML = '';
+        events.forEach((ev, idx) => {
+            const isRegOpen = (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1');
+            const card = document.createElement('div');
+            card.className = 'admin-event-card';
+            card.innerHTML = `
+                <div class="admin-event-header">
+                    <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+                        ${getCategoryBadge(ev.category)}
+                        <span class="reg-status-pill ${isRegOpen ? 'reg-open' : 'reg-closed'}">
+                            ${isRegOpen ? '🟢 Registration Open' : '🔴 Registration Closed'}
+                        </span>
+                        <span style="font-size: 0.8rem; font-weight: 700; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 0.2rem 0.55rem; border-radius: 4px;">🏅 Member: ${escapeHtml(ev.price_member || ev.cost || 'Free')}</span>
+                        <span style="font-size: 0.8rem; font-weight: 700; color: #1e40af; background: #eff6ff; border: 1px solid #bfdbfe; padding: 0.2rem 0.55rem; border-radius: 4px;">👥 Non-Member: ${escapeHtml(ev.price_non_member || ev.cost || 'Free')}</span>
                     </div>
-                    <button type="button" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-color: #dc3545; color: #dc3545; background: none; flex-shrink: 0;" onclick="removeEvent(${index})">Delete</button>
-                `;
-            list.appendChild(div);
+                    <div style="display: flex; gap: 0.4rem;">
+                        <button type="button" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;" onclick="editEvent(${idx})">✏️ Edit</button>
+                        <button type="button" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.75rem; border-color: #fca5a5; color: #dc2626;" onclick="deleteEvent(${idx})">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="margin: 0 0 0.4rem 0; color: var(--color-primary); font-size: 1.25rem;">${escapeHtml(ev.title)}</h3>
+                    <div style="display: flex; gap: 1.25rem; font-size: 0.88rem; color: #64748b; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                        <span>📅 <strong>${escapeHtml(ev.date || 'Date TBD')}</strong></span>
+                        ${ev.time ? `<span>⏰ <strong>${escapeHtml(ev.time)}</strong></span>` : ''}
+                        <span>📍 <strong>${escapeHtml(ev.location || 'Campus Leonardo')}</strong></span>
+                    </div>
+                    <p style="margin: 0; font-size: 0.92rem; color: #475569; line-height: 1.5;">${escapeHtml(ev.desc || '')}</p>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; pt: 0.5rem; border-top: 1px solid #f1f5f9; font-size: 0.85rem; color: #64748b; flex-wrap: wrap; gap: 0.5rem;">
+                    <span>Capacity: <strong>${ev.max_capacity ? ev.max_capacity + ' spots' : 'Unlimited'}</strong></span>
+                    <button type="button" class="btn" style="padding: 0.3rem 0.75rem; font-size: 0.82rem; background: #f1f5f9; color: var(--color-primary); font-weight: 600; border-radius: 6px; cursor: pointer;" onclick="viewEventAttendees('${escapeHtml(ev.id || ev.title)}')">
+                        👥 View Applications for this event &rarr;
+                    </button>
+                </div>
+            `;
+            list.appendChild(card);
         });
     }
 
-    window.updateEvent = function (index, field, value) {
-        events[index][field] = value;
-    };
+    // Toggle Add/Edit Event Editor Form
+    const editorCard = document.getElementById('event-editor-card');
+    const editorTitle = document.getElementById('event-editor-title');
+    const btnSubmitEvent = document.getElementById('btn-submit-event');
+    const btnCancelEdit = document.getElementById('btn-cancel-edit');
 
-    window.removeEvent = function (index) {
-        events.splice(index, 1);
-        renderEvents();
-    };
-
-    document.getElementById('add-event-btn').addEventListener('click', () => {
-        const title = document.getElementById('event-title').value;
-        const date = document.getElementById('event-date').value;
-        const desc = document.getElementById('event-desc').value;
-        const reg_link = document.getElementById('event-reg-link').value;
-        if (title && date) {
-            events.unshift({ title, date, desc, reg_link });
-            renderEvents();
-            document.getElementById('event-title').value = '';
-            document.getElementById('event-date').value = '';
-            document.getElementById('event-desc').value = '';
-            document.getElementById('event-reg-link').value = '';
-        } else {
-            alert("Please fill in the title and date for the event.");
-        }
+    document.getElementById('btn-show-add-event').addEventListener('click', () => {
+        resetEventEditor();
+        editorCard.scrollIntoView({ behavior: 'smooth' });
     });
 
-    updateForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const announcement = document.getElementById('announcement').value;
-        const mission_text = document.getElementById('mission-text-input').value;
-        const global_event_reg_link = document.getElementById('global-event-reg-link').value;
+    btnCancelEdit.addEventListener('click', resetEventEditor);
+
+    function resetEventEditor() {
+        editingEventIndex = null;
+        editorTitle.textContent = "Create a New Event";
+        btnSubmitEvent.textContent = "Add Event to List";
+        btnCancelEdit.classList.add('hidden');
+        document.getElementById('event-input-title').value = '';
+        document.getElementById('event-input-category').value = 'Islamic Event';
+        document.getElementById('event-input-date').value = '';
+        document.getElementById('event-input-time').value = '';
+        document.getElementById('event-input-location').value = '';
+        document.getElementById('event-input-price-member').value = 'Free';
+        document.getElementById('event-input-price-non-member').value = 'Free';
+        document.getElementById('event-input-desc').value = '';
+        document.getElementById('event-input-reg-open').checked = true;
+    }
+
+    window.editEvent = function(idx) {
+        const ev = events[idx];
+        if (!ev) return;
+        editingEventIndex = idx;
+        editorTitle.textContent = "Edit Event: " + ev.title;
+        btnSubmitEvent.textContent = "Update Event";
+        btnCancelEdit.classList.remove('hidden');
+
+        document.getElementById('event-input-title').value = ev.title || '';
+        document.getElementById('event-input-category').value = ev.category || 'Islamic Event';
+        document.getElementById('event-input-date').value = ev.date || '';
+        document.getElementById('event-input-time').value = ev.time || '';
+        document.getElementById('event-input-location').value = ev.location || '';
+        document.getElementById('event-input-price-member').value = ev.price_member || ev.cost || 'Free';
+        document.getElementById('event-input-price-non-member').value = ev.price_non_member || ev.cost || 'Free';
+        document.getElementById('event-input-desc').value = ev.desc || '';
+        document.getElementById('event-input-reg-open').checked = (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1');
+        
+        editorCard.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    window.deleteEvent = function(idx) {
+        if (!confirm("Are you sure you want to delete this event? Click Save & Publish afterwards to update the live website.")) return;
+        events.splice(idx, 1);
+        renderEvents();
+        showMessage("Event removed from list. Remember to click 'Save & Publish All'!", true);
+    };
+
+    btnSubmitEvent.addEventListener('click', () => {
+        const title = document.getElementById('event-input-title').value.trim();
+        const category = document.getElementById('event-input-category').value;
+        const date = document.getElementById('event-input-date').value.trim();
+        const time = document.getElementById('event-input-time').value.trim();
+        const location = document.getElementById('event-input-location').value.trim();
+        const price_member = document.getElementById('event-input-price-member').value.trim() || 'Free';
+        const price_non_member = document.getElementById('event-input-price-non-member').value.trim() || 'Free';
+        const desc = document.getElementById('event-input-desc').value.trim();
+        const reg_open = document.getElementById('event-input-reg-open').checked ? 1 : 0;
+
+        if (!title) {
+            alert("Please enter an event title.");
+            return;
+        }
+
+        const eventObj = {
+            title,
+            category,
+            date,
+            time,
+            location: location || 'Campus Leonardo',
+            cost: price_member === price_non_member ? price_member : `Members: ${price_member} / Non-Members: ${price_non_member}`,
+            price_member,
+            price_non_member,
+            desc,
+            reg_link: '/event-register',
+            registration_open: reg_open
+        };
+
+        if (editingEventIndex !== null && events[editingEventIndex]) {
+            events[editingEventIndex] = { ...events[editingEventIndex], ...eventObj };
+            showMessage(`Event "${title}" updated! Click 'Save & Publish All' to make it live.`, true);
+        } else {
+            events.unshift(eventObj);
+            showMessage(`Event "${title}" added! Click 'Save & Publish All' to make it live.`, true);
+        }
+
+        renderEvents();
+        resetEventEditor();
+    });
+
+    // Save All Events to Backend & Static JSON
+    document.getElementById('btn-save-all-events').addEventListener('click', async () => {
+        const btn = document.getElementById('btn-save-all-events');
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳</span> Saving...';
 
         try {
-            const response = await fetch('/api/update', {
+            const announcement = document.getElementById('announcement').value;
+            const mission_text = document.getElementById('mission-text-input').value;
+            const global_event_reg_link = document.getElementById('global-event-reg-link').value;
+
+            const res = await fetch('/api/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -544,174 +1119,307 @@
                 body: JSON.stringify({ announcement, mission_text, global_event_reg_link, events })
             });
 
-            const data = await response.json();
+            const data = await res.json();
             if (data.success) {
-                updateMessage.textContent = "Changes published successfully!";
-                updateMessage.className = "success-message";
-                updateMessage.classList.remove('hidden');
-                setTimeout(() => updateMessage.classList.add('hidden'), 3000);
+                showMessage("🎉 All events & settings published successfully!", true);
             } else {
-                if (response.status === 401) {
-                    logout();
-                } else {
-                    updateMessage.textContent = data.message || "Error updating content.";
-                    updateMessage.className = "error-message";
-                    updateMessage.classList.remove('hidden');
-                }
+                showMessage(data.message || "Failed to update events.", false);
             }
         } catch (err) {
-            updateMessage.textContent = "Error connecting to server.";
-            updateMessage.className = "error-message";
-            updateMessage.classList.remove('hidden');
+            showMessage("Error connecting to server.", false);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span>💾</span> Save & Publish All';
         }
     });
 
-    logoutBtn.addEventListener('click', logout);
+    // -------------------------------------------------------------
+    // Attendee Applications Logic
+    // -------------------------------------------------------------
+    async function loadAttendees() {
+        const tbody = document.getElementById('attendees-table-body');
+        const countBadge = document.getElementById('tab-attendees-count');
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #64748b;">Loading applications...</td></tr>';
 
-    function logout() {
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('adminRole');
-        token = null;
-        document.getElementById('password').value = '';
-        dashboardSection.classList.add('hidden');
-        loginSection.classList.remove('hidden');
-        loginError.classList.add('hidden');
-    }
-
-    function showMessage(msg, isSuccess) {
-        updateMessage.textContent = msg;
-        updateMessage.className = isSuccess ? "success-message" : "error-message";
-        updateMessage.classList.remove('hidden');
-        setTimeout(() => updateMessage.classList.add('hidden'), 3000);
-    }
-
-    let galleryData = [
-        { "role": "event1", "title": "", "image": "assets/gallery_event1.png" },
-        { "role": "event2", "title": "", "image": "assets/gallery_event2.png" },
-        { "role": "event3", "title": "", "image": "assets/gallery_event3.png" },
-        { "role": "event4", "title": "", "image": "assets/gallery_event4.png" },
-        { "role": "event5", "title": "", "image": "assets/gallery_event5.png" },
-        { "role": "event6", "title": "", "image": "assets/gallery_event6.png" }
-    ];
-
-    async function fetchGalleryCaptions() {
         try {
-            const response = await fetch('/api/content');
-            const data = await response.json();
-            if (data.gallery) {
-                galleryData = data.gallery;
-                data.gallery.forEach(item => {
-                    const input = document.getElementById(`gallery-${item.role}`);
-                    if (input) {
-                        input.value = item.title;
-                    }
-                });
+            const filterVal = document.getElementById('filter-event-select').value;
+            const url = filterVal ? `/api/event-applications?event_id=${encodeURIComponent(filterVal)}` : '/api/event-applications';
+            const res = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (data.success) {
+                attendees = data.applications || [];
+                if (countBadge) countBadge.textContent = attendees.length;
+                updateAttendeeStats();
+                renderAttendeesTable();
+            } else {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #dc2626;">${data.message || 'Error loading applications'}</td></tr>`;
             }
         } catch (err) {
-            console.error("Failed to load gallery captions:", err);
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #dc2626;">Failed to connect to backend server.</td></tr>';
         }
     }
 
-    const galleryForm = document.getElementById('media-gallery-form');
-    galleryForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const updatedGallery = galleryData.map(item => {
-            const input = document.getElementById(`gallery-${item.role}`);
-            return {
-                ...item,
-                title: input ? input.value.trim() : item.title
-            };
+    function updateAttendeeStats() {
+        document.getElementById('stat-total-apps').textContent = attendees.length;
+        const students = attendees.filter(a => !a.is_guest && a.matricola && a.matricola.toLowerCase() !== 'external guest');
+        const guests = attendees.filter(a => a.is_guest || (a.matricola && a.matricola.toLowerCase() === 'external guest'));
+        const dietaryCount = attendees.filter(a => a.dietary && a.dietary.trim() !== '' && a.dietary.toLowerCase() !== 'none' && a.dietary.toLowerCase() !== 'no');
+
+        document.getElementById('stat-polimi-students').textContent = students.length;
+        document.getElementById('stat-guests').textContent = guests.length;
+        document.getElementById('stat-dietary-count').textContent = dietaryCount.length;
+    }
+
+    function renderAttendeesTable() {
+        const tbody = document.getElementById('attendees-table-body');
+        const query = document.getElementById('search-attendees-input').value.toLowerCase().trim();
+
+        const filtered = attendees.filter(a => {
+            if (!query) return true;
+            return (a.full_name && a.full_name.toLowerCase().includes(query)) ||
+                   (a.matricola && a.matricola.toLowerCase().includes(query)) ||
+                   (a.email && a.email.toLowerCase().includes(query)) ||
+                   (a.phone && a.phone.toLowerCase().includes(query)) ||
+                   (a.event_title && a.event_title.toLowerCase().includes(query));
         });
 
+        if (filtered.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 2.5rem; color: #64748b;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
+                        ${attendees.length === 0 ? 'No event registrations received yet.' : 'No attendees match your search query.'}
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = '';
+        filtered.forEach(app => {
+            const tr = document.createElement('tr');
+            const hasDietary = app.dietary && app.dietary.trim() !== '' && app.dietary.toLowerCase() !== 'none';
+            const isConfirmed = (app.status || 'confirmed') === 'confirmed';
+
+            tr.innerHTML = `
+                <td><strong>${escapeHtml(app.event_title)}</strong></td>
+                <td>
+                    <div style="font-weight: 700; color: #0f172a;">${escapeHtml(app.full_name)}</div>
+                    <div style="font-size: 0.78rem; color: #64748b;">${app.created_at || ''}</div>
+                </td>
+                <td>
+                    ${app.is_member ? `<span style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 999px; font-weight: 700; font-size: 0.76rem;">🏅 Member (${escapeHtml(app.price_applied || 'Free')})</span>` : `<span style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; padding: 2px 8px; border-radius: 999px; font-weight: 700; font-size: 0.76rem;">👥 Non-Member (${escapeHtml(app.price_applied || 'Free')})</span>`}
+                </td>
+                <td>
+                    ${app.is_guest ? '<span class="guest-tag">External Guest</span>' : `<strong>${escapeHtml(app.matricola || 'N/A')}</strong>`}
+                </td>
+                <td>
+                    <div><a href="mailto:${escapeHtml(app.email)}" style="color: var(--color-primary); text-decoration: underline;">${escapeHtml(app.email)}</a></div>
+                    <div style="font-size: 0.82rem; color: #475569;"><a href="https://wa.me/${escapeHtml(app.phone).replace(/\D/g,'')}" target="_blank" style="color: #15803d; text-decoration: none;">💬 ${escapeHtml(app.phone)}</a></div>
+                </td>
+                <td>
+                    ${hasDietary ? `<span class="dietary-tag">${escapeHtml(app.dietary)}</span>` : '<span style="color: #94a3b8;">None</span>'}
+                </td>
+                <td>
+                    ${app.emergency_contact ? `<div style="font-size: 0.85rem;"><strong>${escapeHtml(app.emergency_contact)}</strong></div>` : ''}
+                    ${app.notes ? `<div style="font-size: 0.8rem; color: #64748b; font-style: italic;">"${escapeHtml(app.notes)}"</div>` : '<span style="color: #94a3b8;">-</span>'}
+                </td>
+                <td>
+                    <button type="button" class="btn" style="padding: 0.25rem 0.65rem; font-size: 0.78rem; font-weight: 700; border-radius: 999px; cursor: pointer; border: 1px solid ${isConfirmed ? '#86efac' : '#cbd5e1'}; background: ${isConfirmed ? '#dcfce7' : '#f1f5f9'}; color: ${isConfirmed ? '#166534' : '#475569'};" onclick="toggleAttendeeStatus(${app.id}, '${app.status}')">
+                        ${isConfirmed ? '✓ Confirmed' : escapeHtml(app.status)}
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem; border-color: #fca5a5; color: #dc2626;" onclick="deleteAttendee(${app.id})">
+                        Delete
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    window.toggleAttendeeStatus = async function(id, currentStatus) {
+        const newStatus = (currentStatus === 'confirmed') ? 'attended' : (currentStatus === 'attended' ? 'cancelled' : 'confirmed');
         try {
-            const response = await fetch('/api/update', {
+            const res = await fetch('/api/event-applications/toggle-status', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ gallery: updatedGallery })
+                body: JSON.stringify({ id, status: newStatus })
             });
-
-            const data = await response.json();
+            const data = await res.json();
             if (data.success) {
-                showMessage("Gallery captions updated successfully!", true);
-                galleryData = updatedGallery;
-            } else {
-                if (response.status === 401) {
-                    logout();
-                } else {
-                    showMessage(data.message || "Error updating gallery.", false);
-                }
+                const target = attendees.find(a => a.id === id);
+                if (target) target.status = newStatus;
+                renderAttendeesTable();
             }
         } catch (err) {
-            showMessage("Error connecting to server.", false);
+            alert("Failed to toggle status");
+        }
+    };
+
+    window.deleteAttendee = async function(id) {
+        if (!confirm("Remove this attendee registration?")) return;
+        try {
+            const res = await fetch('/api/event-applications', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ id })
+            });
+            const data = await res.json();
+            if (data.success) {
+                attendees = attendees.filter(a => a.id !== id);
+                updateAttendeeStats();
+                renderAttendeesTable();
+                showMessage("Attendee registration deleted", true);
+            }
+        } catch (err) {
+            alert("Error deleting registration");
+        }
+    };
+
+    window.viewEventAttendees = function(eventIdOrTitle) {
+        const filterSelect = document.getElementById('filter-event-select');
+        if (filterSelect) {
+            filterSelect.value = eventIdOrTitle;
+        }
+        document.querySelector('.tab-pill-btn[data-tab="tab-attendees"]').click();
+        loadAttendees();
+    };
+
+    document.getElementById('filter-event-select').addEventListener('change', loadAttendees);
+    document.getElementById('search-attendees-input').addEventListener('input', renderAttendeesTable);
+    document.getElementById('btn-refresh-attendees').addEventListener('click', loadAttendees);
+
+    // Export to Excel
+    document.getElementById('btn-export-excel').addEventListener('click', () => {
+        const filterVal = document.getElementById('filter-event-select').value;
+        const url = `/api/event-applications/export?token=${encodeURIComponent(token)}${filterVal ? '&event_id=' + encodeURIComponent(filterVal) : ''}`;
+        window.open(url, '_blank');
+    });
+
+    // -------------------------------------------------------------
+    // Announcement & Mission Form Logic
+    // -------------------------------------------------------------
+    function updateAnnouncementLivePreview() {
+        const val = document.getElementById('announcement').value;
+        const previewEl = document.getElementById('announcement-live-preview');
+        if (previewEl) {
+            if (!val || val.trim() === '') {
+                previewEl.innerHTML = '<span style="color: #94a3b8; font-style: italic;">No announcement text entered</span>';
+            } else {
+                previewEl.innerHTML = typeof formatAnnouncementHtml === 'function' ? formatAnnouncementHtml(val) : val;
+            }
+        }
+    }
+
+    const announcementInput = document.getElementById('announcement');
+    if (announcementInput) announcementInput.addEventListener('input', updateAnnouncementLivePreview);
+
+    document.getElementById('btn-insert-link').addEventListener('click', () => {
+        const text = prompt('Enter link text to show (e.g. REGISTER NOW):', 'REGISTER NOW');
+        if (!text) return;
+        const target = prompt('Enter link destination (e.g. /events or https://...):', '/events');
+        if (!target) return;
+        const snippet = `[${text.trim()}](${target.trim()})`;
+        const textarea = document.getElementById('announcement');
+        textarea.value = (textarea.value ? textarea.value + ' ' : '') + snippet;
+        textarea.focus();
+        updateAnnouncementLivePreview();
+    });
+
+    document.getElementById('announcement-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const announcement = document.getElementById('announcement').value;
+        const mission_text = document.getElementById('mission-text-input').value;
+        const global_event_reg_link = document.getElementById('global-event-reg-link').value;
+
+        try {
+            const res = await fetch('/api/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ announcement, mission_text, global_event_reg_link })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMessage("Announcement & Mission updated successfully!", true);
+            } else {
+                showMessage(data.message || "Error updating", false);
+            }
+        } catch (err) {
+            showMessage("Error connecting to server", false);
         }
     });
 
-    // Board Members Javascript Support
-    let boardMembersData = [];
+    // -------------------------------------------------------------
+    // Gallery Captions Logic
+    // -------------------------------------------------------------
+    let galleryData = [
+        { "role": "event1", "title": "Escape Room", "image": "assets/gallery_event1.png" },
+        { "role": "event2", "title": "Horse riding", "image": "assets/gallery_event2.png" },
+        { "role": "event3", "title": "Islam Awareness Week", "image": "assets/gallery_event3.png" },
+        { "role": "event4", "title": "Iftar Gathering", "image": "assets/gallery_event4.png" },
+        { "role": "event5", "title": "Paintball", "image": "assets/gallery_event5.png" },
+        { "role": "event6", "title": "Welcome Day", "image": "assets/gallery_event6.png" }
+    ];
 
-    async function fetchBoardMembers() {
+    async function fetchGalleryCaptions() {
         try {
-            const response = await fetch('/api/content');
-            const data = await response.json();
-            if (data.board_members) {
-                boardMembersData = data.board_members;
-                data.board_members.forEach(member => {
-                    const input = document.getElementById(`board-${member.role}-name`);
-                    if (input) {
-                        input.value = member.name;
-                    }
+            const res = await fetch('/api/content');
+            const data = await res.json();
+            if (data.gallery) {
+                galleryData = data.gallery;
+                data.gallery.forEach(item => {
+                    const input = document.getElementById(`gallery-${item.role}`);
+                    if (input) input.value = item.title;
                 });
+            }
+        } catch (e) {}
+    }
+
+    document.getElementById('media-gallery-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const updated = galleryData.map(item => {
+            const input = document.getElementById(`gallery-${item.role}`);
+            return { ...item, title: input ? input.value.trim() : item.title };
+        });
+
+        try {
+            const res = await fetch('/api/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ gallery: updated })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMessage("Gallery captions updated successfully!", true);
+                galleryData = updated;
+            } else {
+                showMessage("Failed to update gallery", false);
             }
         } catch (err) {
-            console.error("Failed to load board members:", err);
+            showMessage("Error updating gallery", false);
         }
+    });
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
-
-    const boardMembersForm = document.getElementById('board-members-form');
-    if (boardMembersForm) {
-        boardMembersForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const updatedBoard = boardMembersData.map(member => {
-                const input = document.getElementById(`board-${member.role}-name`);
-                const name = input ? input.value.trim() : member.name;
-                const avatar = name.charAt(0).toUpperCase() || member.avatar;
-                return {
-                    ...member,
-                    name: name,
-                    avatar: avatar
-                };
-            });
-
-            try {
-                const response = await fetch('/api/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ board_members: updatedBoard })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    showMessage("Board members updated successfully!", true);
-                    boardMembersData = updatedBoard;
-                } else {
-                    if (response.status === 401) {
-                        logout();
-                    } else {
-                        showMessage(data.message || "Error updating board members.", false);
-                    }
-                }
-            } catch (err) {
-                showMessage("Error connecting to server.", false);
-            }
-        });
-    }
-
 </script>
 
 </body>

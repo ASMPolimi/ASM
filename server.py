@@ -12,7 +12,7 @@ app = Flask(__name__, template_folder='templates')
 CORS(app)
 
 DB_FILE = 'asm.db'
-ALLOWED_FILES = ['index.html', 'register.html', 'admin.html', 'admin_members.html', 'admin_jumuah.html', 'admin_users.html', 'jumuah.html', 'support.html', 'gallery.html', 'events.html', 'admin_questions.html', 'halal.html', 'admin_scanner.html']
+ALLOWED_FILES = ['index.html', 'register.html', 'event-register.html', 'admin.html', 'admin_members.html', 'admin_jumuah.html', 'admin_users.html', 'jumuah.html', 'support.html', 'gallery.html', 'events.html', 'admin_questions.html', 'halal.html', 'admin_scanner.html']
 ALLOWED_DIRS = ['assets', 'css', 'js']
 
 # Cache for prayer times and Hijri date
@@ -87,6 +87,54 @@ def init_db():
         c.execute("ALTER TABLE membership_applications ADD COLUMN keychain_name TEXT DEFAULT ''")
     except Exception:
         pass
+
+    # Ensure events columns exist
+    for col, col_type, default_val in [
+        ('category', 'TEXT', "'Islamic Event'"),
+        ('cost', 'TEXT', "'Free'"),
+        ('price_member', 'TEXT', "'Free'"),
+        ('price_non_member', 'TEXT', "'Free'"),
+        ('location', 'TEXT', "'Campus Leonardo'"),
+        ('time', 'TEXT', "''"),
+        ('registration_open', 'INTEGER', '1'),
+        ('max_capacity', 'INTEGER', '0')
+    ]:
+        try:
+            c.execute(f"ALTER TABLE events ADD COLUMN {col} {col_type} DEFAULT {default_val}")
+        except Exception:
+            pass
+
+    # Ensure event_applications table exists
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS event_applications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            event_id INTEGER,
+            event_title TEXT NOT NULL,
+            full_name TEXT NOT NULL,
+            matricola TEXT,
+            is_guest INTEGER DEFAULT 0,
+            is_member INTEGER DEFAULT 0,
+            price_applied TEXT DEFAULT 'Free',
+            email TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            dietary TEXT DEFAULT '',
+            emergency_contact TEXT DEFAULT '',
+            notes TEXT DEFAULT '',
+            payment_method TEXT DEFAULT 'Free',
+            status TEXT DEFAULT 'confirmed',
+            lang_selected TEXT DEFAULT 'en',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
+    for col, col_type, default_val in [
+        ('is_member', 'INTEGER', '0'),
+        ('price_applied', 'TEXT', "'Free'")
+    ]:
+        try:
+            c.execute(f"ALTER TABLE event_applications ADD COLUMN {col} {col_type} DEFAULT {default_val}")
+        except Exception:
+            pass
 
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
@@ -329,8 +377,26 @@ def update_content():
         if 'events' in data:
             c.execute("DELETE FROM events")
             for ev in data['events']:
-                c.execute("INSERT INTO events (title, date, desc, reg_link) VALUES (?, ?, ?, ?)",
-                          (ev.get('title', ''), ev.get('date', ''), ev.get('desc', ''), ev.get('reg_link', '')))
+                reg_open = 1 if ev.get('registration_open') in (1, True, '1', 'true', 'on', None) else 0
+                price_mem = str(ev.get('price_member', ev.get('cost', 'Free'))).strip() or 'Free'
+                price_non = str(ev.get('price_non_member', ev.get('cost', 'Free'))).strip() or 'Free'
+                c.execute("""
+                    INSERT INTO events (title, date, desc, reg_link, category, cost, location, time, registration_open, max_capacity, price_member, price_non_member)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    ev.get('title', ''),
+                    ev.get('date', ''),
+                    ev.get('desc', ''),
+                    ev.get('reg_link', '/event-register'),
+                    ev.get('category', 'Islamic Event'),
+                    ev.get('cost', 'Free'),
+                    ev.get('location', 'Campus Leonardo'),
+                    ev.get('time', ''),
+                    reg_open,
+                    int(ev.get('max_capacity') or 0),
+                    price_mem,
+                    price_non
+                ))
         
         # update setting fields
         settings_keys = ['announcement', 'jumuah_prayer', 'mission_text', 'join_us_link', 'global_event_reg_link']
@@ -1373,6 +1439,159 @@ def export_scanned_products():
         for r in rows
     ]
     return generate_excel_response(headers, data_rows, "scanned_products.xlsx", "Scanned Products Log")
+
+# ----------------------------------------------------
+# Event Applications & Attendee Management Endpoints
+# ----------------------------------------------------
+
+@app.route('/api/event-applications', methods=['POST'])
+@app.route('/api/event-register', methods=['POST'])
+def submit_event_application():
+    data = request.json or {}
+    event_id = data.get('event_id')
+    event_title = str(data.get('event_title', '')).strip()
+    full_name = str(data.get('full_name', '')).strip()
+    email = str(data.get('email', '')).strip()
+    phone = str(data.get('phone', '')).strip()
+    
+    if not full_name or not email or not phone:
+        return jsonify({"success": False, "message": "Full name, email, and phone number are required"}), 400
+    if not event_title:
+        return jsonify({"success": False, "message": "Event selection is required"}), 400
+        
+    matricola = str(data.get('matricola', '')).strip()
+    is_member = 1 if data.get('is_member') in (1, True, '1', 'true') else 0
+    is_guest = 1 if (data.get('is_guest') in (1, True, '1', 'true') or (not is_member and not matricola) or matricola.lower() == 'guest') else 0
+    if is_guest and not matricola:
+        matricola = 'External Guest'
+        
+    price_applied = str(data.get('price_applied', data.get('payment_method', 'Free'))).strip() or 'Free'
+    dietary = str(data.get('dietary', '')).strip()
+    emergency_contact = str(data.get('emergency_contact', '')).strip()
+    notes = str(data.get('notes', '')).strip()
+    payment_method = str(data.get('payment_method', price_applied)).strip()
+    lang_selected = str(data.get('lang_selected', 'en')).strip()
+
+    try:
+        conn = get_db()
+        c = conn.cursor()
+        c.execute('''
+            INSERT INTO event_applications
+            (event_id, event_title, full_name, matricola, is_guest, is_member, price_applied, email, phone, dietary, emergency_contact, notes, payment_method, status, lang_selected)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', ?)
+        ''', (event_id, event_title, full_name, matricola, is_guest, is_member, price_applied, email, phone, dietary, emergency_contact, notes, payment_method, lang_selected))
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True, "message": f"Successfully registered for {event_title}!"})
+    except Exception as e:
+        print("[API] Error in submit_event_application:", e)
+        return jsonify({"success": False, "message": str(e)}), 500
+
+@app.route('/api/event-applications', methods=['GET'])
+def get_event_applications():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+        
+    event_id = request.args.get('event_id')
+    conn = get_db()
+    c = conn.cursor()
+    if event_id and str(event_id).strip() != '':
+        c.execute("SELECT * FROM event_applications WHERE event_id = ? ORDER BY created_at DESC", (event_id,))
+    else:
+        c.execute("SELECT * FROM event_applications ORDER BY created_at DESC")
+    rows = c.fetchall()
+    conn.close()
+        
+    apps = [dict(r) for r in rows]
+    for a in apps:
+        a['is_guest'] = bool(a.get('is_guest', 0))
+        a['is_member'] = bool(a.get('is_member', 0))
+    return jsonify({"success": True, "applications": apps})
+
+@app.route('/api/event-applications/export', methods=['GET'])
+def export_event_applications():
+    token = request.args.get('token')
+    role = get_user_role(f"Bearer {token}" if token else None)
+    if not role:
+        auth_header = request.headers.get('Authorization')
+        role = get_user_role(auth_header)
+    if not role:
+        return "Unauthorized", 401
+        
+    event_id = request.args.get('event_id')
+    conn = get_db()
+    c = conn.cursor()
+    if event_id and str(event_id).strip() != '':
+        c.execute("SELECT event_title, full_name, matricola, is_member, is_guest, price_applied, email, phone, dietary, emergency_contact, notes, payment_method, status, created_at FROM event_applications WHERE event_id = ? ORDER BY created_at DESC", (event_id,))
+    else:
+        c.execute("SELECT event_title, full_name, matricola, is_member, is_guest, price_applied, email, phone, dietary, emergency_contact, notes, payment_method, status, created_at FROM event_applications ORDER BY created_at DESC")
+    rows = c.fetchall()
+    conn.close()
+        
+    headers = ['Event Title', 'Attendee Name', 'Matricola', 'Membership Status', 'Price Applied', 'Email', 'Phone', 'Dietary / Allergies', 'Emergency Contact', 'Notes', 'Status', 'Registered At']
+    data_rows = [
+        [
+            r['event_title'] or '',
+            r['full_name'] or '',
+            r['matricola'] or '',
+            'ASM Member' if r['is_member'] else ('Guest' if r['is_guest'] else 'Non-Member'),
+            r['price_applied'] or r['payment_method'] or 'Free',
+            r['email'] or '',
+            r['phone'] or '',
+            r['dietary'] or 'None',
+            r['emergency_contact'] or 'N/A',
+            r['notes'] or '',
+            r['status'] or 'confirmed',
+            r['created_at'] or ''
+        ]
+        for r in rows
+    ]
+    filename = f"event_attendees_{event_id}.xlsx" if event_id else "all_event_attendees.xlsx"
+    return generate_excel_response(headers, data_rows, filename, "Event Attendees")
+
+@app.route('/api/event-applications/toggle-status', methods=['POST'])
+def toggle_event_application_status():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    data = request.json or {}
+    app_id = data.get('id')
+    new_status = data.get('status')
+    if not app_id or not new_status:
+        return jsonify({"success": False, "message": "ID and status required"}), 400
+
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("UPDATE event_applications SET status = ? WHERE id = ?", (new_status, app_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "status": new_status})
+
+@app.route('/api/event-applications', methods=['DELETE'])
+def delete_event_application():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    data = request.json or {}
+    app_id = data.get('id')
+    if not app_id:
+        return jsonify({"success": False, "message": "ID required"}), 400
+
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("DELETE FROM event_applications WHERE id = ?", (app_id,))
+    affected = c.rowcount > 0
+    conn.commit()
+    conn.close()
+    if affected:
+        return jsonify({"success": True})
+    return jsonify({"success": False, "message": "Not found"}), 404
 
 if __name__ == '__main__':
     print("Starting server on http://localhost:8080")

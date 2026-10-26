@@ -96,6 +96,7 @@ template_names = [
     'halal.html',
     'jumuah.html',
     'register.html',
+    'event-register.html',
     'support.html',
     'admin.html',
     'admin_members.html',
