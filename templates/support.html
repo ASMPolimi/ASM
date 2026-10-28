@@ -92,6 +92,10 @@
                         <label for="q-phone" data-i18n="support_phone_label">Phone Number (Required if Email is empty)</label>
                         <input type="tel" id="q-phone">
                     </div>
+                    <!-- Cloudflare Turnstile Privacy-Friendly Anti-Bot Verification -->
+                    <div style="margin: 1.25rem 0; display: flex; justify-content: center;">
+                        <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="light"></div>
+                    </div>
                     <button type="submit" class="btn btn-secondary w-100"
                         style="color: var(--color-primary); border-color: var(--color-primary);" data-i18n="support_submit_btn">Submit
                         Question</button>
@@ -141,7 +145,13 @@
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ topic, question, email, phone })
+                body: JSON.stringify({
+                    topic,
+                    question,
+                    email,
+                    phone,
+                    turnstile_token: document.querySelector('#imam-question-form [name="cf-turnstile-response"]')?.value || ''
+                })
             });
 
             const data = await response.json();

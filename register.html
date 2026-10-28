@@ -43,6 +43,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/main.js" defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     
 <style>
     /* Registration Wizard Styles */
@@ -1610,6 +1611,11 @@
                         </div>
 
                         <!-- Actions Bar -->
+                        <!-- Cloudflare Turnstile Privacy-Friendly Anti-Bot Verification -->
+                        <div style="margin: 1.5rem 0; display: flex; justify-content: center;">
+                            <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="light"></div>
+                        </div>
+
                         <div class="step-actions-bar">
                             <button type="button" class="btn btn-secondary btn-step-prev" onclick="goToStep(4)">
                                 <span id="btn-back-step4">← Teams & Skills</span>
@@ -2875,7 +2881,10 @@
             keychainName = rawName || fullName.split(' ')[0] || fullName;
         }
 
+        const turnstileToken = document.querySelector('#step-5-payment [name="cf-turnstile-response"]')?.value ||
+                               document.querySelector('[name="cf-turnstile-response"]')?.value || '';
         const payload = {
+            turnstile_token: turnstileToken,
             full_name: fullName,
             matricola: matricola,
             email: email,

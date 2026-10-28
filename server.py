@@ -39,6 +39,65 @@ def verify_password(password: str, hashed: str) -> bool:
 app = Flask(__name__, template_folder='templates')
 CORS(app)
 
+from flask_limiter import Limiter
+
+def get_client_ip():
+    """Extract real client IP handling Cloudflare, Render, and standard reverse proxies."""
+    if request.headers.get('CF-Connecting-IP'):
+        return request.headers.get('CF-Connecting-IP').split(',')[0].strip()
+    if request.headers.get('X-Forwarded-For'):
+        return request.headers.get('X-Forwarded-For').split(',')[0].strip()
+    return request.remote_addr or '127.0.0.1'
+
+limiter = Limiter(
+    key_func=get_client_ip,
+    app=app,
+    default_limits=["500 per hour"],
+    storage_uri="memory://"
+)
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    return jsonify({
+        "success": False,
+        "message": "Too many requests. Please wait a minute before trying again.",
+        "error": "rate_limit_exceeded"
+    }), 429
+
+# Cloudflare Turnstile Verification
+TURNSTILE_SITE_KEY = os.environ.get('TURNSTILE_SITE_KEY', '1x00000000000000000000AA')
+TURNSTILE_SECRET_KEY = os.environ.get('TURNSTILE_SECRET_KEY', '1x0000000000000000000000000000000AA')
+
+def verify_turnstile(token: str, remote_ip: str = None) -> bool:
+    """Verifies Cloudflare Turnstile token. Allows test keys and dev bypass."""
+    secret = os.environ.get('TURNSTILE_SECRET_KEY', TURNSTILE_SECRET_KEY)
+    if secret == 'disabled' or os.environ.get('TURNSTILE_BYPASS') == 'true':
+        return True
+    if not token:
+        # Allow pass on local dev / test client if no token provided
+        if request.host.startswith(('localhost', '127.0.0.1', 'testserver')):
+            return True
+        return False
+    try:
+        import urllib.parse
+        import urllib.request
+        url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
+        payload = {'secret': secret, 'response': token}
+        if remote_ip:
+            payload['remoteip'] = remote_ip
+        data = urllib.parse.urlencode(payload).encode('utf-8')
+        req = urllib.request.Request(
+            url,
+            data=data,
+            headers={'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'ASM-Polimi/1.0'}
+        )
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            res = json.loads(resp.read().decode('utf-8'))
+            return res.get('success', False)
+    except Exception as e:
+        print(f"Turnstile error: {e}")
+        return True
+
 DB_FILE = 'asm.db'
 ALLOWED_FILES = ['index.html', 'register.html', 'event-register.html', 'admin.html', 'admin_members.html', 'admin_jumuah.html', 'admin_users.html', 'jumuah.html', 'support.html', 'gallery.html', 'events.html', 'admin_questions.html', 'halal.html', 'admin_scanner.html']
 ALLOWED_DIRS = ['assets', 'css', 'js']
@@ -315,6 +374,7 @@ def get_user_role(token):
     return None
 
 @app.route('/api/login', methods=['POST'])
+@limiter.limit("5 per minute")
 def login():
     data = request.json
     if not data:
@@ -504,8 +564,12 @@ def upload_file():
         return jsonify({"success": False, "message": str(e)}), 500
 
 @app.route('/api/questions', methods=['POST'])
+@limiter.limit("5 per minute")
 def add_question():
-    data = request.json
+    data = request.json or {}
+    turnstile_token = data.get('turnstile_token') or data.get('cf-turnstile-response')
+    if not verify_turnstile(turnstile_token, get_client_ip()):
+        return jsonify({"success": False, "message": "Security check (CAPTCHA) failed. Please try again."}), 400
     if not data or not data.get('question') or not data.get('topic'):
         return jsonify({"success": False, "message": "Topic and question details are required"}), 400
     
@@ -703,8 +767,12 @@ def get_custom_barcodes():
         return jsonify({"success": False, "message": str(e)})
 
 @app.route('/api/subscribe', methods=['POST'])
+@limiter.limit("5 per minute")
 def subscribe():
-    data = request.json
+    data = request.json or {}
+    turnstile_token = data.get('turnstile_token') or data.get('cf-turnstile-response')
+    if not verify_turnstile(turnstile_token, get_client_ip()):
+        return jsonify({"success": False, "message": "Security check (CAPTCHA) failed. Please try again."}), 400
     if not data or not data.get('name') or not data.get('email'):
         return jsonify({"success": False, "message": "Name and email are required"}), 400
         
@@ -1016,8 +1084,12 @@ def set_keychain_gift_status():
 
 @app.route('/api/membership', methods=['POST'])
 @app.route('/api/memberships', methods=['POST'])
+@limiter.limit("5 per minute")
 def submit_membership():
     data = request.json or {}
+    turnstile_token = data.get('turnstile_token') or data.get('cf-turnstile-response')
+    if not verify_turnstile(turnstile_token, get_client_ip()):
+        return jsonify({"success": False, "message": "Security check (CAPTCHA) failed. Please try again."}), 400
     full_name = data.get('full_name') or data.get('name')
     matricola = data.get('matricola')
     email = data.get('email')
@@ -1519,8 +1591,12 @@ def export_scanned_products():
 
 @app.route('/api/event-applications', methods=['POST'])
 @app.route('/api/event-register', methods=['POST'])
+@limiter.limit("5 per minute")
 def submit_event_application():
     data = request.json or {}
+    turnstile_token = data.get('turnstile_token') or data.get('cf-turnstile-response')
+    if not verify_turnstile(turnstile_token, get_client_ip()):
+        return jsonify({"success": False, "message": "Security check (CAPTCHA) failed. Please try again."}), 400
     event_id = data.get('event_id')
     event_title = str(data.get('event_title', '')).strip()
     full_name = str(data.get('full_name', '')).strip()

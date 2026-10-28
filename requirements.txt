@@ -5,3 +5,4 @@ gunicorn
 openpyxl
 libsql-client>=0.3.0
 bcrypt>=4.0.0
+flask-limiter>=3.5.0
