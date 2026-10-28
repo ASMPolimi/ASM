@@ -2297,7 +2297,144 @@
         updateFeeUI();
     }
 
-    function goToStep(step) {
+    let currentStep = 1;
+    let isFormSubmitted = false;
+
+    // Checks if the user has written any personal information
+    function hasWrittenData() {
+        const fn = document.getElementById('app-fullname')?.value?.trim() || '';
+        const mat = document.getElementById('app-matricola')?.value?.trim() || '';
+        const em = document.getElementById('app-email')?.value?.trim() || '';
+        const ph = document.getElementById('app-phone')?.value?.trim() || '';
+        const co = document.getElementById('app-course')?.value?.trim() || '';
+        const cm = document.getElementById('app-comments')?.value?.trim() || '';
+        return !!(fn || mat || em || (ph && ph !== '+39' && ph !== '+39 ') || co || cm);
+    }
+
+    // Persists written inputs automatically so data is never lost on refresh or accidental back
+    function saveDraft() {
+        if (isFormSubmitted) return;
+        try {
+            const draft = {
+                step: currentStep,
+                lang: currentLang,
+                text: {
+                    fullname: document.getElementById('app-fullname')?.value || '',
+                    matricola: document.getElementById('app-matricola')?.value || '',
+                    email: document.getElementById('app-email')?.value || '',
+                    phone: document.getElementById('app-phone')?.value || '',
+                    course: document.getElementById('app-course')?.value || '',
+                    skillOther: document.getElementById('app-skill-other')?.value || '',
+                    teamOther: document.getElementById('app-team-other')?.value || '',
+                    comments: document.getElementById('app-comments')?.value || '',
+                    keychainName: document.getElementById('app-keychain-name')?.value || '',
+                    keychainManual: document.getElementById('app-keychain-name')?.dataset?.manual || 'false'
+                },
+                radios: {},
+                checkboxes: {}
+            };
+
+            ['course_level', 'volunteer_translator', 'payment_method'].forEach(name => {
+                const checked = document.querySelector(`input[name="${name}"]:checked`);
+                if (checked) draft.radios[name] = checked.value;
+            });
+
+            document.querySelectorAll('#membership-form input[type="checkbox"]').forEach(cb => {
+                if (cb.id) {
+                    draft.checkboxes[cb.id] = cb.checked;
+                } else if (cb.name && cb.value) {
+                    draft.checkboxes[`${cb.name}_${cb.value}`] = cb.checked;
+                }
+            });
+
+            sessionStorage.setItem('asm_membership_draft', JSON.stringify(draft));
+        } catch (e) { }
+    }
+
+    // Restores written inputs if the user returns to the page
+    function restoreDraft() {
+        try {
+            const raw = sessionStorage.getItem('asm_membership_draft');
+            if (!raw) return;
+            const draft = JSON.parse(raw);
+            if (!draft) return;
+
+            if (draft.lang && (draft.lang === 'en' || draft.lang === 'it')) {
+                currentLang = draft.lang;
+                applyTranslations(currentLang);
+            }
+
+            if (draft.text) {
+                const setVal = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el && val !== undefined) el.value = val;
+                };
+                setVal('app-fullname', draft.text.fullname);
+                setVal('app-matricola', draft.text.matricola);
+                setVal('app-email', draft.text.email);
+                setVal('app-phone', draft.text.phone);
+                setVal('app-course', draft.text.course);
+                setVal('app-skill-other', draft.text.skillOther);
+                setVal('app-team-other', draft.text.teamOther);
+                setVal('app-comments', draft.text.comments);
+
+                const kn = document.getElementById('app-keychain-name');
+                if (kn && draft.text.keychainName) {
+                    kn.value = draft.text.keychainName;
+                    if (draft.text.keychainManual) kn.dataset.manual = draft.text.keychainManual;
+                }
+            }
+
+            if (draft.radios) {
+                Object.keys(draft.radios).forEach(name => {
+                    const val = draft.radios[name];
+                    const radio = document.querySelector(`input[name="${name}"][value="${val}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                        const label = radio.closest('.choice-card-label');
+                        if (label) updateChoiceStyle(label);
+                    }
+                });
+            }
+
+            if (draft.checkboxes) {
+                Object.keys(draft.checkboxes).forEach(k => {
+                    const checked = draft.checkboxes[k];
+                    let cb = document.getElementById(k);
+                    if (!cb && k.includes('_')) {
+                        const parts = k.split('_');
+                        const name = parts[0];
+                        const val = parts.slice(1).join('_');
+                        cb = document.querySelector(`input[name="${name}"][value="${val}"]`);
+                    }
+                    if (cb) {
+                        cb.checked = checked;
+                        const label = cb.closest('.choice-card-label');
+                        if (label) {
+                            if (checked) label.classList.add('selected');
+                            else label.classList.remove('selected');
+                        }
+                    }
+                });
+            }
+
+            if (draft.step && draft.step > 1 && draft.step < 6) {
+                goToStep(draft.step, false);
+            }
+        } catch (e) { }
+    }
+
+    function goToStep(step, pushHistory = true) {
+        currentStep = step;
+        saveDraft();
+
+        if (pushHistory && step !== 1) {
+            // Push history state so the browser/phone "Return / Back" button navigates steps instead of leaving the site
+            if (!window.history.state || window.history.state.step !== step) {
+                window.history.pushState({ step: step }, '', window.location.href);
+            }
+        }
+
         const step1 = document.getElementById('step-1-language');
         const step2 = document.getElementById('step-2-overview');
         const step3 = document.getElementById('step-3-personal');
@@ -2322,13 +2459,13 @@
             }
         }
 
-        if (step === 1) step1.classList.remove('hidden');
-        if (step === 2) step2.classList.remove('hidden');
-        if (step === 3) step3.classList.remove('hidden');
-        if (step === 4) step4.classList.remove('hidden');
-        if (step === 5) step5.classList.remove('hidden');
+        if (step === 1 && step1) step1.classList.remove('hidden');
+        if (step === 2 && step2) step2.classList.remove('hidden');
+        if (step === 3 && step3) step3.classList.remove('hidden');
+        if (step === 4 && step4) step4.classList.remove('hidden');
+        if (step === 5 && step5) step5.classList.remove('hidden');
         if (step === 6) {
-            stepSuccess.classList.remove('hidden');
+            if (stepSuccess) stepSuccess.classList.remove('hidden');
             for (let i = 1; i <= 5; i++) {
                 const item = document.getElementById(`stepper-step-${i}`);
                 if (item) item.className = 'step-item completed';
@@ -2454,6 +2591,8 @@
     }
 
     function resetFormToStart() {
+        isFormSubmitted = false;
+        try { sessionStorage.removeItem('asm_membership_draft'); } catch (e) {}
         document.getElementById('membership-form').reset();
         document.querySelectorAll('.choice-card-label').forEach(el => el.classList.remove('selected'));
 
@@ -2639,6 +2778,8 @@
             } else {
                 if (successNotice) successNotice.style.display = 'none';
             }
+            isFormSubmitted = true;
+            try { sessionStorage.removeItem('asm_membership_draft'); } catch (e) {}
             goToStep(6);
         } else {
             errorBanner.textContent = errorMsg || 'Unable to submit application at this time. Please check your connection or contact us at info@asmpolimi.it.';
@@ -2647,9 +2788,66 @@
         }
     });
 
+    // Intercept Browser/Mobile Return (Back) Button to prevent losing written data
+    window.addEventListener('popstate', (e) => {
+        if (isFormSubmitted) return;
+        const targetStep = (e.state && e.state.step) ? e.state.step : 1;
+
+        // Warn if user has typed info and accidentally tries to exit completely back to start
+        if (currentStep > 2 && targetStep === 1 && hasWrittenData()) {
+            const confirmMsg = currentLang === 'it'
+                ? "Hai inserito dei dati nella domanda di iscrizione. Vuoi davvero tornare alla schermata iniziale?"
+                : "You have written information in the application. Are you sure you want to return to the start?";
+            if (!confirm(confirmMsg)) {
+                window.history.pushState({ step: currentStep }, '', window.location.href);
+                return;
+            }
+        }
+        goToStep(targetStep, false);
+    });
+
+    // Prevent accidental tab close, page refresh, or navigation if data is written
+    window.addEventListener('beforeunload', (e) => {
+        if (!isFormSubmitted && hasWrittenData()) {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+        }
+    });
+
     // Initialize listeners on DOM load
     document.addEventListener('DOMContentLoaded', () => {
         loadFeeSetting();
+
+        // Establish initial browser history state for seamless Return button stepping
+        window.history.replaceState({ step: 1 }, '', window.location.href);
+
+        // Restore any written draft if user refreshed or navigated back
+        restoreDraft();
+
+        // Listen for all input/change events to auto-save written data in real-time
+        const membershipForm = document.getElementById('membership-form');
+        if (membershipForm) {
+            membershipForm.addEventListener('input', () => saveDraft());
+            membershipForm.addEventListener('change', () => saveDraft());
+
+            // Prevent keyboard Enter / Return key on inputs from accidentally submitting or clearing the form
+            membershipForm.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'submit') {
+                    e.preventDefault();
+                    if (e.target.id === 'app-course') {
+                        proceedToStep4();
+                        return;
+                    }
+                    const inputs = Array.from(membershipForm.querySelectorAll('input:not([type="hidden"]), select, textarea'))
+                        .filter(el => !el.disabled && el.offsetParent !== null);
+                    const idx = inputs.indexOf(e.target);
+                    if (idx > -1 && idx + 1 < inputs.length) {
+                        inputs[idx + 1].focus();
+                    }
+                }
+            });
+        }
 
         document.querySelectorAll('input[type="radio"]:checked').forEach(r => {
             const p = r.closest('.choice-card-label');
