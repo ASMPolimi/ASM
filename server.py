@@ -7,6 +7,34 @@ import urllib.request
 import urllib.error
 import datetime
 import openpyxl
+import bcrypt
+
+def hash_password(password: str) -> str:
+    """Hash a plaintext password using bcrypt with automatic salt generation."""
+    if not password:
+        return ""
+    pw_bytes = str(password).encode('utf-8')[:72]
+    salt = bcrypt.gensalt(rounds=12)
+    return bcrypt.hashpw(pw_bytes, salt).decode('utf-8')
+
+def verify_password(password: str, hashed: str) -> bool:
+    """Verify password against bcrypt hash, with backward-compatibility for legacy hashes/plaintext."""
+    if not password or not hashed:
+        return False
+    pw_bytes = str(password).encode('utf-8')[:72]
+    hashed_str = str(hashed)
+    if hashed_str.startswith(('$2b$', '$2a$', '$2y$')):
+        try:
+            return bcrypt.checkpw(pw_bytes, hashed_str.encode('utf-8'))
+        except Exception:
+            return False
+    if hashed_str.startswith(('scrypt:', 'pbkdf2:')):
+        try:
+            from werkzeug.security import check_password_hash
+            return check_password_hash(hashed_str, password)
+        except Exception:
+            return False
+    return password == hashed_str
 
 app = Flask(__name__, template_folder='templates')
 CORS(app)
@@ -148,19 +176,21 @@ def init_db():
         )
     ''')
 
-    # Ensure default superadmin user 'ASM' with password 'ASMKT'
-    c.execute("SELECT id FROM users WHERE username = 'ASM'")
-    if not c.fetchone():
-        c.execute("INSERT INTO users (username, password, role) VALUES ('ASM', 'ASMKT', 'superadmin')")
-    else:
-        c.execute("UPDATE users SET password = 'ASMKT', role = 'superadmin' WHERE username = 'ASM'")
+    # Ensure default superadmin user 'ASM' with bcrypt hashed password
+    c.execute("SELECT id, password FROM users WHERE username = 'ASM'")
+    row_asm = c.fetchone()
+    if not row_asm:
+        c.execute("INSERT INTO users (username, password, role) VALUES ('ASM', ?, 'superadmin')", (hash_password('ASMKT'),))
+    elif not str(row_asm['password']).startswith(('$2b$', '$2a$', '$2y$')):
+        c.execute("UPDATE users SET password = ?, role = 'superadmin' WHERE username = 'ASM'", (hash_password('ASMKT'),))
 
-    # Also ensure legacy 'admin' user password is updated to 'ASMKT'
-    c.execute("SELECT id FROM users WHERE username = 'admin'")
-    if not c.fetchone():
-        c.execute("INSERT INTO users (username, password, role) VALUES ('admin', 'ASMKT', 'superadmin')")
-    else:
-        c.execute("UPDATE users SET password = 'ASMKT', role = 'superadmin' WHERE username = 'admin'")
+    # Also ensure legacy 'admin' user is present and bcrypt hashed
+    c.execute("SELECT id, password FROM users WHERE username = 'admin'")
+    row_admin = c.fetchone()
+    if not row_admin:
+        c.execute("INSERT INTO users (username, password, role) VALUES ('admin', ?, 'superadmin')", (hash_password('ASMKT'),))
+    elif not str(row_admin['password']).startswith(('$2b$', '$2a$', '$2y$')):
+        c.execute("UPDATE users SET password = ?, role = 'superadmin' WHERE username = 'admin'", (hash_password('ASMKT'),))
 
     # Scanned products anonymous log and admin verification table
     c.execute('''
@@ -292,16 +322,23 @@ def login():
         
     username = data.get('username')
     password = data.get('password')
+    if not username or not password:
+        return jsonify({"success": False, "message": "Username and password required"}), 400
     
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT role FROM users WHERE username = ? AND password = ?", (username, password))
+    c.execute("SELECT role, password FROM users WHERE username = ?", (username,))
     row = c.fetchone()
-    conn.close()
     
-    if row:
+    if row and verify_password(password, row['password']):
+        # If legacy password was stored in plaintext, seamlessly upgrade to bcrypt
+        if not str(row['password']).startswith(('$2b$', '$2a$', '$2y$')):
+            c.execute("UPDATE users SET password = ? WHERE username = ?", (hash_password(password), username))
+            conn.commit()
+        conn.close()
         return jsonify({"success": True, "token": f"token-{username}", "role": row['role']})
             
+    conn.close()
     return jsonify({"success": False, "message": "Invalid credentials"}), 401
 
 @app.route('/api/users', methods=['GET', 'POST', 'DELETE'])
@@ -330,7 +367,8 @@ def manage_users():
             return jsonify({"success": False, "message": "Username and password required"}), 400
         
         try:
-            c.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", (new_user, new_pass, new_role))
+            hashed_pw = hash_password(new_pass)
+            c.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", (new_user, hashed_pw, new_role))
             conn.commit()
             success = True
             msg = ""
@@ -740,6 +778,34 @@ def delete_subscriber():
 def generate_excel_response(headers, data_rows, filename, sheet_title="Sheet1"):
     import io
     import openpyxl
+import bcrypt
+
+def hash_password(password: str) -> str:
+    """Hash a plaintext password using bcrypt with automatic salt generation."""
+    if not password:
+        return ""
+    pw_bytes = str(password).encode('utf-8')[:72]
+    salt = bcrypt.gensalt(rounds=12)
+    return bcrypt.hashpw(pw_bytes, salt).decode('utf-8')
+
+def verify_password(password: str, hashed: str) -> bool:
+    """Verify password against bcrypt hash, with backward-compatibility for legacy hashes/plaintext."""
+    if not password or not hashed:
+        return False
+    pw_bytes = str(password).encode('utf-8')[:72]
+    hashed_str = str(hashed)
+    if hashed_str.startswith(('$2b$', '$2a$', '$2y$')):
+        try:
+            return bcrypt.checkpw(pw_bytes, hashed_str.encode('utf-8'))
+        except Exception:
+            return False
+    if hashed_str.startswith(('scrypt:', 'pbkdf2:')):
+        try:
+            from werkzeug.security import check_password_hash
+            return check_password_hash(hashed_str, password)
+        except Exception:
+            return False
+    return password == hashed_str
     from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
     from flask import Response
     
