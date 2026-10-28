@@ -65,8 +65,8 @@ def ratelimit_handler(e):
     }), 429
 
 # Cloudflare Turnstile Verification
-TURNSTILE_SITE_KEY = os.environ.get('TURNSTILE_SITE_KEY', '1x00000000000000000000AA')
-TURNSTILE_SECRET_KEY = os.environ.get('TURNSTILE_SECRET_KEY', '1x0000000000000000000000000000000AA')
+TURNSTILE_SITE_KEY = os.environ.get('TURNSTILE_SITE_KEY', '0x4AAAAAAFp9eO1iyGkqFdRO')
+TURNSTILE_SECRET_KEY = os.environ.get('TURNSTILE_SECRET_KEY', '0x4AAAAAAFp9eLi4dve3cI9t2XhX-mih0HY')
 
 def verify_turnstile(token: str, remote_ip: str = None) -> bool:
     """Verifies Cloudflare Turnstile token. Allows test keys and dev bypass."""
