@@ -822,7 +822,7 @@
 
             tr.innerHTML = `
                 <td>
-                    <img class="product-thumb" src="${img}" alt="${escapeHtml(name)}" onerror="this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
+                    <img class="product-thumb" src="${img}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" onerror="this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
                 </td>
                 <td>
                     <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 0.15rem;">${escapeHtml(name)}</div>

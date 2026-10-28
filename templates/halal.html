@@ -736,7 +736,7 @@
         resultsDiv.innerHTML = `
                 <div class="result-card" style="border: 2px solid ${cardBorderColor}; background-color: ${cardBgColor};">
                     <div class="result-header-flex">
-                        <img class="result-image" src="${img}" alt="${escapeHtml(name)}" onerror="this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
+                        <img class="result-image" src="${img}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" onerror="this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
                         <div class="result-title-meta">
                             <div class="status-badge ${statusClass}">${statusText}</div>
                             <h3 class="result-prod-name">${escapeHtml(name)}</h3>

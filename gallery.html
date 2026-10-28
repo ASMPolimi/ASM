@@ -166,42 +166,42 @@
             
                 
                 <div class="gallery-item fade-in-up is-visible" style="transition-delay: 0ms;">
-                    <img src="assets/gallery_event1.png" alt="Escape Room" onerror="this.style.display='none'"
+                    <img src="assets/gallery_event1.png" alt="Escape Room" loading="lazy" decoding="async" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                     <span style="position: relative; z-index: 0;">Image 1</span>
                     <div class="gallery-caption" style="z-index: 2;">Escape Room</div>
                 </div>
                 
                 <div class="gallery-item fade-in-up is-visible" style="transition-delay: 120ms;">
-                    <img src="assets/gallery_event2.png" alt="Horse riding" onerror="this.style.display='none'"
+                    <img src="assets/gallery_event2.png" alt="Horse riding" loading="lazy" decoding="async" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                     <span style="position: relative; z-index: 0;">Image 2</span>
                     <div class="gallery-caption" style="z-index: 2;">Horse riding</div>
                 </div>
                 
                 <div class="gallery-item fade-in-up is-visible" style="transition-delay: 240ms;">
-                    <img src="assets/gallery_event3.png" alt="Islam Awareness Week" onerror="this.style.display='none'"
+                    <img src="assets/gallery_event3.png" alt="Islam Awareness Week" loading="lazy" decoding="async" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                     <span style="position: relative; z-index: 0;">Image 3</span>
                     <div class="gallery-caption" style="z-index: 2;">Islam Awareness Week</div>
                 </div>
                 
                 <div class="gallery-item fade-in-up is-visible" style="transition-delay: 360ms;">
-                    <img src="assets/gallery_event4.png" alt="Arabic Calligraphy" onerror="this.style.display='none'"
+                    <img src="assets/gallery_event4.png" alt="Arabic Calligraphy" loading="lazy" decoding="async" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                     <span style="position: relative; z-index: 0;">Image 4</span>
                     <div class="gallery-caption" style="z-index: 2;">Arabic Calligraphy</div>
                 </div>
                 
                 <div class="gallery-item fade-in-up is-visible" style="transition-delay: 480ms;">
-                    <img src="assets/gallery_event5.png" alt="Ramadiamo" onerror="this.style.display='none'"
+                    <img src="assets/gallery_event5.png" alt="Ramadiamo" loading="lazy" decoding="async" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                     <span style="position: relative; z-index: 0;">Image 5</span>
                     <div class="gallery-caption" style="z-index: 2;">Ramadiamo</div>
                 </div>
                 
                 <div class="gallery-item fade-in-up is-visible" style="transition-delay: 600ms;">
-                    <img src="assets/gallery_event6.png" alt="Islamic activities" onerror="this.style.display='none'"
+                    <img src="assets/gallery_event6.png" alt="Islamic activities" loading="lazy" decoding="async" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                     <span style="position: relative; z-index: 0;">Image 6</span>
                     <div class="gallery-caption" style="z-index: 2;">Islamic activities</div>
@@ -288,7 +288,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <img src="/assets/asm_logo.png" alt="ASM Logo" width="40">
+                    <img src="/assets/asm_logo.png" alt="ASM Logo" width="40" loading="lazy" decoding="async">
                     <span>ASM POLIMI</span>
                 </div>
                 <div class="footer-copyright" data-i18n="footer_copyright">
@@ -313,13 +313,17 @@
 
         const galleryContainer = document.getElementById('dynamic-gallery-container');
         if (galleryContainer && data.gallery) {
+            const existingItems = galleryContainer.querySelectorAll('.gallery-item');
+            if (existingItems.length > 0 && existingItems.length === data.gallery.length) {
+                return;
+            }
             galleryContainer.innerHTML = '';
             data.gallery.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'gallery-item fade-in-up';
                 div.style.transitionDelay = `${index * 120}ms`;
                 div.innerHTML = `
-                        <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'"
+                        <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" onerror="this.style.display='none'"
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                         <span style="position: relative; z-index: 0;">Image ${index + 1}</span>
                         <div class="gallery-caption" style="z-index: 2;">${item.title}</div>

@@ -37,6 +37,7 @@ def verify_password(password: str, hashed: str) -> bool:
     return password == hashed_str
 
 app = Flask(__name__, template_folder='templates')
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 2592000
 CORS(app)
 
 from flask_limiter import Limiter
@@ -291,13 +292,17 @@ init_db()
 def index():
     return render_template('index.html')
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('.', 'favicon.ico', mimetype='image/vnd.microsoft.icon', max_age=2592000)
+
 @app.route('/sitemap.xml')
 def sitemap():
-    return send_from_directory('.', 'sitemap.xml', mimetype='application/xml')
+    return send_from_directory('.', 'sitemap.xml', mimetype='application/xml', max_age=86400)
 
 @app.route('/robots.txt')
 def robots():
-    return send_from_directory('.', 'robots.txt', mimetype='text/plain')
+    return send_from_directory('.', 'robots.txt', mimetype='text/plain', max_age=86400)
 
 @app.route('/<path:path>')
 def serve_file(path):
@@ -307,7 +312,9 @@ def serve_file(path):
         return render_template(f"{path}.html")
     for d in ALLOWED_DIRS:
         if path.startswith(d + '/'):
-            return send_from_directory('.', path)
+            # Cache static assets for 30 days (assets) or 7 days (css/js)
+            max_age = 2592000 if d == 'assets' else 604800
+            return send_from_directory('.', path, max_age=max_age)
     return "Not Found", 404
 
 @app.route('/api/content', methods=['GET'])

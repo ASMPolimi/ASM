@@ -132,7 +132,7 @@
             <div class="about-image">
                 <!-- Placeholder for community photo -->
                 <div class="image-placeholder" style="position: relative; overflow: hidden;">
-                    <img src="assets/community.png" alt="ASM POLIMI Community" onerror="this.style.display='none'"
+                    <img src="assets/community.png" alt="ASM POLIMI Community" loading="lazy" decoding="async" onerror="this.style.display='none'"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
                     <span data-i18n="about_community_photo">Community Photo</span>
                 </div>
@@ -417,7 +417,7 @@
             {% for member in board_members %}
             <div class="team-card">
                 <div class="team-avatar">
-                    <img src="assets/board_{{ member.role }}.png" alt="{{ member.name }}"
+                    <img src="assets/board_{{ member.role }}.png" alt="{{ member.name }}" loading="lazy" decoding="async"
                         onerror="this.style.display='none'">
                     <span>{{ member.avatar }}</span>
                 </div>
@@ -923,13 +923,18 @@
             if (data.board_members) {
                 const boardContainer = document.getElementById('dynamic-board-container');
                 if (boardContainer) {
+                    const existingCards = boardContainer.querySelectorAll('.team-card');
+                    if (existingCards.length > 0 && existingCards.length === data.board_members.length) {
+                        setupBoardAutoScroll();
+                        return;
+                    }
                     boardContainer.innerHTML = '';
                     data.board_members.forEach(member => {
                         const card = document.createElement('div');
                         card.className = 'team-card';
                         card.innerHTML = `
                             <div class="team-avatar">
-                                <img src="assets/board_${member.role}.png" alt="${member.name}" onerror="this.style.display='none'">
+                                <img src="assets/board_${member.role}.png" alt="${member.name}" loading="lazy" decoding="async" onerror="this.style.display='none'">
                                 <span>${member.avatar}</span>
                             </div>
                             <h3 class="team-name">${member.name}</h3>
