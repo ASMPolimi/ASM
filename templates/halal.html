@@ -745,33 +745,74 @@
                         </div>
                     </div>
 
-                    <!-- User Flag / Review Request Section (Prominently placed at the top under name, brand and barcode) -->
+                    <!-- User Flag / Product Information Section -->
                     <div id="user-review-section">
                         <div id="flag-prompt-container">
-                            <button type="button" id="btn-toggle-flag-form" onclick="toggleUserFlagForm()" class="btn-flag-toggle">
-                                <span>🚩</span>
-                                <span>${isIt ? 'Risultato errato? Segnala per revisione' : 'Think result is incorrect? Flag for review'}</span>
-                            </button>
+                            ${analysis.status === 'not_listed' ? `
+                                <button type="button" id="btn-toggle-flag-form" onclick="toggleUserFlagForm()" class="btn-flag-toggle" style="background: rgba(18, 74, 97, 0.08); border: 1.5px solid var(--color-primary); color: var(--color-primary); font-weight: 700; padding: 0.65rem 1.15rem;">
+                                    <span>📝</span>
+                                    <span>${isIt ? 'Conosci questo prodotto? Dicci nome e dove l\'hai trovato' : 'Know this product? Tell us the name & where you found it'}</span>
+                                </button>
+                            ` : `
+                                <button type="button" id="btn-toggle-flag-form" onclick="toggleUserFlagForm()" class="btn-flag-toggle">
+                                    <span>🚩</span>
+                                    <span>${isIt ? 'Risultato errato? Segnala per revisione' : 'Think result is incorrect? Flag for review'}</span>
+                                </button>
+                            `}
                         </div>
 
-                        <div id="flag-form-container" class="hidden">
-                            <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.35rem;">
-                                <span>🚩</span>
-                                <span>${isIt ? 'Segnala Risultato Errato agli Amministratori ASM' : 'Report Incorrect Result to ASM Administrators'}</span>
-                            </h4>
-                            <p style="margin: 0 0 0.65rem 0; font-size: 0.82rem; color: #64748b; line-height: 1.4;">
-                                ${isIt 
-                                    ? 'Se noti ingredienti errati, dubbi o certificazioni mancanti, scrivi una breve nota:' 
-                                    : 'If you noticed missing or incorrect ingredients, questionable additives, or halal certifications, add your note:'}
-                            </p>
-                            <div style="margin-bottom: 0.65rem;">
-                                <textarea id="flag-user-note" rows="3" placeholder="${isIt ? 'Aggiungi una nota (es. contiene gelatina di maiale tra gli ingredienti, o la confezione riporta certificato Halal Italia...)' : 'Add your note (e.g. package shows animal gelatin not parsed, or package has certified Halal stamp...)'}" style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; font-family: inherit; resize: vertical; line-height: 1.4;"></textarea>
-                            </div>
+                        <div id="flag-form-container" class="hidden" style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 1.1rem; margin-top: 0.75rem;">
+                            ${analysis.status === 'not_listed' ? `
+                                <h4 style="margin: 0 0 0.35rem 0; font-size: 0.95rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem;">
+                                    <span>📝</span>
+                                    <span>${isIt ? 'Aiutaci ad aggiungere questo prodotto!' : 'Help us add this product to the Halal Database!'}</span>
+                                </h4>
+                                <p style="margin: 0 0 0.75rem 0; font-size: 0.84rem; color: #64748b; line-height: 1.4;">
+                                    ${isIt 
+                                        ? 'Inserisci il nome del prodotto e il negozio o distributore dove l\'hai trovato. Il team ASM ne verificherà gli ingredienti:' 
+                                        : 'Tell us what this product is and where you found it so the ASM team can verify its ingredients and add it:'}
+                                </p>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem;">
+                                    <div>
+                                        <label for="flag-prod-name" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.25rem;">
+                                            ${isIt ? 'Nome del Prodotto e Marca *' : 'Product Name & Brand *'}
+                                        </label>
+                                        <input type="text" id="flag-prod-name" placeholder="${isIt ? 'es. Kinder Bueno White, Pesto Barilla...' : 'e.g. Kinder Bueno White, Barilla Pesto...'}" style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem;" required>
+                                    </div>
+                                    <div>
+                                        <label for="flag-prod-store" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.25rem;">
+                                            ${isIt ? 'Dove l\'hai trovato? (Negozio / Mensa) *' : 'Where did you find it? (Store / Location) *'}
+                                        </label>
+                                        <input type="text" id="flag-prod-store" placeholder="${isIt ? 'es. Conad Bovisa, Esselunga Piola, Macchinette...' : 'e.g. Conad Bovisa, Esselunga Piola, Canteen...'}" style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem;" required>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 0.75rem;">
+                                    <label for="flag-user-note" style="display: block; font-size: 0.8rem; font-weight: 600; color: #64748b; margin-bottom: 0.25rem;">
+                                        ${isIt ? 'Note facoltative (es. ingredienti notati, certificazioni...)' : 'Optional notes (e.g. ingredients noticed, halal logo, price...)'}
+                                    </label>
+                                    <textarea id="flag-user-note" rows="2" placeholder="${isIt ? 'Aggiungi eventuali dettagli (es. certificato vegetariano, contiene alcol...)' : 'Add any extra details (e.g. packaging has vegetarian logo, noticed gelatin...)'}" style="width: 100%; box-sizing: border-box; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; font-family: inherit; resize: vertical; line-height: 1.4;"></textarea>
+                                </div>
+                            ` : `
+                                <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.35rem;">
+                                    <span>🚩</span>
+                                    <span>${isIt ? 'Segnala Risultato Errato agli Amministratori ASM' : 'Report Incorrect Result to ASM Administrators'}</span>
+                                </h4>
+                                <p style="margin: 0 0 0.65rem 0; font-size: 0.82rem; color: #64748b; line-height: 1.4;">
+                                    ${isIt 
+                                        ? 'Se noti ingredienti errati, dubbi o certificazioni mancanti, scrivi una breve nota:' 
+                                        : 'If you noticed missing or incorrect ingredients, questionable additives, or halal certifications, add your note:'}
+                                </p>
+                                <div style="margin-bottom: 0.65rem;">
+                                    <textarea id="flag-user-note" rows="3" placeholder="${isIt ? 'Aggiungi una nota (es. contiene gelatina di maiale tra gli ingredienti, o la confezione riporta certificato Halal Italia...)' : 'Add your note (e.g. package shows animal gelatin not parsed, or package has certified Halal stamp...)'}" style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; font-family: inherit; resize: vertical; line-height: 1.4;"></textarea>
+                                </div>
+                            `}
                             <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-                                <button type="button" id="btn-submit-flag" onclick="submitProductFlag()" style="background: #0284c7; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
-                                    ${isIt ? 'Invia Segnalazione' : 'Submit Review Request'}
+                                <button type="button" id="btn-submit-flag" onclick="submitProductFlag()" style="background: var(--color-primary); color: white; border: none; padding: 0.55rem 1.15rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+                                    ${analysis.status === 'not_listed' 
+                                        ? (isIt ? 'Invia Dati Prodotto' : 'Submit Product Info')
+                                        : (isIt ? 'Invia Segnalazione' : 'Submit Review Request')}
                                 </button>
-                                <button type="button" onclick="toggleUserFlagForm()" style="background: white; border: 1px solid #cbd5e1; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; color: #64748b; cursor: pointer;">
+                                <button type="button" onclick="toggleUserFlagForm()" style="background: white; border: 1px solid #cbd5e1; padding: 0.55rem 0.85rem; border-radius: 6px; font-size: 0.85rem; color: #64748b; cursor: pointer;">
                                     ${isIt ? 'Annulla' : 'Cancel'}
                                 </button>
                             </div>
@@ -811,8 +852,13 @@
         if (isHidden) {
             form.classList.remove('hidden');
             if (prompt) prompt.classList.add('hidden');
+            const prodNameInput = document.getElementById('flag-prod-name');
             const ta = document.getElementById('flag-user-note');
-            if (ta) ta.focus();
+            if (prodNameInput) {
+                prodNameInput.focus();
+            } else if (ta) {
+                ta.focus();
+            }
         } else {
             form.classList.add('hidden');
             if (prompt) prompt.classList.remove('hidden');
@@ -829,11 +875,35 @@
 
         const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
         const isIt = currentLang === 'it';
+        const isNotListed = (scan.status === 'not_listed');
 
+        const prodNameInput = document.getElementById('flag-prod-name');
+        const storeInput = document.getElementById('flag-prod-store');
         const noteInput = document.getElementById('flag-user-note');
         const submitBtn = document.getElementById('btn-submit-flag');
         const msgDiv = document.getElementById('flag-status-msg');
-        const note = (noteInput ? noteInput.value : '').trim();
+
+        const prodName = prodNameInput ? prodNameInput.value.trim() : '';
+        const storeLocation = storeInput ? storeInput.value.trim() : '';
+        const rawNote = (noteInput ? noteInput.value : '').trim();
+
+        // Validation for unlisted product: require product name and store
+        if (isNotListed && (!prodName || !storeLocation)) {
+            if (msgDiv) {
+                msgDiv.classList.remove('hidden');
+                msgDiv.style.color = '#dc2626';
+                msgDiv.textContent = isIt 
+                    ? 'Per favore inserisci sia il nome del prodotto che il negozio/luogo dove lo hai trovato.' 
+                    : 'Please enter both the product name and where you found it.';
+            }
+            return;
+        }
+
+        let combinedNote = rawNote;
+        if (isNotListed) {
+            const storePrefix = `Found at / Negozio: ${storeLocation}`;
+            combinedNote = rawNote ? `${storePrefix} | Note: ${rawNote}` : storePrefix;
+        }
 
         if (submitBtn) {
             submitBtn.disabled = true;
@@ -842,10 +912,11 @@
 
         const payload = {
             barcode: scan.barcode,
-            product_name: scan.name || '',
+            product_name: prodName || scan.name || '',
             brand: scan.brand || '',
+            store_location: storeLocation || '',
             status: scan.status || 'not_listed',
-            note: note
+            note: combinedNote
         };
 
         const endpoints = [
@@ -877,14 +948,18 @@
             const formContainer = document.getElementById('flag-form-container');
             if (formContainer) {
                 formContainer.innerHTML = `
-                    <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.85rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.65rem;">
-                        <span style="font-size: 1.35rem;">✅</span>
+                    <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.9rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.65rem;">
+                        <span style="font-size: 1.4rem;">✅</span>
                         <div>
                             <div style="font-weight: 700; font-size: 0.95rem;">
-                                ${isIt ? 'Grazie! Segnalazione registrata con successo.' : 'Thank you! Flagged for review.'}
+                                ${isNotListed 
+                                    ? (isIt ? 'Grazie mille! Dati del prodotto registrati con successo.' : 'Thank you! Product info submitted successfully.')
+                                    : (isIt ? 'Grazie! Segnalazione registrata con successo.' : 'Thank you! Flagged for review.')}
                             </div>
-                            <div style="font-size: 0.85rem; margin-top: 0.2rem; color: #047857;">
-                                ${isIt ? 'Gli amministratori ASM esamineranno la tua nota e aggiorneranno la classificazione del prodotto.' : 'The ASM admin team will review your notes and verify this product.'}
+                            <div style="font-size: 0.85rem; margin-top: 0.25rem; color: #047857; line-height: 1.4;">
+                                ${isNotListed 
+                                    ? (isIt ? 'Il team ASM esaminerà gli ingredienti di questo prodotto e lo aggiungerà al database Halal.' : 'The ASM admin team will check the ingredients and list this product in the Halal database.')
+                                    : (isIt ? 'Gli amministratori ASM esamineranno la tua nota e aggiorneranno la classificazione del prodotto.' : 'The ASM admin team will review your notes and verify this product.')}
                             </div>
                         </div>
                     </div>
@@ -894,10 +969,12 @@
             if (msgDiv) {
                 msgDiv.classList.remove('hidden');
                 msgDiv.style.color = '#dc2626';
-                msgDiv.textContent = isIt ? 'Impossibile inviare la segnalazione al momento. Riprova più tardi.' : 'Unable to submit review request. Please try again later.';
+                msgDiv.textContent = isIt ? 'Impossibile inviare la segnalazione al momento. Riprova più tardi.' : 'Unable to submit product info. Please try again later.';
             }
             if (submitBtn) {
-                submitBtn.textContent = isIt ? 'Invia Segnalazione' : 'Submit Review Request';
+                submitBtn.textContent = isNotListed 
+                    ? (isIt ? 'Invia Dati Prodotto' : 'Submit Product Info')
+                    : (isIt ? 'Invia Segnalazione' : 'Submit Review Request');
             }
         }
     };

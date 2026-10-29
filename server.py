@@ -1458,27 +1458,45 @@ def flag_scanned_product():
     user_note = str(data.get('note', '')).strip()[:1000]
     product_name = str(data.get('product_name', '')).strip()[:200]
     brand = str(data.get('brand', '')).strip()[:150]
+    store_location = str(data.get('store_location', '')).strip()[:200]
     status = str(data.get('status', 'not_listed')).strip().lower()
 
     conn = get_db()
     c = conn.cursor()
     try:
-        c.execute("SELECT id, user_notes FROM scanned_products WHERE barcode = ?", (barcode,))
+        c.execute("SELECT id, user_notes, product_name FROM scanned_products WHERE barcode = ?", (barcode,))
         row = c.fetchone()
         now_str = datetime.datetime.now().strftime('%d/%m %H:%M')
-        new_note_entry = f"[{now_str}] {user_note}" if user_note else f"[{now_str}] Flagged as incorrect by user"
+        
+        if store_location:
+            new_note_entry = f"[{now_str}] Name: {product_name or 'N/A'} (Found at: {store_location})"
+            if user_note and not user_note.startswith('Found at'):
+                new_note_entry += f" - Note: {user_note}"
+            elif user_note:
+                new_note_entry = f"[{now_str}] {user_note}"
+        elif user_note:
+            new_note_entry = f"[{now_str}] {user_note}"
+        else:
+            new_note_entry = f"[{now_str}] Flagged for review by user"
 
         if row:
             existing_notes = row['user_notes'] or ''
             combined = (existing_notes + " | " + new_note_entry).strip(" | ") if existing_notes else new_note_entry
+            
+            # If product had a placeholder name, update it with user provided name
+            curr_pname = row['product_name'] or ''
+            is_placeholder = not curr_pname or any(ph in curr_pname.lower() for ph in ['not listed', 'non in lista', 'unlisted', 'unknown'])
+            new_pname = product_name if (product_name and is_placeholder) else curr_pname
+            
             c.execute('''
                 UPDATE scanned_products
                 SET user_flagged_review = 1,
                     user_notes = ?,
+                    product_name = COALESCE(NULLIF(?, ''), product_name),
                     admin_status = 'pending',
                     updated_at = CURRENT_TIMESTAMP
                 WHERE id = ?
-            ''', (combined, row['id']))
+            ''', (combined, new_pname, row['id']))
         else:
             c.execute('''
                 INSERT INTO scanned_products (barcode, product_name, brand, status, admin_status, user_flagged_review, user_notes, scan_count)

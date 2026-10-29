@@ -622,7 +622,7 @@
 
                     <div style="display: flex; gap: 0.5rem; align-items: center;">
                         <button type="button" id="btn-cancel-edit" class="btn btn-secondary hidden" style="padding: 0.5rem 1rem;">Cancel</button>
-                        <button type="button" id="btn-submit-event" class="btn btn-primary" style="padding: 0.6rem 1.4rem; font-weight: 700;">Add Event to List</button>
+                        <button type="button" id="btn-submit-event" class="btn btn-primary" style="padding: 0.6rem 1.4rem; font-weight: 700;">🚀 Publish Event Live</button>
                     </div>
                 </div>
             </div>
@@ -1051,7 +1051,7 @@
     function resetEventEditor() {
         editingEventIndex = null;
         editorTitle.textContent = "Create a New Event";
-        btnSubmitEvent.textContent = "Add Event to List";
+        btnSubmitEvent.textContent = "🚀 Publish Event Live";
         btnCancelEdit.classList.add('hidden');
         document.getElementById('event-input-title').value = '';
         document.getElementById('event-input-category').value = 'Islamic Event';
@@ -1069,7 +1069,7 @@
         if (!ev) return;
         editingEventIndex = idx;
         editorTitle.textContent = "Edit Event: " + ev.title;
-        btnSubmitEvent.textContent = "Update Event";
+        btnSubmitEvent.textContent = "💾 Update & Publish Live";
         btnCancelEdit.classList.remove('hidden');
 
         document.getElementById('event-input-title').value = ev.title || '';
@@ -1085,14 +1085,48 @@
         editorCard.scrollIntoView({ behavior: 'smooth' });
     };
 
-    window.deleteEvent = function(idx) {
-        if (!confirm("Are you sure you want to delete this event? Click Save & Publish afterwards to update the live website.")) return;
+    // Helper to immediately save & publish events to backend
+    async function publishEventsToServer(customSuccessMsg) {
+        try {
+            const announcement = document.getElementById('announcement')?.value || '';
+            const mission_text = document.getElementById('mission-text-input')?.value || '';
+            const global_event_reg_link = document.getElementById('global-event-reg-link')?.value || '';
+
+            const res = await fetch('/api/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ announcement, mission_text, global_event_reg_link, events })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                showMessage(customSuccessMsg || "🎉 Published live to website successfully!", true);
+                return true;
+            } else {
+                showMessage(data.message || "Failed to publish events to server.", false);
+                return false;
+            }
+        } catch (err) {
+            showMessage("Error connecting to server to publish events.", false);
+            return false;
+        }
+    }
+
+    window.deleteEvent = async function(idx) {
+        const ev = events[idx];
+        const title = ev ? ev.title : 'this event';
+        if (!confirm(`Are you sure you want to delete "${title}"? It will be removed from the live website immediately.`)) return;
+        
         events.splice(idx, 1);
         renderEvents();
-        showMessage("Event removed from list. Remember to click 'Save & Publish All'!", true);
+        showMessage(`⏳ Deleting "${title}" from live website...`, true);
+        await publishEventsToServer(`🗑️ Event "${title}" removed from live website!`);
     };
 
-    btnSubmitEvent.addEventListener('click', () => {
+    btnSubmitEvent.addEventListener('click', async () => {
         const title = document.getElementById('event-input-title').value.trim();
         const category = document.getElementById('event-input-category').value;
         const date = document.getElementById('event-input-date').value.trim();
@@ -1124,16 +1158,30 @@
             registration_open: reg_open
         };
 
-        if (editingEventIndex !== null && events[editingEventIndex]) {
+        const isEditing = (editingEventIndex !== null && events[editingEventIndex]);
+        btnSubmitEvent.disabled = true;
+        btnSubmitEvent.innerHTML = '<span>⏳</span> Publishing Live...';
+
+        if (isEditing) {
             events[editingEventIndex] = { ...events[editingEventIndex], ...eventObj };
-            showMessage(`Event "${title}" updated! Click 'Save & Publish All' to make it live.`, true);
         } else {
             events.unshift(eventObj);
-            showMessage(`Event "${title}" added! Click 'Save & Publish All' to make it live.`, true);
         }
 
         renderEvents();
-        resetEventEditor();
+
+        const successMsg = isEditing 
+            ? `🎉 Event "${title}" updated & published live!` 
+            : `🚀 Event "${title}" created & published live!`;
+
+        const ok = await publishEventsToServer(successMsg);
+
+        btnSubmitEvent.disabled = false;
+        btnSubmitEvent.textContent = isEditing ? '💾 Update & Publish Live' : '🚀 Publish Event Live';
+
+        if (ok) {
+            resetEventEditor();
+        }
     });
 
     // Save All Events to Backend & Static JSON
