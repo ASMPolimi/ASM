@@ -106,7 +106,10 @@ template_names = [
     'admin_jumuah.html',
     'admin_questions.html',
     'admin_scanner.html',
-    'admin_users.html'
+    'admin_users.html',
+    'privacy.html',
+    'terms.html',
+    'cookies.html'
 ]
 
 for tpl_name in template_names:

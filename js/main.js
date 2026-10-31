@@ -17,7 +17,10 @@ const ASM_I18N = {
         nav_quran: "Quran Irtaqi",
         nav_join: "Join Us",
         nav_admin: "Admin",
-        footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> All rights reserved.",
+                footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> All rights reserved.",
+        footer_privacy: "Privacy Policy",
+        footer_terms: "Terms & Conditions",
+        footer_cookies: "Cookie Policy",
 
         qibla_title: "Milan Qibla Compass",
         qibla_city_sub: "Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km",
@@ -365,7 +368,10 @@ const ASM_I18N = {
         nav_quran: "Corano Irtaqi",
         nav_join: "Unisciti a noi",
         nav_admin: "Amministrazione",
-        footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> Tutti i diritti riservati.",
+                footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> Tutti i diritti riservati.",
+        footer_privacy: "Informativa sulla Privacy",
+        footer_terms: "Termini e Condizioni",
+        footer_cookies: "Informativa sui Cookie",
 
         qibla_title: "Bussola Direzione Qibla (Milano)",
         qibla_city_sub: "Milano, Italia &bull; 45.46° N, 9.19° E &bull; ~3.820 km",

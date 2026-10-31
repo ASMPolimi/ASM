@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+{% block title %}Cookie Policy &bull; Tracking &amp; Analytics Disclosure | ASM Polimi{% endblock %}
+{% block meta_description %}Official Cookie Policy of Associazione Studenti Musulmani - Politecnico di Milano explaining the use of cookies, Google Analytics (G-8N5B01YCZ4), and local storage.{% endblock %}
+{% block canonical_url %}https://asmpolimi.it/cookies{% endblock %}
+{% block og_url %}https://asmpolimi.it/cookies{% endblock %}
+{% block og_title %}Cookie Policy &bull; ASM Polimi{% endblock %}
+{% block og_description %}Official Cookie Policy of Associazione Studenti Musulmani - Politecnico di Milano explaining the use of cookies, Google Analytics (G-8N5B01YCZ4), and local storage.{% endblock %}
+{% block twitter_url %}https://asmpolimi.it/cookies{% endblock %}
+{% block twitter_title %}Cookie Policy &bull; ASM Polimi{% endblock %}
+
+{% block extra_head %}
+<style>
+    .legal-page-container {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 4rem 1.25rem;
+    }
+    .legal-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        padding: 2.5rem 2.25rem;
+        margin-top: 1.5rem;
+        line-height: 1.7;
+        color: #334155;
+    }
+    .legal-card h2 {
+        color: var(--color-primary);
+        font-size: 1.35rem;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 0.5rem;
+    }
+    .legal-card h2:first-of-type {
+        margin-top: 0.5rem;
+    }
+    .legal-card ul {
+        margin: 0.5rem 0 1rem 1.5rem;
+        padding: 0;
+    }
+    .legal-card li {
+        margin-bottom: 0.4rem;
+    }
+    .legal-badge-header {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .legal-highlight-box {
+        background: #f8fafc;
+        border-left: 4px solid var(--color-primary);
+        border-radius: 6px;
+        padding: 1rem 1.25rem;
+        margin: 1.25rem 0;
+        font-size: 0.95rem;
+    }
+    .cookie-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0 1.5rem 0;
+        font-size: 0.88rem;
+    }
+    .cookie-table th, .cookie-table td {
+        border: 1px solid #e2e8f0;
+        padding: 0.65rem 0.85rem;
+        text-align: left;
+    }
+    .cookie-table th {
+        background: #f1f5f9;
+        color: var(--color-primary);
+        font-weight: 700;
+    }
+    @media (max-width: 640px) {
+        .legal-card {
+            padding: 1.75rem 1.25rem;
+        }
+        .cookie-table {
+            display: block;
+            overflow-x: auto;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section first-section" style="min-height: 80vh;">
+    <div class="legal-page-container">
+        <div class="section-header text-center">
+            <div class="legal-badge-header">
+                <span>🍪</span> Transparent Cookie &amp; Storage Policy
+            </div>
+            <h1 style="color: var(--color-primary); font-size: 2.2rem; margin-bottom: 0.5rem;">Cookie Policy</h1>
+            <div class="divider"></div>
+            <p style="color: var(--color-text-light); max-width: 680px; margin: 0 auto;">
+                Informativa estesa sull'uso dei cookie e delle tecnologie di memorizzazione locale (D.Lgs. 196/2003 e Provvedimenti del Garante Privacy).
+            </p>
+            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.5rem;">Last Updated: October 2026</p>
+        </div>
+
+        <div class="legal-card">
+            <div class="legal-highlight-box">
+                <strong>Overview:</strong> This Cookie Policy explains how <strong>Associazione Studenti Musulmani - Politecnico di Milano (ASM POLIMI)</strong> uses cookies, browser local storage, and similar technologies when you visit <a href="https://asmpolimi.it">asmpolimi.it</a>.
+            </div>
+
+            <h2>1. What Are Cookies and Local Storage?</h2>
+            <p>
+                <strong>Cookies</strong> are small text files placed on your device by websites you visit. They are widely used to make websites work efficiently, remember your preferences, and provide aggregated analytics to site owners.
+            </p>
+            <p>
+                <strong>Local Storage:</strong> In addition to standard cookies, modern web applications utilize HTML5 LocalStorage to save settings (such as your chosen site language) directly on your device without transmitting unnecessary data with every network request.
+            </p>
+
+            <h2>2. Types of Cookies &amp; Storage Technologies We Use</h2>
+
+            <h3>A. Strictly Necessary &amp; Technical Storage</h3>
+            <p>
+                These items are essential for the website to function properly and navigate smoothly. They do not track your personal identity across other sites.
+            </p>
+            <table class="cookie-table">
+                <thead>
+                    <tr>
+                        <th>Storage Name</th>
+                        <th>Type</th>
+                        <th>Purpose</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>asm_lang</code></td>
+                        <td>LocalStorage</td>
+                        <td>Remembers your preferred site language (English or Italian).</td>
+                        <td>Persistent</td>
+                    </tr>
+                    <tr>
+                        <td><code>adminToken</code> / <code>adminRole</code></td>
+                        <td>LocalStorage</td>
+                        <td>Stores encrypted session authentication for authorized administrators accessing the admin portal.</td>
+                        <td>Session</td>
+                    </tr>
+                    <tr>
+                        <td><code>cf_clearance</code> / Turnstile</td>
+                        <td>Cookie / Script</td>
+                        <td>Privacy-friendly Cloudflare Turnstile anti-bot verification to prevent spam and brute-force submissions on forms.</td>
+                        <td>Session / Up to 1 year</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>B. Performance &amp; Analytics (Google tag / Google Analytics 4)</h3>
+            <p>
+                Our website utilizes the official <strong>Google tag (gtag.js)</strong> with measurement ID <strong><code>G-8N5B01YCZ4</code></strong> (Google Analytics 4).
+            </p>
+            <p>
+                <strong>Purpose of Google Analytics:</strong>
+                As a volunteer student organization, we use aggregated, anonymous telemetry to understand:
+            </p>
+            <ul>
+                <li>Which pages are most helpful to students (e.g., daily prayer times, Friday Jumu'ah room announcements, Halal scanner).</li>
+                <li>Device screen resolutions and browser types, helping us optimize mobile layouts for student smartphones.</li>
+                <li>General geographic city-level location (e.g. Milan vs. international exchange applicants).</li>
+            </ul>
+            <p>
+                Google Analytics 4 operates with <strong>IP Anonymization</strong> enabled by default and does not store full IP addresses. We do not use Google Signals or cross-device commercial advertising remarketing.
+            </p>
+            <table class="cookie-table">
+                <thead>
+                    <tr>
+                        <th>Cookie Name</th>
+                        <th>Provider</th>
+                        <th>Purpose</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>_ga</code></td>
+                        <td>Google (<code>G-8N5B01YCZ4</code>)</td>
+                        <td>Distinguishes unique anonymous website visits.</td>
+                        <td>2 years</td>
+                    </tr>
+                    <tr>
+                        <td><code>_ga_8N5B01YCZ4</code></td>
+                        <td>Google (<code>G-8N5B01YCZ4</code>)</td>
+                        <td>Maintains session state and aggregated visitor engagement data.</td>
+                        <td>2 years</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>3. Third-Party Links &amp; External Services</h2>
+            <p>
+                Our website links to legitimate external services that may have their own independent cookie policies when you leave our domain:
+            </p>
+            <ul>
+                <li><strong>Google Drive:</strong> Used for voluntary access to community photo gallery archives.</li>
+                <li><strong>Politecnico di Milano Official Portals:</strong> Links to official university maps, campus directories, and classroom locators.</li>
+                <li><strong>Open Food Facts:</strong> Public barcode database queries for halal product ingredients verification.</li>
+            </ul>
+
+            <h2>4. How to Control, Block, or Delete Cookies</h2>
+            <p>
+                You can manage, restrict, or delete cookies at any time via your browser settings. Please note that disabling technical storage may affect language preferences.
+            </p>
+            <ul>
+                <li><strong>Google Chrome:</strong> Settings &rarr; Privacy and security &rarr; Third-party cookies.</li>
+                <li><strong>Mozilla Firefox:</strong> Settings &rarr; Privacy &amp; Security &rarr; Enhanced Tracking Protection.</li>
+                <li><strong>Apple Safari:</strong> Preferences &rarr; Privacy &rarr; Prevent cross-site tracking / Block all cookies.</li>
+                <li><strong>Microsoft Edge:</strong> Settings &rarr; Cookies and site permissions &rarr; Manage and delete cookies.</li>
+            </ul>
+            <p>
+                You can also opt out of Google Analytics tracking across all websites by installing the official <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: underline;">Google Analytics Opt-out Browser Add-on</a>.
+            </p>
+
+            <h2>5. Contact &amp; Inquiries</h2>
+            <p>
+                For any questions regarding our use of cookies or website technologies, please contact our volunteer technology team at:
+                <br>
+                <strong>Email:</strong> <a href="mailto:info@asmpolimi.it" style="color: var(--color-primary); font-weight: 600;">info@asmpolimi.it</a>
+            </p>
+
+            <div style="text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                <a href="/" class="btn btn-outline-primary" style="margin-right: 0.5rem;">&larr; Back to Homepage</a>
+                <a href="/privacy" class="btn btn-primary" style="margin-right: 0.5rem;">Privacy Policy &rarr;</a>
+                <a href="/terms" class="btn btn-primary">Terms &amp; Conditions &rarr;</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}Terms &amp; Conditions &bull; Association Bylaws | ASM Polimi{% endblock %}
+{% block meta_description %}Terms and Conditions for membership, on-campus events, and digital services provided by Associazione Studenti Musulmani - Politecnico di Milano.{% endblock %}
+{% block canonical_url %}https://asmpolimi.it/terms{% endblock %}
+{% block og_url %}https://asmpolimi.it/terms{% endblock %}
+{% block og_title %}Terms &amp; Conditions &bull; ASM Polimi{% endblock %}
+{% block og_description %}Terms and Conditions for membership, on-campus events, and digital services provided by Associazione Studenti Musulmani - Politecnico di Milano.{% endblock %}
+{% block twitter_url %}https://asmpolimi.it/terms{% endblock %}
+{% block twitter_title %}Terms &amp; Conditions &bull; ASM Polimi{% endblock %}
+
+{% block extra_head %}
+<style>
+    .legal-page-container {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 4rem 1.25rem;
+    }
+    .legal-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        padding: 2.5rem 2.25rem;
+        margin-top: 1.5rem;
+        line-height: 1.7;
+        color: #334155;
+    }
+    .legal-card h2 {
+        color: var(--color-primary);
+        font-size: 1.35rem;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 0.5rem;
+    }
+    .legal-card h2:first-of-type {
+        margin-top: 0.5rem;
+    }
+    .legal-card ul {
+        margin: 0.5rem 0 1rem 1.5rem;
+        padding: 0;
+    }
+    .legal-card li {
+        margin-bottom: 0.4rem;
+    }
+    .legal-badge-header {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .legal-highlight-box {
+        background: #f8fafc;
+        border-left: 4px solid var(--color-primary);
+        border-radius: 6px;
+        padding: 1rem 1.25rem;
+        margin: 1.25rem 0;
+        font-size: 0.95rem;
+    }
+    @media (max-width: 640px) {
+        .legal-card {
+            padding: 1.75rem 1.25rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section first-section" style="min-height: 80vh;">
+    <div class="legal-page-container">
+        <div class="section-header text-center">
+            <div class="legal-badge-header">
+                <span>📜</span> Community Statute &bull; Terms of Service
+            </div>
+            <h1 style="color: var(--color-primary); font-size: 2.2rem; margin-bottom: 0.5rem;">Terms &amp; Conditions</h1>
+            <div class="divider"></div>
+            <p style="color: var(--color-text-light); max-width: 680px; margin: 0 auto;">
+                Rules, guidelines, and terms governing membership, community initiatives, and usage of asmpolimi.it.
+            </p>
+            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.5rem;">Last Updated: October 2026</p>
+        </div>
+
+        <div class="legal-card">
+            <div class="legal-highlight-box">
+                <strong>Welcome to ASM POLIMI:</strong> By using our website (<a href="https://asmpolimi.it">asmpolimi.it</a>), applying for membership, or registering for our on-campus activities, you agree to these Terms &amp; Conditions and our association bylaws.
+            </div>
+
+            <h2>1. About the Association</h2>
+            <p>
+                <strong>Associazione Studenti Musulmani - Politecnico di Milano (ASM POLIMI)</strong> is an officially recognized, non-profit university student association active at Politecnico di Milano (Piazza Leonardo da Vinci 32, 20133 Milano, Italy).
+            </p>
+            <p>
+                Our mission is to foster community, support academic success, advocate for student prayer and reflection spaces, offer halal lifestyle navigation tools, and promote interfaith understanding and cultural dialogue across all university campuses.
+            </p>
+
+            <h2>2. Membership Application &amp; Membership Fee</h2>
+            <ul>
+                <li><strong>Eligibility:</strong> Membership is open to all students, researchers, alumni, and staff of Politecnico di Milano, as well as students of neighboring universities who support our community values.</li>
+                <li><strong>Application Process:</strong> Prospective members apply voluntarily via our online form (<a href="/register" style="color: var(--color-primary); font-weight: 600;">asmpolimi.it/register</a>). Applications are verified by the board.</li>
+                <li><strong>Annual Fee:</strong> Where applicable, an annual associative contribution (e.g. €5.00 or as determined by the annual assembly) directly funds student welcome kits (including custom 3D keychains), academic workshops, event subsidies, and associative materials.</li>
+                <li><strong>No Commercial Intent:</strong> Contributions are strictly non-profit associative contributions, not commercial purchase transactions.</li>
+            </ul>
+
+            <h2>3. Event Participation &amp; Attendance Policy</h2>
+            <ul>
+                <li><strong>Seat Reservation:</strong> Because campus event spaces (e.g. aula magna, student hubs) have statutory capacity limits, event registrations are allocated on a first-come, first-served basis or member-priority booking.</li>
+                <li><strong>Cancellation Courtesy:</strong> If you register for an event but can no longer attend, please notify the organizers at least 24 hours in advance so your seat can be released to students on the waiting list.</li>
+                <li><strong>On-Campus Behavior:</strong> All attendees must abide by Politecnico di Milano university regulations, respect fellow participants, and uphold a peaceful, welcoming atmosphere.</li>
+            </ul>
+
+            <h2>4. Disclaimer for Digital Services &amp; Tools</h2>
+            <p>Our website provides free, volunteer-maintained student tools:</p>
+            <ul>
+                <li><strong>Daily Prayer Timings:</strong> Calculated using recognized astronomical algorithms for Milan metropolitan coordinates (45.46° N, 9.19° E). While we strive for absolute accuracy, slight timing variations of 1–2 minutes may occur based on geographical terrain.</li>
+                <li><strong>Halal Scanner &amp; Product Search:</strong> This tool utilizes the Open Food Facts API and community-flagged submissions to help students identify potentially non-halal additives (e.g. E120, animal gelatin). Product formulations change frequently by manufacturers; the tool is an informational aid, and students should always check the physical ingredient label on packaging.</li>
+                <li><strong>"Ask an Imam" Feature:</strong> Responses provided through our platform are religious and pastoral educational guidance from qualified community scholars. They do not constitute legal, medical, or formal university disciplinary advice.</li>
+            </ul>
+
+            <h2>5. Intellectual Property</h2>
+            <p>
+                All trademarks, logos, visual assets, original text, design elements, and source code of ASM POLIMI are the exclusive property of the association or their respective open-source licensors. You may not reproduce or mirror our brand identity for commercial gain without explicit written consent from the executive board.
+            </p>
+
+            <h2>6. User Conduct &amp; Prohibited Uses</h2>
+            <p>Users agree not to:</p>
+            <ul>
+                <li>Submit false, abusive, or malicious information through membership or event forms.</li>
+                <li>Attempt to bypass rate limits, probe private administrative endpoints, or disrupt server infrastructure.</li>
+                <li>Use automated scripts or scrapers against our backend APIs in a manner that degrades performance for other students.</li>
+            </ul>
+
+            <h2>7. Governing Law &amp; Jurisdiction</h2>
+            <p>
+                These terms are governed by and construed in accordance with the laws of the <strong>Republic of Italy</strong>. Any dispute arising out of or in connection with associative activities or these terms shall be submitted to the exclusive jurisdiction of the competent court of <strong>Milan, Italy</strong>.
+            </p>
+
+            <h2>8. Contact &amp; Inquiries</h2>
+            <p>
+                If you have questions regarding these Terms &amp; Conditions or our association statute, please contact the executive board at:
+                <br>
+                <strong>Email:</strong> <a href="mailto:info@asmpolimi.it" style="color: var(--color-primary); font-weight: 600;">info@asmpolimi.it</a>
+            </p>
+
+            <div style="text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                <a href="/" class="btn btn-outline-primary" style="margin-right: 0.5rem;">&larr; Back to Homepage</a>
+                <a href="/privacy" class="btn btn-primary" style="margin-right: 0.5rem;">Privacy Policy &rarr;</a>
+                <a href="/cookies" class="btn btn-primary">Cookie Policy &rarr;</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

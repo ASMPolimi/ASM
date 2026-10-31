@@ -1619,6 +1619,32 @@ body.dark-mode .email-send-link:hover {
     font-size: 0.875rem;
 }
 
+.footer-legal-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+}
+
+.footer-legal-links a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.footer-legal-links a:hover {
+    color: #ffffff;
+    opacity: 1;
+}
+
+.footer-separator {
+    color: rgba(255, 255, 255, 0.4);
+    user-select: none;
+}
+
+
 /* Responsive Design */
 @media (max-width: 1240px) {
     .nav-links>a:not(.btn) {
@@ -5059,4 +5085,4 @@ body.dark-mode .month-brief-notes {
         flex-direction: column;
         gap: 0.5rem;
     }
-}
+}
