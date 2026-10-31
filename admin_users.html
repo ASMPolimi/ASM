@@ -45,15 +45,33 @@
     <script src="/js/main.js" defer></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8N5B01YCZ4"></script>
+    <!-- Google tag (gtag.js) with GDPR Consent Mode -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
+      // Initial consent check: Default to denied unless previously accepted
+      var initialConsent = localStorage.getItem('asm_cookie_consent');
+      if (initialConsent !== 'accepted') {
+          window['ga-disable-G-8N5B01YCZ4'] = true;
+          gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      } else {
+          gtag('consent', 'default', {
+              'analytics_storage': 'granted',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      }
+      gtag('js', new Date());
       gtag('config', 'G-8N5B01YCZ4');
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8N5B01YCZ4"></script>
     
     <style>
         .admin-container {
@@ -361,6 +379,25 @@
             </div>
         </div>
     </footer>
+
+    <!-- GDPR Cookie Consent Confirmation Banner -->
+    <div id="cookie-consent-banner" class="cookie-banner-wrap" role="dialog" aria-live="polite" aria-label="Cookie consent">
+        <div class="cookie-banner-title">
+            <span>🍪</span> <span data-i18n="cookie_banner_title">We value your privacy</span>
+        </div>
+        <p class="cookie-banner-text">
+            <span data-i18n="cookie_banner_desc">We use necessary storage for core site features and optional Google Analytics cookies to improve student services. You can accept all or decline non-essential cookies. Change your mind at any time in our</span>
+            <a href="/cookies" data-i18n="cookie_banner_link">Cookie Policy</a>.
+        </p>
+        <div class="cookie-banner-actions">
+            <button type="button" id="btn-cookie-accept" class="cookie-btn-accept" data-i18n="cookie_btn_accept">
+                Accept All
+            </button>
+            <button type="button" id="btn-cookie-decline" class="cookie-btn-decline" data-i18n="cookie_btn_decline">
+                Decline Non-Essential
+            </button>
+        </div>
+    </div>
 
     
 <script>

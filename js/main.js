@@ -20,7 +20,12 @@ const ASM_I18N = {
                 footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> All rights reserved.",
         footer_privacy: "Privacy Policy",
         footer_terms: "Terms & Conditions",
-        footer_cookies: "Cookie Policy",
+                footer_cookies: "Cookie Policy",
+        cookie_banner_title: "We value your privacy",
+        cookie_banner_desc: "We use necessary storage for core site features and optional Google Analytics cookies to improve student services. You can accept all or decline non-essential cookies. Change your mind at any time in our",
+        cookie_banner_link: "Cookie Policy",
+        cookie_btn_accept: "Accept All",
+        cookie_btn_decline: "Decline Non-Essential",
 
         qibla_title: "Milan Qibla Compass",
         qibla_city_sub: "Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km",
@@ -371,7 +376,12 @@ const ASM_I18N = {
                 footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> Tutti i diritti riservati.",
         footer_privacy: "Informativa sulla Privacy",
         footer_terms: "Termini e Condizioni",
-        footer_cookies: "Informativa sui Cookie",
+                footer_cookies: "Informativa sui Cookie",
+        cookie_banner_title: "Rispettiamo la tua privacy",
+        cookie_banner_desc: "Utilizziamo memorie tecniche necessarie per il funzionamento del sito e cookie opzionali di Google Analytics per migliorare i servizi per gli studenti. Puoi accettare o rifiutare. Puoi cambiare idea in qualsiasi momento nella nostra",
+        cookie_banner_link: "Informativa sui Cookie",
+        cookie_btn_accept: "Accetta Tutti",
+        cookie_btn_decline: "Rifiuta Non Essenziali",
 
         qibla_title: "Bussola Direzione Qibla (Milano)",
         qibla_city_sub: "Milano, Italia &bull; 45.46° N, 9.19° E &bull; ~3.820 km",
@@ -2495,6 +2505,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initAnnouncementBanner();
+    initCookieConsent();
 
     // Close announcement banner button
     const closeBannerBtn = document.getElementById('close-announcement-btn');
@@ -2589,3 +2600,94 @@ function formatAnnouncementHtml(rawText) {
 }
 window.formatAnnouncementHtml = formatAnnouncementHtml;
 
+
+
+// -------------------------------------------------------------------------
+// GDPR Cookie Consent Controller
+// -------------------------------------------------------------------------
+const GA_ID = 'G-8N5B01YCZ4';
+
+window.getCookieConsent = function () {
+    return localStorage.getItem('asm_cookie_consent'); // 'accepted' | 'declined' | null
+};
+
+window.setCookieConsent = function (status) {
+    if (status !== 'accepted' && status !== 'declined') return;
+    localStorage.setItem('asm_cookie_consent', status);
+
+    if (status === 'accepted') {
+        window['ga-disable-' + GA_ID] = false;
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted'
+            });
+            gtag('event', 'cookie_consent_accepted');
+        }
+    } else {
+        window['ga-disable-' + GA_ID] = true;
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+                'analytics_storage': 'denied'
+            });
+        }
+    }
+
+    window.hideCookieBanner();
+
+    if (typeof window.refreshCookiePreferencesWidget === 'function') {
+        window.refreshCookiePreferencesWidget();
+    }
+};
+
+window.resetCookieConsent = function () {
+    localStorage.removeItem('asm_cookie_consent');
+    window['ga-disable-' + GA_ID] = true;
+    if (typeof gtag === 'function') {
+        gtag('consent', 'update', {
+            'analytics_storage': 'denied'
+        });
+    }
+    window.showCookieBanner();
+    if (typeof window.refreshCookiePreferencesWidget === 'function') {
+        window.refreshCookiePreferencesWidget();
+    }
+};
+
+window.showCookieBanner = function () {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+        banner.style.display = 'block';
+    }
+};
+
+window.hideCookieBanner = function () {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+        banner.style.display = 'none';
+    }
+};
+
+function initCookieConsent() {
+    const consent = window.getCookieConsent();
+    const btnAccept = document.getElementById('btn-cookie-accept');
+    const btnDecline = document.getElementById('btn-cookie-decline');
+
+    if (btnAccept) {
+        btnAccept.addEventListener('click', () => {
+            window.setCookieConsent('accepted');
+        });
+    }
+
+    if (btnDecline) {
+        btnDecline.addEventListener('click', () => {
+            window.setCookieConsent('declined');
+        });
+    }
+
+    // If consent hasn't been chosen yet, show banner after a small delay
+    if (!consent) {
+        setTimeout(() => {
+            window.showCookieBanner();
+        }, 600);
+    }
+}

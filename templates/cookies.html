@@ -113,6 +113,41 @@
                 <strong>Overview:</strong> This Cookie Policy explains how <strong>Associazione Studenti Musulmani - Politecnico di Milano (ASM POLIMI)</strong> uses cookies, browser local storage, and similar technologies when you visit <a href="https://asmpolimi.it">asmpolimi.it</a>.
             </div>
 
+            <!-- Interactive Preference Manager: Change Your Mind At Any Time -->
+            <div id="cookie-preferences-card" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0 2rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.85rem;">
+                    <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+                        <h3 style="margin: 0; color: var(--color-primary); font-size: 1.15rem; font-weight: 700;">
+                            Your Cookie Preferences
+                        </h3>
+                        <span id="pref-status-badge" style="padding: 0.25rem 0.75rem; border-radius: 999px; font-weight: 700; font-size: 0.82rem; border: 1.5px solid transparent;">
+                            Loading...
+                        </span>
+                    </div>
+                    <span style="font-size: 0.84rem; font-weight: 600; color: var(--color-primary); background: #e0f2fe; border: 1px solid #bae6fd; padding: 0.2rem 0.65rem; border-radius: 999px;">
+                        ✨ Change your mind at any time
+                    </span>
+                </div>
+                
+                <p style="margin: 0 0 1.25rem 0; font-size: 0.9rem; color: #475569; line-height: 1.55;">
+                    Under GDPR and ePrivacy regulations, you are always in control of your data. You can enable or disable Google Analytics (<code>G-8N5B01YCZ4</code>) telemetry at any moment. Your selection updates immediately without having to refresh the page.
+                </p>
+
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                    <button type="button" id="btn-pref-accept" class="btn" style="background: #059669; color: white; border: none; padding: 0.55rem 1.25rem; font-size: 0.88rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.1s; display: inline-flex; align-items: center; gap: 0.4rem;">
+                        <span>✓</span> Accept Analytics Cookies
+                    </button>
+                    <button type="button" id="btn-pref-decline" class="btn" style="background: #ffffff; color: #334155; border: 1.5px solid #cbd5e1; padding: 0.55rem 1.25rem; font-size: 0.88rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: background 0.2s, border-color 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;">
+                        <span>✕</span> Decline Non-Essential
+                    </button>
+                    <button type="button" id="btn-pref-reset" class="btn" style="background: transparent; color: #64748b; border: 1px dashed #94a3b8; padding: 0.5rem 1rem; font-size: 0.84rem; font-weight: 600; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;">
+                        <span>↺</span> Reset Choice &amp; Re-open Banner
+                    </button>
+                </div>
+
+                <div id="pref-feedback-msg" style="display: none; margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.88rem; font-weight: 600;"></div>
+            </div>
+
             <h2>1. What Are Cookies and Local Storage?</h2>
             <p>
                 <strong>Cookies</strong> are small text files placed on your device by websites you visit. They are widely used to make websites work efficiently, remember your preferences, and provide aggregated analytics to site owners.
@@ -240,3 +275,88 @@
 </section>
 {% endblock %}
 
+{% block extra_scripts %}
+<script>
+    function refreshCookiePreferencesWidget() {
+        const badge = document.getElementById('pref-status-badge');
+        if (!badge) return;
+
+        const consent = typeof window.getCookieConsent === 'function' ? window.getCookieConsent() : localStorage.getItem('asm_cookie_consent');
+
+        if (consent === 'accepted') {
+            badge.style.background = '#dcfce7';
+            badge.style.color = '#15803d';
+            badge.style.borderColor = '#86efac';
+            badge.innerHTML = '🟢 Analytics Cookies Allowed';
+        } else if (consent === 'declined') {
+            badge.style.background = '#fee2e2';
+            badge.style.color = '#b91c1c';
+            badge.style.borderColor = '#fca5a5';
+            badge.innerHTML = '🔴 Non-Essential Declined';
+        } else {
+            badge.style.background = '#fef3c7';
+            badge.style.color = '#b45309';
+            badge.style.borderColor = '#fde68a';
+            badge.innerHTML = '🟡 No Choice Made Yet (Default: Blocked)';
+        }
+    }
+    window.refreshCookiePreferencesWidget = refreshCookiePreferencesWidget;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        refreshCookiePreferencesWidget();
+
+        const btnAccept = document.getElementById('btn-pref-accept');
+        const btnDecline = document.getElementById('btn-pref-decline');
+        const btnReset = document.getElementById('btn-pref-reset');
+        const feedback = document.getElementById('pref-feedback-msg');
+
+        function showFeedback(msg, isSuccess) {
+            if (!feedback) return;
+            feedback.style.display = 'block';
+            feedback.style.background = isSuccess ? '#ecfdf5' : '#fff1f2';
+            feedback.style.color = isSuccess ? '#065f46' : '#991b1b';
+            feedback.style.border = isSuccess ? '1px solid #a7f3d0' : '1px solid #fecdd3';
+            feedback.innerHTML = msg;
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 4000);
+        }
+
+        if (btnAccept) {
+            btnAccept.addEventListener('click', () => {
+                if (typeof window.setCookieConsent === 'function') {
+                    window.setCookieConsent('accepted');
+                } else {
+                    localStorage.setItem('asm_cookie_consent', 'accepted');
+                }
+                refreshCookiePreferencesWidget();
+                showFeedback('✓ Success: You have accepted analytics cookies. Thank you for helping us improve ASM POLIMI resources!', true);
+            });
+        }
+
+        if (btnDecline) {
+            btnDecline.addEventListener('click', () => {
+                if (typeof window.setCookieConsent === 'function') {
+                    window.setCookieConsent('declined');
+                } else {
+                    localStorage.setItem('asm_cookie_consent', 'declined');
+                }
+                refreshCookiePreferencesWidget();
+                showFeedback('✓ Preference saved: Non-essential analytics cookies are disabled. Google Analytics tracking is blocked.', true);
+            });
+        }
+
+        if (btnReset) {
+            btnReset.addEventListener('click', () => {
+                if (typeof window.resetCookieConsent === 'function') {
+                    window.resetCookieConsent();
+                } else {
+                    localStorage.removeItem('asm_cookie_consent');
+                }
+                refreshCookiePreferencesWidget();
+                showFeedback('↺ Preferences reset: The cookie consent banner has been reopened.', true);
+            });
+        }
+    });
+</script>
+{% endblock %}
