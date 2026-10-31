@@ -112,7 +112,7 @@ def verify_turnstile(token: str, remote_ip: str = None) -> bool:
         return True
 
 DB_FILE = 'asm.db'
-ALLOWED_FILES = ['index.html', 'register.html', 'event-register.html', 'admin.html', 'admin_members.html', 'admin_jumuah.html', 'admin_users.html', 'jumuah.html', 'support.html', 'gallery.html', 'events.html', 'admin_questions.html', 'halal.html', 'admin_scanner.html', 'privacy.html', 'terms.html', 'cookies.html']
+ALLOWED_FILES = ['index.html', 'register.html', 'event-register.html', 'admin.html', 'admin_members.html', 'admin_jumuah.html', 'admin_users.html', 'jumuah.html', 'support.html', 'gallery.html', 'events.html', 'admin_questions.html', 'halal.html', 'admin_scanner.html', 'privacy.html', 'terms.html', 'cookies.html', 'halal-terms.html']
 ALLOWED_DIRS = ['assets', 'css', 'js']
 
 # Cache for prayer times and Hijri date

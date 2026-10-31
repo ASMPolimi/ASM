@@ -240,50 +240,6 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
-    
-    .scanner-legal-notice {
-        max-width: 800px;
-        margin: 1.75rem auto 0 auto;
-        background: #ffffff;
-        border: 1.5px solid #cbd5e1;
-        border-radius: 1rem;
-        padding: 1.25rem 1.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        font-size: 0.86rem;
-        color: #475569;
-        line-height: 1.55;
-    }
-
-    .scanner-legal-notice-header {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 700;
-        color: var(--color-primary);
-        font-size: 0.96rem;
-        margin-bottom: 0.65rem;
-    }
-
-    .scanner-legal-agree-badge {
-        background: #eff6ff;
-        border: 1px solid #bfdbfe;
-        color: #1e40af;
-        border-radius: 8px;
-        padding: 0.6rem 0.9rem;
-        font-size: 0.84rem;
-        margin-bottom: 0.85rem;
-        line-height: 1.5;
-    }
-
-    .scanner-legal-list {
-        margin: 0.5rem 0 0 1.25rem;
-        padding: 0;
-    }
-
-    .scanner-legal-list li {
-        margin-bottom: 0.4rem;
-    }
-
     /* Responsive Breakpoints for Mobile - Reclaim Left & Right Space */
     @media (max-width: 768px) {
         .scanner-card {
@@ -374,23 +330,6 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             justify-content: center;
             border-radius: 0.4rem;
             min-height: 46px;
-        }
-
-        
-        .scanner-legal-notice {
-            padding: 1rem 0.85rem;
-            margin-top: 1.25rem;
-            border-radius: 0.75rem;
-            font-size: 0.78rem;
-        }
-
-        .scanner-legal-notice-header {
-            font-size: 0.88rem;
-        }
-
-        .scanner-legal-agree-badge {
-            font-size: 0.76rem;
-            padding: 0.45rem 0.65rem;
         }
 
         /* Result card on mobile: clean, tight padding, maximize usable reading width */
@@ -541,39 +480,11 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             </div>
         </div>
 
-        <!-- Halal Scanner Legal & Privacy Notice -->
-        <div class="scanner-legal-notice">
-            <div class="scanner-legal-notice-header">
-                <span>⚖️</span>
-                <span data-i18n="halal_legal_title">Legal Disclaimer &amp; Privacy Notice</span>
-            </div>
-            
-            <div class="scanner-legal-agree-badge">
-                <span data-i18n="halal_legal_agree">
-                    <strong>Automatic Agreement:</strong> By using the Halal Food Scanner, Live Camera Scan, or Ingredients Analyzer, you automatically agree to these legal terms, our <a href="/terms" style="color: #1e40af; text-decoration: underline; font-weight: 700;">Terms &amp; Conditions</a>, and our <a href="/privacy" style="color: #1e40af; text-decoration: underline; font-weight: 700;">Privacy Policy</a>.
-                </span>
-            </div>
-
-            <ul class="scanner-legal-list">
-                <li>
-                    <strong data-i18n="halal_legal_p1_title">Informational Support Only:</strong> 
-                    <span data-i18n="halal_legal_p1_desc">This tool is a volunteer-run student aid and does not constitute formal religious rulings (fatwas), laboratory testing, or official Halal certification.</span>
-                </li>
-                <li>
-                    <strong data-i18n="halal_legal_p2_title">Packaging Label Takes Precedence:</strong> 
-                    <span data-i18n="halal_legal_p2_desc">Manufacturers frequently alter ingredients without changing barcodes. Always verify the printed ingredients list on the physical packaging.</span>
-                </li>
-                <li>
-                    <strong data-i18n="halal_legal_p3_title">Privacy &amp; Camera Stream:</strong> 
-                    <span data-i18n="halal_legal_p3_desc">Camera scanning is processed 100% locally in your browser. No photos, video feeds, or personal imagery are recorded, saved, or uploaded to any server.</span>
-                </li>
-                <li>
-                    <strong data-i18n="halal_legal_p4_title">Limitation of Liability:</strong> 
-                    <span data-i18n="halal_legal_p4_desc">ASM POLIMI disclaims liability for any dietary, health, or religious discrepancies resulting from external database records (Open Food Facts) or manufacturer recipe updates.</span>
-                </li>
-            </ul>
-        </div>
-
+        <!-- Halal Scanner Legal Agreement Notice -->
+        <p style="text-align: center; font-size: 0.82rem; color: #64748b; margin: 1.25rem auto 0 auto; max-width: 650px; line-height: 1.5;">
+            <span data-i18n="halal_auto_agree_prefix">By using the Halal Food Scanner, you automatically agree to our</span>
+            <a href="/halal-terms" style="color: var(--color-primary); font-weight: 700; text-decoration: underline;" data-i18n="halal_auto_agree_link">Halal Scanner Legal Terms &amp; Disclaimer</a>.
+        </p>
     </div>
     <div class="text-center" style="margin-top: 1rem;">
         <a href="/support" class="btn btn-primary"

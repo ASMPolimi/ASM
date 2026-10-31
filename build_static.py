@@ -109,7 +109,8 @@ template_names = [
     'admin_users.html',
     'privacy.html',
     'terms.html',
-    'cookies.html'
+    'cookies.html',
+    'halal-terms.html'
 ]
 
 for tpl_name in template_names:
