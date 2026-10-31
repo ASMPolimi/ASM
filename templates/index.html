@@ -54,6 +54,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- Daily Ayah Section -->
 <section id="daily-ayah-section" class="section bg-light fade-in" style="padding: 3.5rem 0; position: relative;">
@@ -98,6 +99,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- About Section -->
 <section id="about" class="section fade-in">
@@ -140,6 +142,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- Events Section (Dynamic) -->
 <section id="events" class="section bg-light fade-in">
@@ -171,6 +174,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- Major Upcoming Islamic Events Section -->
 <section id="islamic-events" class="section bg-light fade-in">
@@ -257,6 +261,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- Prayer Times Section -->
 <section id="prayer-times" class="section fade-in">
@@ -343,6 +348,7 @@
 
     </div>
 </section>
+{% endif %}
 
 <!-- Student Services & Campus Resources Section -->
 <section id="services" class="section bg-light fade-in">
@@ -403,7 +409,9 @@
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if show_board_section is not defined or show_board_section %}
 <!-- Leadership Section -->
 <section id="leadership" class="section bg-light fade-in">
     <div class="container">
@@ -431,6 +439,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- Contact & Join Section -->
 <section id="contact" class="section fade-in">
@@ -672,6 +681,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- GDPR Privacy Notice Modal -->
 <div id="privacy-notice-modal" class="privacy-modal-overlay" role="dialog" aria-modal="true"
@@ -919,8 +929,17 @@
                 }
             }
 
+            // Handle Board Section visibility
+            const leadershipSection = document.getElementById('leadership');
+            const isBoardEnabled = data.show_board_section !== false && data.show_board_section !== '0' && data.show_board_section !== 'false';
+            if (!isBoardEnabled) {
+                if (leadershipSection) leadershipSection.style.display = 'none';
+            } else {
+                if (leadershipSection) leadershipSection.style.display = '';
+            }
+
             // Render Board Members
-            if (data.board_members) {
+            if (isBoardEnabled && data.board_members) {
                 const boardContainer = document.getElementById('dynamic-board-container');
                 if (boardContainer) {
                     const existingCards = boardContainer.querySelectorAll('.team-card');

@@ -7,7 +7,10 @@ import urllib.request
 import urllib.error
 import datetime
 import openpyxl
-import bcrypt
+try:
+    import bcrypt
+except ImportError:
+    bcrypt = None
 
 def hash_password(password: str) -> str:
     """Hash a plaintext password using bcrypt with automatic salt generation."""
@@ -40,7 +43,10 @@ app = Flask(__name__, template_folder='templates')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 2592000
 CORS(app)
 
-from flask_limiter import Limiter
+try:
+    from flask_limiter import Limiter
+except ImportError:
+    Limiter = None
 
 def get_client_ip():
     """Extract real client IP handling Cloudflare, Render, and standard reverse proxies."""
@@ -50,12 +56,18 @@ def get_client_ip():
         return request.headers.get('X-Forwarded-For').split(',')[0].strip()
     return request.remote_addr or '127.0.0.1'
 
-limiter = Limiter(
-    key_func=get_client_ip,
-    app=app,
-    default_limits=["500 per hour"],
-    storage_uri="memory://"
-)
+if Limiter:
+    limiter = Limiter(
+        key_func=get_client_ip,
+        app=app,
+        default_limits=["500 per hour"],
+        storage_uri="memory://"
+    )
+else:
+    class DummyLimiter:
+        def limit(self, *args, **kwargs):
+            return lambda f: f
+    limiter = DummyLimiter()
 
 @app.errorhandler(429)
 def ratelimit_handler(e):
@@ -288,9 +300,24 @@ def init_db():
 
 init_db()
 
+def get_board_section_setting():
+    conn = get_db()
+    c = conn.cursor()
+    try:
+        c.execute("SELECT value FROM settings WHERE key = 'show_board_section'")
+        row = c.fetchone()
+        conn.close()
+        if not row:
+            return True
+        val = str(row['value']).strip().lower()
+        return val in ('1', 'true', 'yes', 'enabled', 'on')
+    except Exception:
+        if conn: conn.close()
+        return True
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', show_board_section=get_board_section_setting())
 
 @app.route('/favicon.ico')
 def favicon():
@@ -328,6 +355,7 @@ def get_content():
         "mission_text": "",
         "join_us_link": "",
         "global_event_reg_link": "",
+        "show_board_section": True,
         "events": [],
         "board_members": [],
         "gallery": []
@@ -339,6 +367,8 @@ def get_content():
         for row in c.fetchall():
             if row['key'] == 'jumuah_info':
                 content['jumuah_info'] = json.loads(row['value'])
+            elif row['key'] == 'show_board_section':
+                content['show_board_section'] = str(row['value']).strip().lower() in ('1', 'true', 'yes', 'enabled', 'on')
             else:
                 content[row['key']] = row['value']
                 
@@ -511,7 +541,7 @@ def update_content():
                 ))
         
         # update setting fields
-        settings_keys = ['announcement', 'jumuah_prayer', 'mission_text', 'join_us_link', 'global_event_reg_link']
+        settings_keys = ['announcement', 'jumuah_prayer', 'mission_text', 'join_us_link', 'global_event_reg_link', 'show_board_section']
         for k in settings_keys:
             if k in data:
                 c.execute("INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", (k, data[k]))
@@ -853,34 +883,6 @@ def delete_subscriber():
 def generate_excel_response(headers, data_rows, filename, sheet_title="Sheet1"):
     import io
     import openpyxl
-import bcrypt
-
-def hash_password(password: str) -> str:
-    """Hash a plaintext password using bcrypt with automatic salt generation."""
-    if not password:
-        return ""
-    pw_bytes = str(password).encode('utf-8')[:72]
-    salt = bcrypt.gensalt(rounds=12)
-    return bcrypt.hashpw(pw_bytes, salt).decode('utf-8')
-
-def verify_password(password: str, hashed: str) -> bool:
-    """Verify password against bcrypt hash, with backward-compatibility for legacy hashes/plaintext."""
-    if not password or not hashed:
-        return False
-    pw_bytes = str(password).encode('utf-8')[:72]
-    hashed_str = str(hashed)
-    if hashed_str.startswith(('$2b$', '$2a$', '$2y$')):
-        try:
-            return bcrypt.checkpw(pw_bytes, hashed_str.encode('utf-8'))
-        except Exception:
-            return False
-    if hashed_str.startswith(('scrypt:', 'pbkdf2:')):
-        try:
-            from werkzeug.security import check_password_hash
-            return check_password_hash(hashed_str, password)
-        except Exception:
-            return False
-    return password == hashed_str
     from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
     from flask import Response
     
@@ -1080,6 +1082,42 @@ def set_keychain_gift_status():
             "success": True,
             "enabled": enabled,
             "message": f"Personalized keychain gift offer has been {'enabled' if enabled else 'disabled'}!"
+        })
+    except Exception as e:
+        if conn: conn.close()
+        return jsonify({"success": False, "message": str(e)}), 500
+
+# ----------------------------------------------------
+@app.route('/api/settings/board-section', methods=['GET'])
+def get_board_section_status():
+    return jsonify({
+        "success": True,
+        "enabled": get_board_section_setting()
+    })
+
+@app.route('/api/settings/board-section', methods=['POST'])
+def set_board_section_status():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    data = request.json or {}
+    enabled = bool(data.get('enabled', True))
+    val_str = '1' if enabled else '0'
+    conn = get_db()
+    c = conn.cursor()
+    try:
+        c.execute(
+            "INSERT INTO settings (key, value) VALUES ('show_board_section', ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+            (val_str,)
+        )
+        conn.commit()
+        conn.close()
+        return jsonify({
+            "success": True,
+            "enabled": enabled,
+            "message": f"Board members section on homepage has been {'enabled' if enabled else 'disabled'}!"
         })
     except Exception as e:
         if conn: conn.close()

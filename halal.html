@@ -11,14 +11,16 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <meta name="description"
-        content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+        content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
+student-friendly halal dining and food options around Politecnico di Milano campuses.">
     <link rel="canonical" href="https://asmpolimi.it/halal">
 
     <!-- Open Graph / Facebook / WhatsApp / Telegram / LinkedIn -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://asmpolimi.it/halal">
     <meta property="og:title" content="Halal Food Scanner & Ingredients Checker | ASM Polimi">
-    <meta property="og:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+    <meta property="og:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
+student-friendly halal dining and food options around Politecnico di Milano campuses.">
     <meta property="og:image" content="https://asmpolimi.it/assets/og-banner.png">
     <meta property="og:image:secure_url" content="https://asmpolimi.it/assets/og-banner.png">
     <meta property="og:image:type" content="image/png">
@@ -33,7 +35,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://asmpolimi.it/halal">
     <meta name="twitter:title" content="Halal Food Scanner & Ingredients Checker | ASM Polimi">
-    <meta name="twitter:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+    <meta name="twitter:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
+student-friendly halal dining and food options around Politecnico di Milano campuses.">
     <meta name="twitter:image" content="https://asmpolimi.it/assets/og-banner.png">
     <meta name="twitter:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -254,7 +257,7 @@
         align-items: center;
         gap: 0.45rem;
         transition: all 0.2s ease;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
     .btn-flag-toggle:hover {
@@ -268,7 +271,7 @@
         border-radius: 10px;
         padding: 1rem;
         margin-top: 0.65rem;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
     /* Responsive Breakpoints for Mobile - Reclaim Left & Right Space */
@@ -311,13 +314,14 @@
     }
 
     @media (max-width: 576px) {
+
         /* Optimize viewport width on mobile - eliminate unused outer spacing */
         .section.first-section {
             padding-top: 1.25rem;
             padding-bottom: 2rem;
         }
 
-        .section.first-section > .container {
+        .section.first-section>.container {
             padding-left: 0.5rem;
             padding-right: 0.5rem;
         }
@@ -352,7 +356,8 @@
             padding: 0.85rem 0.65rem;
             margin-top: 0.85rem;
             border-radius: 0.75rem;
-            box-shadow: none; /* Avoid heavy double-shadow */
+            box-shadow: none;
+            /* Avoid heavy double-shadow */
         }
 
         .result-header-flex {
@@ -468,19 +473,24 @@
         <div class="section-header text-center">
             <h2 data-i18n="halal_page_heading">Halal Product Scanner</h2>
             <div class="divider"></div>
-            <p data-i18n="halal_page_sub">Check products instantly via barcode scanning or manual ingredients analysis.</p>
+            <p data-i18n="halal_page_sub">Check products instantly via barcode scanning or manual ingredients analysis.
+            </p>
         </div>
 
         <div class="scanner-card">
             <div class="tab-buttons">
-                <button class="tab-btn active" onclick="switchTab('camera-tab')" data-i18n="halal_tab_cam">📷 Live Camera Scan</button>
-                <button class="tab-btn" onclick="switchTab('barcode-tab')" data-i18n="halal_tab_barcode">🔢 Enter Barcode</button>
-                <button class="tab-btn" onclick="switchTab('ingredients-tab')" data-i18n="halal_tab_ingredients">📝 Ingredients Analyzer</button>
+                <button class="tab-btn active" onclick="switchTab('camera-tab')" data-i18n="halal_tab_cam">📷 Live
+                    Camera Scan</button>
+                <button class="tab-btn" onclick="switchTab('barcode-tab')" data-i18n="halal_tab_barcode">🔢 Enter
+                    Barcode</button>
+                <button class="tab-btn" onclick="switchTab('ingredients-tab')" data-i18n="halal_tab_ingredients">📝
+                    Ingredients Analyzer</button>
             </div>
 
             <!-- Tab 1: Camera Scanner -->
             <div id="camera-tab" class="tab-content active">
-                <p class="text-center mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;" data-i18n="halal_cam_instruction">
+                <p class="text-center mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;"
+                    data-i18n="halal_cam_instruction">
                     Align the barcode inside the camera viewpoint to scan automatically.
                 </p>
                 <div style="position: relative; max-width: 500px; margin: 0 auto 1.5rem auto;">
@@ -488,9 +498,11 @@
                     <div class="scan-overlay-laser" id="laser-line" style="display: none;"></div>
                 </div>
                 <div class="text-center">
-                    <button id="start-camera-btn" class="btn btn-primary" data-i18n="halal_cam_start">Start Camera Scanner</button>
+                    <button id="start-camera-btn" class="btn btn-primary" data-i18n="halal_cam_start">Start Camera
+                        Scanner</button>
                     <button id="stop-camera-btn" class="btn btn-secondary"
-                        style="display: none; border-color: var(--color-primary); color: var(--color-primary);" data-i18n="halal_cam_stop">Stop Camera</button>
+                        style="display: none; border-color: var(--color-primary); color: var(--color-primary);"
+                        data-i18n="halal_cam_stop">Stop Camera</button>
                 </div>
             </div>
 
@@ -498,32 +510,39 @@
             <div id="barcode-tab" class="tab-content">
                 <form id="barcode-form" onsubmit="handleBarcodeSubmit(event)">
                     <div class="form-group">
-                        <label for="barcode-input" data-i18n="halal_barcode_label">Product Barcode (EAN/UPC Number)</label>
-                        <input type="text" id="barcode-input" placeholder="e.g. 20305062" data-i18n-placeholder="halal_barcode_ph" required>
+                        <label for="barcode-input" data-i18n="halal_barcode_label">Product Barcode (EAN/UPC
+                            Number)</label>
+                        <input type="text" id="barcode-input" placeholder="e.g. 20305062"
+                            data-i18n-placeholder="halal_barcode_ph" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100" data-i18n="halal_barcode_btn">Look Up Product</button>
+                    <button type="submit" class="btn btn-primary w-100" data-i18n="halal_barcode_btn">Look Up
+                        Product</button>
                 </form>
             </div>
 
             <!-- Tab 3: Ingredients Text Analyzer -->
             <div id="ingredients-tab" class="tab-content">
-                <p class="mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;" data-i18n="halal_ing_instruction">
+                <p class="mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;"
+                    data-i18n="halal_ing_instruction">
                     Paste the ingredients list of any product below. Our system will highlight any Haram or doubtful
                     (Mashbuh) substances.
                 </p>
                 <form id="ingredients-form" onsubmit="handleIngredientsSubmit(event)">
                     <div class="form-group">
                         <label for="ingredients-input" data-i18n="halal_ing_label">Ingredients Text</label>
-                        <textarea id="ingredients-input" rows="6" placeholder="Paste ingredients list here..." data-i18n-placeholder="halal_ing_ph" required
+                        <textarea id="ingredients-input" rows="6" placeholder="Paste ingredients list here..."
+                            data-i18n-placeholder="halal_ing_ph" required
                             style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-family: var(--font-body);"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100" data-i18n="halal_ing_btn">Analyze Ingredients</button>
+                    <button type="submit" class="btn btn-primary w-100" data-i18n="halal_ing_btn">Analyze
+                        Ingredients</button>
                 </form>
             </div>
 
             <!-- Loader -->
             <div id="scanner-loader" class="text-center mt-4 hidden" style="margin-top: 2rem;">
-                <div style="font-size: 1.25rem; font-weight: 600; color: var(--color-primary);" data-i18n="halal_querying">Querying Database...
+                <div style="font-size: 1.25rem; font-weight: 600; color: var(--color-primary);"
+                    data-i18n="halal_querying">Querying Database...
                 </div>
             </div>
 
@@ -811,7 +830,7 @@
                         body: JSON.stringify(payload)
                     });
                     if (resp.ok) break;
-                } catch (e) {}
+                } catch (e) { }
             }
         } catch (err) {
             console.error('Anonymous scan reporting notice:', err);
@@ -829,7 +848,7 @@
         const name = product.product_name || product.product_name_en || (isIt ? 'Prodotto Non in Lista' : 'Product Not Listed');
         const brand = product.brands || (isIt ? 'Marca non specificata' : 'Unknown Brand');
         const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
-        
+
         const rawIngredients = product.ingredients_text;
         const placeholderNotice = isIt ? 'Nessun elenco ingredienti disponibile per questo prodotto in Open Food Facts o nel database locale.' : 'No ingredients list available for this product in Open Food Facts or local database.';
         const hasIngredients = Boolean(rawIngredients && rawIngredients.trim().length > 0 && !rawIngredients.includes('No ingredients list available'));
@@ -876,14 +895,14 @@
                         ⚠️ ${isIt ? 'Ingredienti non disponibili o prodotto non censito' : 'Ingredients list not available or product unlisted'}
                     </h4>
                     <p style="margin: 0; color: var(--color-text); font-size: 0.9rem; line-height: 1.5;">
-                        ${isIt 
-                            ? 'Nessun elenco degli ingredienti è presente nei database online per questo prodotto. Lo stato Halal non può essere determinato senza ingredienti verificabili.' 
-                            : 'No ingredients list is available in online databases for this product. Halal status cannot be determined without verifiable ingredients.'}
+                        ${isIt
+                    ? 'Nessun elenco degli ingredienti è presente nei database online per questo prodotto. Lo stato Halal non può essere determinato senza ingredienti verificabili.'
+                    : 'No ingredients list is available in online databases for this product. Halal status cannot be determined without verifiable ingredients.'}
                     </p>
                     <p style="margin: 0.5rem 0 0 0; color: #0284c7; font-size: 0.85rem; font-weight: 600;">
-                        📬 ${isIt 
-                            ? '✓ Prodotto inoltrato anonimamente agli amministratori ASM per revisione.' 
-                            : '✓ Product forwarded anonymously to ASM administrators for review.'}
+                        📬 ${isIt
+                    ? '✓ Prodotto inoltrato anonimamente agli amministratori ASM per revisione.'
+                    : '✓ Product forwarded anonymously to ASM administrators for review.'}
                     </p>
                 </div>
             `;
@@ -897,8 +916,8 @@
             }
         }
 
-        const highlightedIngredients = hasIngredients 
-            ? highlightIngredients(ingredients) 
+        const highlightedIngredients = hasIngredients
+            ? highlightIngredients(ingredients)
             : `<span style="color: #64748b; font-style: italic;">${placeholderNotice}</span>`;
 
         resultsDiv.innerHTML = `
@@ -913,74 +932,33 @@
                         </div>
                     </div>
 
-                    <!-- User Flag / Product Information Section -->
+                    <!-- User Flag / Review Request Section (Prominently placed at the top under name, brand and barcode) -->
                     <div id="user-review-section">
                         <div id="flag-prompt-container">
-                            ${analysis.status === 'not_listed' ? `
-                                <button type="button" id="btn-toggle-flag-form" onclick="toggleUserFlagForm()" class="btn-flag-toggle" style="background: rgba(18, 74, 97, 0.08); border: 1.5px solid var(--color-primary); color: var(--color-primary); font-weight: 700; padding: 0.65rem 1.15rem;">
-                                    <span>📝</span>
-                                    <span>${isIt ? 'Conosci questo prodotto? Dicci nome e dove l\'hai trovato' : 'Know this product? Tell us the name & where you found it'}</span>
-                                </button>
-                            ` : `
-                                <button type="button" id="btn-toggle-flag-form" onclick="toggleUserFlagForm()" class="btn-flag-toggle">
-                                    <span>🚩</span>
-                                    <span>${isIt ? 'Risultato errato? Segnala per revisione' : 'Think result is incorrect? Flag for review'}</span>
-                                </button>
-                            `}
+                            <button type="button" id="btn-toggle-flag-form" onclick="toggleUserFlagForm()" class="btn-flag-toggle">
+                                <span>🚩</span>
+                                <span>${isIt ? 'Risultato errato? Segnala per revisione' : 'Think result is incorrect? Flag for review'}</span>
+                            </button>
                         </div>
 
-                        <div id="flag-form-container" class="hidden" style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 1.1rem; margin-top: 0.75rem;">
-                            ${analysis.status === 'not_listed' ? `
-                                <h4 style="margin: 0 0 0.35rem 0; font-size: 0.95rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem;">
-                                    <span>📝</span>
-                                    <span>${isIt ? 'Aiutaci ad aggiungere questo prodotto!' : 'Help us add this product to the Halal Database!'}</span>
-                                </h4>
-                                <p style="margin: 0 0 0.75rem 0; font-size: 0.84rem; color: #64748b; line-height: 1.4;">
-                                    ${isIt 
-                                        ? 'Inserisci il nome del prodotto e il negozio o distributore dove l\'hai trovato. Il team ASM ne verificherà gli ingredienti:' 
-                                        : 'Tell us what this product is and where you found it so the ASM team can verify its ingredients and add it:'}
-                                </p>
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem;">
-                                    <div>
-                                        <label for="flag-prod-name" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.25rem;">
-                                            ${isIt ? 'Nome del Prodotto e Marca *' : 'Product Name & Brand *'}
-                                        </label>
-                                        <input type="text" id="flag-prod-name" placeholder="${isIt ? 'es. Kinder Bueno White, Pesto Barilla...' : 'e.g. Kinder Bueno White, Barilla Pesto...'}" style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem;" required>
-                                    </div>
-                                    <div>
-                                        <label for="flag-prod-store" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.25rem;">
-                                            ${isIt ? 'Dove l\'hai trovato? (Negozio / Mensa) *' : 'Where did you find it? (Store / Location) *'}
-                                        </label>
-                                        <input type="text" id="flag-prod-store" placeholder="${isIt ? 'es. Conad Bovisa, Esselunga Piola, Macchinette...' : 'e.g. Conad Bovisa, Esselunga Piola, Canteen...'}" style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 0.88rem;" required>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 0.75rem;">
-                                    <label for="flag-user-note" style="display: block; font-size: 0.8rem; font-weight: 600; color: #64748b; margin-bottom: 0.25rem;">
-                                        ${isIt ? 'Note facoltative (es. ingredienti notati, certificazioni...)' : 'Optional notes (e.g. ingredients noticed, halal logo, price...)'}
-                                    </label>
-                                    <textarea id="flag-user-note" rows="2" placeholder="${isIt ? 'Aggiungi eventuali dettagli (es. certificato vegetariano, contiene alcol...)' : 'Add any extra details (e.g. packaging has vegetarian logo, noticed gelatin...)'}" style="width: 100%; box-sizing: border-box; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; font-family: inherit; resize: vertical; line-height: 1.4;"></textarea>
-                                </div>
-                            ` : `
-                                <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.35rem;">
-                                    <span>🚩</span>
-                                    <span>${isIt ? 'Segnala Risultato Errato agli Amministratori ASM' : 'Report Incorrect Result to ASM Administrators'}</span>
-                                </h4>
-                                <p style="margin: 0 0 0.65rem 0; font-size: 0.82rem; color: #64748b; line-height: 1.4;">
-                                    ${isIt 
-                                        ? 'Se noti ingredienti errati, dubbi o certificazioni mancanti, scrivi una breve nota:' 
-                                        : 'If you noticed missing or incorrect ingredients, questionable additives, or halal certifications, add your note:'}
-                                </p>
-                                <div style="margin-bottom: 0.65rem;">
-                                    <textarea id="flag-user-note" rows="3" placeholder="${isIt ? 'Aggiungi una nota (es. contiene gelatina di maiale tra gli ingredienti, o la confezione riporta certificato Halal Italia...)' : 'Add your note (e.g. package shows animal gelatin not parsed, or package has certified Halal stamp...)'}" style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; font-family: inherit; resize: vertical; line-height: 1.4;"></textarea>
-                                </div>
-                            `}
+                        <div id="flag-form-container" class="hidden">
+                            <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.35rem;">
+                                <span>🚩</span>
+                                <span>${isIt ? 'Segnala Risultato Errato agli Amministratori ASM' : 'Report Incorrect Result to ASM Administrators'}</span>
+                            </h4>
+                            <p style="margin: 0 0 0.65rem 0; font-size: 0.82rem; color: #64748b; line-height: 1.4;">
+                                ${isIt
+                ? 'Se noti ingredienti errati, dubbi o certificazioni mancanti, scrivi una breve nota:'
+                : 'If you noticed missing or incorrect ingredients, questionable additives, or halal certifications, add your note:'}
+                            </p>
+                            <div style="margin-bottom: 0.65rem;">
+                                <textarea id="flag-user-note" rows="3" placeholder="${isIt ? 'Aggiungi una nota (es. contiene gelatina di maiale tra gli ingredienti, o la confezione riporta certificato Halal Italia...)' : 'Add your note (e.g. package shows animal gelatin not parsed, or package has certified Halal stamp...)'}" style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; font-family: inherit; resize: vertical; line-height: 1.4;"></textarea>
+                            </div>
                             <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-                                <button type="button" id="btn-submit-flag" onclick="submitProductFlag()" style="background: var(--color-primary); color: white; border: none; padding: 0.55rem 1.15rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
-                                    ${analysis.status === 'not_listed' 
-                                        ? (isIt ? 'Invia Dati Prodotto' : 'Submit Product Info')
-                                        : (isIt ? 'Invia Segnalazione' : 'Submit Review Request')}
+                                <button type="button" id="btn-submit-flag" onclick="submitProductFlag()" style="background: #0284c7; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
+                                    ${isIt ? 'Invia Segnalazione' : 'Submit Review Request'}
                                 </button>
-                                <button type="button" onclick="toggleUserFlagForm()" style="background: white; border: 1px solid #cbd5e1; padding: 0.55rem 0.85rem; border-radius: 6px; font-size: 0.85rem; color: #64748b; cursor: pointer;">
+                                <button type="button" onclick="toggleUserFlagForm()" style="background: white; border: 1px solid #cbd5e1; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; color: #64748b; cursor: pointer;">
                                     ${isIt ? 'Annulla' : 'Cancel'}
                                 </button>
                             </div>
@@ -1012,7 +990,7 @@
     }
 
     // Toggle user review request form
-    window.toggleUserFlagForm = function() {
+    window.toggleUserFlagForm = function () {
         const form = document.getElementById('flag-form-container');
         const prompt = document.getElementById('flag-prompt-container');
         if (!form) return;
@@ -1020,13 +998,8 @@
         if (isHidden) {
             form.classList.remove('hidden');
             if (prompt) prompt.classList.add('hidden');
-            const prodNameInput = document.getElementById('flag-prod-name');
             const ta = document.getElementById('flag-user-note');
-            if (prodNameInput) {
-                prodNameInput.focus();
-            } else if (ta) {
-                ta.focus();
-            }
+            if (ta) ta.focus();
         } else {
             form.classList.add('hidden');
             if (prompt) prompt.classList.remove('hidden');
@@ -1034,7 +1007,7 @@
     };
 
     // Submit user flag and note
-    window.submitProductFlag = async function() {
+    window.submitProductFlag = async function () {
         const scan = window._currentScan;
         if (!scan || !scan.barcode) {
             alert('No barcode detected for this item.');
@@ -1043,35 +1016,11 @@
 
         const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
         const isIt = currentLang === 'it';
-        const isNotListed = (scan.status === 'not_listed');
 
-        const prodNameInput = document.getElementById('flag-prod-name');
-        const storeInput = document.getElementById('flag-prod-store');
         const noteInput = document.getElementById('flag-user-note');
         const submitBtn = document.getElementById('btn-submit-flag');
         const msgDiv = document.getElementById('flag-status-msg');
-
-        const prodName = prodNameInput ? prodNameInput.value.trim() : '';
-        const storeLocation = storeInput ? storeInput.value.trim() : '';
-        const rawNote = (noteInput ? noteInput.value : '').trim();
-
-        // Validation for unlisted product: require product name and store
-        if (isNotListed && (!prodName || !storeLocation)) {
-            if (msgDiv) {
-                msgDiv.classList.remove('hidden');
-                msgDiv.style.color = '#dc2626';
-                msgDiv.textContent = isIt 
-                    ? 'Per favore inserisci sia il nome del prodotto che il negozio/luogo dove lo hai trovato.' 
-                    : 'Please enter both the product name and where you found it.';
-            }
-            return;
-        }
-
-        let combinedNote = rawNote;
-        if (isNotListed) {
-            const storePrefix = `Found at / Negozio: ${storeLocation}`;
-            combinedNote = rawNote ? `${storePrefix} | Note: ${rawNote}` : storePrefix;
-        }
+        const note = (noteInput ? noteInput.value : '').trim();
 
         if (submitBtn) {
             submitBtn.disabled = true;
@@ -1080,11 +1029,10 @@
 
         const payload = {
             barcode: scan.barcode,
-            product_name: prodName || scan.name || '',
+            product_name: scan.name || '',
             brand: scan.brand || '',
-            store_location: storeLocation || '',
             status: scan.status || 'not_listed',
-            note: combinedNote
+            note: note
         };
 
         const endpoints = [
@@ -1107,7 +1055,7 @@
                         break;
                     }
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
 
         if (submitBtn) submitBtn.disabled = false;
@@ -1116,18 +1064,14 @@
             const formContainer = document.getElementById('flag-form-container');
             if (formContainer) {
                 formContainer.innerHTML = `
-                    <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.9rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.65rem;">
-                        <span style="font-size: 1.4rem;">✅</span>
+                    <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.85rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.65rem;">
+                        <span style="font-size: 1.35rem;">✅</span>
                         <div>
                             <div style="font-weight: 700; font-size: 0.95rem;">
-                                ${isNotListed 
-                                    ? (isIt ? 'Grazie mille! Dati del prodotto registrati con successo.' : 'Thank you! Product info submitted successfully.')
-                                    : (isIt ? 'Grazie! Segnalazione registrata con successo.' : 'Thank you! Flagged for review.')}
+                                ${isIt ? 'Grazie! Segnalazione registrata con successo.' : 'Thank you! Flagged for review.'}
                             </div>
-                            <div style="font-size: 0.85rem; margin-top: 0.25rem; color: #047857; line-height: 1.4;">
-                                ${isNotListed 
-                                    ? (isIt ? 'Il team ASM esaminerà gli ingredienti di questo prodotto e lo aggiungerà al database Halal.' : 'The ASM admin team will check the ingredients and list this product in the Halal database.')
-                                    : (isIt ? 'Gli amministratori ASM esamineranno la tua nota e aggiorneranno la classificazione del prodotto.' : 'The ASM admin team will review your notes and verify this product.')}
+                            <div style="font-size: 0.85rem; margin-top: 0.2rem; color: #047857;">
+                                ${isIt ? 'Gli amministratori ASM esamineranno la tua nota e aggiorneranno la classificazione del prodotto.' : 'The ASM admin team will review your notes and verify this product.'}
                             </div>
                         </div>
                     </div>
@@ -1137,12 +1081,10 @@
             if (msgDiv) {
                 msgDiv.classList.remove('hidden');
                 msgDiv.style.color = '#dc2626';
-                msgDiv.textContent = isIt ? 'Impossibile inviare la segnalazione al momento. Riprova più tardi.' : 'Unable to submit product info. Please try again later.';
+                msgDiv.textContent = isIt ? 'Impossibile inviare la segnalazione al momento. Riprova più tardi.' : 'Unable to submit review request. Please try again later.';
             }
             if (submitBtn) {
-                submitBtn.textContent = isNotListed 
-                    ? (isIt ? 'Invia Dati Prodotto' : 'Submit Product Info')
-                    : (isIt ? 'Invia Segnalazione' : 'Submit Review Request');
+                submitBtn.textContent = isIt ? 'Invia Segnalazione' : 'Submit Review Request';
             }
         }
     };
@@ -1248,8 +1190,8 @@
                     status: 'not_listed',
                     reasons: [{
                         word: barcode,
-                        reason: isIt 
-                            ? `Nessun dato o ingrediente disponibile per il barcode ${barcode}. Inviato agli amministratori.` 
+                        reason: isIt
+                            ? `Nessun dato o ingrediente disponibile per il barcode ${barcode}. Inviato agli amministratori.`
                             : `No product or ingredient records found for barcode ${barcode}. Forwarded to administrators.`
                     }]
                 };

@@ -15,6 +15,7 @@ content = {
     'mission_text': '',
     'join_us_link': '',
     'global_event_reg_link': '',
+    'show_board_section': True,
     'events': [],
     'board_members': [],
     'gallery': []
@@ -24,6 +25,8 @@ c.execute('SELECT key, value FROM settings')
 for row in c.fetchall():
     if row['key'] == 'jumuah_info':
         content['jumuah_info'] = json.loads(row['value'])
+    elif row['key'] == 'show_board_section':
+        content['show_board_section'] = str(row['value']).strip().lower() in ('1', 'true', 'yes', 'enabled', 'on')
     else:
         content[row['key']] = row['value']
 

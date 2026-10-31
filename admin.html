@@ -741,6 +741,27 @@
 
                 <button type="submit" class="btn btn-primary" style="margin-top: 1rem; padding: 0.75rem 1.5rem; font-weight: 700;">Save Announcements & Mission</button>
             </form>
+
+            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+            <!-- Homepage Board Section Toggle Card -->
+            <div class="card" style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 1.25rem 1.4rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                        <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-primary); font-weight: 700;">Board Members Section on Homepage</h4>
+                        <span id="board-section-badge" style="background: #dcfce7; color: #15803d; font-weight: 700; font-size: 0.85rem; padding: 0.2rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.35rem; border: 1.5px solid #86efac;">
+                            Loading...
+                        </span>
+                    </div>
+                    <p style="margin: 0.35rem 0 0 0; color: #64748b; font-size: 0.85rem;">
+                        Show or remove the "Our Board members" section on the main landing page (<a href="/" target="_blank" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">view site</a>).
+                    </p>
+                </div>
+
+                <button type="button" id="btn-toggle-board-section" onclick="toggleBoardSectionVisibility()" class="btn" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; border: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+                    <span>👁️</span> Toggle Section
+                </button>
+            </div>
         </div>
 
         <!-- ============================================================ -->
@@ -918,6 +939,9 @@
             events = data.events || [];
             renderEvents();
             fetchGalleryCaptions();
+            fetchBoardSectionStatus();
+
+            fetchBoardSectionStatus();
             loadAttendees();
         } catch (err) {
             console.error("Failed to load content", err);
@@ -1500,6 +1524,87 @@
             showMessage("Error connecting to server", false);
         }
     });
+
+    // -------------------------------------------------------------
+    // Board Section Visibility Logic
+    // -------------------------------------------------------------
+    let isBoardSectionEnabled = true;
+
+    function renderBoardSectionBadge() {
+        const badge = document.getElementById('board-section-badge');
+        const btn = document.getElementById('btn-toggle-board-section');
+        if (!badge || !btn) return;
+
+        if (isBoardSectionEnabled) {
+            badge.style.background = '#dcfce7';
+            badge.style.color = '#15803d';
+            badge.style.borderColor = '#86efac';
+            badge.innerHTML = '<span>🟢</span> Visible on Homepage';
+
+            btn.style.background = '#dc2626';
+            btn.style.color = 'white';
+            btn.innerHTML = '<span>🚫</span> Remove / Hide Board Section';
+        } else {
+            badge.style.background = '#fee2e2';
+            badge.style.color = '#b91c1c';
+            badge.style.borderColor = '#fca5a5';
+            badge.innerHTML = '<span>🔴</span> Hidden from Homepage';
+
+            btn.style.background = '#059669';
+            btn.style.color = 'white';
+            btn.innerHTML = '<span>➕</span> Add / Show Board Section';
+        }
+    }
+
+    async function fetchBoardSectionStatus() {
+        try {
+            const res = await fetch('/api/settings/board-section');
+            const data = await res.json();
+            if (data.success && data.enabled !== undefined) {
+                isBoardSectionEnabled = !!data.enabled;
+            }
+        } catch (e) {
+            console.error("fetchBoardSectionStatus error:", e);
+        } finally {
+            renderBoardSectionBadge();
+        }
+    }
+
+    async function toggleBoardSectionVisibility() {
+        const targetState = !isBoardSectionEnabled;
+        const confirmMsg = targetState
+            ? 'Show the "Our Board members" section on the main homepage?'
+            : 'Remove / hide the "Our Board members" section from the main homepage?';
+        if (!confirm(confirmMsg)) return;
+
+        const btn = document.getElementById('btn-toggle-board-section');
+        try {
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span>⏳</span> Updating...';
+            }
+            const res = await fetch('/api/settings/board-section', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ enabled: targetState })
+            });
+            const data = await res.json();
+            if (data.success) {
+                isBoardSectionEnabled = !!data.enabled;
+                showMessage(data.message || "Board section setting updated successfully!", true);
+            } else {
+                showMessage(data.message || "Error updating setting", false);
+            }
+        } catch (err) {
+            showMessage("Network error updating board section setting", false);
+        } finally {
+            if (btn) btn.disabled = false;
+            renderBoardSectionBadge();
+        }
+    }
 
     // -------------------------------------------------------------
     // Gallery Captions Logic

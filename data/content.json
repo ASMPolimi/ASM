@@ -4,6 +4,7 @@
   "mission_text": "Associazione Studenti Musulmani (ASM) strives to facilitate a welcoming and active community for Muslim students on campus. We aim to support our members in balancing their academic pursuits with their spiritual growth, while fostering an inclusive environment that promotes understanding and dialogue.",
   "join_us_link": "https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true",
   "global_event_reg_link": "https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true",
+  "show_board_section": true,
   "events": [
     {
       "id": 14,

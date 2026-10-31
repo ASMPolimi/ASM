@@ -504,6 +504,7 @@
     </div>
 </section>
 
+
 <!-- Leadership Section -->
 <section id="leadership" class="section bg-light fade-in">
     <div class="container">
@@ -569,6 +570,7 @@
         </div>
     </div>
 </section>
+
 
 <!-- Contact & Join Section -->
 <section id="contact" class="section fade-in">
@@ -1133,8 +1135,17 @@
                 }
             }
 
+            // Handle Board Section visibility
+            const leadershipSection = document.getElementById('leadership');
+            const isBoardEnabled = data.show_board_section !== false && data.show_board_section !== '0' && data.show_board_section !== 'false';
+            if (!isBoardEnabled) {
+                if (leadershipSection) leadershipSection.style.display = 'none';
+            } else {
+                if (leadershipSection) leadershipSection.style.display = '';
+            }
+
             // Render Board Members
-            if (data.board_members) {
+            if (isBoardEnabled && data.board_members) {
                 const boardContainer = document.getElementById('dynamic-board-container');
                 if (boardContainer) {
                     const existingCards = boardContainer.querySelectorAll('.team-card');
