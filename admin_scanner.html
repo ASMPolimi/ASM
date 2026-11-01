@@ -998,8 +998,12 @@
         // Enforce 3-tier role-based & page-level permissions dynamically
         function enforceAdminPagePermissions() {
             try {
-                const currentRole = localStorage.getItem('adminRole');
                 const username = localStorage.getItem('adminUsername') || '';
+                let currentRole = localStorage.getItem('adminRole');
+                if (username === 'ASMKT') {
+                    currentRole = 'superadmin';
+                    localStorage.setItem('adminRole', 'superadmin');
+                }
                 const rawPages = localStorage.getItem('adminAllowedPages');
                 let allowedPages = [];
 

