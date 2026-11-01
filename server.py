@@ -625,6 +625,9 @@ def manage_users():
                     u_dict['allowed_pages'] = ['events', 'jumuah']
             if u_dict['role'] == 'member':
                 u_dict['allowed_pages'] = [p for p in u_dict['allowed_pages'] if p not in ('members', 'questions', 'users')]
+            # If caller is admin, prevent them from seeing permitted sections of other admins or superadmins
+            if caller['role'] == 'admin' and u_dict.get('role') in ('admin', 'superadmin'):
+                u_dict['allowed_pages'] = []
             users.append(u_dict)
         conn.close()
         return jsonify({"success": True, "users": users, "caller_role": caller['role']})
