@@ -253,21 +253,18 @@ def init_db():
     except Exception:
         pass
 
-    # Ensure default superadmin user 'ASM' with bcrypt hashed password
-    c.execute("SELECT id, password FROM users WHERE username = 'ASM'")
-    row_asm = c.fetchone()
-    if not row_asm:
-        c.execute("INSERT INTO users (username, password, role) VALUES ('ASM', ?, 'superadmin')", (hash_password('ASMKT'),))
-    elif not str(row_asm['password']).startswith(('$2b$', '$2a$', '$2y$')):
-        c.execute("UPDATE users SET password = ?, role = 'superadmin' WHERE username = 'ASM'", (hash_password('ASMKT'),))
+    # Ensure single superadmin user 'ASMKT' with password 'Kasm98*' exists and is bcrypt hashed
+    c.execute("SELECT id, password, role FROM users WHERE username = 'ASMKT'")
+    row_asmkt = c.fetchone()
+    if not row_asmkt:
+        c.execute("INSERT INTO users (username, password, role, allowed_pages) VALUES ('ASMKT', ?, 'superadmin', 'all')", (hash_password('Kasm98*'),))
+    else:
+        c.execute("UPDATE users SET role = 'superadmin', allowed_pages = 'all' WHERE username = 'ASMKT'")
+        if not str(row_asmkt['password']).startswith(('$2b$', '$2a$', '$2y$')) or not verify_password('Kasm98*', row_asmkt['password']):
+            c.execute("UPDATE users SET password = ? WHERE username = 'ASMKT'", (hash_password('Kasm98*'),))
 
-    # Also ensure legacy 'admin' user is present and bcrypt hashed
-    c.execute("SELECT id, password FROM users WHERE username = 'admin'")
-    row_admin = c.fetchone()
-    if not row_admin:
-        c.execute("INSERT INTO users (username, password, role) VALUES ('admin', ?, 'superadmin')", (hash_password('ASMKT'),))
-    elif not str(row_admin['password']).startswith(('$2b$', '$2a$', '$2y$')):
-        c.execute("UPDATE users SET password = ?, role = 'superadmin' WHERE username = 'admin'", (hash_password('ASMKT'),))
+    # Demote any other accounts to 'admin' (strictly only ONE superadmin: ASMKT)
+    c.execute("UPDATE users SET role = 'admin' WHERE username != 'ASMKT' AND role = 'superadmin'")
 
     # Scanned products anonymous log and admin verification table
     c.execute('''
@@ -407,7 +404,7 @@ def get_content():
         
     return jsonify(content)
 
-def get_user_role(token):
+def get_user_data(token):
     if not token:
         return None
     token = str(token).strip()
@@ -419,12 +416,38 @@ def get_user_role(token):
         username = token
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT role FROM users WHERE username = ?", (username,))
+    c.execute("SELECT id, username, role, allowed_pages FROM users WHERE username = ?", (username,))
     row = c.fetchone()
     conn.close()
-    if row:
-        return row['role']
-    return None
+    if not row:
+        return None
+        
+    role = row['role']
+    raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
+    if role == 'superadmin' or raw_pages == 'all':
+        pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
+    else:
+        try:
+            pages_list = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
+        except Exception:
+            pages_list = ['events', 'jumuah']
+        if 'dashboard' not in pages_list:
+            pages_list.insert(0, 'dashboard')
+            
+    # CRITICAL 3-Tier Security: Members can NEVER access members, questions, or users
+    if role == 'member':
+        pages_list = [p for p in pages_list if p not in ('members', 'questions', 'users')]
+        
+    return {
+        'id': row['id'],
+        'username': row['username'],
+        'role': role,
+        'allowed_pages': pages_list
+    }
+
+def get_user_role(token):
+    u = get_user_data(token)
+    return u['role'] if u else None
 
 @app.route('/api/login', methods=['POST'])
 @limiter.limit("5 per minute")
@@ -449,8 +472,9 @@ def login():
             c.execute("UPDATE users SET password = ? WHERE username = ?", (hash_password(password), username))
             conn.commit()
             
+        role = row['role']
         raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
-        if row['role'] == 'superadmin' or raw_pages == 'all':
+        if role == 'superadmin' or raw_pages == 'all':
             pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
         else:
             try:
@@ -460,11 +484,15 @@ def login():
             if 'dashboard' not in pages_list:
                 pages_list.insert(0, 'dashboard')
                 
+        # Members can never have members, questions, or users
+        if role == 'member':
+            pages_list = [p for p in pages_list if p not in ('members', 'questions', 'users')]
+                
         conn.close()
         return jsonify({
             "success": True, 
             "token": f"token-{username}", 
-            "role": row['role'],
+            "role": role,
             "allowed_pages": pages_list
         })
             
@@ -474,41 +502,48 @@ def login():
 @app.route('/api/admin/me', methods=['GET'])
 def admin_me():
     auth_header = request.headers.get('Authorization')
-    if not auth_header:
+    user = get_user_data(auth_header)
+    if not user:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
-    token = str(auth_header).strip()
-    if token.startswith('Bearer '):
-        token = token[7:].strip()
-    if token.startswith('token-'):
-        username = token.split('token-')[1]
-    else:
-        username = token
+        
+    return jsonify({
+        "success": True,
+        "username": user['username'],
+        "role": user['role'],
+        "allowed_pages": user['allowed_pages']
+    })
+
+@app.route('/api/user/change-password', methods=['POST'])
+def change_password():
+    auth_header = request.headers.get('Authorization')
+    user = get_user_data(auth_header)
+    if not user:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+        
+    data = request.json or {}
+    current_password = data.get('current_password', '')
+    new_password = data.get('new_password', '')
+    
+    if not current_password or not new_password:
+        return jsonify({"success": False, "message": "Current password and new password are required"}), 400
+        
+    if len(str(new_password).strip()) < 6:
+        return jsonify({"success": False, "message": "New password must be at least 6 characters long"}), 400
         
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT username, role, allowed_pages FROM users WHERE username = ?", (username,))
+    c.execute("SELECT password FROM users WHERE username = ?", (user['username'],))
     row = c.fetchone()
-    conn.close()
-    if not row:
-        return jsonify({"success": False, "message": "User not found"}), 401
+    if not row or not verify_password(current_password, row['password']):
+        conn.close()
+        return jsonify({"success": False, "message": "Current password is incorrect"}), 400
         
-    raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
-    if row['role'] == 'superadmin' or raw_pages == 'all':
-        pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
-    else:
-        try:
-            pages_list = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
-        except Exception:
-            pages_list = ['events', 'jumuah']
-        if 'dashboard' not in pages_list:
-            pages_list.insert(0, 'dashboard')
-            
-    return jsonify({
-        "success": True,
-        "username": row['username'],
-        "role": row['role'],
-        "allowed_pages": pages_list
-    })
+    hashed = hash_password(new_password)
+    c.execute("UPDATE users SET password = ? WHERE username = ?", (hashed, user['username']))
+    conn.commit()
+    conn.close()
+    
+    return jsonify({"success": True, "message": "Password changed successfully"})
 
 @app.route('/api/admin/stats', methods=['GET'])
 def admin_stats():
@@ -547,9 +582,13 @@ def admin_stats():
 @app.route('/api/users/update', methods=['POST'])
 def manage_users():
     auth_header = request.headers.get('Authorization')
-    role = get_user_role(auth_header)
-    if role != 'superadmin':
-        return jsonify({"success": False, "message": "Forbidden. Superadmin access required."}), 403
+    caller = get_user_data(auth_header)
+    if not caller:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+    # Members cannot access user management
+    if caller['role'] == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot access user management."}), 403
 
     conn = get_db()
     c = conn.cursor()
@@ -567,26 +606,49 @@ def manage_users():
                     u_dict['allowed_pages'] = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
                 except Exception:
                     u_dict['allowed_pages'] = ['events', 'jumuah']
+            if u_dict['role'] == 'member':
+                u_dict['allowed_pages'] = [p for p in u_dict['allowed_pages'] if p not in ('members', 'questions', 'users')]
             users.append(u_dict)
         conn.close()
-        return jsonify({"success": True, "users": users})
+        return jsonify({"success": True, "users": users, "caller_role": caller['role']})
 
     if request.method == 'POST' and not request.path.endswith('/update'):
         data = request.json or {}
-        new_user = data.get('username')
-        new_pass = data.get('password')
-        new_role = data.get('role', 'admin')
+        new_user = str(data.get('username') or '').strip()
+        new_pass = str(data.get('password') or '').strip()
+        new_role = str(data.get('role') or 'member').strip().lower()
         allowed_pages = data.get('allowed_pages')
+
         if not new_user or not new_pass:
             conn.close()
             return jsonify({"success": False, "message": "Username and password required"}), 400
-        
+
+        # Only ASMKT can be superadmin
         if new_role == 'superadmin':
-            allowed_pages_str = 'all'
-        elif isinstance(allowed_pages, list):
-            allowed_pages_str = json.dumps(allowed_pages)
-        elif isinstance(allowed_pages, str):
-            allowed_pages_str = allowed_pages
+            conn.close()
+            return jsonify({"success": False, "message": "Cannot create superadmin. Only ASMKT is superadmin."}), 400
+
+        # Admin can ONLY create member accounts
+        if caller['role'] == 'admin':
+            if new_role != 'member':
+                conn.close()
+                return jsonify({"success": False, "message": "Admins can only create member accounts."}), 403
+            new_role = 'member'
+
+        # Sanitize allowed pages based on role
+        if new_role == 'member':
+            if isinstance(allowed_pages, list):
+                valid_pages = [p for p in allowed_pages if p in ('events', 'jumuah', 'scanner')]
+            else:
+                valid_pages = ['events', 'jumuah']
+            allowed_pages_str = json.dumps(valid_pages)
+        elif new_role == 'admin':
+            if isinstance(allowed_pages, list):
+                allowed_pages_str = json.dumps(allowed_pages)
+            elif isinstance(allowed_pages, str):
+                allowed_pages_str = allowed_pages
+            else:
+                allowed_pages_str = 'all'
         else:
             allowed_pages_str = json.dumps(['events', 'jumuah'])
 
@@ -602,13 +664,13 @@ def manage_users():
         except Exception as e:
             success = False
             msg = str(e)
-        
+
         conn.close()
         return jsonify({"success": success, "message": msg} if not success else {"success": True})
 
     if request.method == 'PUT' or (request.method == 'POST' and request.path.endswith('/update')):
         data = request.json or {}
-        target_user = data.get('username')
+        target_user = str(data.get('username') or '').strip()
         new_role = data.get('role')
         allowed_pages = data.get('allowed_pages')
         new_pass = data.get('password')
@@ -617,12 +679,48 @@ def manage_users():
             conn.close()
             return jsonify({"success": False, "message": "Username required"}), 400
 
-        if target_user in ('admin', 'ASM') and new_role and new_role != 'superadmin':
+        c.execute("SELECT role FROM users WHERE username = ?", (target_user,))
+        target_row = c.fetchone()
+        if not target_row:
             conn.close()
-            return jsonify({"success": False, "message": "Cannot demote default superadmin account"}), 400
+            return jsonify({"success": False, "message": "User not found"}), 404
 
-        if new_role == 'superadmin':
+        target_current_role = target_row['role']
+
+        # ASMKT protection: cannot demote ASMKT
+        if target_user == 'ASMKT':
+            if new_role and new_role != 'superadmin':
+                conn.close()
+                return jsonify({"success": False, "message": "Cannot demote superadmin ASMKT"}), 400
+            if caller['role'] != 'superadmin':
+                conn.close()
+                return jsonify({"success": False, "message": "Only superadmin ASMKT can modify this account"}), 403
+
+        # Nobody can promote someone to superadmin
+        if new_role == 'superadmin' and target_user != 'ASMKT':
+            conn.close()
+            return jsonify({"success": False, "message": "Only ASMKT can be superadmin."}), 400
+
+        # Admin can ONLY modify members
+        if caller['role'] == 'admin':
+            if target_current_role != 'member':
+                conn.close()
+                return jsonify({"success": False, "message": "Admins can only manage member accounts."}), 403
+            if new_role and new_role != 'member':
+                conn.close()
+                return jsonify({"success": False, "message": "Admins cannot change role to admin or superadmin."}), 403
+            new_role = 'member'
+
+        final_role = new_role or target_current_role
+
+        if final_role == 'superadmin':
             allowed_pages_str = 'all'
+        elif final_role == 'member':
+            if isinstance(allowed_pages, list):
+                valid_pages = [p for p in allowed_pages if p in ('events', 'jumuah', 'scanner')]
+            else:
+                valid_pages = ['events', 'jumuah']
+            allowed_pages_str = json.dumps(valid_pages)
         elif isinstance(allowed_pages, list):
             allowed_pages_str = json.dumps(allowed_pages)
         elif isinstance(allowed_pages, str):
@@ -631,26 +729,40 @@ def manage_users():
             allowed_pages_str = json.dumps(['events', 'jumuah'])
 
         if new_pass and str(new_pass).strip():
-            hashed_pw = hash_password(new_pass)
-            c.execute("UPDATE users SET role = ?, allowed_pages = ?, password = ? WHERE username = ?", (new_role or 'admin', allowed_pages_str, hashed_pw, target_user))
+            hashed_pw = hash_password(str(new_pass).strip())
+            c.execute("UPDATE users SET role = ?, allowed_pages = ?, password = ? WHERE username = ?", (final_role, allowed_pages_str, hashed_pw, target_user))
         else:
-            c.execute("UPDATE users SET role = ?, allowed_pages = ? WHERE username = ?", (new_role or 'admin', allowed_pages_str, target_user))
-            
+            c.execute("UPDATE users SET role = ?, allowed_pages = ? WHERE username = ?", (final_role, allowed_pages_str, target_user))
+
         conn.commit()
         conn.close()
         return jsonify({"success": True, "message": f"Permissions updated for {target_user}"})
 
     if request.method == 'DELETE':
         data = request.json or {}
-        del_user = data.get('username')
-        
+        del_user = str(data.get('username') or '').strip()
+
         if not del_user:
             conn.close()
             return jsonify({"success": False, "message": "Username required"}), 400
-        if del_user in ('admin', 'ASM'):
+
+        # ASMKT cannot be deleted by anyone
+        if del_user == 'ASMKT':
             conn.close()
-            return jsonify({"success": False, "message": "Cannot delete default admin account"}), 400
-            
+            return jsonify({"success": False, "message": "Cannot delete superadmin ASMKT"}), 400
+
+        c.execute("SELECT role FROM users WHERE username = ?", (del_user,))
+        target_row = c.fetchone()
+        if not target_row:
+            conn.close()
+            return jsonify({"success": False, "message": "User not found"}), 404
+
+        # Admin can ONLY delete member accounts
+        if caller['role'] == 'admin':
+            if target_row['role'] != 'member':
+                conn.close()
+                return jsonify({"success": False, "message": "Admins can only delete member accounts."}), 403
+
         c.execute("DELETE FROM users WHERE username = ?", (del_user,))
         deleted = c.rowcount > 0
         conn.commit()
@@ -801,6 +913,8 @@ def get_questions():
     role = get_user_role(auth_header)
     if not role:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if role == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot access questions."}), 403
     
     conn = get_db()
     c = conn.cursor()
@@ -819,6 +933,8 @@ def toggle_question_status():
     role = get_user_role(auth_header)
     if not role:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if role == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot access questions."}), 403
         
     data = request.json
     q_id = data.get('id') if data else None
@@ -846,6 +962,8 @@ def answer_question():
     role = get_user_role(auth_header)
     if not role:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if role == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot access questions."}), 403
         
     data = request.json
     q_id = data.get('id') if data else None
@@ -1108,6 +1226,8 @@ def export_subscribers():
         role = get_user_role(auth_header)
     if not role:
         return "Unauthorized", 401
+    if role == 'member':
+        return "Forbidden", 403
         
     conn = get_db()
     c = conn.cursor()
@@ -1175,6 +1295,8 @@ def set_membership_fee():
     role = get_user_role(auth_header)
     if not role:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if role == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot update membership fees."}), 403
 
     data = request.json or {}
     raw_val = data.get('fee')
@@ -1357,6 +1479,8 @@ def get_memberships():
     role = get_user_role(auth_header)
     if not role:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if role == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot access membership applications."}), 403
         
     conn = get_db()
     c = conn.cursor()
@@ -1378,6 +1502,8 @@ def toggle_membership_paid():
     role = get_user_role(auth_header)
     if not role:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if role == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot access membership applications."}), 403
 
     data = request.json or {}
     app_id = data.get('id')
@@ -1408,6 +1534,8 @@ def toggle_membership_keychain():
     role = get_user_role(auth_header)
     if not role:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if role == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot access membership applications."}), 403
 
     data = request.json or {}
     app_id = data.get('id')
@@ -1438,6 +1566,8 @@ def delete_membership():
     role = get_user_role(auth_header)
     if not role:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if role == 'member':
+        return jsonify({"success": False, "message": "Forbidden. Members cannot access membership applications."}), 403
         
     data = request.json or {}
     app_id = data.get('id')
@@ -1465,6 +1595,8 @@ def export_memberships():
         role = get_user_role(auth_header)
     if not role:
         return "Unauthorized", 401
+    if role == 'member':
+        return "Forbidden", 403
         
     conn = get_db()
     c = conn.cursor()

@@ -227,16 +227,53 @@
                 <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link {% if active_page == 'users' %}active{% endif %}">
                     <span>👥</span> Users & Accounts
                 </a>
-                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
                     title="Open live public website (asmpolimi.it) in a new tab">
                     <span>🌐</span> View Website ↗
                 </a>
+                <span id="nav-user-badge" style="display: none; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 999px; margin-left: 0.25rem;"></span>
+                <button type="button" class="btn-admin-logout" id="top-change-pw-btn" onclick="openChangePasswordModal()" title="Change Your Password" style="color: #475569; background: #f8fafc; border: 1px solid #cbd5e1;">
+                    <span>🔑</span> Password
+                </button>
                 <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
                     <span>🚪</span> Logout
                 </button>
             </nav>
         </div>
     </header>
+
+    <!-- Change Password Modal -->
+    <div id="change-password-modal" style="display: none; position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 1rem;">
+        <div style="background: white; border-radius: 12px; max-width: 420px; width: 100%; padding: 1.75rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); position: relative; border: 1.5px solid #e2e8f0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                <h3 style="margin: 0; font-size: 1.15rem; color: var(--color-primary); display: flex; align-items: center; gap: 0.4rem;">
+                    <span>🔑</span> Change Password
+                </h3>
+                <button type="button" onclick="closeChangePasswordModal()" style="background: none; border: none; font-size: 1.3rem; color: #64748b; cursor: pointer;">✕</button>
+            </div>
+
+            <div id="modal-pw-alert" style="display: none; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem;"></div>
+
+            <form id="modal-change-pw-form" onsubmit="submitChangePassword(event)">
+                <div style="margin-bottom: 0.9rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.3rem;">Current Password</label>
+                    <input type="password" id="modal-current-pw" required style="width: 100%; padding: 0.55rem 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem;" placeholder="Enter current password">
+                </div>
+                <div style="margin-bottom: 0.9rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.3rem;">New Password</label>
+                    <input type="password" id="modal-new-pw" required minlength="6" style="width: 100%; padding: 0.55rem 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem;" placeholder="Minimum 6 characters">
+                </div>
+                <div style="margin-bottom: 1.25rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.3rem;">Confirm New Password</label>
+                    <input type="password" id="modal-confirm-pw" required minlength="6" style="width: 100%; padding: 0.55rem 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem;" placeholder="Re-type new password">
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 0.6rem;">
+                    <button type="button" onclick="closeChangePasswordModal()" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Cancel</button>
+                    <button type="submit" id="modal-pw-submit-btn" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; font-weight: 700;">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Main Admin Content -->
     <main style="flex: 1;">
@@ -260,33 +297,146 @@
             });
         }
 
-                // Enforce role-based & page-level permissions dynamically
+                        // Change Password Modal handlers
+        function openChangePasswordModal() {
+            const modal = document.getElementById('change-password-modal');
+            const alertBox = document.getElementById('modal-pw-alert');
+            if (alertBox) alertBox.style.display = 'none';
+            document.getElementById('modal-current-pw').value = '';
+            document.getElementById('modal-new-pw').value = '';
+            document.getElementById('modal-confirm-pw').value = '';
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeChangePasswordModal() {
+            const modal = document.getElementById('change-password-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        async function submitChangePassword(e) {
+            e.preventDefault();
+            const curPw = document.getElementById('modal-current-pw').value;
+            const newPw = document.getElementById('modal-new-pw').value;
+            const confPw = document.getElementById('modal-confirm-pw').value;
+            const alertBox = document.getElementById('modal-pw-alert');
+            const btn = document.getElementById('modal-pw-submit-btn');
+
+            if (newPw !== confPw) {
+                alertBox.textContent = 'New passwords do not match.';
+                alertBox.style.cssText = 'display: block; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5;';
+                return;
+            }
+
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                alertBox.textContent = 'You are not logged in.';
+                alertBox.style.cssText = 'display: block; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5;';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Updating...';
+
+            try {
+                const res = await fetch('/api/user/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ current_password: curPw, new_password: newPw })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alertBox.textContent = '✓ Password changed successfully!';
+                    alertBox.style.cssText = 'display: block; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; background: #dcfce7; color: #166534; border: 1px solid #86efac;';
+                    setTimeout(() => {
+                        closeChangePasswordModal();
+                    }, 1500);
+                } else {
+                    alertBox.textContent = data.message || 'Failed to change password.';
+                    alertBox.style.cssText = 'display: block; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5;';
+                }
+            } catch(err) {
+                alertBox.textContent = 'Server error. Please try again.';
+                alertBox.style.cssText = 'display: block; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5;';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Update Password';
+            }
+        }
+
+        // Enforce 3-tier role-based & page-level permissions dynamically
         function enforceAdminPagePermissions() {
             try {
                 const currentRole = localStorage.getItem('adminRole');
+                const username = localStorage.getItem('adminUsername') || '';
                 const rawPages = localStorage.getItem('adminAllowedPages');
                 let allowedPages = [];
-                
+
+                // Update Navbar User Badge
+                const userBadge = document.getElementById('nav-user-badge');
+                if (userBadge && username && currentRole) {
+                    userBadge.style.display = 'inline-flex';
+                    if (currentRole === 'superadmin') {
+                        userBadge.innerHTML = `👑 ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Superadmin)</span>`;
+                        userBadge.style.background = '#fef3c7';
+                        userBadge.style.color = '#92400e';
+                        userBadge.style.border = '1px solid #fde68a';
+                    } else if (currentRole === 'admin') {
+                        userBadge.innerHTML = `🛡️ ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Admin)</span>`;
+                        userBadge.style.background = '#eff6ff';
+                        userBadge.style.color = '#1e40af';
+                        userBadge.style.border = '1px solid #bfdbfe';
+                    } else {
+                        userBadge.innerHTML = `👤 ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Member)</span>`;
+                        userBadge.style.background = '#f0fdf4';
+                        userBadge.style.color = '#166534';
+                        userBadge.style.border = '1px solid #bbf7d0';
+                    }
+                } else if (userBadge) {
+                    userBadge.style.display = 'none';
+                }
+
                 if (currentRole === 'superadmin') {
                     allowedPages = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users', 'all'];
-                } else if (rawPages) {
-                    try {
-                        allowedPages = JSON.parse(rawPages);
-                    } catch(e) {
-                        allowedPages = rawPages.split(',').map(s => s.trim());
+                } else if (currentRole === 'admin') {
+                    if (rawPages) {
+                        try {
+                            allowedPages = JSON.parse(rawPages);
+                        } catch(e) {
+                            allowedPages = rawPages.split(',').map(s => s.trim());
+                        }
+                    } else {
+                        allowedPages = ['dashboard', 'events', 'jumuah'];
                     }
-                    if (!allowedPages.includes('dashboard')) {
-                        allowedPages.unshift('dashboard');
+                    if (!allowedPages.includes('dashboard')) allowedPages.unshift('dashboard');
+                    if (!allowedPages.includes('users')) allowedPages.push('users');
+                } else if (currentRole === 'member') {
+                    if (rawPages) {
+                        try {
+                            allowedPages = JSON.parse(rawPages);
+                        } catch(e) {
+                            allowedPages = rawPages.split(',').map(s => s.trim());
+                        }
+                    } else {
+                        allowedPages = ['dashboard'];
                     }
+                    if (!allowedPages.includes('dashboard')) allowedPages.unshift('dashboard');
+                    // STRICT: members can NEVER access members, questions, or users
+                    allowedPages = allowedPages.filter(p => !['members', 'questions', 'users', 'all'].includes(p));
                 } else {
-                    // Non-superadmin with no cached permissions yet - only allow dashboard while verifying
                     allowedPages = ['dashboard'];
                 }
 
                 // Show/hide each nav link based on permissions
                 document.querySelectorAll('#admin-nav-menu .admin-link[data-page]').forEach(link => {
                     const page = link.getAttribute('data-page');
-                    if (currentRole === 'superadmin' || allowedPages.includes(page) || allowedPages.includes('all')) {
+                    if (currentRole === 'superadmin') {
+                        link.style.display = '';
+                    } else if (currentRole === 'member' && ['members', 'questions', 'users'].includes(page)) {
+                        link.style.display = 'none';
+                    } else if (allowedPages.includes(page) || allowedPages.includes('all')) {
                         link.style.display = '';
                     } else {
                         link.style.display = 'none';
@@ -297,17 +447,29 @@
                 const activePage = '{{ active_page }}';
                 const token = localStorage.getItem('adminToken');
                 if (token && currentRole && currentRole !== 'superadmin' && activePage && activePage !== 'dashboard') {
-                    if (!allowedPages.includes(activePage) && !allowedPages.includes('all')) {
+                    let hasAccess = false;
+                    if (currentRole === 'member') {
+                        hasAccess = !['members', 'questions', 'users'].includes(activePage) && allowedPages.includes(activePage);
+                    } else if (currentRole === 'admin') {
+                        hasAccess = allowedPages.includes(activePage) || allowedPages.includes('all') || activePage === 'users';
+                    }
+
+                    if (!hasAccess) {
                         const mainContent = document.querySelector('main');
                         if (mainContent) {
                             const firstAllowed = getFirstAllowedUrl(allowedPages);
+                            const roleTitle = currentRole === 'member' ? 'Member' : 'Administrator';
+                            const extraNote = currentRole === 'member' 
+                                ? 'Member accounts cannot access membership applications, ask-an-imam questions, or user permissions.'
+                                : 'Your account does not have permission to access this portal section.';
+
                             mainContent.innerHTML = `
                                 <div style="max-width: 620px; margin: 4rem auto; padding: 2.5rem; background: white; border-radius: 12px; border: 1.5px solid #fecaca; box-shadow: 0 10px 25px rgba(0,0,0,0.06); text-align: center;">
                                     <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔒</div>
                                     <h2 style="color: #991b1b; font-size: 1.35rem; margin-bottom: 0.75rem;">Access Restricted</h2>
                                     <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1.5rem;">
-                                        Your administrator account does not have permission to access the <strong>${activePage.toUpperCase()}</strong> section.
-                                        Please contact a Superadmin to request access.
+                                        Your <strong>${roleTitle}</strong> account does not have permission to access the <strong>${activePage.toUpperCase()}</strong> section.<br>
+                                        <span style="font-size: 0.9rem; color: #6b7280;">${extraNote}</span>
                                     </p>
                                     <a href="${firstAllowed}" class="btn btn-primary" style="display: inline-block; padding: 0.65rem 1.5rem; border-radius: 8px; text-decoration: none;">
                                         Go to Authorized Section
