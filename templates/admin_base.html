@@ -291,25 +291,25 @@
 
             <nav class="admin-links" id="admin-nav-menu">
                 <a href="/admin" data-page="dashboard" class="admin-link {% if active_page == 'dashboard' %}active{% endif %}">
-                    Dashboard
+                    <span>📊</span> Dashboard
                 </a>
                 <a href="/admin_events" data-page="events" class="admin-link {% if active_page == 'events' %}active{% endif %}">
-                    Events & News
+                    <span>📅</span> Events & News
                 </a>
                 <a href="/admin_members" data-page="members" class="admin-link {% if active_page == 'members' %}active{% endif %}">
-                    Members & Mailing
+                    <span>📋</span> Members & Mailing
                 </a>
                 <a href="/admin_jumuah" data-page="jumuah" class="admin-link {% if active_page == 'jumuah' %}active{% endif %}">
-                    Jumu'ah
+                    <span>🕌</span> Jumu'ah
                 </a>
                 <a href="/admin_questions" data-page="questions" class="admin-link {% if active_page == 'questions' %}active{% endif %}">
-                    Questions
+                    <span>❓</span> Questions
                 </a>
                 <a href="/admin_scanner" data-page="scanner" class="admin-link {% if active_page == 'scanner' %}active{% endif %}">
-                    Scanned Products
+                    <span>🔍</span> Scanned Products
                 </a>
                 <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link {% if active_page == 'users' %}active{% endif %}">
-                    Users & Accounts
+                    <span>👥</span> User
                 </a>
                 <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
                     title="Open live public website (asmpolimi.it) in a new tab">
@@ -317,10 +317,10 @@
                 </a>
                 <span id="nav-user-badge" style="display: none; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 999px; margin-left: 0.25rem;"></span>
                 <button type="button" class="btn-admin-logout" id="top-change-pw-btn" onclick="openChangePasswordModal()" title="Change Your Password" style="color: #475569; background: #f8fafc; border: 1px solid #cbd5e1;">
-                    Password
+                    <span>🔑</span> Password
                 </button>
                 <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
-                    Logout
+                    <span>🚪</span> Logout
                 </button>
             </nav>
         </div>
@@ -596,6 +596,7 @@
                             localStorage.setItem('adminRole', me.role);
                             localStorage.setItem('adminUsername', me.username);
                             localStorage.setItem('adminAllowedPages', JSON.stringify(me.allowed_pages));
+                            localStorage.setItem('adminCanDelete', (me.role === 'superadmin' || me.username === 'ASMKT' || me.can_delete) ? 'true' : 'false');
                             enforceAdminPagePermissions();
                             window.dispatchEvent(new CustomEvent('adminPermissionsUpdated', { detail: me }));
                         }

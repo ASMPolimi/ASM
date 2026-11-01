@@ -243,7 +243,7 @@
 
         <!-- Dashboard Section -->
         <div class="admin-container hidden" id="dashboard-section">
-            <h2 class="text-center mb-1" id="page-main-heading">User Accounts &amp; Permissions</h2>
+            <h2 class="text-center mb-1" id="page-main-heading">User</h2>
             <p class="text-center text-muted" id="page-sub-heading" style="color: #64748b; font-size: 0.92rem; margin-bottom: 2rem;">
                 Control portal access by assigning roles and permissions.
             </p>
@@ -387,7 +387,8 @@
             { key: 'jumuah', label: "Jumu'ah Settings", memberAllowed: true },
             { key: 'questions', label: 'Questions & Q&A', memberAllowed: false },
             { key: 'scanner', label: 'Scanned Products', memberAllowed: true },
-            { key: 'users', label: 'Users & Permissions', memberAllowed: false }
+            { key: 'users', label: 'User', memberAllowed: false },
+            { key: 'delete_action', label: 'Allow Delete Action (Applications & Scanned Products)', memberAllowed: false, isAction: true }
         ];
 
         let token = localStorage.getItem('adminToken');
@@ -548,9 +549,9 @@
                 }
                 const isDefaultChecked = (p.key === 'events' || p.key === 'jumuah');
                 grid.innerHTML += `
-                    <label class="perm-checkbox-item">
+                    <label class="perm-checkbox-item" ${p.isAction ? 'style="border-color: #fca5a5; background: #fffaf0;"' : ''}>
                         <input type="checkbox" name="new_perms" value="${p.key}" ${isDefaultChecked ? 'checked' : ''}>
-                        <span>${p.label}</span>
+                        <span ${p.isAction ? 'style="color: #b91c1c; font-weight: 700;"' : ''}>${p.label}</span>
                     </label>
                 `;
             });
@@ -659,12 +660,20 @@
                     }
                     let pillsHtml = '';
                     ALL_PAGES.forEach(p => {
-                        const hasAccess = isTargetSuper || userAllowed.includes(p.key) || userAllowed.includes('all');
-                        pillsHtml += `
-                            <span class="page-pill ${hasAccess ? 'page-pill-active' : 'page-pill-inactive'}" title="${hasAccess ? 'Access granted' : 'No access'}">
-                                ${p.label}
-                            </span>
-                        `;
+                        const hasAccess = isTargetSuper || userAllowed.includes(p.key) || (p.key !== 'delete_action' && userAllowed.includes('all'));
+                        if (p.isAction) {
+                            pillsHtml += `
+                                <span class="page-pill ${hasAccess ? 'page-pill-active' : 'page-pill-inactive'}" style="${hasAccess ? 'border-color: #ef4444; color: #b91c1c; background: #fef2f2;' : ''}" title="${hasAccess ? 'Delete action permitted by ASMKT' : 'Delete action restricted by ASMKT'}">
+                                    ${hasAccess ? 'Can Delete Records' : 'Delete Restricted'}
+                                </span>
+                            `;
+                        } else {
+                            pillsHtml += `
+                                <span class="page-pill ${hasAccess ? 'page-pill-active' : 'page-pill-inactive'}" title="${hasAccess ? 'Access granted' : 'No access'}">
+                                    ${p.label}
+                                </span>
+                            `;
+                        }
                     });
 
                     permsBlockHtml = `
@@ -776,11 +785,11 @@
                 if (targetRole === 'member' && !p.memberAllowed) {
                     return;
                 }
-                const checked = userAllowed.includes(p.key) || userAllowed.includes('all');
+                const checked = userAllowed.includes(p.key) || (p.key !== 'delete_action' && userAllowed.includes('all'));
                 checkboxesHtml += `
-                    <label class="perm-checkbox-item">
+                    <label class="perm-checkbox-item" ${p.isAction ? 'style="border-color: #fca5a5; background: #fffaf0;"' : ''}>
                         <input type="checkbox" class="edit-cb-${username}" value="${p.key}" ${checked ? 'checked' : ''}>
-                        <span>${p.label}</span>
+                        <span ${p.isAction ? 'style="color: #b91c1c; font-weight: 700;"' : ''}>${p.label}</span>
                     </label>
                 `;
             });
@@ -835,10 +844,11 @@
             grid.innerHTML = '';
             ALL_PAGES.forEach(p => {
                 if (roleVal === 'member' && !p.memberAllowed) return;
+                const checked = (p.key !== 'delete_action');
                 grid.innerHTML += `
-                    <label class="perm-checkbox-item">
-                        <input type="checkbox" class="edit-cb-${username}" value="${p.key}" checked>
-                        <span>${p.icon} ${p.label}</span>
+                    <label class="perm-checkbox-item" ${p.isAction ? 'style="border-color: #fca5a5; background: #fffaf0;"' : ''}>
+                        <input type="checkbox" class="edit-cb-${username}" value="${p.key}" ${checked ? 'checked' : ''}>
+                        <span ${p.isAction ? 'style="color: #b91c1c; font-weight: 700;"' : ''}>${p.label}</span>
                     </label>
                 `;
             });

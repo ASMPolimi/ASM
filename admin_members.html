@@ -583,25 +583,25 @@
 
             <nav class="admin-links" id="admin-nav-menu">
                 <a href="/admin" data-page="dashboard" class="admin-link ">
-                    Dashboard
+                    <span>📊</span> Dashboard
                 </a>
                 <a href="/admin_events" data-page="events" class="admin-link ">
-                    Events & News
+                    <span>📅</span> Events & News
                 </a>
                 <a href="/admin_members" data-page="members" class="admin-link active">
-                    Members & Mailing
+                    <span>📋</span> Members & Mailing
                 </a>
                 <a href="/admin_jumuah" data-page="jumuah" class="admin-link ">
-                    Jumu'ah
+                    <span>🕌</span> Jumu'ah
                 </a>
                 <a href="/admin_questions" data-page="questions" class="admin-link ">
-                    Questions
+                    <span>❓</span> Questions
                 </a>
                 <a href="/admin_scanner" data-page="scanner" class="admin-link ">
-                    Scanned Products
+                    <span>🔍</span> Scanned Products
                 </a>
                 <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link ">
-                    Users & Accounts
+                    <span>👥</span> User
                 </a>
                 <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
                     title="Open live public website (asmpolimi.it) in a new tab">
@@ -609,10 +609,10 @@
                 </a>
                 <span id="nav-user-badge" style="display: none; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 999px; margin-left: 0.25rem;"></span>
                 <button type="button" class="btn-admin-logout" id="top-change-pw-btn" onclick="openChangePasswordModal()" title="Change Your Password" style="color: #475569; background: #f8fafc; border: 1px solid #cbd5e1;">
-                    Password
+                    <span>🔑</span> Password
                 </button>
                 <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
-                    Logout
+                    <span>🚪</span> Logout
                 </button>
             </nav>
         </div>
@@ -1266,9 +1266,10 @@
                         <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: var(--color-primary); color: var(--color-primary); background: none; font-weight: 600;" onclick="viewAppModal(${app.id})">
                             👁️ Details
                         </button>
-                        <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteApp(${app.id})">
+                        ${(localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true') ? `
+                        <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteApp(${app.id})" title="Delete application">
                             🗑️
-                        </button>
+                        </button>` : ''}
                     </div>
                 </div>
                 <div style="font-size: 0.86rem; color: #4b5563; display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; margin-top: 0.65rem;">
@@ -1474,6 +1475,11 @@
     };
 
     window.deleteApp = async function(id) {
+        const canDelete = (localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true');
+        if (!canDelete) {
+            showToast("Forbidden: Superadmin ASMKT has restricted delete actions for this account.", false);
+            return;
+        }
         if (!confirm("Are you sure you want to permanently remove this membership application?")) return;
         try {
             const res = await fetch('/api/memberships', {
@@ -1558,9 +1564,10 @@
                         ${sub.created_at ? `&middot; <span style="color: #94a3b8; font-size: 0.8rem;">Joined: ${escapeHtml(sub.created_at.split(' ')[0] || sub.created_at)}</span>` : ''}
                     </div>
                 </div>
-                <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteSubscriber(${sub.id})">
+                ${(localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true') ? `
+                <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteSubscriber(${sub.id})" title="Remove subscriber">
                     🗑️ Remove
-                </button>
+                </button>` : ''}
             `;
             container.appendChild(card);
         });
@@ -1578,6 +1585,11 @@
     }
 
     window.deleteSubscriber = async function(id) {
+        const canDelete = (localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true');
+        if (!canDelete) {
+            showToast("Forbidden: Superadmin ASMKT has restricted delete actions for this account.", false);
+            return;
+        }
         if (!confirm("Are you sure you want to remove this subscriber from the mailing list?")) return;
         try {
             const res = await fetch('/api/subscribers', {
@@ -1850,6 +1862,7 @@
                             localStorage.setItem('adminRole', me.role);
                             localStorage.setItem('adminUsername', me.username);
                             localStorage.setItem('adminAllowedPages', JSON.stringify(me.allowed_pages));
+                            localStorage.setItem('adminCanDelete', (me.role === 'superadmin' || me.username === 'ASMKT' || me.can_delete) ? 'true' : 'false');
                             enforceAdminPagePermissions();
                             window.dispatchEvent(new CustomEvent('adminPermissionsUpdated', { detail: me }));
                         }

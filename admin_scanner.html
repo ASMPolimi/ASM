@@ -663,25 +663,25 @@
 
             <nav class="admin-links" id="admin-nav-menu">
                 <a href="/admin" data-page="dashboard" class="admin-link ">
-                    Dashboard
+                    <span>📊</span> Dashboard
                 </a>
                 <a href="/admin_events" data-page="events" class="admin-link ">
-                    Events & News
+                    <span>📅</span> Events & News
                 </a>
                 <a href="/admin_members" data-page="members" class="admin-link ">
-                    Members & Mailing
+                    <span>📋</span> Members & Mailing
                 </a>
                 <a href="/admin_jumuah" data-page="jumuah" class="admin-link ">
-                    Jumu'ah
+                    <span>🕌</span> Jumu'ah
                 </a>
                 <a href="/admin_questions" data-page="questions" class="admin-link ">
-                    Questions
+                    <span>❓</span> Questions
                 </a>
                 <a href="/admin_scanner" data-page="scanner" class="admin-link active">
-                    Scanned Products
+                    <span>🔍</span> Scanned Products
                 </a>
                 <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link ">
-                    Users & Accounts
+                    <span>👥</span> User
                 </a>
                 <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
                     title="Open live public website (asmpolimi.it) in a new tab">
@@ -689,10 +689,10 @@
                 </a>
                 <span id="nav-user-badge" style="display: none; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 999px; margin-left: 0.25rem;"></span>
                 <button type="button" class="btn-admin-logout" id="top-change-pw-btn" onclick="openChangePasswordModal()" title="Change Your Password" style="color: #475569; background: #f8fafc; border: 1px solid #cbd5e1;">
-                    Password
+                    <span>🔑</span> Password
                 </button>
                 <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
-                    Logout
+                    <span>🚪</span> Logout
                 </button>
             </nav>
         </div>
@@ -1225,6 +1225,7 @@
                             localStorage.setItem('adminRole', me.role);
                             localStorage.setItem('adminUsername', me.username);
                             localStorage.setItem('adminAllowedPages', JSON.stringify(me.allowed_pages));
+                            localStorage.setItem('adminCanDelete', (me.role === 'superadmin' || me.username === 'ASMKT' || me.can_delete) ? 'true' : 'false');
                             enforceAdminPagePermissions();
                             window.dispatchEvent(new CustomEvent('adminPermissionsUpdated', { detail: me }));
                         }
@@ -1497,9 +1498,10 @@
                     <button type="button" class="btn" onclick="viewIngredients(${p.id})" style="padding: 0.35rem 0.6rem; font-size: 0.82rem; border-radius: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; cursor: pointer; margin-right: 0.35rem;" title="View ingredients">
                         📄
                     </button>
+                    ${(localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true') ? `
                     <button type="button" class="btn" onclick="deleteProduct(${p.id})" style="padding: 0.35rem 0.6rem; font-size: 0.82rem; border-radius: 6px; background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c; cursor: pointer;" title="Delete log">
                         🗑️
-                    </button>
+                    </button>` : ''}
                 </td>
             `;
             productsTbody.appendChild(tr);
@@ -1601,6 +1603,11 @@
     }
 
     async function deleteProduct(prodId) {
+        const canDelete = (localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true');
+        if (!canDelete) {
+            showToast("Forbidden: Superadmin ASMKT has restricted delete actions for this account.", true);
+            return;
+        }
         if (!confirm("Are you sure you want to delete this scanned product entry?")) return;
 
         try {

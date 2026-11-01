@@ -860,9 +860,10 @@
                     <button type="button" class="btn" onclick="viewIngredients(${p.id})" style="padding: 0.35rem 0.6rem; font-size: 0.82rem; border-radius: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; cursor: pointer; margin-right: 0.35rem;" title="View ingredients">
                         📄
                     </button>
+                    ${(localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true') ? `
                     <button type="button" class="btn" onclick="deleteProduct(${p.id})" style="padding: 0.35rem 0.6rem; font-size: 0.82rem; border-radius: 6px; background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c; cursor: pointer;" title="Delete log">
                         🗑️
-                    </button>
+                    </button>` : ''}
                 </td>
             `;
             productsTbody.appendChild(tr);
@@ -964,6 +965,11 @@
     }
 
     async function deleteProduct(prodId) {
+        const canDelete = (localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true');
+        if (!canDelete) {
+            showToast("Forbidden: Superadmin ASMKT has restricted delete actions for this account.", true);
+            return;
+        }
         if (!confirm("Are you sure you want to delete this scanned product entry?")) return;
 
         try {

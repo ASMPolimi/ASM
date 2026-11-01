@@ -910,9 +910,10 @@
                         <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: var(--color-primary); color: var(--color-primary); background: none; font-weight: 600;" onclick="viewAppModal(${app.id})">
                             👁️ Details
                         </button>
-                        <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteApp(${app.id})">
+                        ${(localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true') ? `
+                        <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteApp(${app.id})" title="Delete application">
                             🗑️
-                        </button>
+                        </button>` : ''}
                     </div>
                 </div>
                 <div style="font-size: 0.86rem; color: #4b5563; display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; margin-top: 0.65rem;">
@@ -1118,6 +1119,11 @@
     };
 
     window.deleteApp = async function(id) {
+        const canDelete = (localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true');
+        if (!canDelete) {
+            showToast("Forbidden: Superadmin ASMKT has restricted delete actions for this account.", false);
+            return;
+        }
         if (!confirm("Are you sure you want to permanently remove this membership application?")) return;
         try {
             const res = await fetch('/api/memberships', {
@@ -1202,9 +1208,10 @@
                         ${sub.created_at ? `&middot; <span style="color: #94a3b8; font-size: 0.8rem;">Joined: ${escapeHtml(sub.created_at.split(' ')[0] || sub.created_at)}</span>` : ''}
                     </div>
                 </div>
-                <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteSubscriber(${sub.id})">
+                ${(localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true') ? `
+                <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-color: #ef4444; color: #ef4444; background: none; font-weight: 600;" onclick="deleteSubscriber(${sub.id})" title="Remove subscriber">
                     🗑️ Remove
-                </button>
+                </button>` : ''}
             `;
             container.appendChild(card);
         });
@@ -1222,6 +1229,11 @@
     }
 
     window.deleteSubscriber = async function(id) {
+        const canDelete = (localStorage.getItem('adminRole') === 'superadmin' || localStorage.getItem('adminUsername') === 'ASMKT' || localStorage.getItem('adminCanDelete') === 'true');
+        if (!canDelete) {
+            showToast("Forbidden: Superadmin ASMKT has restricted delete actions for this account.", false);
+            return;
+        }
         if (!confirm("Are you sure you want to remove this subscriber from the mailing list?")) return;
         try {
             const res = await fetch('/api/subscribers', {

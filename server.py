@@ -503,12 +503,14 @@ def login():
             pages_list = [p for p in pages_list if p not in ('members', 'questions', 'users')]
                 
         conn.close()
+        can_delete = (role == 'superadmin') or (role == 'admin' and 'delete_action' in pages_list)
         return jsonify({
             "success": True, 
             "token": f"token-{username}", 
             "role": role,
             "username": username,
-            "allowed_pages": pages_list
+            "allowed_pages": pages_list,
+            "can_delete": can_delete
         })
             
     conn.close()
@@ -1154,9 +1156,11 @@ def get_subscribers():
 @app.route('/api/subscribers', methods=['DELETE'])
 def delete_subscriber():
     auth_header = request.headers.get('Authorization')
-    role = get_user_role(auth_header)
-    if not role:
+    user = get_user_data(auth_header)
+    if not user:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if not user.get('can_delete'):
+        return jsonify({"success": False, "message": "Forbidden. Delete permission required."}), 403
         
     data = request.json
     sub_id = data.get('id') if data else None
@@ -1578,11 +1582,11 @@ def toggle_membership_keychain():
 @app.route('/api/memberships', methods=['DELETE'])
 def delete_membership():
     auth_header = request.headers.get('Authorization')
-    role = get_user_role(auth_header)
-    if not role:
+    user = get_user_data(auth_header)
+    if not user:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
-    if role == 'member':
-        return jsonify({"success": False, "message": "Forbidden. Members cannot access membership applications."}), 403
+    if not user.get('can_delete'):
+        return jsonify({"success": False, "message": "Forbidden. Only superadmin ASMKT or admins granted delete permission can delete membership applications."}), 403
         
     data = request.json or {}
     app_id = data.get('id')
@@ -2128,9 +2132,11 @@ def toggle_event_application_status():
 @app.route('/api/event-applications', methods=['DELETE'])
 def delete_event_application():
     auth_header = request.headers.get('Authorization')
-    role = get_user_role(auth_header)
-    if not role:
+    user = get_user_data(auth_header)
+    if not user:
         return jsonify({"success": False, "message": "Unauthorized"}), 401
+    if not user.get('can_delete'):
+        return jsonify({"success": False, "message": "Forbidden. Delete permission required."}), 403
 
     data = request.json or {}
     app_id = data.get('id')
