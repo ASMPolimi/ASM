@@ -244,9 +244,14 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
             password TEXT NOT NULL,
-            role TEXT DEFAULT 'admin'
+            role TEXT DEFAULT 'admin',
+            allowed_pages TEXT DEFAULT 'all'
         )
     ''')
+    try:
+        c.execute("ALTER TABLE users ADD COLUMN allowed_pages TEXT DEFAULT 'all'")
+    except Exception:
+        pass
 
     # Ensure default superadmin user 'ASM' with bcrypt hashed password
     c.execute("SELECT id, password FROM users WHERE username = 'ASM'")
@@ -424,7 +429,7 @@ def login():
     
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT role, password FROM users WHERE username = ?", (username,))
+    c.execute("SELECT role, password, allowed_pages FROM users WHERE username = ?", (username,))
     row = c.fetchone()
     
     if row and verify_password(password, row['password']):
@@ -432,13 +437,29 @@ def login():
         if not str(row['password']).startswith(('$2b$', '$2a$', '$2y$')):
             c.execute("UPDATE users SET password = ? WHERE username = ?", (hash_password(password), username))
             conn.commit()
+            
+        raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
+        if row['role'] == 'superadmin' or raw_pages == 'all':
+            pages_list = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users']
+        else:
+            try:
+                pages_list = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
+            except Exception:
+                pages_list = ['events', 'jumuah']
+                
         conn.close()
-        return jsonify({"success": True, "token": f"token-{username}", "role": row['role']})
+        return jsonify({
+            "success": True, 
+            "token": f"token-{username}", 
+            "role": row['role'],
+            "allowed_pages": pages_list
+        })
             
     conn.close()
     return jsonify({"success": False, "message": "Invalid credentials"}), 401
 
-@app.route('/api/users', methods=['GET', 'POST', 'DELETE'])
+@app.route('/api/users', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.route('/api/users/update', methods=['POST'])
 def manage_users():
     auth_header = request.headers.get('Authorization')
     role = get_user_role(auth_header)
@@ -449,35 +470,93 @@ def manage_users():
     c = conn.cursor()
 
     if request.method == 'GET':
-        c.execute("SELECT username, role FROM users")
-        users = [dict(row) for row in c.fetchall()]
+        c.execute("SELECT username, role, allowed_pages FROM users")
+        users = []
+        for r in c.fetchall():
+            u_dict = dict(r)
+            raw_pages = u_dict.get('allowed_pages') or 'all'
+            if u_dict['role'] == 'superadmin' or raw_pages == 'all':
+                u_dict['allowed_pages'] = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users']
+            else:
+                try:
+                    u_dict['allowed_pages'] = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
+                except Exception:
+                    u_dict['allowed_pages'] = ['events', 'jumuah']
+            users.append(u_dict)
         conn.close()
         return jsonify({"success": True, "users": users})
 
-    if request.method == 'POST':
-        data = request.json
+    if request.method == 'POST' and not request.path.endswith('/update'):
+        data = request.json or {}
         new_user = data.get('username')
         new_pass = data.get('password')
         new_role = data.get('role', 'admin')
+        allowed_pages = data.get('allowed_pages')
         if not new_user or not new_pass:
             conn.close()
             return jsonify({"success": False, "message": "Username and password required"}), 400
         
+        if new_role == 'superadmin':
+            allowed_pages_str = 'all'
+        elif isinstance(allowed_pages, list):
+            allowed_pages_str = json.dumps(allowed_pages)
+        elif isinstance(allowed_pages, str):
+            allowed_pages_str = allowed_pages
+        else:
+            allowed_pages_str = json.dumps(['events', 'jumuah'])
+
         try:
             hashed_pw = hash_password(new_pass)
-            c.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", (new_user, hashed_pw, new_role))
+            c.execute("INSERT INTO users (username, password, role, allowed_pages) VALUES (?, ?, ?, ?)", (new_user, hashed_pw, new_role, allowed_pages_str))
             conn.commit()
             success = True
             msg = ""
         except sqlite3.IntegrityError:
             success = False
             msg = "User already exists"
+        except Exception as e:
+            success = False
+            msg = str(e)
         
         conn.close()
         return jsonify({"success": success, "message": msg} if not success else {"success": True})
 
+    if request.method == 'PUT' or (request.method == 'POST' and request.path.endswith('/update')):
+        data = request.json or {}
+        target_user = data.get('username')
+        new_role = data.get('role')
+        allowed_pages = data.get('allowed_pages')
+        new_pass = data.get('password')
+
+        if not target_user:
+            conn.close()
+            return jsonify({"success": False, "message": "Username required"}), 400
+
+        if target_user in ('admin', 'ASM') and new_role and new_role != 'superadmin':
+            conn.close()
+            return jsonify({"success": False, "message": "Cannot demote default superadmin account"}), 400
+
+        if new_role == 'superadmin':
+            allowed_pages_str = 'all'
+        elif isinstance(allowed_pages, list):
+            allowed_pages_str = json.dumps(allowed_pages)
+        elif isinstance(allowed_pages, str):
+            allowed_pages_str = allowed_pages
+        else:
+            allowed_pages_str = json.dumps(['events', 'jumuah'])
+
+        if new_pass and str(new_pass).strip():
+            hashed_pw = hash_password(new_pass)
+            c.execute("UPDATE users SET role = ?, allowed_pages = ?, password = ? WHERE username = ?", (new_role or 'admin', allowed_pages_str, hashed_pw, target_user))
+        else:
+            c.execute("UPDATE users SET role = ?, allowed_pages = ? WHERE username = ?", (new_role or 'admin', allowed_pages_str, target_user))
+            
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True, "message": f"Permissions updated for {target_user}"})
+
     if request.method == 'DELETE':
-        data = request.json
+        data = request.json or {}
         del_user = data.get('username')
         
         if not del_user:
@@ -491,11 +570,9 @@ def manage_users():
         deleted = c.rowcount > 0
         conn.commit()
         conn.close()
-        
-        if not deleted:
-            return jsonify({"success": False, "message": "User not found"}), 404
-            
-        return jsonify({"success": True})
+        if deleted:
+            return jsonify({"success": True})
+        return jsonify({"success": False, "message": "User not found"}), 404
 
 @app.route('/api/update', methods=['POST'])
 def update_content():

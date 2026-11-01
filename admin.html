@@ -452,22 +452,22 @@
             </button>
 
             <nav class="admin-links" id="admin-nav-menu">
-                <a href="/admin" class="admin-link active">
+                <a href="/admin" data-page="events" class="admin-link active">
                     <span>📅</span> Events & News
                 </a>
-                <a href="/admin_members" class="admin-link ">
+                <a href="/admin_members" data-page="members" class="admin-link ">
                     <span>📋</span> Members & Mailing
                 </a>
-                <a href="/admin_jumuah" class="admin-link ">
+                <a href="/admin_jumuah" data-page="jumuah" class="admin-link ">
                     <span>🕌</span> Jumu'ah
                 </a>
-                <a href="/admin_questions" class="admin-link ">
+                <a href="/admin_questions" data-page="questions" class="admin-link ">
                     <span>❓</span> Questions
                 </a>
-                <a href="/admin_scanner" class="admin-link ">
+                <a href="/admin_scanner" data-page="scanner" class="admin-link ">
                     <span>🥫</span> Scanned Products
                 </a>
-                <a href="/admin_users" id="nav-users-link" class="admin-link ">
+                <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link ">
                     <span>👥</span> Users & Accounts
                 </a>
                 <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
@@ -822,14 +822,74 @@
             });
         }
 
-        // Hide Users tab for non-superadmin users
-        try {
-            const currentRole = localStorage.getItem('adminRole');
-            if (currentRole && currentRole !== 'superadmin') {
-                const navUsers = document.getElementById('nav-users-link');
-                if (navUsers) navUsers.style.display = 'none';
+                // Enforce role-based & page-level permissions dynamically
+        function enforceAdminPagePermissions() {
+            try {
+                const currentRole = localStorage.getItem('adminRole');
+                const rawPages = localStorage.getItem('adminAllowedPages');
+                let allowedPages = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'];
+                
+                if (currentRole && currentRole !== 'superadmin' && rawPages) {
+                    try {
+                        allowedPages = JSON.parse(rawPages);
+                    } catch(e) {
+                        allowedPages = rawPages.split(',').map(s => s.trim());
+                    }
+                }
+
+                // Show/hide each nav link based on permissions
+                document.querySelectorAll('#admin-nav-menu .admin-link[data-page]').forEach(link => {
+                    const page = link.getAttribute('data-page');
+                    if (currentRole === 'superadmin' || allowedPages.includes(page) || allowedPages.includes('all')) {
+                        link.style.display = '';
+                    } else {
+                        link.style.display = 'none';
+                    }
+                });
+
+                // Check access for current active page
+                const activePage = 'events';
+                const token = localStorage.getItem('adminToken');
+                if (token && currentRole && currentRole !== 'superadmin' && activePage) {
+                    if (!allowedPages.includes(activePage) && !allowedPages.includes('all')) {
+                        const mainContent = document.querySelector('main');
+                        if (mainContent) {
+                            const firstAllowed = getFirstAllowedUrl(allowedPages);
+                            mainContent.innerHTML = `
+                                <div style="max-width: 620px; margin: 4rem auto; padding: 2.5rem; background: white; border-radius: 12px; border: 1.5px solid #fecaca; box-shadow: 0 10px 25px rgba(0,0,0,0.06); text-align: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔒</div>
+                                    <h2 style="color: #991b1b; font-size: 1.35rem; margin-bottom: 0.75rem;">Access Restricted</h2>
+                                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1.5rem;">
+                                        Your administrator account does not have permission to access the <strong>${activePage.toUpperCase()}</strong> section.
+                                        Please contact a Superadmin to request access.
+                                    </p>
+                                    <a href="${firstAllowed}" class="btn btn-primary" style="display: inline-block; padding: 0.65rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                        Go to Authorized Section
+                                    </a>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            } catch (err) { }
+        }
+
+        function getFirstAllowedUrl(allowedPages) {
+            const map = {
+                'events': '/admin',
+                'members': '/admin_members',
+                'jumuah': '/admin_jumuah',
+                'questions': '/admin_questions',
+                'scanner': '/admin_scanner',
+                'users': '/admin_users'
+            };
+            for (const p of allowedPages) {
+                if (map[p]) return map[p];
             }
-        } catch (err) {}
+            return '/admin';
+        }
+
+        enforceAdminPagePermissions();
 
         // Global admin logout helper
         function globalAdminLogout(e) {

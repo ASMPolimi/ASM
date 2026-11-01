@@ -4,98 +4,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin: Manage Users | ASM</title>
+    <title>Manage Users & Permissions \u2022 Admin Portal</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-    <meta name="description"
-        content="Official Muslim Student Association at Politecnico di Milano. Daily prayer times in Milan, Friday Jumu'ah at Bovisa and Leonardo campuses, and community events. Join us!">
-    <link rel="canonical" href="https://asmpolimi.it/">
-
-    <!-- Open Graph / Facebook / WhatsApp / Telegram / LinkedIn -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://asmpolimi.it/">
-    <meta property="og:title" content="Muslim Student Association Politecnico di Milano | ASM Polimi">
-    <meta property="og:description" content="Official Muslim Student Association at Politecnico di Milano. Daily prayer times in Milan, Friday Jumu'ah at Bovisa and Leonardo campuses, halal scanner, and community events. Join us!">
-    <meta property="og:image" content="https://asmpolimi.it/assets/og-banner.png">
-    <meta property="og:image:secure_url" content="https://asmpolimi.it/assets/og-banner.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
-    <meta property="og:site_name" content="ASM Polimi">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:locale:alternate" content="it_IT">
-
-    <!-- Twitter / X Cards -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://asmpolimi.it/">
-    <meta name="twitter:title" content="Muslim Student Association Politecnico di Milano | ASM Polimi">
-    <meta name="twitter:description" content="Official Muslim Student Association at Politecnico di Milano. Daily prayer times in Milan, Friday Jumu'ah at Bovisa and Leonardo campuses, halal scanner, and community events. Join us!">
-    <meta name="twitter:image" content="https://asmpolimi.it/assets/og-banner.png">
-    <meta name="twitter:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/main.js" defer></script>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
 
-    <!-- Google tag (gtag.js) with GDPR Consent Mode v2 -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+        .admin-nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
 
-      var savedConsent = localStorage.getItem('asm_cookie_consent');
-      if (savedConsent === 'accepted') {
-          gtag('consent', 'default', {
-              'analytics_storage': 'granted',
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied'
-          });
-      } else if (savedConsent === 'declined') {
-          gtag('consent', 'default', {
-              'analytics_storage': 'denied',
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied'
-          });
-      } else {
-          // Strict GDPR opt-in default for European Economic Area + Switzerland + UK
-          gtag('consent', 'default', {
-              'analytics_storage': 'denied',
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied',
-              'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO', 'GB', 'CH']
-          });
-          // Default granted for traffic outside the EEA (resolves Google 0% non-EEA alert)
-          gtag('consent', 'default', {
-              'analytics_storage': 'granted',
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied'
-          });
-      }
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-decoration: none;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
 
-      gtag('js', new Date());
-      gtag('config', 'G-8N5B01YCZ4');
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8N5B01YCZ4"></script>
+        .admin-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .admin-portal-badge {
+            background: rgba(18, 74, 97, 0.1);
+            color: var(--color-primary);
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .admin-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .admin-link:hover {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.05);
+        }
+
+        .admin-link.active {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.1);
+            font-weight: 700;
+        }
+
+        .btn-public-site {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0284c7;
+            background: rgba(2, 132, 199, 0.1);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            text-decoration: none;
+            margin-left: 0.5rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-public-site:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .btn-admin-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #dc2626;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            cursor: pointer;
+            margin-left: 0.25rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-admin-logout:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .admin-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 900px) {
+            .admin-mobile-toggle {
+                display: block;
+            }
+
+            .admin-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 1rem 1.5rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                align-items: stretch;
+            }
+
+            .admin-links.open {
+                display: flex;
+            }
+
+            .btn-public-site,
+            .btn-admin-logout {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                justify-content: center;
+            }
+        }
+
+        /* Footer */
+        .admin-footer {
+            margin-top: auto;
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+    </style>
     
     <style>
         .admin-container {
-            max-width: 600px;
-            margin: 100px auto 4rem auto;
-            padding: 2rem;
+            max-width: 860px;
+            margin: 40px auto 4rem auto;
+            padding: 2.2rem;
             background: white;
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
         }
 
         .hidden {
@@ -131,72 +232,172 @@
             border-left: 5px solid #198754;
             font-weight: 500;
         }
+
+        .user-card {
+            background: #ffffff;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1.15rem 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            transition: border-color 0.2s ease;
+        }
+
+        .user-card:hover {
+            border-color: #cbd5e1;
+        }
+
+        .badge-role-super {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .badge-role-admin {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .page-pill {
+            font-size: 0.76rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            border: 1px solid transparent;
+        }
+
+        .page-pill-active {
+            background: #f0fdf4;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .page-pill-inactive {
+            background: #f3f4f6;
+            color: #9ca3af;
+            border-color: #e5e7eb;
+            text-decoration: line-through;
+        }
+
+        .perm-checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.6rem;
+            margin: 0.75rem 0 1rem 0;
+        }
+
+        .perm-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .perm-checkbox-item:hover {
+            border-color: var(--color-primary);
+            background: #f8fafc;
+        }
+
+        .perm-checkbox-item input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .edit-panel {
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 
 </head>
 
-<body class="bg-light">
+<body class="bg-light" style="min-height: 100vh; display: flex; flex-direction: column;">
 
-    <!-- Header & Navigation -->
-    <header class="navbar" >
-        <div class="container nav-container">
-            <a href="/" class="logo">
-                <img src="/assets/asm_logo.png" alt="ASM Logo">
+    <!-- Dedicated Admin Portal Navbar -->
+    <header class="admin-nav">
+        <div class="admin-nav-container">
+            <a href="https://asmpolimi.it" class="admin-brand" title="Go to ASM POLIMI website (asmpolimi.it)">
+                <img src="assets/asm_logo.png" alt="ASM Logo">
                 <span>ASM POLIMI</span>
+                <span class="admin-portal-badge">Admin</span>
             </a>
 
-            <nav class="nav-links">
-                <a href="/#home" data-i18n="nav_home">Home</a>
-                <a href="/events" data-i18n="nav_events">Events</a>
-                <a href="/halal" data-i18n="nav_halal">Halal Scanner</a>
-                <a href="/support" data-i18n="nav_support">Ask an Imam</a>
-                <a href="/gallery" data-i18n="nav_gallery">Gallery</a>
-                <a href="/jumuah" data-i18n="nav_jumuah">Jumu'ah</a>
-                <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer" data-i18n="nav_quran">Quran Irtaqi</a>
-                <a href="/register" class="btn btn-primary" style="padding: 0.5rem 1rem; margin-left: 1rem;" data-i18n="nav_join">Join Us</a>
-                <div class="dropdown">
-                    <button class="dropbtn" aria-label="Settings">
-                        &#8942;
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="https://admin.asmpolimi.it/admin" data-i18n="nav_admin">Admin</a>
-                    </div>
-                </div>
-            </nav>
-
-            <button class="mobile-menu-btn" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button type="button" class="admin-mobile-toggle" id="admin-nav-toggle" aria-label="Toggle navigation">
+                ☰
             </button>
+
+            <nav class="admin-links" id="admin-nav-menu">
+                <a href="/admin" data-page="events" class="admin-link ">
+                    <span>📅</span> Events & News
+                </a>
+                <a href="/admin_members" data-page="members" class="admin-link ">
+                    <span>📋</span> Members & Mailing
+                </a>
+                <a href="/admin_jumuah" data-page="jumuah" class="admin-link ">
+                    <span>🕌</span> Jumu'ah
+                </a>
+                <a href="/admin_questions" data-page="questions" class="admin-link ">
+                    <span>❓</span> Questions
+                </a>
+                <a href="/admin_scanner" data-page="scanner" class="admin-link ">
+                    <span>🥫</span> Scanned Products
+                </a>
+                <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link active">
+                    <span>👥</span> Users & Accounts
+                </a>
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                    title="Open live public website (asmpolimi.it) in a new tab">
+                    <span>🌐</span> View Website ↗
+                </a>
+                <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
+                    <span>🚪</span> Logout
+                </button>
+            </nav>
         </div>
     </header>
 
-    <!-- Announcement Banner -->
-    <div id="announcement-banner" class="hidden">
-        <span class="announcement-content-wrap">
-            <span style="margin-right: 0.5rem;">&#128226;</span> <span id="announcement-text"></span>
-        </span>
-        <button type="button" id="close-announcement-btn" aria-label="Close Announcement" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; line-height: 1; cursor: pointer; color: var(--color-text); opacity: 0.7; padding: 0.25rem; transition: opacity 0.2s;">&times;</button>
-    </div>
-
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-nav-overlay">
-        <nav class="mobile-nav-links">
-            <a href="/#home"><span class="mobile-nav-icon">🏠</span><span data-i18n="nav_home">Home</span></a>
-            <a href="/events"><span class="mobile-nav-icon">📅</span><span data-i18n="nav_events">Events</span></a>
-            <a href="/halal"><span class="mobile-nav-icon">🥗</span><span data-i18n="nav_halal">Halal Scanner</span></a>
-            <a href="/support"><span class="mobile-nav-icon">💬</span><span data-i18n="nav_support">Ask an Imam</span></a>
-            <a href="/gallery"><span class="mobile-nav-icon">📸</span><span data-i18n="nav_gallery">Gallery</span></a>
-            <a href="/jumuah"><span class="mobile-nav-icon">🕌</span><span data-i18n="nav_jumuah">Jumu'ah</span></a>
-            <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer"><span class="mobile-nav-icon">📖</span><span data-i18n="nav_quran">Quran Irtaqi</span></a>
-            <a href="/register"><span class="mobile-nav-icon">🤝</span><span data-i18n="nav_join">Join Us</span></a>
-        </nav>
-    </div>
-
-    
+    <!-- Main Admin Content -->
+    <main style="flex: 1;">
+        
 <div class="container">
-        <div class="admin-container" id="login-section">
+        <!-- Login Section -->
+        <div class="admin-container" id="login-section" style="max-width: 500px;">
             <h2 class="text-center mb-2">Admin Login</h2>
             <div id="login-error" class="error-message hidden"></div>
             <form id="login-form">
@@ -212,45 +413,98 @@
             </form>
         </div>
 
+        <!-- Dashboard Section -->
         <div class="admin-container hidden" id="dashboard-section">
-            <h2 class="text-center mb-2">Manage Admin Accounts</h2>
-            <div class="text-center mb-4" style="margin-bottom: 2rem;">
-                <a href="admin.html"
-                    style="color: var(--color-primary); font-size: 0.9rem; text-decoration: underline;">Switch to Events
-                    Admin</a>
-                <span style="margin: 0 0.5rem;">|</span>
-                <a href="admin_jumuah.html"
-                    style="color: var(--color-primary); font-size: 0.9rem; text-decoration: underline;">Switch to
-                    Jumu'ah Admin</a>
-            </div>
+            <h2 class="text-center mb-1">User Accounts &amp; Page Permissions</h2>
+            <p class="text-center text-muted" style="color: #64748b; font-size: 0.92rem; margin-bottom: 2rem;">
+                Control administrator access by assigning exactly which portal pages each account can view and manage.
+            </p>
 
             <div id="update-message" class="hidden"></div>
 
-            <h3 class="mb-2" id="current-admins-header" style="display: none;">Current Admins</h3>
-            <div id="users-list" style="margin-bottom: 2rem; display: none;">
-                <p class="text-center">Loading users...</p>
+            <!-- Current Admins Section -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                <h3 id="current-admins-header" style="margin: 0; font-size: 1.2rem; color: var(--color-primary); display: none;">
+                    Registered Administrators (<span id="user-count">0</span>)
+                </h3>
+                <button type="button" class="btn btn-secondary" id="btn-toggle-add-form" onclick="toggleAddAdminForm()" style="font-size: 0.85rem; padding: 0.45rem 1rem;">
+                    <span>➕</span> Add New Admin
+                </button>
             </div>
 
-            <div id="add-admin-section" style="background: #f9fafb; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; display: none;">
-                <h4 class="mb-2" style="font-size: 1rem;">Add New Admin</h4>
+            <div id="users-list" style="margin-bottom: 2rem; display: none;">
+                <p class="text-center" style="color: #64748b; padding: 2rem;">Loading administrators...</p>
+            </div>
+
+            <!-- Add New Admin Section -->
+            <div id="add-admin-section" style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1.5px solid #cbd5e1; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h4 style="margin: 0; font-size: 1.15rem; color: var(--color-primary);">Create New Administrator</h4>
+                    <button type="button" onclick="toggleAddAdminForm(false)" style="background: none; border: none; font-size: 1.2rem; color: #64748b; cursor: pointer;">✕</button>
+                </div>
+                
                 <form id="add-user-form">
-                    <div class="form-group">
-                        <label for="new-username">Username</label>
-                        <input type="text" id="new-username" required>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="new-username">Username</label>
+                            <input type="text" id="new-username" required placeholder="e.g. event_manager">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="new-password">Password</label>
+                            <input type="password" id="new-password" required placeholder="Minimum 8 characters recommended">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="new-role">Account Role</label>
+                            <select id="new-role" required onchange="handleNewRoleChange(this.value)">
+                                <option value="admin">Admin (Custom Page Access)</option>
+                                <option value="superadmin">Superadmin (All Pages &amp; Manage Users)</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="new-password">Password</label>
-                        <input type="password" id="new-password" required>
+
+                    <div style="margin-top: 1rem; margin-bottom: 1.25rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                            <label style="font-weight: 700; color: #334155; margin-bottom: 0; font-size: 0.92rem;">
+                                Assigned Page Access:
+                            </label>
+                            <div style="font-size: 0.8rem; display: flex; gap: 0.5rem;">
+                                <button type="button" onclick="setAllNewCheckboxes(true)" style="background: none; border: none; color: var(--color-primary); cursor: pointer; text-decoration: underline;">Select All</button>
+                                <span>|</span>
+                                <button type="button" onclick="setAllNewCheckboxes(false)" style="background: none; border: none; color: #64748b; cursor: pointer; text-decoration: underline;">Clear All</button>
+                            </div>
+                        </div>
+
+                        <div class="perm-checkbox-grid" id="new-user-perms-grid">
+                            <label class="perm-checkbox-item">
+                                <input type="checkbox" name="new_perms" value="events" checked>
+                                <span>📅 Events &amp; News</span>
+                            </label>
+                            <label class="perm-checkbox-item">
+                                <input type="checkbox" name="new_perms" value="members">
+                                <span>📋 Members &amp; Mailing</span>
+                            </label>
+                            <label class="perm-checkbox-item">
+                                <input type="checkbox" name="new_perms" value="jumuah" checked>
+                                <span>🕌 Jumu'ah Settings</span>
+                            </label>
+                            <label class="perm-checkbox-item">
+                                <input type="checkbox" name="new_perms" value="questions">
+                                <span>❓ Questions &amp; Q&amp;A</span>
+                            </label>
+                            <label class="perm-checkbox-item">
+                                <input type="checkbox" name="new_perms" value="scanner">
+                                <span>🥫 Scanned Products</span>
+                            </label>
+                            <label class="perm-checkbox-item">
+                                <input type="checkbox" name="new_perms" value="users">
+                                <span>👥 Users &amp; Permissions</span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="new-role">Role</label>
-                        <select id="new-role" required>
-                            <option value="admin">Admin (Events & Jumu'ah only)</option>
-                            <option value="superadmin">Superadmin (Manage users & everything)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-secondary w-100"
-                        style="color: var(--color-primary); border-color: var(--color-primary);">Create Account</button>
+
+                    <button type="submit" class="btn btn-primary w-100" style="padding: 0.65rem 1rem; font-weight: 700;">
+                        <span>✓</span> Create Account
+                    </button>
                 </form>
             </div>
 
@@ -260,7 +514,7 @@
                 <h3 class="mb-2"
                     style="font-size: 1.2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 1rem;">
                     Manage Board Members</h3>
-
+                
                 <!-- Homepage Visibility Control Card -->
                 <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
                     <div>
@@ -311,109 +565,122 @@
         </div>
     </div>
 
+    </main>
 
-    <!-- Qibla Compass Modal -->
-    <div id="qibla-modal" class="qibla-modal-overlay" role="dialog" aria-modal="true"
-        aria-labelledby="qibla-modal-title">
-        <div class="qibla-modal-dialog">
-            <div class="qibla-modal-header">
-                <h3 id="qibla-modal-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        style="color: var(--color-secondary); vertical-align: middle;">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
-                            fill="var(--color-secondary)"></polygon>
-                    </svg>
-                    <span data-i18n="qibla_title">Milan Qibla Compass</span>
-                </h3>
-                <button type="button" class="qibla-modal-close close-qibla-modal-btn"
-                    aria-label="Close dialog">&times;</button>
-            </div>
-            <div class="qibla-modal-body">
-                <div class="qibla-compass-visual">
-                    <div class="compass-dial" id="compass-dial-ring">
-                        <span class="compass-cardinal compass-n">N</span>
-                        <span class="compass-cardinal compass-e">E</span>
-                        <span class="compass-cardinal compass-s">S</span>
-                        <span class="compass-cardinal compass-w">W</span>
-                        <div class="compass-needle-kaaba" id="compass-needle-arm" style="transform: rotate(124deg);">
-                            <div class="kaaba-marker" title="Kaaba (Makkah)">
-                                <span class="kaaba-icon">🕋</span>
-                            </div>
-                            <div class="needle-arrow-line"></div>
-                        </div>
-                        <div class="compass-center-dot"></div>
-                    </div>
-                </div>
-
-                <div class="qibla-readout-card">
-                    <div class="qibla-angle-big">124° <span class="qibla-dir-text">SE (South-East)</span></div>
-                    <div class="qibla-city-sub" data-i18n="qibla_city_sub">Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km</div>
-                </div>
-
-                <div id="sensor-status-msg" class="qibla-sensor-note">
-                    <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text" data-i18n="qibla_sensor_text">Align phone until the 🕋
-                        Kaaba points to the top.</span>
-                </div>
-                <div class="qibla-calib-hint" style="font-size: 0.74rem; color: #64748b; margin-top: 0.25rem;" data-i18n="qibla_calib_hint">
-                    💡 Hold phone flat or move in a <strong>figure-8</strong> motion if direction drifts.
-                </div>
-            </div>
-            <div class="qibla-modal-footer" style="display: flex; gap: 0.5rem; justify-content: space-between; align-items: center;">
-                <button type="button" id="btn-recalibrate-compass" class="btn" style="background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; padding: 0.45rem 0.85rem; font-size: 0.82rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; font-weight: 600;">
-                    <span>🔄</span> <span data-i18n="qibla_recalibrate">Reset / Calibrate</span>
-                </button>
-                <button type="button" class="btn btn-primary close-qibla-modal-btn"
-                    style="padding: 0.45rem 1.15rem; font-size: 0.85rem; border-radius: 6px;" data-i18n="qibla_close_btn">
-                    Close Compass
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="/assets/asm_logo.png" alt="ASM Logo" width="40" loading="lazy" decoding="async">
-                    <span>ASM POLIMI</span>
-                </div>
-                <div class="footer-legal-links">
-                    <a href="/privacy" data-i18n="footer_privacy">Privacy Policy</a>
-                    <span class="footer-separator">&bull;</span>
-                    <a href="/terms" data-i18n="footer_terms">Terms &amp; Conditions</a>
-                    <span class="footer-separator">&bull;</span>
-                    <a href="/cookies" data-i18n="footer_cookies">Cookie Policy</a>
-                </div>
-                <div class="footer-copyright" data-i18n="footer_copyright">
-                    &copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.
-                    <br> All rights reserved.
-                </div>
-            </div>
+            <p style="margin: 0;"><strong>ASM POLIMI Admin Portal</strong> &bull; Authenticated Administration Area</p>
         </div>
     </footer>
 
-    <!-- GDPR Cookie Consent Confirmation Banner -->
-    <div id="cookie-consent-banner" class="cookie-banner-wrap" role="dialog" aria-live="polite" aria-label="Cookie consent">
-        <div class="cookie-banner-title">
-            <span>🍪</span> <span data-i18n="cookie_banner_title">Salam! Halal Cookies Only</span>
-        </div>
-        <p class="cookie-banner-text">
-            <span data-i18n="cookie_banner_desc">We only serve halal cookies: essential storage to run the site and optional analytics to improve student services. Accept all or decline non-essential anytime in our</span>
-            <a href="/cookies" data-i18n="cookie_banner_link">Cookie Policy</a>.
-        </p>
-        <div class="cookie-banner-actions">
-            <button type="button" id="btn-cookie-accept" class="cookie-btn-accept" data-i18n="cookie_btn_accept">
-                Accept All
-            </button>
-            <button type="button" id="btn-cookie-decline" class="cookie-btn-decline" data-i18n="cookie_btn_decline">
-                Decline Non-Essential
-            </button>
-        </div>
-    </div>
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('admin-nav-toggle');
+        const navMenu = document.getElementById('admin-nav-menu');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('open');
+            });
+        }
 
+                // Enforce role-based & page-level permissions dynamically
+        function enforceAdminPagePermissions() {
+            try {
+                const currentRole = localStorage.getItem('adminRole');
+                const rawPages = localStorage.getItem('adminAllowedPages');
+                let allowedPages = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'];
+                
+                if (currentRole && currentRole !== 'superadmin' && rawPages) {
+                    try {
+                        allowedPages = JSON.parse(rawPages);
+                    } catch(e) {
+                        allowedPages = rawPages.split(',').map(s => s.trim());
+                    }
+                }
+
+                // Show/hide each nav link based on permissions
+                document.querySelectorAll('#admin-nav-menu .admin-link[data-page]').forEach(link => {
+                    const page = link.getAttribute('data-page');
+                    if (currentRole === 'superadmin' || allowedPages.includes(page) || allowedPages.includes('all')) {
+                        link.style.display = '';
+                    } else {
+                        link.style.display = 'none';
+                    }
+                });
+
+                // Check access for current active page
+                const activePage = 'users';
+                const token = localStorage.getItem('adminToken');
+                if (token && currentRole && currentRole !== 'superadmin' && activePage) {
+                    if (!allowedPages.includes(activePage) && !allowedPages.includes('all')) {
+                        const mainContent = document.querySelector('main');
+                        if (mainContent) {
+                            const firstAllowed = getFirstAllowedUrl(allowedPages);
+                            mainContent.innerHTML = `
+                                <div style="max-width: 620px; margin: 4rem auto; padding: 2.5rem; background: white; border-radius: 12px; border: 1.5px solid #fecaca; box-shadow: 0 10px 25px rgba(0,0,0,0.06); text-align: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔒</div>
+                                    <h2 style="color: #991b1b; font-size: 1.35rem; margin-bottom: 0.75rem;">Access Restricted</h2>
+                                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1.5rem;">
+                                        Your administrator account does not have permission to access the <strong>${activePage.toUpperCase()}</strong> section.
+                                        Please contact a Superadmin to request access.
+                                    </p>
+                                    <a href="${firstAllowed}" class="btn btn-primary" style="display: inline-block; padding: 0.65rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                        Go to Authorized Section
+                                    </a>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            } catch (err) { }
+        }
+
+        function getFirstAllowedUrl(allowedPages) {
+            const map = {
+                'events': '/admin',
+                'members': '/admin_members',
+                'jumuah': '/admin_jumuah',
+                'questions': '/admin_questions',
+                'scanner': '/admin_scanner',
+                'users': '/admin_users'
+            };
+            for (const p of allowedPages) {
+                if (map[p]) return map[p];
+            }
+            return '/admin';
+        }
+
+        enforceAdminPagePermissions();
+
+        // Global admin logout helper
+        function globalAdminLogout(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            try {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminRole');
+            } catch (err) {}
+
+            // Trigger in-page logout UI if available
+            if (typeof logout === 'function') {
+                try { logout(); } catch (err) {}
+            }
+
+            // Immediately switch views if on a single-page view
+            const dash = document.getElementById('dashboard-section');
+            const login = document.getElementById('login-section');
+            if (dash && login) {
+                dash.classList.add('hidden');
+                login.classList.remove('hidden');
+            }
+
+            // Redirect with cache busting to guarantee clean logout state
+            window.location.href = '/admin?logout=' + Date.now();
+        }
+    </script>
     
 <script>
         const loginSection = document.getElementById('login-section');
@@ -424,9 +691,19 @@
         const updateMessage = document.getElementById('update-message');
         const logoutBtn = document.getElementById('logout-btn');
 
+        const ALL_PAGES = [
+            { key: 'events', label: 'Events & News', icon: '📅', url: '/admin' },
+            { key: 'members', label: 'Members & Mailing', icon: '📋', url: '/admin_members' },
+            { key: 'jumuah', label: 'Jumu\'ah Settings', icon: '🕌', url: '/admin_jumuah' },
+            { key: 'questions', label: 'Questions & Q&A', icon: '❓', url: '/admin_questions' },
+            { key: 'scanner', label: 'Scanned Products', icon: '🥫', url: '/admin_scanner' },
+            { key: 'users', label: 'Users & Permissions', icon: '👥', url: '/admin_users' }
+        ];
+
         let token = localStorage.getItem('adminToken');
         let role = localStorage.getItem('adminRole');
         let users = [];
+        let editingUser = null;
 
         if (token) {
             showDashboard();
@@ -447,9 +724,15 @@
                 const data = await response.json();
                 if (data.success) {
                     token = data.token;
-                    role = data.role; // store role
+                    role = data.role;
                     localStorage.setItem('adminToken', token);
                     localStorage.setItem('adminRole', role);
+                    if (data.allowed_pages) {
+                        localStorage.setItem('adminAllowedPages', JSON.stringify(data.allowed_pages));
+                    }
+                    if (typeof enforceAdminPagePermissions === 'function') {
+                        enforceAdminPagePermissions();
+                    }
                     showDashboard();
                 } else {
                     loginError.textContent = data.message;
@@ -467,19 +750,9 @@
 
             const isSuper = (role === 'superadmin');
 
-            const addAdminSection = document.getElementById('add-admin-section');
-            if (addAdminSection) {
-                addAdminSection.style.display = isSuper ? 'block' : 'none';
-            }
-
-            const boardSection = document.getElementById('board-members-section');
-            if (boardSection) {
-                boardSection.style.display = isSuper ? 'block' : 'none';
-            }
-
             const currentAdminsHeader = document.getElementById('current-admins-header');
             if (currentAdminsHeader) {
-                currentAdminsHeader.style.display = isSuper ? 'block' : 'none';
+                currentAdminsHeader.style.display = isSuper ? 'inline-block' : 'none';
             }
 
             const usersList = document.getElementById('users-list');
@@ -487,11 +760,19 @@
                 usersList.style.display = isSuper ? 'block' : 'none';
             }
 
+            const boardSection = document.getElementById('board-members-section');
+            if (boardSection) {
+                boardSection.style.display = isSuper ? 'block' : 'none';
+            }
+
+            const btnAdd = document.getElementById('btn-toggle-add-form');
+            if (btnAdd) {
+                btnAdd.style.display = isSuper ? 'inline-block' : 'none';
+            }
+
             if (isSuper) {
                 fetchUsers();
                 fetchBoardMembers();
-                fetchBoardSectionStatus();
-
                 fetchBoardSectionStatus();
             } else {
                 let existingNotice = document.getElementById('admin-role-notice');
@@ -503,10 +784,7 @@
                         <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🔒</div>
                         <h3 style="color: #92400e; font-size: 1.15rem; margin-bottom: 0.5rem;">Superadmin Access Required</h3>
                         <p style="color: #78350f; font-size: 0.95rem; margin-bottom: 1rem;">
-                            Managing administrator accounts and board members is restricted to <strong>Superadmin</strong> accounts.
-                        </p>
-                        <p style="color: #78350f; font-size: 0.9rem; margin-bottom: 0;">
-                            As a standard Admin, you have full access to <a href="admin.html" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Events & Announcements</a> and <a href="admin_jumuah.html" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Jumu'ah</a> settings.
+                            Managing administrator accounts and page permissions is restricted to <strong>Superadmin</strong> accounts.
                         </p>
                     `;
                     const updateMsg = document.getElementById('update-message');
@@ -515,18 +793,49 @@
             }
         }
 
+        function showMessage(msg, isSuccess) {
+            updateMessage.textContent = msg;
+            updateMessage.className = isSuccess ? 'success-message' : 'error-message';
+            updateMessage.classList.remove('hidden');
+            setTimeout(() => {
+                updateMessage.classList.add('hidden');
+            }, 4000);
+        }
+
+        function toggleAddAdminForm(forceState) {
+            const formContainer = document.getElementById('add-admin-section');
+            if (!formContainer) return;
+            if (forceState !== undefined) {
+                formContainer.style.display = forceState ? 'block' : 'none';
+            } else {
+                formContainer.style.display = (formContainer.style.display === 'none' || !formContainer.style.display) ? 'block' : 'none';
+            }
+            if (formContainer.style.display === 'block') {
+                formContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function handleNewRoleChange(roleVal) {
+            if (roleVal === 'superadmin') {
+                setAllNewCheckboxes(true);
+            }
+        }
+
+        function setAllNewCheckboxes(checked) {
+            document.querySelectorAll('#new-user-perms-grid input[type="checkbox"]').forEach(cb => {
+                cb.checked = checked;
+            });
+        }
+
         async function fetchUsers() {
             try {
                 const response = await fetch('/api/users', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                if (response.status === 401) {
-                    logout();
-                    return;
-                }
                 const data = await response.json();
                 if (data.success) {
                     users = data.users;
+                    document.getElementById('user-count').textContent = users.length;
                     renderUsers();
                 } else {
                     if (role === 'superadmin') {
@@ -544,23 +853,220 @@
             const list = document.getElementById('users-list');
             list.innerHTML = '';
 
+            if (users.length === 0) {
+                list.innerHTML = '<p class="text-center" style="color:#64748b; padding:1.5rem;">No administrators found.</p>';
+                return;
+            }
+
             users.forEach((userObj) => {
                 const username = userObj.username;
-                const div = document.createElement('div');
-                div.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding: 0.75rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 4px; margin-bottom: 0.5rem;';
-
+                const isSuper = userObj.role === 'superadmin';
                 const isMainAdmin = username === 'admin' || username === 'ASM';
-                const deleteBtn = (role === 'superadmin') ? (isMainAdmin ? '<span style="color: #9ca3af; font-size: 0.8rem; padding: 0.25rem 0.5rem;">Default (Cannot Delete)</span>' : `<button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; border-color: #dc3545; color: #dc3545; background: none;" onclick="deleteUser('${username}')">Delete</button>`) : '<span style="color: #9ca3af; font-size: 0.8rem; padding: 0.25rem 0.5rem;">No Delete Permission</span>';
+                const userAllowed = userObj.allowed_pages || (isSuper ? ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'] : ['events', 'jumuah']);
 
-                div.innerHTML = `
-                    <div>
-                        <strong>${username}</strong> <span style="font-size: 0.8rem; color: #6b7280; margin-left: 0.5rem;">(${userObj.role})</span>
+                const card = document.createElement('div');
+                card.className = 'user-card';
+                card.id = `user-card-${username}`;
+
+                // Render page pills
+                let pillsHtml = '';
+                ALL_PAGES.forEach(p => {
+                    const hasAccess = isSuper || userAllowed.includes(p.key) || userAllowed.includes('all');
+                    pillsHtml += `
+                        <span class="page-pill ${hasAccess ? 'page-pill-active' : 'page-pill-inactive'}" title="${hasAccess ? 'Access granted' : 'No access'}">
+                            <span>${p.icon}</span> ${p.label}
+                        </span>
+                    `;
+                });
+
+                const deleteBtn = isMainAdmin 
+                    ? '<span style="color: #9ca3af; font-size: 0.8rem; font-weight: 500;">Default (Protected)</span>'
+                    : `<button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; border-color: #fca5a5; color: #dc2626; background: #fff;" onclick="deleteUser('${username}')"><span>🗑️</span> Delete</button>`;
+
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <div style="display: flex; align-items: center; gap: 0.65rem;">
+                            <span style="font-size: 1.35rem;">👤</span>
+                            <div>
+                                <strong style="font-size: 1.05rem; color: #1e293b;">${username}</strong>
+                                <span class="${isSuper ? 'badge-role-super' : 'badge-role-admin'}" style="margin-left: 0.5rem;">
+                                    ${isSuper ? '👑 Superadmin' : '🛡️ Admin'}
+                                </span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <button type="button" class="btn btn-secondary" onclick="toggleEditPanel('${username}')" style="padding: 0.35rem 0.75rem; font-size: 0.82rem; border-color: #cbd5e1; color: var(--color-primary);">
+                                <span>⚙️</span> Manage Access
+                            </button>
+                            ${deleteBtn}
+                        </div>
                     </div>
-                    ${deleteBtn}
+
+                    <div style="border-top: 1px solid #f1f5f9; padding-top: 0.65rem;">
+                        <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 0.4rem;">
+                            Permitted Sections (${isSuper ? 'All 6' : userAllowed.length} active):
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                            ${pillsHtml}
+                        </div>
+                    </div>
+
+                    <!-- Inline Edit Panel Container -->
+                    <div id="edit-panel-${username}" class="edit-panel hidden">
+                        <!-- Populated dynamically -->
+                    </div>
                 `;
-                list.appendChild(div);
+
+                list.appendChild(card);
             });
         }
+
+        window.toggleEditPanel = function(username) {
+            const panel = document.getElementById(`edit-panel-${username}`);
+            if (!panel) return;
+
+            if (!panel.classList.contains('hidden')) {
+                panel.classList.add('hidden');
+                panel.innerHTML = '';
+                return;
+            }
+
+            // Close all other panels
+            document.querySelectorAll('.edit-panel').forEach(p => {
+                p.classList.add('hidden');
+                p.innerHTML = '';
+            });
+
+            const userObj = users.find(u => u.username === username);
+            if (!userObj) return;
+
+            const isSuper = userObj.role === 'superadmin';
+            const userAllowed = userObj.allowed_pages || (isSuper ? ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'] : ['events', 'jumuah']);
+            const isMainAdmin = (username === 'admin' || username === 'ASM');
+
+            let checkboxesHtml = '';
+            ALL_PAGES.forEach(p => {
+                const checked = isSuper || userAllowed.includes(p.key) || userAllowed.includes('all');
+                checkboxesHtml += `
+                    <label class="perm-checkbox-item">
+                        <input type="checkbox" class="edit-cb-${username}" value="${p.key}" ${checked ? 'checked' : ''}>
+                        <span>${p.icon} ${p.label}</span>
+                    </label>
+                `;
+            });
+
+            panel.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <strong style="color: var(--color-primary); font-size: 0.98rem;">
+                        Edit Access &amp; Permissions for <em>${username}</em>
+                    </strong>
+                    <button type="button" onclick="toggleEditPanel('${username}')" style="background: none; border: none; font-size: 1.1rem; color: #64748b; cursor: pointer;">✕</button>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Role:</label>
+                        <select id="edit-role-${username}" class="form-control" style="width: 100%; padding: 0.45rem 0.65rem; border-radius: 6px; border: 1.5px solid #cbd5e1;" onchange="handleEditRoleChange('${username}', this.value)" ${isMainAdmin ? 'disabled title="Default superadmin role cannot be changed"' : ''}>
+                            <option value="admin" ${!isSuper ? 'selected' : ''}>Admin (Custom Page Access)</option>
+                            <option value="superadmin" ${isSuper ? 'selected' : ''}>Superadmin (Full Access)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Reset Password (optional):</label>
+                        <input type="password" id="edit-pw-${username}" placeholder="Leave blank to keep current" style="width: 100%; padding: 0.45rem 0.65rem; border-radius: 6px; border: 1.5px solid #cbd5e1;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                        <span style="font-size: 0.85rem; font-weight: 600; color: #475569;">Assign Allowed Portal Pages:</span>
+                        <div style="font-size: 0.78rem; display: flex; gap: 0.5rem;">
+                            <button type="button" onclick="setAllEditCheckboxes('${username}', true)" style="background: none; border: none; color: var(--color-primary); cursor: pointer; text-decoration: underline;">Select All</button>
+                            <span>|</span>
+                            <button type="button" onclick="setAllEditCheckboxes('${username}', false)" style="background: none; border: none; color: #64748b; cursor: pointer; text-decoration: underline;">Clear All</button>
+                        </div>
+                    </div>
+                    <div class="perm-checkbox-grid">
+                        ${checkboxesHtml}
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.6rem;">
+                    <button type="button" class="btn btn-secondary" onclick="toggleEditPanel('${username}')" style="padding: 0.45rem 1rem; font-size: 0.85rem;">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveUserPermissions('${username}')" style="padding: 0.45rem 1.25rem; font-size: 0.85rem; font-weight: 700;">
+                        <span>💾</span> Save Permissions
+                    </button>
+                </div>
+            `;
+
+            panel.classList.remove('hidden');
+        };
+
+        window.handleEditRoleChange = function(username, roleVal) {
+            if (roleVal === 'superadmin') {
+                setAllEditCheckboxes(username, true);
+            }
+        };
+
+        window.setAllEditCheckboxes = function(username, checked) {
+            document.querySelectorAll(`.edit-cb-${username}`).forEach(cb => {
+                cb.checked = checked;
+            });
+        };
+
+        window.saveUserPermissions = async function(username) {
+            const roleSelect = document.getElementById(`edit-role-${username}`);
+            const pwInput = document.getElementById(`edit-pw-${username}`);
+            const selectedPages = [];
+
+            document.querySelectorAll(`.edit-cb-${username}:checked`).forEach(cb => {
+                selectedPages.push(cb.value);
+            });
+
+            const newRole = roleSelect ? roleSelect.value : 'admin';
+            const newPassword = pwInput ? pwInput.value.trim() : '';
+
+            if (newRole !== 'superadmin' && selectedPages.length === 0) {
+                alert("Please select at least one page for this administrator.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/users', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        role: newRole,
+                        allowed_pages: newRole === 'superadmin' ? 'all' : selectedPages,
+                        password: newPassword || undefined
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showMessage(data.message || `Permissions updated for ${username}!`, true);
+                    
+                    // If the superadmin updated their own account, update localStorage immediately
+                    if (username === localStorage.getItem('adminUser') || username === (token.replace('token-', ''))) {
+                        localStorage.setItem('adminRole', newRole);
+                        localStorage.setItem('adminAllowedPages', JSON.stringify(newRole === 'superadmin' ? ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'] : selectedPages));
+                        if (typeof enforceAdminPagePermissions === 'function') {
+                            enforceAdminPagePermissions();
+                        }
+                    }
+
+                    fetchUsers();
+                } else {
+                    showMessage(data.message || "Failed to update user", false);
+                }
+            } catch (err) {
+                showMessage("Network error updating permissions.", false);
+            }
+        };
 
         window.deleteUser = async function (username) {
             if (!confirm(`Are you sure you want to delete the account '${username}'?`)) return;
@@ -589,9 +1095,19 @@
 
         addUserForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const username = document.getElementById('new-username').value;
+            const username = document.getElementById('new-username').value.trim();
             const password = document.getElementById('new-password').value;
             const userRole = document.getElementById('new-role').value;
+
+            const selectedPages = [];
+            document.querySelectorAll('#new-user-perms-grid input[type="checkbox"]:checked').forEach(cb => {
+                selectedPages.push(cb.value);
+            });
+
+            if (userRole !== 'superadmin' && selectedPages.length === 0) {
+                alert("Please select at least one page for the new administrator.");
+                return;
+            }
 
             try {
                 const response = await fetch('/api/users', {
@@ -600,14 +1116,20 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ username, password, role: userRole })
+                    body: JSON.stringify({
+                        username,
+                        password,
+                        role: userRole,
+                        allowed_pages: userRole === 'superadmin' ? 'all' : selectedPages
+                    })
                 });
 
                 const data = await response.json();
                 if (data.success) {
-                    showMessage("Account created successfully!", true);
+                    showMessage("Account created successfully with configured page permissions!", true);
                     document.getElementById('new-username').value = '';
                     document.getElementById('new-password').value = '';
+                    toggleAddAdminForm(false);
                     fetchUsers();
                 } else {
                     showMessage(data.message, false);
@@ -617,13 +1139,7 @@
             }
         });
 
-        function showMessage(msg, isSuccess) {
-            updateMessage.textContent = msg;
-            updateMessage.className = isSuccess ? "success-message" : "error-message";
-            updateMessage.classList.remove('hidden');
-            setTimeout(() => updateMessage.classList.add('hidden'), 4000);
-        }
-
+        // Board Members Data & Handlers
         let boardMembersData = [
             { "role": "president", "title": "President", "name": "", "avatar": "P" },
             { "role": "vicepresident", "title": "Vice President", "name": "", "avatar": "V" },
@@ -647,243 +1163,6 @@
                 }
             } catch (err) {
                 console.error("Failed to load board members:", err);
-            }
-        }
-
-        // Board Section Visibility Logic
-
-        let isBoardSectionEnabled = true;
-
-
-
-        function renderBoardSectionBadge() {
-
-            const badge = document.getElementById('board-section-badge');
-
-            const btn = document.getElementById('btn-toggle-board-section');
-
-            if (!badge || !btn) return;
-
-
-
-            if (isBoardSectionEnabled) {
-
-                badge.style.background = '#dcfce7';
-
-                badge.style.color = '#15803d';
-
-                badge.style.borderColor = '#86efac';
-
-                badge.innerHTML = '<span>🟢</span> Visible on Homepage';
-
-
-
-                btn.style.background = '#dc2626';
-
-                btn.style.color = 'white';
-
-                btn.innerHTML = '<span>🚫</span> Remove / Hide Board Section';
-
-            } else {
-
-                badge.style.background = '#fee2e2';
-
-                badge.style.color = '#b91c1c';
-
-                badge.style.borderColor = '#fca5a5';
-
-                badge.innerHTML = '<span>🔴</span> Hidden from Homepage';
-
-
-
-                btn.style.background = '#059669';
-
-                btn.style.color = 'white';
-
-                btn.innerHTML = '<span>➕</span> Add / Show Board Section';
-
-            }
-
-        }
-
-
-
-        async function fetchBoardSectionStatus() {
-
-            try {
-
-                const res = await fetch('/api/settings/board-section');
-
-                const data = await res.json();
-
-                if (data.success && data.enabled !== undefined) {
-
-                    isBoardSectionEnabled = !!data.enabled;
-
-                }
-
-            } catch (e) {
-
-                console.error("fetchBoardSectionStatus error:", e);
-
-            } finally {
-
-                renderBoardSectionBadge();
-
-            }
-
-        }
-
-
-
-        async function toggleBoardSectionVisibility() {
-
-            const targetState = !isBoardSectionEnabled;
-
-            const confirmMsg = targetState
-
-                ? 'Show the "Our Board members" section on the main homepage?'
-
-                : 'Remove / hide the "Our Board members" section from the main homepage?';
-
-            if (!confirm(confirmMsg)) return;
-
-
-
-            const btn = document.getElementById('btn-toggle-board-section');
-
-            try {
-
-                if (btn) {
-
-                    btn.disabled = true;
-
-                    btn.innerHTML = '<span>⏳</span> Updating...';
-
-                }
-
-                const res = await fetch('/api/settings/board-section', {
-
-                    method: 'POST',
-
-                    headers: {
-
-                        'Content-Type': 'application/json',
-
-                        'Authorization': `Bearer ${token}`
-
-                    },
-
-                    body: JSON.stringify({ enabled: targetState })
-
-                });
-
-                const data = await res.json();
-
-                if (data.success) {
-
-                    isBoardSectionEnabled = !!data.enabled;
-
-                    showMessage(data.message || "Board section setting updated successfully!", true);
-
-                } else {
-
-                    showMessage(data.message || "Error updating setting", false);
-
-                }
-
-            } catch (err) {
-
-                showMessage("Network error updating board section setting", false);
-
-            } finally {
-
-                if (btn) btn.disabled = false;
-
-                renderBoardSectionBadge();
-
-            }
-
-        }
-
-
-
-        // Board Section Visibility Logic
-        let isBoardSectionEnabled = true;
-
-        function renderBoardSectionBadge() {
-            const badge = document.getElementById('board-section-badge');
-            const btn = document.getElementById('btn-toggle-board-section');
-            if (!badge || !btn) return;
-
-            if (isBoardSectionEnabled) {
-                badge.style.background = '#dcfce7';
-                badge.style.color = '#15803d';
-                badge.style.borderColor = '#86efac';
-                badge.innerHTML = '<span>🟢</span> Visible on Homepage';
-
-                btn.style.background = '#dc2626';
-                btn.style.color = 'white';
-                btn.innerHTML = '<span>🚫</span> Remove / Hide Board Section';
-            } else {
-                badge.style.background = '#fee2e2';
-                badge.style.color = '#b91c1c';
-                badge.style.borderColor = '#fca5a5';
-                badge.innerHTML = '<span>🔴</span> Hidden from Homepage';
-
-                btn.style.background = '#059669';
-                btn.style.color = 'white';
-                btn.innerHTML = '<span>➕</span> Add / Show Board Section';
-            }
-        }
-
-        async function fetchBoardSectionStatus() {
-            try {
-                const res = await fetch('/api/settings/board-section');
-                const data = await res.json();
-                if (data.success && data.enabled !== undefined) {
-                    isBoardSectionEnabled = !!data.enabled;
-                }
-            } catch (e) {
-                console.error("fetchBoardSectionStatus error:", e);
-            } finally {
-                renderBoardSectionBadge();
-            }
-        }
-
-        async function toggleBoardSectionVisibility() {
-            const targetState = !isBoardSectionEnabled;
-            const confirmMsg = targetState
-                ? 'Show the "Our Board members" section on the main homepage?'
-                : 'Remove / hide the "Our Board members" section from the main homepage?';
-            if (!confirm(confirmMsg)) return;
-
-            const btn = document.getElementById('btn-toggle-board-section');
-            try {
-                if (btn) {
-                    btn.disabled = true;
-                    btn.innerHTML = '<span>⏳</span> Updating...';
-                }
-                const res = await fetch('/api/settings/board-section', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ enabled: targetState })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    isBoardSectionEnabled = !!data.enabled;
-                    showMessage(data.message || "Board section setting updated successfully!", true);
-                } else {
-                    showMessage(data.message || "Error updating setting", false);
-                }
-            } catch (err) {
-                showMessage("Network error updating board section setting", false);
-            } finally {
-                if (btn) btn.disabled = false;
-                renderBoardSectionBadge();
             }
         }
 
@@ -920,13 +1199,91 @@
             }
         });
 
+        // Board Section Visibility Logic
+        let isBoardSectionEnabled = true;
 
+        function renderBoardSectionBadge() {
+            const badge = document.getElementById('board-section-badge');
+            const btn = document.getElementById('btn-toggle-board-section');
+            if (!badge || !btn) return;
+
+            if (isBoardSectionEnabled) {
+                badge.style.background = '#dcfce7';
+                badge.style.color = '#15803d';
+                badge.style.borderColor = '#86efac';
+                badge.innerHTML = '<span>🟢</span> Visible on Homepage';
+
+                btn.style.background = '#dc2626';
+                btn.style.color = 'white';
+                btn.innerHTML = '<span>🚫</span> Remove / Hide Board Section';
+            } else {
+                badge.style.background = '#fee2e2';
+                badge.style.color = '#b91c1c';
+                badge.style.borderColor = '#fca5a5';
+                badge.innerHTML = '<span>🔴</span> Hidden from Homepage';
+
+                btn.style.background = '#059669';
+                btn.style.color = 'white';
+                btn.innerHTML = '<span>➕</span> Add / Show Board Section';
+            }
+        }
+
+        async function fetchBoardSectionStatus() {
+            try {
+                const res = await fetch('/api/settings/board-section');
+                const data = await res.json();
+                if (data.success && data.enabled !== undefined) {
+                    isBoardSectionEnabled = !!data.enabled;
+                }
+            } catch (e) {
+                console.error("fetchBoardSectionStatus error:", e);
+            } finally {
+                renderBoardSectionBadge();
+            }
+        }
+
+        async function toggleBoardSectionVisibility() {
+            const targetState = !isBoardSectionEnabled;
+            const confirmMsg = targetState
+                ? 'Show the "Our Board members" section on the main homepage?'
+                : 'Remove / hide the "Our Board members" section from the main homepage?';
+            if (!confirm(confirmMsg)) return;
+
+            const btn = document.getElementById('btn-toggle-board-section');
+            try {
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<span>⏳</span> Updating...';
+                }
+                const res = await fetch('/api/settings/board-section', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ enabled: targetState })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    isBoardSectionEnabled = !!data.enabled;
+                    showMessage(data.message || "Board section setting updated successfully!", true);
+                } else {
+                    showMessage(data.message || "Error updating setting", false);
+                }
+            } catch (err) {
+                showMessage("Network error updating board section setting", false);
+            } finally {
+                if (btn) btn.disabled = false;
+                renderBoardSectionBadge();
+            }
+        }
 
         logoutBtn.addEventListener('click', logout);
 
         function logout() {
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminRole');
+            localStorage.removeItem('adminAllowedPages');
             token = null;
             role = null;
             document.getElementById('password').value = '';
