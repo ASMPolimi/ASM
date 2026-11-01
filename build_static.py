@@ -101,6 +101,7 @@ template_names = [
     'register.html',
     'event-register.html',
     'support.html',
+    'admin_dashboard.html',
     'admin.html',
     'admin_members.html',
     'admin_jumuah.html',

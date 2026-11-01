@@ -112,7 +112,7 @@ def verify_turnstile(token: str, remote_ip: str = None) -> bool:
         return True
 
 DB_FILE = 'asm.db'
-ALLOWED_FILES = ['index.html', 'register.html', 'event-register.html', 'admin.html', 'admin_members.html', 'admin_jumuah.html', 'admin_users.html', 'jumuah.html', 'support.html', 'gallery.html', 'events.html', 'admin_questions.html', 'halal.html', 'admin_scanner.html', 'privacy.html', 'terms.html', 'cookies.html', 'halal-terms.html']
+ALLOWED_FILES = ['index.html', 'register.html', 'event-register.html', 'admin_dashboard.html', 'admin.html', 'admin_members.html', 'admin_jumuah.html', 'admin_users.html', 'jumuah.html', 'support.html', 'gallery.html', 'events.html', 'admin_questions.html', 'halal.html', 'admin_scanner.html', 'privacy.html', 'terms.html', 'cookies.html', 'halal-terms.html']
 ALLOWED_DIRS = ['assets', 'css', 'js']
 
 # Cache for prayer times and Hijri date
@@ -324,6 +324,17 @@ def get_board_section_setting():
 def index():
     return render_template('index.html', show_board_section=get_board_section_setting())
 
+@app.route('/admin')
+@app.route('/admin_dashboard')
+@app.route('/admin_dashboard.html')
+def admin_dashboard_page():
+    return render_template('admin_dashboard.html')
+
+@app.route('/admin_events')
+@app.route('/admin_events.html')
+def admin_events_page():
+    return render_template('admin.html')
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory('.', 'favicon.ico', mimetype='image/vnd.microsoft.icon', max_age=2592000)
@@ -440,12 +451,14 @@ def login():
             
         raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
         if row['role'] == 'superadmin' or raw_pages == 'all':
-            pages_list = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users']
+            pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
         else:
             try:
                 pages_list = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
             except Exception:
                 pages_list = ['events', 'jumuah']
+            if 'dashboard' not in pages_list:
+                pages_list.insert(0, 'dashboard')
                 
         conn.close()
         return jsonify({
@@ -457,6 +470,78 @@ def login():
             
     conn.close()
     return jsonify({"success": False, "message": "Invalid credentials"}), 401
+
+@app.route('/api/admin/me', methods=['GET'])
+def admin_me():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+    token = str(auth_header).strip()
+    if token.startswith('Bearer '):
+        token = token[7:].strip()
+    if token.startswith('token-'):
+        username = token.split('token-')[1]
+    else:
+        username = token
+        
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT username, role, allowed_pages FROM users WHERE username = ?", (username,))
+    row = c.fetchone()
+    conn.close()
+    if not row:
+        return jsonify({"success": False, "message": "User not found"}), 401
+        
+    raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
+    if row['role'] == 'superadmin' or raw_pages == 'all':
+        pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
+    else:
+        try:
+            pages_list = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
+        except Exception:
+            pages_list = ['events', 'jumuah']
+        if 'dashboard' not in pages_list:
+            pages_list.insert(0, 'dashboard')
+            
+    return jsonify({
+        "success": True,
+        "username": row['username'],
+        "role": row['role'],
+        "allowed_pages": pages_list
+    })
+
+@app.route('/api/admin/stats', methods=['GET'])
+def admin_stats():
+    auth_header = request.headers.get('Authorization')
+    role = get_user_role(auth_header)
+    if not role:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
+        
+    try:
+        conn = get_db()
+        c = conn.cursor()
+        c.execute("SELECT COUNT(*) as cnt FROM events")
+        events_cnt = c.fetchone()['cnt']
+        c.execute("SELECT COUNT(*) as cnt FROM membership_applications")
+        members_cnt = c.fetchone()['cnt']
+        c.execute("SELECT COUNT(*) as cnt FROM questions WHERE answered = 0 OR answered IS NULL")
+        questions_cnt = c.fetchone()['cnt']
+        c.execute("SELECT COUNT(*) as cnt FROM scanned_products WHERE admin_status = 'pending'")
+        scanner_cnt = c.fetchone()['cnt']
+        c.execute("SELECT COUNT(*) as cnt FROM users")
+        users_cnt = c.fetchone()['cnt']
+        conn.close()
+        
+        return jsonify({
+            "success": True,
+            "events_count": events_cnt,
+            "members_count": members_cnt,
+            "questions_count": questions_cnt,
+            "scanner_pending": scanner_cnt,
+            "users_count": users_cnt
+        })
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
 
 @app.route('/api/users', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @app.route('/api/users/update', methods=['POST'])

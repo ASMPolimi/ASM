@@ -452,7 +452,10 @@
             </button>
 
             <nav class="admin-links" id="admin-nav-menu">
-                <a href="/admin" data-page="events" class="admin-link active">
+                <a href="/admin" data-page="dashboard" class="admin-link ">
+                    <span>🏠</span> Dashboard
+                </a>
+                <a href="/admin_events" data-page="events" class="admin-link active">
                     <span>📅</span> Events & News
                 </a>
                 <a href="/admin_members" data-page="members" class="admin-link ">
@@ -827,14 +830,22 @@
             try {
                 const currentRole = localStorage.getItem('adminRole');
                 const rawPages = localStorage.getItem('adminAllowedPages');
-                let allowedPages = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'];
+                let allowedPages = [];
                 
-                if (currentRole && currentRole !== 'superadmin' && rawPages) {
+                if (currentRole === 'superadmin') {
+                    allowedPages = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users', 'all'];
+                } else if (rawPages) {
                     try {
                         allowedPages = JSON.parse(rawPages);
                     } catch(e) {
                         allowedPages = rawPages.split(',').map(s => s.trim());
                     }
+                    if (!allowedPages.includes('dashboard')) {
+                        allowedPages.unshift('dashboard');
+                    }
+                } else {
+                    // Non-superadmin with no cached permissions yet - only allow dashboard while verifying
+                    allowedPages = ['dashboard'];
                 }
 
                 // Show/hide each nav link based on permissions
@@ -850,7 +861,7 @@
                 // Check access for current active page
                 const activePage = 'events';
                 const token = localStorage.getItem('adminToken');
-                if (token && currentRole && currentRole !== 'superadmin' && activePage) {
+                if (token && currentRole && currentRole !== 'superadmin' && activePage && activePage !== 'dashboard') {
                     if (!allowedPages.includes(activePage) && !allowedPages.includes('all')) {
                         const mainContent = document.querySelector('main');
                         if (mainContent) {
@@ -874,9 +885,35 @@
             } catch (err) { }
         }
 
+        async function verifyAndEnforcePermissions() {
+            const token = localStorage.getItem('adminToken');
+            if (token) {
+                try {
+                    const res = await fetch('/api/admin/me', {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    if (res.ok) {
+                        const me = await res.json();
+                        if (me.success) {
+                            localStorage.setItem('adminRole', me.role);
+                            localStorage.setItem('adminUsername', me.username);
+                            localStorage.setItem('adminAllowedPages', JSON.stringify(me.allowed_pages));
+                            enforceAdminPagePermissions();
+                            window.dispatchEvent(new CustomEvent('adminPermissionsUpdated', { detail: me }));
+                        }
+                    } else if (res.status === 401 || res.status === 403) {
+                        globalAdminLogout();
+                        return;
+                    }
+                } catch(e) { }
+            }
+            enforceAdminPagePermissions();
+        }
+
         function getFirstAllowedUrl(allowedPages) {
             const map = {
-                'events': '/admin',
+                'dashboard': '/admin',
+                'events': '/admin_events',
                 'members': '/admin_members',
                 'jumuah': '/admin_jumuah',
                 'questions': '/admin_questions',
@@ -890,6 +927,7 @@
         }
 
         enforceAdminPagePermissions();
+        verifyAndEnforcePermissions();
 
         // Global admin logout helper
         function globalAdminLogout(e) {
@@ -900,11 +938,13 @@
             try {
                 localStorage.removeItem('adminToken');
                 localStorage.removeItem('adminRole');
-            } catch (err) {}
+                localStorage.removeItem('adminUsername');
+                localStorage.removeItem('adminAllowedPages');
+            } catch (err) { }
 
             // Trigger in-page logout UI if available
             if (typeof logout === 'function') {
-                try { logout(); } catch (err) {}
+                try { logout(); } catch (err) { }
             }
 
             // Immediately switch views if on a single-page view
@@ -957,7 +997,16 @@
                 token = data.token;
                 localStorage.setItem('adminToken', token);
                 localStorage.setItem('adminRole', data.role);
+                localStorage.setItem('adminUsername', username);
+                if (data.allowed_pages) {
+                    localStorage.setItem('adminAllowedPages', JSON.stringify(data.allowed_pages));
+                }
                 showDashboard();
+                if (typeof verifyAndEnforcePermissions === 'function') {
+                    verifyAndEnforcePermissions();
+                } else if (typeof enforceAdminPagePermissions === 'function') {
+                    enforceAdminPagePermissions();
+                }
             } else {
                 loginError.textContent = data.message || "Invalid credentials";
                 loginError.classList.remove('hidden');

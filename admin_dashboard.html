@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard & Portal Hub | ASM POLIMI</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .admin-nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-decoration: none;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .admin-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .admin-portal-badge {
+            background: rgba(18, 74, 97, 0.1);
+            color: var(--color-primary);
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .admin-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .admin-link:hover {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.05);
+        }
+
+        .admin-link.active {
+            color: var(--color-primary);
+            background: rgba(18, 74, 97, 0.1);
+            font-weight: 700;
+        }
+
+        .btn-public-site {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0284c7;
+            background: rgba(2, 132, 199, 0.1);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            text-decoration: none;
+            margin-left: 0.5rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-public-site:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .btn-admin-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #dc2626;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            cursor: pointer;
+            margin-left: 0.25rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-admin-logout:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .admin-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 900px) {
+            .admin-mobile-toggle {
+                display: block;
+            }
+
+            .admin-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 1rem 1.5rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                align-items: stretch;
+            }
+
+            .admin-links.open {
+                display: flex;
+            }
+
+            .btn-public-site,
+            .btn-admin-logout {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                justify-content: center;
+            }
+        }
+
+        /* Footer */
+        .admin-footer {
+            margin-top: auto;
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+    </style>
+    
+<style>
+    /* Admin Portal Hub Styles */
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 2.5rem auto;
+        padding: 0 1.5rem;
+    }
+
+    /* Welcome Hero Card */
+    .dash-hero-card {
+        background: linear-gradient(135deg, var(--color-primary) 0%, #1a6280 100%);
+        border-radius: 16px;
+        padding: 2.25rem 2.5rem;
+        color: #ffffff;
+        box-shadow: 0 10px 25px rgba(18, 74, 97, 0.18);
+        margin-bottom: 2.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .dash-hero-text h1 {
+        font-family: var(--font-heading);
+        font-size: 1.95rem;
+        margin: 0 0 0.5rem 0;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+    }
+
+    .dash-hero-text p {
+        margin: 0;
+        font-size: 1.02rem;
+        opacity: 0.92;
+        max-width: 650px;
+        line-height: 1.55;
+    }
+
+    .dash-role-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #ffffff;
+        font-size: 0.8rem;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        vertical-align: middle;
+    }
+
+    .dash-hero-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-dash-hero {
+        background: #ffffff;
+        color: var(--color-primary);
+        font-weight: 700;
+        padding: 0.75rem 1.35rem;
+        border-radius: 10px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.92rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-dash-hero:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* KPI Metrics Bar */
+    .dash-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.15rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .dash-stat-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.25rem 1.35rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .dash-stat-card:hover {
+        transform: translateY(-2px);
+        border-color: #cbd5e1;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    .dash-stat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.65rem;
+    }
+
+    .dash-stat-title {
+        color: #64748b;
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .dash-stat-icon {
+        font-size: 1.4rem;
+        line-height: 1;
+    }
+
+    .dash-stat-value {
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: #0f172a;
+        font-family: var(--font-heading);
+        line-height: 1.1;
+    }
+
+    .dash-stat-sub {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        margin-top: 0.35rem;
+    }
+
+    /* Section Header */
+    .dash-section-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .dash-section-header h2 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 0.3rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .dash-section-header p {
+        color: #64748b;
+        margin: 0;
+        font-size: 0.92rem;
+    }
+
+    /* Portal Modules Hub Grid */
+    .dash-modules-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .module-card {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .module-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--color-primary);
+        box-shadow: 0 14px 28px rgba(18, 74, 97, 0.12);
+    }
+
+    .module-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .module-icon-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        background: rgba(18, 74, 97, 0.06);
+        color: var(--color-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+    }
+
+    .module-card:hover .module-icon-wrap {
+        transform: scale(1.08);
+        background: rgba(18, 74, 97, 0.1);
+    }
+
+    .module-info h3 {
+        margin: 0 0 0.35rem 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .module-desc {
+        color: #64748b;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin: 0 0 1.25rem 0;
+        flex-grow: 1;
+    }
+
+    .module-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 1rem;
+        border-top: 1px solid #f1f5f9;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--color-primary);
+    }
+
+    .module-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 6px;
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .badge-superadmin-only {
+        background: #fef3c7;
+        color: #b45309;
+        border: 1px solid #fde68a;
+    }
+
+    /* Auth Login Box */
+    .login-container {
+        max-width: 440px;
+        margin: 5rem auto;
+        padding: 2.5rem 2rem;
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+        text-align: center;
+    }
+
+    .login-logo {
+        width: 60px;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+
+    .login-container h2 {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        color: #0f172a;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .login-container p {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin: 0 0 1.75rem 0;
+    }
+
+    .form-group-dash {
+        margin-bottom: 1.25rem;
+        text-align: left;
+    }
+
+    .form-group-dash label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 0.4rem;
+    }
+
+    .form-group-dash input {
+        width: 100%;
+        padding: 0.75rem 0.9rem;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        box-sizing: border-box;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group-dash input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(18, 74, 97, 0.12);
+    }
+
+    .btn-login-submit {
+        width: 100%;
+        padding: 0.85rem;
+        background: var(--color-primary);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-login-submit:hover {
+        background: #0d384a;
+    }
+
+    .login-alert-error {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        margin-bottom: 1.25rem;
+        display: none;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+</style>
+
+</head>
+
+<body class="bg-light" style="min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- Dedicated Admin Portal Navbar -->
+    <header class="admin-nav">
+        <div class="admin-nav-container">
+            <a href="https://asmpolimi.it" class="admin-brand" title="Go to ASM POLIMI website (asmpolimi.it)">
+                <img src="assets/asm_logo.png" alt="ASM Logo">
+                <span>ASM POLIMI</span>
+                <span class="admin-portal-badge">Admin</span>
+            </a>
+
+            <button type="button" class="admin-mobile-toggle" id="admin-nav-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+
+            <nav class="admin-links" id="admin-nav-menu">
+                <a href="/admin" data-page="dashboard" class="admin-link active">
+                    <span>🏠</span> Dashboard
+                </a>
+                <a href="/admin_events" data-page="events" class="admin-link ">
+                    <span>📅</span> Events & News
+                </a>
+                <a href="/admin_members" data-page="members" class="admin-link ">
+                    <span>📋</span> Members & Mailing
+                </a>
+                <a href="/admin_jumuah" data-page="jumuah" class="admin-link ">
+                    <span>🕌</span> Jumu'ah
+                </a>
+                <a href="/admin_questions" data-page="questions" class="admin-link ">
+                    <span>❓</span> Questions
+                </a>
+                <a href="/admin_scanner" data-page="scanner" class="admin-link ">
+                    <span>🥫</span> Scanned Products
+                </a>
+                <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link ">
+                    <span>👥</span> Users & Accounts
+                </a>
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                    title="Open live public website (asmpolimi.it) in a new tab">
+                    <span>🌐</span> View Website ↗
+                </a>
+                <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
+                    <span>🚪</span> Logout
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Admin Content -->
+    <main style="flex: 1;">
+        
+<!-- Login Section (shown when unauthenticated) -->
+<section id="login-section" class="hidden">
+    <div class="login-container">
+        <img src="/assets/asm_logo.png" alt="ASM Logo" class="login-logo">
+        <h2>Admin Authentication</h2>
+        <p>Sign in to access the ASM POLIMI administration portal.</p>
+
+        <div id="login-error-msg" class="login-alert-error"></div>
+
+        <form id="dash-login-form">
+            <div class="form-group-dash">
+                <label for="dash-username-input">Username</label>
+                <input type="text" id="dash-username-input" required autocomplete="username" placeholder="Enter username">
+            </div>
+            <div class="form-group-dash">
+                <label for="dash-password-input">Password</label>
+                <input type="password" id="dash-password-input" required autocomplete="current-password" placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn-login-submit" id="dash-btn-submit">
+                <span>Sign In to Portal</span>
+            </button>
+        </form>
+    </div>
+</section>
+
+<!-- Dashboard Section (shown when authenticated) -->
+<section id="dashboard-section" class="hidden">
+    <div class="dashboard-container">
+
+        <!-- Welcome Hero -->
+        <div class="dash-hero-card">
+            <div class="dash-hero-text">
+                <h1>
+                    <span>Salam, <span id="dash-welcome-name">Admin</span>!</span>
+                    <span id="dash-role-badge" class="dash-role-pill">Admin</span>
+                </h1>
+                <p>
+                    Welcome to the centralized administration center for <strong>ASM POLIMI</strong>. Choose any module below to manage university events, verify student memberships, update Jumu'ah Khatibs, or answer religious questions.
+                </p>
+            </div>
+            <div class="dash-hero-actions">
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-dash-hero">
+                    <span>🌐</span> View Public Website
+                </a>
+            </div>
+        </div>
+
+        <!-- Live Statistics Overview Bar -->
+        <div class="dash-stats-grid">
+            <div class="dash-stat-card">
+                <div class="dash-stat-header">
+                    <span class="dash-stat-title">Active Events</span>
+                    <span class="dash-stat-icon">📅</span>
+                </div>
+                <div class="dash-stat-value" id="stat-events-val">-</div>
+                <div class="dash-stat-sub">Upcoming &amp; Past</div>
+            </div>
+
+            <div class="dash-stat-card">
+                <div class="dash-stat-header">
+                    <span class="dash-stat-title">Memberships</span>
+                    <span class="dash-stat-icon">📋</span>
+                </div>
+                <div class="dash-stat-value" id="stat-members-val">-</div>
+                <div class="dash-stat-sub">Registered Students</div>
+            </div>
+
+            <div class="dash-stat-card">
+                <div class="dash-stat-header">
+                    <span class="dash-stat-title">Friday Jumu'ah</span>
+                    <span class="dash-stat-icon">🕌</span>
+                </div>
+                <div class="dash-stat-value">2</div>
+                <div class="dash-stat-sub">Bovisa &amp; Leonardo</div>
+            </div>
+
+            <div class="dash-stat-card">
+                <div class="dash-stat-header">
+                    <span class="dash-stat-title">Pending Questions</span>
+                    <span class="dash-stat-icon">❓</span>
+                </div>
+                <div class="dash-stat-value" id="stat-questions-val">-</div>
+                <div class="dash-stat-sub">Awaiting Imam Response</div>
+            </div>
+
+            <div class="dash-stat-card">
+                <div class="dash-stat-header">
+                    <span class="dash-stat-title">Scanned Products</span>
+                    <span class="dash-stat-icon">🥫</span>
+                </div>
+                <div class="dash-stat-value" id="stat-scanner-val">-</div>
+                <div class="dash-stat-sub">Pending Halal Review</div>
+            </div>
+
+            <div class="dash-stat-card" id="card-stat-users" style="display: none;">
+                <div class="dash-stat-header">
+                    <span class="dash-stat-title">Portal Admins</span>
+                    <span class="dash-stat-icon">👥</span>
+                </div>
+                <div class="dash-stat-value" id="stat-users-val">-</div>
+                <div class="dash-stat-sub">Authorized Accounts</div>
+            </div>
+        </div>
+
+        <!-- Management Modules Grid -->
+        <div class="dash-section-header">
+            <h2><span>⚡</span> Administration Modules</h2>
+            <p>Access the sections you have been granted permissions to manage.</p>
+        </div>
+
+        <div class="dash-modules-grid" id="modules-container">
+            <!-- Events -->
+            <a href="/admin_events" class="module-card" data-module="events">
+                <div>
+                    <div class="module-header">
+                        <div class="module-icon-wrap">📅</div>
+                        <div class="module-info">
+                            <h3>Events &amp; Activities</h3>
+                            <span class="module-badge">Events Manager</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Create and schedule association events, manage capacity limits, toggle RSVPs, and export attendee lists.
+                    </p>
+                </div>
+                <div class="module-footer">
+                    <span>Open Events Manager</span>
+                    <span>→</span>
+                </div>
+            </a>
+
+            <!-- Members -->
+            <a href="/admin_members" class="module-card" data-module="members">
+                <div>
+                    <div class="module-header">
+                        <div class="module-icon-wrap">📋</div>
+                        <div class="module-info">
+                            <h3>Members &amp; Mailing</h3>
+                            <span class="module-badge">Membership Manager</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Review student registration applications, verify Polimi matricola IDs, track €5 fee payments, and export records to Excel.
+                    </p>
+                </div>
+                <div class="module-footer">
+                    <span>Open Memberships</span>
+                    <span>→</span>
+                </div>
+            </a>
+
+            <!-- Jumuah -->
+            <a href="/admin_jumuah" class="module-card" data-module="jumuah">
+                <div>
+                    <div class="module-header">
+                        <div class="module-icon-wrap">🕌</div>
+                        <div class="module-info">
+                            <h3>Friday Jumu'ah Prayers</h3>
+                            <span class="module-badge">Prayer Shifts</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Configure prayer shifts, meditation rooms, and assign weekly Khatib speakers for Leonardo and Bovisa campuses.
+                    </p>
+                </div>
+                <div class="module-footer">
+                    <span>Update Jumu'ah</span>
+                    <span>→</span>
+                </div>
+            </a>
+
+            <!-- Questions -->
+            <a href="/admin_questions" class="module-card" data-module="questions">
+                <div>
+                    <div class="module-header">
+                        <div class="module-icon-wrap">❓</div>
+                        <div class="module-info">
+                            <h3>Ask an Imam Q&amp;A</h3>
+                            <span class="module-badge">Religious Support</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Review questions submitted by Muslim students, write answers with scholarly references, and publish to the public archive.
+                    </p>
+                </div>
+                <div class="module-footer">
+                    <span>Answer Questions</span>
+                    <span>→</span>
+                </div>
+            </a>
+
+            <!-- Scanner -->
+            <a href="/admin_scanner" class="module-card" data-module="scanner">
+                <div>
+                    <div class="module-header">
+                        <div class="module-icon-wrap">🥫</div>
+                        <div class="module-info">
+                            <h3>Scanned Halal Products</h3>
+                            <span class="module-badge">Halal Scanner Review</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Inspect anonymous barcode scans from Italian supermarkets, evaluate ingredient E-numbers, and classify Halal / Mashbuh / Haram.
+                    </p>
+                </div>
+                <div class="module-footer">
+                    <span>Review Products</span>
+                    <span>→</span>
+                </div>
+            </a>
+
+            <!-- Users & Permissions (Superadmin only) -->
+            <a href="/admin_users" class="module-card" data-module="users">
+                <div>
+                    <div class="module-header">
+                        <div class="module-icon-wrap">👥</div>
+                        <div class="module-info">
+                            <h3>Users &amp; Permissions</h3>
+                            <span class="module-badge badge-superadmin-only">Superadmin</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Create admin accounts, assign granular page-level permissions, and manage executive student board profiles.
+                    </p>
+                </div>
+                <div class="module-footer">
+                    <span>Manage Accounts</span>
+                    <span>→</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="container">
+            <p style="margin: 0;"><strong>ASM POLIMI Admin Portal</strong> &bull; Authenticated Administration Area</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('admin-nav-toggle');
+        const navMenu = document.getElementById('admin-nav-menu');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('open');
+            });
+        }
+
+                // Enforce role-based & page-level permissions dynamically
+        function enforceAdminPagePermissions() {
+            try {
+                const currentRole = localStorage.getItem('adminRole');
+                const rawPages = localStorage.getItem('adminAllowedPages');
+                let allowedPages = [];
+                
+                if (currentRole === 'superadmin') {
+                    allowedPages = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users', 'all'];
+                } else if (rawPages) {
+                    try {
+                        allowedPages = JSON.parse(rawPages);
+                    } catch(e) {
+                        allowedPages = rawPages.split(',').map(s => s.trim());
+                    }
+                    if (!allowedPages.includes('dashboard')) {
+                        allowedPages.unshift('dashboard');
+                    }
+                } else {
+                    // Non-superadmin with no cached permissions yet - only allow dashboard while verifying
+                    allowedPages = ['dashboard'];
+                }
+
+                // Show/hide each nav link based on permissions
+                document.querySelectorAll('#admin-nav-menu .admin-link[data-page]').forEach(link => {
+                    const page = link.getAttribute('data-page');
+                    if (currentRole === 'superadmin' || allowedPages.includes(page) || allowedPages.includes('all')) {
+                        link.style.display = '';
+                    } else {
+                        link.style.display = 'none';
+                    }
+                });
+
+                // Check access for current active page
+                const activePage = 'dashboard';
+                const token = localStorage.getItem('adminToken');
+                if (token && currentRole && currentRole !== 'superadmin' && activePage && activePage !== 'dashboard') {
+                    if (!allowedPages.includes(activePage) && !allowedPages.includes('all')) {
+                        const mainContent = document.querySelector('main');
+                        if (mainContent) {
+                            const firstAllowed = getFirstAllowedUrl(allowedPages);
+                            mainContent.innerHTML = `
+                                <div style="max-width: 620px; margin: 4rem auto; padding: 2.5rem; background: white; border-radius: 12px; border: 1.5px solid #fecaca; box-shadow: 0 10px 25px rgba(0,0,0,0.06); text-align: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔒</div>
+                                    <h2 style="color: #991b1b; font-size: 1.35rem; margin-bottom: 0.75rem;">Access Restricted</h2>
+                                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1.5rem;">
+                                        Your administrator account does not have permission to access the <strong>${activePage.toUpperCase()}</strong> section.
+                                        Please contact a Superadmin to request access.
+                                    </p>
+                                    <a href="${firstAllowed}" class="btn btn-primary" style="display: inline-block; padding: 0.65rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                        Go to Authorized Section
+                                    </a>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            } catch (err) { }
+        }
+
+        async function verifyAndEnforcePermissions() {
+            const token = localStorage.getItem('adminToken');
+            if (token) {
+                try {
+                    const res = await fetch('/api/admin/me', {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    if (res.ok) {
+                        const me = await res.json();
+                        if (me.success) {
+                            localStorage.setItem('adminRole', me.role);
+                            localStorage.setItem('adminUsername', me.username);
+                            localStorage.setItem('adminAllowedPages', JSON.stringify(me.allowed_pages));
+                            enforceAdminPagePermissions();
+                            window.dispatchEvent(new CustomEvent('adminPermissionsUpdated', { detail: me }));
+                        }
+                    } else if (res.status === 401 || res.status === 403) {
+                        globalAdminLogout();
+                        return;
+                    }
+                } catch(e) { }
+            }
+            enforceAdminPagePermissions();
+        }
+
+        function getFirstAllowedUrl(allowedPages) {
+            const map = {
+                'dashboard': '/admin',
+                'events': '/admin_events',
+                'members': '/admin_members',
+                'jumuah': '/admin_jumuah',
+                'questions': '/admin_questions',
+                'scanner': '/admin_scanner',
+                'users': '/admin_users'
+            };
+            for (const p of allowedPages) {
+                if (map[p]) return map[p];
+            }
+            return '/admin';
+        }
+
+        enforceAdminPagePermissions();
+        verifyAndEnforcePermissions();
+
+        // Global admin logout helper
+        function globalAdminLogout(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            try {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminRole');
+                localStorage.removeItem('adminUsername');
+                localStorage.removeItem('adminAllowedPages');
+            } catch (err) { }
+
+            // Trigger in-page logout UI if available
+            if (typeof logout === 'function') {
+                try { logout(); } catch (err) { }
+            }
+
+            // Immediately switch views if on a single-page view
+            const dash = document.getElementById('dashboard-section');
+            const login = document.getElementById('login-section');
+            if (dash && login) {
+                dash.classList.add('hidden');
+                login.classList.remove('hidden');
+            }
+
+            // Redirect with cache busting to guarantee clean logout state
+            window.location.href = '/admin?logout=' + Date.now();
+        }
+    </script>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginSection = document.getElementById('login-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const loginForm = document.getElementById('dash-login-form');
+        const loginErrorMsg = document.getElementById('login-error-msg');
+        const welcomeName = document.getElementById('dash-welcome-name');
+        const roleBadge = document.getElementById('dash-role-badge');
+        const cardStatUsers = document.getElementById('card-stat-users');
+
+        function checkAuth() {
+            const token = localStorage.getItem('adminToken');
+            if (token) {
+                loginSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+
+                const username = localStorage.getItem('adminUsername') || 'Admin';
+                const role = localStorage.getItem('adminRole') || 'admin';
+                welcomeName.textContent = username;
+                roleBadge.textContent = role.toUpperCase();
+                roleBadge.className = 'dash-role-pill ' + (role === 'superadmin' ? 'badge-superadmin-only' : '');
+
+                if (role === 'superadmin') {
+                    if (cardStatUsers) cardStatUsers.style.display = 'flex';
+                }
+
+                filterDashboardCards();
+                fetchStats();
+            } else {
+                dashboardSection.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+            }
+        }
+
+        // Filter module cards based on the user's allowed_pages
+        function filterDashboardCards() {
+            const role = localStorage.getItem('adminRole');
+            const rawPages = localStorage.getItem('adminAllowedPages');
+            let allowed = [];
+
+            if (role === 'superadmin') {
+                allowed = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users', 'all'];
+            } else if (rawPages) {
+                try {
+                    allowed = JSON.parse(rawPages);
+                } catch(e) {
+                    allowed = rawPages.split(',').map(s => s.trim());
+                }
+            }
+
+            document.querySelectorAll('#modules-container .module-card[data-module]').forEach(card => {
+                const mod = card.getAttribute('data-module');
+                if (role === 'superadmin' || allowed.includes(mod) || allowed.includes('all')) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Fetch live stats summary
+        async function fetchStats() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) return;
+
+            try {
+                const res = await fetch('/api/admin/stats', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success) {
+                        const setVal = (id, val) => {
+                            const el = document.getElementById(id);
+                            if (el && val !== undefined) el.textContent = val;
+                        };
+                        setVal('stat-events-val', data.events_count);
+                        setVal('stat-members-val', data.members_count);
+                        setVal('stat-questions-val', data.questions_count);
+                        setVal('stat-scanner-val', data.scanner_pending);
+                        setVal('stat-users-val', data.users_count);
+                    }
+                }
+            } catch (err) { }
+        }
+
+        // Handle login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loginErrorMsg.style.display = 'none';
+            loginErrorMsg.textContent = '';
+
+            const username = document.getElementById('dash-username-input').value.trim();
+            const password = document.getElementById('dash-password-input').value;
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminRole', data.role);
+                    localStorage.setItem('adminUsername', username);
+                    if (data.allowed_pages) {
+                        localStorage.setItem('adminAllowedPages', JSON.stringify(data.allowed_pages));
+                    }
+
+                    checkAuth();
+
+                    if (typeof verifyAndEnforcePermissions === 'function') {
+                        verifyAndEnforcePermissions();
+                    }
+                } else {
+                    loginErrorMsg.textContent = data.message || "Invalid username or password.";
+                    loginErrorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                loginErrorMsg.textContent = "Network error connecting to the administration server.";
+                loginErrorMsg.style.display = 'block';
+            }
+        });
+
+        // Listen for live permission updates from verifyAndEnforcePermissions
+        window.addEventListener('adminPermissionsUpdated', (e) => {
+            filterDashboardCards();
+        });
+
+        checkAuth();
+    });
+</script>
+
+</body>
+
+</html>

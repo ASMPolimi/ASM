@@ -347,7 +347,7 @@
         const logoutBtn = document.getElementById('logout-btn');
 
         const ALL_PAGES = [
-            { key: 'events', label: 'Events & News', icon: '📅', url: '/admin' },
+            { key: 'events', label: 'Events & News', icon: '📅', url: '/admin_events' },
             { key: 'members', label: 'Members & Mailing', icon: '📋', url: '/admin_members' },
             { key: 'jumuah', label: 'Jumu\'ah Settings', icon: '🕌', url: '/admin_jumuah' },
             { key: 'questions', label: 'Questions & Q&A', icon: '❓', url: '/admin_questions' },
@@ -382,6 +382,7 @@
                     role = data.role;
                     localStorage.setItem('adminToken', token);
                     localStorage.setItem('adminRole', role);
+                    localStorage.setItem('adminUsername', username);
                     if (data.allowed_pages) {
                         localStorage.setItem('adminAllowedPages', JSON.stringify(data.allowed_pages));
                     }

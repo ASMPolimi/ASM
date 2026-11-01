@@ -612,7 +612,16 @@
                 token = data.token;
                 localStorage.setItem('adminToken', token);
                 localStorage.setItem('adminRole', data.role);
+                localStorage.setItem('adminUsername', username);
+                if (data.allowed_pages) {
+                    localStorage.setItem('adminAllowedPages', JSON.stringify(data.allowed_pages));
+                }
                 showDashboard();
+                if (typeof verifyAndEnforcePermissions === 'function') {
+                    verifyAndEnforcePermissions();
+                } else if (typeof enforceAdminPagePermissions === 'function') {
+                    enforceAdminPagePermissions();
+                }
             } else {
                 loginError.textContent = data.message || "Invalid credentials";
                 loginError.classList.remove('hidden');
@@ -654,7 +663,8 @@
             events = data.events || [];
             renderEvents();
             fetchGalleryCaptions();
-            fetchBoardSectionStatus();
+            fetchBoardSectionStatus();
+
             fetchBoardSectionStatus();
             loadAttendees();
         } catch (err) {
