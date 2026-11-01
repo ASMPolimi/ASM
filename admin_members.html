@@ -140,14 +140,32 @@
             display: none;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            line-height: 1;
+            padding: 0.5rem;
             cursor: pointer;
             color: var(--color-primary);
+            border-radius: 8px;
+            transition: background 0.15s ease;
+        }
+
+        .admin-mobile-toggle:hover,
+        .admin-mobile-toggle:focus {
+            background: rgba(18, 74, 97, 0.08);
+            outline: none;
         }
 
         @media (max-width: 900px) {
+            .admin-nav-container {
+                padding: 0.75rem 1rem;
+            }
+
             .admin-mobile-toggle {
-                display: block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 42px;
+                height: 42px;
             }
 
             .admin-links {
@@ -158,21 +176,87 @@
                 left: 0;
                 right: 0;
                 background: #ffffff;
-                border-bottom: 1px solid #e5e7eb;
-                padding: 1rem 1.5rem;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #e2e8f0;
+                padding: 1rem 1.15rem 1.5rem 1.15rem;
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
                 align-items: stretch;
+                max-height: 82vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                z-index: 9999;
+                gap: 0.25rem;
             }
 
             .admin-links.open {
                 display: flex;
             }
 
+            .admin-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.95rem;
+                border-radius: 8px;
+            }
+
             .btn-public-site,
             .btn-admin-logout {
                 margin-left: 0;
-                margin-top: 0.5rem;
+                margin-top: 0.4rem;
+                padding: 0.75rem 1rem;
+                font-size: 0.92rem;
                 justify-content: center;
+                border-radius: 8px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #nav-user-badge {
+                width: 100%;
+                justify-content: center;
+                margin: 0.35rem 0 0.5rem 0;
+                padding: 0.5rem;
+                font-size: 0.85rem;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Mobile layout general rules */
+        @media (max-width: 768px) {
+            .container,
+            .admin-container,
+            .admin-members-container,
+            .dashboard-container {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                margin-top: 15px !important;
+                margin-bottom: 2.5rem !important;
+            }
+
+            /* Prevent iOS form input zoom */
+            input[type="text"],
+            input[type="password"],
+            input[type="email"],
+            input[type="number"],
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+
+            /* Responsive tables */
+            .table-responsive,
+            .data-table-wrap,
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Responsive password change modal */
+            #change-password-modal > div {
+                max-width: 95% !important;
+                margin: 1rem auto !important;
+                padding: 1.5rem 1.25rem !important;
+                box-sizing: border-box;
             }
         }
 
@@ -400,6 +484,84 @@
         color: #b91c1c;
         border-color: #fca5a5;
     }
+
+    @media (max-width: 768px) {
+        .admin-members-container {
+            margin: 15px auto 2rem auto !important;
+            padding: 1.25rem 1rem !important;
+            border-radius: 12px;
+        }
+
+        .tab-pills-bar {
+            flex-direction: column;
+            gap: 0.35rem;
+            padding: 0.4rem;
+        }
+
+        .tab-pill-btn {
+            min-width: 100%;
+            justify-content: space-between;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.9rem;
+        }
+
+        .fee-settings-card,
+        .keychain-settings-card {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 1rem !important;
+            padding: 1rem !important;
+        }
+
+        .fee-settings-card > div:last-child,
+        .keychain-settings-card > div:last-child {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .controls-bar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+        }
+
+        .controls-bar > div:first-child {
+            width: 100%;
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+
+        .search-input,
+        .controls-bar select,
+        .btn-export {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+
+        .member-card {
+            padding: 1rem !important;
+        }
+
+        .member-card > div:first-child {
+            flex-direction: column !important;
+            gap: 0.75rem !important;
+        }
+
+        .member-card > div:first-child > div:last-child {
+            width: 100%;
+            justify-content: flex-end;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .admin-members-container {
+            padding: 1rem 0.75rem !important;
+        }
+
+        h2 {
+            font-size: 1.35rem !important;
+        }
+    }
 </style>
 
 </head>
@@ -565,7 +727,7 @@
                 </div>
 
                 <button type="button" id="btn-save-fee" onclick="saveMembershipFee()" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.85rem; height: 36px; display: inline-flex; align-items: center; gap: 0.35rem;">
-                    <span>💾</span> Save
+                    Save
                 </button>
             </div>
         </div>
@@ -590,7 +752,7 @@
             <!-- Keychain Control Actions -->
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <button type="button" id="btn-toggle-keychain" onclick="toggleKeychainGift()" class="btn" style="padding: 0.45rem 1.1rem; font-size: 0.85rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: #0284c7; color: white; border: none; display: inline-flex; align-items: center; gap: 0.4rem;">
-                    <span>⚙️</span> Toggle Gift Offer
+                    Toggle Gift Offer
                 </button>
             </div>
         </div>
@@ -598,11 +760,11 @@
         <!-- Segmented Tab Switcher -->
         <div class="tab-pills-bar">
             <button type="button" class="tab-pill-btn active" id="tab-btn-applications" onclick="switchSubTab('applications')">
-                <span>🎓</span> Membership Applications
+                <span>Membership Applications</span>
                 <span class="tab-pill-badge" id="count-pill-apps">0</span>
             </button>
             <button type="button" class="tab-pill-btn" id="tab-btn-subscribers" onclick="switchSubTab('subscribers')">
-                <span>📧</span> Mailing List Subscribers
+                <span>Mailing List Subscribers</span>
                 <span class="tab-pill-badge" id="count-pill-subs">0</span>
             </button>
         </div>
@@ -638,7 +800,7 @@
                     </select>
                 </div>
                 <button type="button" class="btn-export" id="btn-export-apps">
-                    <span>📥</span> Export to Excel (.xlsx)
+                    Export to Excel (.xlsx)
                 </button>
             </div>
 
@@ -653,7 +815,7 @@
             <div class="controls-bar">
                 <input type="text" id="sub-search-input" class="search-input" placeholder="Search subscriber name or email..." oninput="filterSubscribers()">
                 <button type="button" class="btn-export" id="btn-export-subs">
-                    <span>📥</span> Export to Excel (.xlsx)
+                    Export to Excel (.xlsx)
                 </button>
             </div>
 
@@ -875,7 +1037,7 @@
         } finally {
             if (saveBtn) {
                 saveBtn.disabled = false;
-                saveBtn.innerHTML = '<span>💾</span> Save';
+                saveBtn.innerHTML = 'Save';
             }
         }
     }
@@ -1464,12 +1626,25 @@
     </footer>
 
     <script>
-        // Mobile navigation toggle
+        // Mobile navigation toggle with outside click closing and auto-close on link tap
         const navToggle = document.getElementById('admin-nav-toggle');
         const navMenu = document.getElementById('admin-nav-menu');
         if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
+            navToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navMenu.classList.toggle('open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (navMenu.classList.contains('open') && !navMenu.contains(e.target) && e.target !== navToggle) {
+                    navMenu.classList.remove('open');
+                }
+            });
+
+            navMenu.querySelectorAll('.admin-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('open');
+                });
             });
         }
 

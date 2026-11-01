@@ -172,6 +172,39 @@
             from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                margin: 15px auto 2.5rem auto !important;
+                padding: 1.25rem 0.95rem !important;
+                border-radius: 12px !important;
+            }
+
+            .user-card {
+                padding: 1rem 0.85rem !important;
+            }
+
+            .perm-checkbox-grid {
+                grid-template-columns: 1fr !important;
+                gap: 0.5rem !important;
+            }
+
+            .user-card > div:first-child {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.6rem !important;
+            }
+
+            .user-card > div:first-child > div:last-child {
+                width: 100% !important;
+                justify-content: flex-start !important;
+                flex-wrap: wrap !important;
+            }
+
+            #board-members-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
     </style>
 {% endblock %}
 

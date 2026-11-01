@@ -216,6 +216,84 @@
         color: #b91c1c;
         border-color: #fca5a5;
     }
+
+    @media (max-width: 768px) {
+        .admin-members-container {
+            margin: 15px auto 2rem auto !important;
+            padding: 1.25rem 1rem !important;
+            border-radius: 12px;
+        }
+
+        .tab-pills-bar {
+            flex-direction: column;
+            gap: 0.35rem;
+            padding: 0.4rem;
+        }
+
+        .tab-pill-btn {
+            min-width: 100%;
+            justify-content: space-between;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.9rem;
+        }
+
+        .fee-settings-card,
+        .keychain-settings-card {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 1rem !important;
+            padding: 1rem !important;
+        }
+
+        .fee-settings-card > div:last-child,
+        .keychain-settings-card > div:last-child {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .controls-bar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+        }
+
+        .controls-bar > div:first-child {
+            width: 100%;
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+
+        .search-input,
+        .controls-bar select,
+        .btn-export {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+
+        .member-card {
+            padding: 1rem !important;
+        }
+
+        .member-card > div:first-child {
+            flex-direction: column !important;
+            gap: 0.75rem !important;
+        }
+
+        .member-card > div:first-child > div:last-child {
+            width: 100%;
+            justify-content: flex-end;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .admin-members-container {
+            padding: 1rem 0.75rem !important;
+        }
+
+        h2 {
+            font-size: 1.35rem !important;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -293,7 +371,7 @@
                 </div>
 
                 <button type="button" id="btn-save-fee" onclick="saveMembershipFee()" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.85rem; height: 36px; display: inline-flex; align-items: center; gap: 0.35rem;">
-                    <span>💾</span> Save
+                    Save
                 </button>
             </div>
         </div>
@@ -318,7 +396,7 @@
             <!-- Keychain Control Actions -->
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <button type="button" id="btn-toggle-keychain" onclick="toggleKeychainGift()" class="btn" style="padding: 0.45rem 1.1rem; font-size: 0.85rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: #0284c7; color: white; border: none; display: inline-flex; align-items: center; gap: 0.4rem;">
-                    <span>⚙️</span> Toggle Gift Offer
+                    Toggle Gift Offer
                 </button>
             </div>
         </div>
@@ -326,11 +404,11 @@
         <!-- Segmented Tab Switcher -->
         <div class="tab-pills-bar">
             <button type="button" class="tab-pill-btn active" id="tab-btn-applications" onclick="switchSubTab('applications')">
-                <span>🎓</span> Membership Applications
+                <span>Membership Applications</span>
                 <span class="tab-pill-badge" id="count-pill-apps">0</span>
             </button>
             <button type="button" class="tab-pill-btn" id="tab-btn-subscribers" onclick="switchSubTab('subscribers')">
-                <span>📧</span> Mailing List Subscribers
+                <span>Mailing List Subscribers</span>
                 <span class="tab-pill-badge" id="count-pill-subs">0</span>
             </button>
         </div>
@@ -366,7 +444,7 @@
                     </select>
                 </div>
                 <button type="button" class="btn-export" id="btn-export-apps">
-                    <span>📥</span> Export to Excel (.xlsx)
+                    Export to Excel (.xlsx)
                 </button>
             </div>
 
@@ -381,7 +459,7 @@
             <div class="controls-bar">
                 <input type="text" id="sub-search-input" class="search-input" placeholder="Search subscriber name or email..." oninput="filterSubscribers()">
                 <button type="button" class="btn-export" id="btn-export-subs">
-                    <span>📥</span> Export to Excel (.xlsx)
+                    Export to Excel (.xlsx)
                 </button>
             </div>
 
@@ -603,7 +681,7 @@
         } finally {
             if (saveBtn) {
                 saveBtn.disabled = false;
-                saveBtn.innerHTML = '<span>💾</span> Save';
+                saveBtn.innerHTML = 'Save';
             }
         }
     }

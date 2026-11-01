@@ -140,14 +140,32 @@
             display: none;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            line-height: 1;
+            padding: 0.5rem;
             cursor: pointer;
             color: var(--color-primary);
+            border-radius: 8px;
+            transition: background 0.15s ease;
+        }
+
+        .admin-mobile-toggle:hover,
+        .admin-mobile-toggle:focus {
+            background: rgba(18, 74, 97, 0.08);
+            outline: none;
         }
 
         @media (max-width: 900px) {
+            .admin-nav-container {
+                padding: 0.75rem 1rem;
+            }
+
             .admin-mobile-toggle {
-                display: block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 42px;
+                height: 42px;
             }
 
             .admin-links {
@@ -158,21 +176,87 @@
                 left: 0;
                 right: 0;
                 background: #ffffff;
-                border-bottom: 1px solid #e5e7eb;
-                padding: 1rem 1.5rem;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #e2e8f0;
+                padding: 1rem 1.15rem 1.5rem 1.15rem;
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
                 align-items: stretch;
+                max-height: 82vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                z-index: 9999;
+                gap: 0.25rem;
             }
 
             .admin-links.open {
                 display: flex;
             }
 
+            .admin-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.95rem;
+                border-radius: 8px;
+            }
+
             .btn-public-site,
             .btn-admin-logout {
                 margin-left: 0;
-                margin-top: 0.5rem;
+                margin-top: 0.4rem;
+                padding: 0.75rem 1rem;
+                font-size: 0.92rem;
                 justify-content: center;
+                border-radius: 8px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #nav-user-badge {
+                width: 100%;
+                justify-content: center;
+                margin: 0.35rem 0 0.5rem 0;
+                padding: 0.5rem;
+                font-size: 0.85rem;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Mobile layout general rules */
+        @media (max-width: 768px) {
+            .container,
+            .admin-container,
+            .admin-members-container,
+            .dashboard-container {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                margin-top: 15px !important;
+                margin-bottom: 2.5rem !important;
+            }
+
+            /* Prevent iOS form input zoom */
+            input[type="text"],
+            input[type="password"],
+            input[type="email"],
+            input[type="number"],
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+
+            /* Responsive tables */
+            .table-responsive,
+            .data-table-wrap,
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Responsive password change modal */
+            #change-password-modal > div {
+                max-width: 95% !important;
+                margin: 1rem auto !important;
+                padding: 1.5rem 1.25rem !important;
+                box-sizing: border-box;
             }
         }
 
@@ -288,12 +372,25 @@
     </footer>
 
     <script>
-        // Mobile navigation toggle
+        // Mobile navigation toggle with outside click closing and auto-close on link tap
         const navToggle = document.getElementById('admin-nav-toggle');
         const navMenu = document.getElementById('admin-nav-menu');
         if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
+            navToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navMenu.classList.toggle('open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (navMenu.classList.contains('open') && !navMenu.contains(e.target) && e.target !== navToggle) {
+                    navMenu.classList.remove('open');
+                }
+            });
+
+            navMenu.querySelectorAll('.admin-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('open');
+                });
             });
         }
 

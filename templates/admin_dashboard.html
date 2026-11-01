@@ -377,6 +377,86 @@
     .hidden {
         display: none !important;
     }
+
+    @media (max-width: 768px) {
+        .dashboard-container {
+            margin: 1.25rem auto !important;
+            padding: 0 0.85rem !important;
+        }
+
+        .dash-hero-card {
+            padding: 1.5rem 1.25rem !important;
+            margin-bottom: 1.5rem !important;
+            border-radius: 12px !important;
+        }
+
+        .dash-hero-text h1,
+        .dash-hero-text h1 span,
+        .dash-hero-text h1 #dash-welcome-name {
+            font-size: 1.4rem !important;
+            flex-wrap: wrap !important;
+            gap: 0.4rem !important;
+        }
+
+        .dash-hero-text p {
+            font-size: 0.92rem !important;
+            line-height: 1.45 !important;
+        }
+
+        .dash-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+            margin-bottom: 1.75rem !important;
+        }
+
+        .dash-stat-card {
+            padding: 1rem !important;
+            border-radius: 10px !important;
+        }
+
+        .dash-stat-title {
+            font-size: 0.74rem !important;
+        }
+
+        .dash-stat-value {
+            font-size: 1.5rem !important;
+        }
+
+        .dash-stat-sub {
+            font-size: 0.72rem !important;
+        }
+
+        .dash-section-header h2 {
+            font-size: 1.15rem !important;
+        }
+
+        .dash-modules-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0.85rem !important;
+            margin-bottom: 2rem !important;
+        }
+
+        .module-card {
+            padding: 1.15rem 1.25rem !important;
+            border-radius: 12px !important;
+        }
+
+        .module-info h3 {
+            font-size: 1.05rem !important;
+        }
+
+        .login-container {
+            margin: 2.5rem 1rem !important;
+            padding: 2rem 1.25rem !important;
+            border-radius: 12px !important;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .dash-stats-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -485,18 +565,11 @@
         <div class="dash-modules-grid" id="modules-container">
             <!-- Events -->
             <a href="/admin_events" class="module-card" data-module="events">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">📅</div>
-                        <div class="module-info">
-                            <h3>Events &amp; Activities</h3>
-                            <span class="module-badge">Events Manager</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Events &amp; Activities</h3>
+                        <span class="module-badge">Events Manager</span>
                     </div>
-                    <p class="module-desc">
-                        Create and schedule association events, manage capacity limits, toggle RSVPs, and export
-                        attendee lists.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Open Events Manager</span>
@@ -506,18 +579,11 @@
 
             <!-- Members -->
             <a href="/admin_members" class="module-card" data-module="members">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">📋</div>
-                        <div class="module-info">
-                            <h3>Members &amp; Mailing</h3>
-                            <span class="module-badge">Membership Manager</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Members &amp; Mailing</h3>
+                        <span class="module-badge">Membership Manager</span>
                     </div>
-                    <p class="module-desc">
-                        Review student registration applications, verify Polimi matricola IDs, track €5 fee payments,
-                        and export records to Excel.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Open Memberships</span>
@@ -527,18 +593,11 @@
 
             <!-- Jumuah -->
             <a href="/admin_jumuah" class="module-card" data-module="jumuah">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">🕌</div>
-                        <div class="module-info">
-                            <h3>Friday Jumu'ah Prayers</h3>
-                            <span class="module-badge">Prayer Shifts</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Friday Jumu'ah Prayers</h3>
+                        <span class="module-badge">Prayer Shifts</span>
                     </div>
-                    <p class="module-desc">
-                        Configure prayer shifts, meditation rooms, and assign weekly Khatib speakers for Leonardo and
-                        Bovisa campuses.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Update Jumu'ah</span>
@@ -548,18 +607,11 @@
 
             <!-- Questions -->
             <a href="/admin_questions" class="module-card" data-module="questions">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">❓</div>
-                        <div class="module-info">
-                            <h3>Ask an Imam Q&amp;A</h3>
-                            <span class="module-badge">Religious Support</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Ask an Imam Q&amp;A</h3>
+                        <span class="module-badge">Religious Support</span>
                     </div>
-                    <p class="module-desc">
-                        Review questions submitted by Muslim students, write answers with scholarly references, and
-                        publish to the public archive.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Answer Questions</span>
@@ -569,18 +621,11 @@
 
             <!-- Scanner -->
             <a href="/admin_scanner" class="module-card" data-module="scanner">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">🥫</div>
-                        <div class="module-info">
-                            <h3>Scanned Halal Products</h3>
-                            <span class="module-badge">Halal Scanner Review</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Scanned Halal Products</h3>
+                        <span class="module-badge">Halal Scanner Review</span>
                     </div>
-                    <p class="module-desc">
-                        Inspect anonymous barcode scans from Italian supermarkets, evaluate ingredient E-numbers, and
-                        classify Halal / Mashbuh / Haram.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Review Products</span>
@@ -590,18 +635,11 @@
 
             <!-- Users & Permissions (Superadmin only) -->
             <a href="/admin_users" class="module-card" data-module="users">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">👥</div>
-                        <div class="module-info">
-                            <h3>Users &amp; Permissions</h3>
-                            <span class="module-badge badge-superadmin-only">Superadmin</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Users &amp; Permissions</h3>
+                        <span class="module-badge badge-superadmin-only">Superadmin</span>
                     </div>
-                    <p class="module-desc">
-                        Create admin accounts, assign granular page-level permissions, and manage executive student
-                        board profiles.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Manage Accounts</span>

@@ -140,14 +140,32 @@
             display: none;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            line-height: 1;
+            padding: 0.5rem;
             cursor: pointer;
             color: var(--color-primary);
+            border-radius: 8px;
+            transition: background 0.15s ease;
+        }
+
+        .admin-mobile-toggle:hover,
+        .admin-mobile-toggle:focus {
+            background: rgba(18, 74, 97, 0.08);
+            outline: none;
         }
 
         @media (max-width: 900px) {
+            .admin-nav-container {
+                padding: 0.75rem 1rem;
+            }
+
             .admin-mobile-toggle {
-                display: block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 42px;
+                height: 42px;
             }
 
             .admin-links {
@@ -158,21 +176,87 @@
                 left: 0;
                 right: 0;
                 background: #ffffff;
-                border-bottom: 1px solid #e5e7eb;
-                padding: 1rem 1.5rem;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #e2e8f0;
+                padding: 1rem 1.15rem 1.5rem 1.15rem;
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
                 align-items: stretch;
+                max-height: 82vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                z-index: 9999;
+                gap: 0.25rem;
             }
 
             .admin-links.open {
                 display: flex;
             }
 
+            .admin-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.95rem;
+                border-radius: 8px;
+            }
+
             .btn-public-site,
             .btn-admin-logout {
                 margin-left: 0;
-                margin-top: 0.5rem;
+                margin-top: 0.4rem;
+                padding: 0.75rem 1rem;
+                font-size: 0.92rem;
                 justify-content: center;
+                border-radius: 8px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #nav-user-badge {
+                width: 100%;
+                justify-content: center;
+                margin: 0.35rem 0 0.5rem 0;
+                padding: 0.5rem;
+                font-size: 0.85rem;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Mobile layout general rules */
+        @media (max-width: 768px) {
+            .container,
+            .admin-container,
+            .admin-members-container,
+            .dashboard-container {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                margin-top: 15px !important;
+                margin-bottom: 2.5rem !important;
+            }
+
+            /* Prevent iOS form input zoom */
+            input[type="text"],
+            input[type="password"],
+            input[type="email"],
+            input[type="number"],
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+
+            /* Responsive tables */
+            .table-responsive,
+            .data-table-wrap,
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Responsive password change modal */
+            #change-password-modal > div {
+                max-width: 95% !important;
+                margin: 1rem auto !important;
+                padding: 1.5rem 1.25rem !important;
+                box-sizing: border-box;
             }
         }
 
@@ -561,6 +645,86 @@
     .hidden {
         display: none !important;
     }
+
+    @media (max-width: 768px) {
+        .dashboard-container {
+            margin: 1.25rem auto !important;
+            padding: 0 0.85rem !important;
+        }
+
+        .dash-hero-card {
+            padding: 1.5rem 1.25rem !important;
+            margin-bottom: 1.5rem !important;
+            border-radius: 12px !important;
+        }
+
+        .dash-hero-text h1,
+        .dash-hero-text h1 span,
+        .dash-hero-text h1 #dash-welcome-name {
+            font-size: 1.4rem !important;
+            flex-wrap: wrap !important;
+            gap: 0.4rem !important;
+        }
+
+        .dash-hero-text p {
+            font-size: 0.92rem !important;
+            line-height: 1.45 !important;
+        }
+
+        .dash-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+            margin-bottom: 1.75rem !important;
+        }
+
+        .dash-stat-card {
+            padding: 1rem !important;
+            border-radius: 10px !important;
+        }
+
+        .dash-stat-title {
+            font-size: 0.74rem !important;
+        }
+
+        .dash-stat-value {
+            font-size: 1.5rem !important;
+        }
+
+        .dash-stat-sub {
+            font-size: 0.72rem !important;
+        }
+
+        .dash-section-header h2 {
+            font-size: 1.15rem !important;
+        }
+
+        .dash-modules-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0.85rem !important;
+            margin-bottom: 2rem !important;
+        }
+
+        .module-card {
+            padding: 1.15rem 1.25rem !important;
+            border-radius: 12px !important;
+        }
+
+        .module-info h3 {
+            font-size: 1.05rem !important;
+        }
+
+        .login-container {
+            margin: 2.5rem 1rem !important;
+            padding: 2rem 1.25rem !important;
+            border-radius: 12px !important;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .dash-stats-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
 </style>
 
 </head>
@@ -757,18 +921,11 @@
         <div class="dash-modules-grid" id="modules-container">
             <!-- Events -->
             <a href="/admin_events" class="module-card" data-module="events">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">📅</div>
-                        <div class="module-info">
-                            <h3>Events &amp; Activities</h3>
-                            <span class="module-badge">Events Manager</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Events &amp; Activities</h3>
+                        <span class="module-badge">Events Manager</span>
                     </div>
-                    <p class="module-desc">
-                        Create and schedule association events, manage capacity limits, toggle RSVPs, and export
-                        attendee lists.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Open Events Manager</span>
@@ -778,18 +935,11 @@
 
             <!-- Members -->
             <a href="/admin_members" class="module-card" data-module="members">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">📋</div>
-                        <div class="module-info">
-                            <h3>Members &amp; Mailing</h3>
-                            <span class="module-badge">Membership Manager</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Members &amp; Mailing</h3>
+                        <span class="module-badge">Membership Manager</span>
                     </div>
-                    <p class="module-desc">
-                        Review student registration applications, verify Polimi matricola IDs, track €5 fee payments,
-                        and export records to Excel.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Open Memberships</span>
@@ -799,18 +949,11 @@
 
             <!-- Jumuah -->
             <a href="/admin_jumuah" class="module-card" data-module="jumuah">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">🕌</div>
-                        <div class="module-info">
-                            <h3>Friday Jumu'ah Prayers</h3>
-                            <span class="module-badge">Prayer Shifts</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Friday Jumu'ah Prayers</h3>
+                        <span class="module-badge">Prayer Shifts</span>
                     </div>
-                    <p class="module-desc">
-                        Configure prayer shifts, meditation rooms, and assign weekly Khatib speakers for Leonardo and
-                        Bovisa campuses.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Update Jumu'ah</span>
@@ -820,18 +963,11 @@
 
             <!-- Questions -->
             <a href="/admin_questions" class="module-card" data-module="questions">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">❓</div>
-                        <div class="module-info">
-                            <h3>Ask an Imam Q&amp;A</h3>
-                            <span class="module-badge">Religious Support</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Ask an Imam Q&amp;A</h3>
+                        <span class="module-badge">Religious Support</span>
                     </div>
-                    <p class="module-desc">
-                        Review questions submitted by Muslim students, write answers with scholarly references, and
-                        publish to the public archive.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Answer Questions</span>
@@ -841,18 +977,11 @@
 
             <!-- Scanner -->
             <a href="/admin_scanner" class="module-card" data-module="scanner">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">🥫</div>
-                        <div class="module-info">
-                            <h3>Scanned Halal Products</h3>
-                            <span class="module-badge">Halal Scanner Review</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Scanned Halal Products</h3>
+                        <span class="module-badge">Halal Scanner Review</span>
                     </div>
-                    <p class="module-desc">
-                        Inspect anonymous barcode scans from Italian supermarkets, evaluate ingredient E-numbers, and
-                        classify Halal / Mashbuh / Haram.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Review Products</span>
@@ -862,18 +991,11 @@
 
             <!-- Users & Permissions (Superadmin only) -->
             <a href="/admin_users" class="module-card" data-module="users">
-                <div>
-                    <div class="module-header">
-                        <div class="module-icon-wrap">👥</div>
-                        <div class="module-info">
-                            <h3>Users &amp; Permissions</h3>
-                            <span class="module-badge badge-superadmin-only">Superadmin</span>
-                        </div>
+                <div class="module-header">
+                    <div class="module-info">
+                        <h3>Users &amp; Permissions</h3>
+                        <span class="module-badge badge-superadmin-only">Superadmin</span>
                     </div>
-                    <p class="module-desc">
-                        Create admin accounts, assign granular page-level permissions, and manage executive student
-                        board profiles.
-                    </p>
                 </div>
                 <div class="module-footer">
                     <span>Manage Accounts</span>
@@ -894,12 +1016,25 @@
     </footer>
 
     <script>
-        // Mobile navigation toggle
+        // Mobile navigation toggle with outside click closing and auto-close on link tap
         const navToggle = document.getElementById('admin-nav-toggle');
         const navMenu = document.getElementById('admin-nav-menu');
         if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
+            navToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navMenu.classList.toggle('open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (navMenu.classList.contains('open') && !navMenu.contains(e.target) && e.target !== navToggle) {
+                    navMenu.classList.remove('open');
+                }
+            });
+
+            navMenu.querySelectorAll('.admin-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('open');
+                });
             });
         }
 

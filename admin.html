@@ -140,14 +140,32 @@
             display: none;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            line-height: 1;
+            padding: 0.5rem;
             cursor: pointer;
             color: var(--color-primary);
+            border-radius: 8px;
+            transition: background 0.15s ease;
+        }
+
+        .admin-mobile-toggle:hover,
+        .admin-mobile-toggle:focus {
+            background: rgba(18, 74, 97, 0.08);
+            outline: none;
         }
 
         @media (max-width: 900px) {
+            .admin-nav-container {
+                padding: 0.75rem 1rem;
+            }
+
             .admin-mobile-toggle {
-                display: block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 42px;
+                height: 42px;
             }
 
             .admin-links {
@@ -158,21 +176,87 @@
                 left: 0;
                 right: 0;
                 background: #ffffff;
-                border-bottom: 1px solid #e5e7eb;
-                padding: 1rem 1.5rem;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #e2e8f0;
+                padding: 1rem 1.15rem 1.5rem 1.15rem;
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
                 align-items: stretch;
+                max-height: 82vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                z-index: 9999;
+                gap: 0.25rem;
             }
 
             .admin-links.open {
                 display: flex;
             }
 
+            .admin-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.95rem;
+                border-radius: 8px;
+            }
+
             .btn-public-site,
             .btn-admin-logout {
                 margin-left: 0;
-                margin-top: 0.5rem;
+                margin-top: 0.4rem;
+                padding: 0.75rem 1rem;
+                font-size: 0.92rem;
                 justify-content: center;
+                border-radius: 8px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #nav-user-badge {
+                width: 100%;
+                justify-content: center;
+                margin: 0.35rem 0 0.5rem 0;
+                padding: 0.5rem;
+                font-size: 0.85rem;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Mobile layout general rules */
+        @media (max-width: 768px) {
+            .container,
+            .admin-container,
+            .admin-members-container,
+            .dashboard-container {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                margin-top: 15px !important;
+                margin-bottom: 2.5rem !important;
+            }
+
+            /* Prevent iOS form input zoom */
+            input[type="text"],
+            input[type="password"],
+            input[type="email"],
+            input[type="number"],
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+
+            /* Responsive tables */
+            .table-responsive,
+            .data-table-wrap,
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Responsive password change modal */
+            #change-password-modal > div {
+                max-width: 95% !important;
+                margin: 1rem auto !important;
+                padding: 1.5rem 1.25rem !important;
+                box-sizing: border-box;
             }
         }
 
@@ -432,6 +516,72 @@
         padding: 0.15rem 0.45rem;
         border-radius: 4px;
     }
+
+    @media (max-width: 768px) {
+        .admin-container {
+            margin: 15px auto 2rem auto !important;
+            padding: 1.25rem 1rem !important;
+            border-radius: 12px;
+        }
+
+        .tab-pills-bar {
+            flex-direction: column;
+            gap: 0.35rem;
+            padding: 0.4rem;
+        }
+
+        .tab-pill-btn {
+            min-width: 100%;
+            justify-content: space-between;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.9rem;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+        }
+
+        .admin-table {
+            min-width: 620px;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 0.65rem 0.75rem;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        .admin-event-card {
+            padding: 1rem;
+        }
+
+        .controls-bar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+        }
+
+        .controls-bar input,
+        .controls-bar select,
+        .controls-bar button {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .admin-container {
+            padding: 1rem 0.75rem !important;
+        }
+
+        h2 {
+            font-size: 1.35rem !important;
+        }
+    }
 </style>
 
 </head>
@@ -552,7 +702,7 @@
             </div>
             <div style="display: flex; gap: 0.5rem;">
                 <button type="button" id="btn-save-all-events" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.25rem; font-weight: 700;">
-                    <span>💾</span> Save & Publish All
+                    Save & Publish All
                 </button>
             </div>
         </div>
@@ -562,18 +712,18 @@
         <!-- Segmented Tab Navigation Bar -->
         <div class="tab-pills-bar">
             <button type="button" class="tab-pill-btn active" data-tab="tab-events">
-                <span>📅</span> <span>Events Manager</span>
+                <span>Events Manager</span>
                 <span class="tab-pill-badge" id="tab-events-count">0</span>
             </button>
             <button type="button" class="tab-pill-btn" data-tab="tab-attendees">
-                <span>📋</span> <span>Event Applications & Attendees</span>
+                <span>Applications & Attendees</span>
                 <span class="tab-pill-badge" id="tab-attendees-count">0</span>
             </button>
             <button type="button" class="tab-pill-btn" data-tab="tab-announcement">
-                <span>📢</span> <span>Announcement & Mission</span>
+                <span>Announcement & Mission</span>
             </button>
             <button type="button" class="tab-pill-btn" data-tab="tab-gallery">
-                <span>🖼️</span> <span>Media Gallery</span>
+                <span>Media Gallery</span>
             </button>
         </div>
 
@@ -584,7 +734,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
                 <h3 style="margin: 0; font-size: 1.25rem; color: var(--color-primary);">Current Events List</h3>
                 <button type="button" id="btn-show-add-event" class="btn btn-secondary" style="border-color: var(--color-primary); color: var(--color-primary); font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
-                    <span>➕</span> Add New Event
+                    + Add New Event
                 </button>
             </div>
 
@@ -853,12 +1003,25 @@
     </footer>
 
     <script>
-        // Mobile navigation toggle
+        // Mobile navigation toggle with outside click closing and auto-close on link tap
         const navToggle = document.getElementById('admin-nav-toggle');
         const navMenu = document.getElementById('admin-nav-menu');
         if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
+            navToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navMenu.classList.toggle('open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (navMenu.classList.contains('open') && !navMenu.contains(e.target) && e.target !== navToggle) {
+                    navMenu.classList.remove('open');
+                }
+            });
+
+            navMenu.querySelectorAll('.admin-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('open');
+                });
             });
         }
 
@@ -1500,7 +1663,7 @@
             showMessage("Error connecting to server.", false);
         } finally {
             btn.disabled = false;
-            btn.innerHTML = '<span>💾</span> Save & Publish All';
+            btn.innerHTML = 'Save & Publish All';
         }
     });
 
