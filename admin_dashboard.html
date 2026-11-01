@@ -198,11 +198,11 @@
 
     /* Welcome Hero Card */
     .dash-hero-card {
-        background: linear-gradient(135deg, var(--color-primary) 0%, #1a6280 100%);
+        background: linear-gradient(135deg, #0d3b4c 0%, #17546e 100%);
         border-radius: 16px;
         padding: 2.25rem 2.5rem;
-        color: #ffffff;
-        box-shadow: 0 10px 25px rgba(18, 74, 97, 0.18);
+        color: #ffffff !important;
+        box-shadow: 0 10px 25px rgba(13, 59, 76, 0.22);
         margin-bottom: 2.25rem;
         display: flex;
         justify-content: space-between;
@@ -211,11 +211,14 @@
         gap: 1.5rem;
     }
 
-    .dash-hero-text h1 {
+    .dash-hero-text h1,
+    .dash-hero-text h1 span,
+    .dash-hero-text h1 #dash-welcome-name {
         font-family: var(--font-heading);
         font-size: 1.95rem;
         margin: 0 0 0.5rem 0;
         font-weight: 700;
+        color: #ffffff !important;
         display: flex;
         align-items: center;
         gap: 0.65rem;
@@ -224,25 +227,44 @@
     .dash-hero-text p {
         margin: 0;
         font-size: 1.02rem;
-        opacity: 0.92;
+        color: #e2e8f0 !important;
         max-width: 650px;
         line-height: 1.55;
+    }
+
+    .dash-hero-text p strong {
+        color: #ffffff !important;
     }
 
     .dash-role-pill {
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
-        background: rgba(255, 255, 255, 0.18);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: #ffffff;
-        font-size: 0.8rem;
-        padding: 0.35rem 0.85rem;
+        font-size: 0.76rem;
+        padding: 0.28rem 0.75rem;
         border-radius: 999px;
-        font-weight: 700;
-        letter-spacing: 0.4px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
         vertical-align: middle;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .dash-role-pill.role-superadmin {
+        background: #fef3c7 !important;
+        color: #92400e !important;
+        border: 1px solid #fde68a !important;
+    }
+
+    .dash-role-pill.role-admin {
+        background: #eff6ff !important;
+        color: #1e40af !important;
+        border: 1px solid #bfdbfe !important;
+    }
+
+    .dash-role-pill.role-member {
+        background: #f0fdf4 !important;
+        color: #166534 !important;
+        border: 1px solid #bbf7d0 !important;
     }
 
     .dash-hero-actions {
@@ -560,36 +582,36 @@
 
             <nav class="admin-links" id="admin-nav-menu">
                 <a href="/admin" data-page="dashboard" class="admin-link active">
-                    <span>🏠</span> Dashboard
+                    Dashboard
                 </a>
                 <a href="/admin_events" data-page="events" class="admin-link ">
-                    <span>📅</span> Events & News
+                    Events & News
                 </a>
                 <a href="/admin_members" data-page="members" class="admin-link ">
-                    <span>📋</span> Members & Mailing
+                    Members & Mailing
                 </a>
                 <a href="/admin_jumuah" data-page="jumuah" class="admin-link ">
-                    <span>🕌</span> Jumu'ah
+                    Jumu'ah
                 </a>
                 <a href="/admin_questions" data-page="questions" class="admin-link ">
-                    <span>❓</span> Questions
+                    Questions
                 </a>
                 <a href="/admin_scanner" data-page="scanner" class="admin-link ">
-                    <span>🥫</span> Scanned Products
+                    Scanned Products
                 </a>
                 <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link ">
-                    <span>👥</span> Users & Accounts
+                    Users & Accounts
                 </a>
-                                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
                     title="Open live public website (asmpolimi.it) in a new tab">
-                    <span>🌐</span> View Website ↗
+                    View Website ↗
                 </a>
                 <span id="nav-user-badge" style="display: none; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 999px; margin-left: 0.25rem;"></span>
                 <button type="button" class="btn-admin-logout" id="top-change-pw-btn" onclick="openChangePasswordModal()" title="Change Your Password" style="color: #475569; background: #f8fafc; border: 1px solid #cbd5e1;">
-                    <span>🔑</span> Password
+                    Password
                 </button>
                 <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
-                    <span>🚪</span> Logout
+                    Logout
                 </button>
             </nav>
         </div>
@@ -635,7 +657,7 @@
 <section id="login-section" class="hidden">
     <div class="login-container">
         <img src="/assets/asm_logo.png" alt="ASM Logo" class="login-logo">
-        <h2>Admin Authentication</h2>
+        <h2 class="text-center mb-2">Admin Login</h2>
         <p>Sign in to access the ASM POLIMI administration portal.</p>
 
         <div id="login-error-msg" class="login-alert-error"></div>
@@ -667,65 +689,59 @@
             <div class="dash-hero-text">
                 <h1>
                     <span>Salam, <span id="dash-welcome-name">Admin</span>!</span>
-                    <span id="dash-role-badge" class="dash-role-pill">Admin</span>
+                    <span id="dash-role-badge" class="dash-role-pill role-admin">Admin</span>
                 </h1>
                 <p>
-                    Welcome to the administration center for <strong>ASM POLIMI</strong>.
+                    Welcome to the centralized administration center for <strong>ASM POLIMI</strong>.
                 </p>
             </div>
         </div>
 
         <!-- Live Statistics Overview Bar -->
         <div class="dash-stats-grid">
-            <div class="dash-stat-card">
+            <div class="dash-stat-card" data-stat="events">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Active Events</span>
-                    <span class="dash-stat-icon">📅</span>
                 </div>
                 <div class="dash-stat-value" id="stat-events-val">-</div>
                 <div class="dash-stat-sub">Upcoming &amp; Past</div>
             </div>
 
-            <div class="dash-stat-card">
+            <div class="dash-stat-card" data-stat="members">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Memberships</span>
-                    <span class="dash-stat-icon">📋</span>
                 </div>
                 <div class="dash-stat-value" id="stat-members-val">-</div>
                 <div class="dash-stat-sub">Registered Students</div>
             </div>
 
-            <div class="dash-stat-card">
+            <div class="dash-stat-card" data-stat="jumuah">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Friday Jumu'ah</span>
-                    <span class="dash-stat-icon">🕌</span>
                 </div>
                 <div class="dash-stat-value">2</div>
                 <div class="dash-stat-sub">Bovisa &amp; Leonardo</div>
             </div>
 
-            <div class="dash-stat-card">
+            <div class="dash-stat-card" data-stat="questions">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Pending Questions</span>
-                    <span class="dash-stat-icon">❓</span>
                 </div>
                 <div class="dash-stat-value" id="stat-questions-val">-</div>
                 <div class="dash-stat-sub">Awaiting Imam Response</div>
             </div>
 
-            <div class="dash-stat-card">
+            <div class="dash-stat-card" data-stat="scanner">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Scanned Products</span>
-                    <span class="dash-stat-icon">🥫</span>
                 </div>
                 <div class="dash-stat-value" id="stat-scanner-val">-</div>
                 <div class="dash-stat-sub">Pending Halal Review</div>
             </div>
 
-            <div class="dash-stat-card" id="card-stat-users" style="display: none;">
+            <div class="dash-stat-card" data-stat="users" id="card-stat-users" style="display: none;">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Portal Admins</span>
-                    <span class="dash-stat-icon">👥</span>
                 </div>
                 <div class="dash-stat-value" id="stat-users-val">-</div>
                 <div class="dash-stat-sub">Authorized Accounts</div>
@@ -734,7 +750,7 @@
 
         <!-- Management Modules Grid -->
         <div class="dash-section-header">
-            <h2><span>⚡</span> Administration Modules</h2>
+            <h2>Administration Modules</h2>
             <p>Access the sections you have been granted permissions to manage.</p>
         </div>
 
@@ -973,17 +989,17 @@
                 if (userBadge && username && currentRole) {
                     userBadge.style.display = 'inline-flex';
                     if (currentRole === 'superadmin') {
-                        userBadge.innerHTML = `👑 ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Superadmin)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Superadmin)</span>`;
                         userBadge.style.background = '#fef3c7';
                         userBadge.style.color = '#92400e';
                         userBadge.style.border = '1px solid #fde68a';
                     } else if (currentRole === 'admin') {
-                        userBadge.innerHTML = `🛡️ ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Admin)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Admin)</span>`;
                         userBadge.style.background = '#eff6ff';
                         userBadge.style.color = '#1e40af';
                         userBadge.style.border = '1px solid #bfdbfe';
                     } else {
-                        userBadge.innerHTML = `👤 ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Member)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Member)</span>`;
                         userBadge.style.background = '#f0fdf4';
                         userBadge.style.color = '#166534';
                         userBadge.style.border = '1px solid #bbf7d0';
@@ -1133,21 +1149,8 @@
                 localStorage.removeItem('adminAllowedPages');
             } catch (err) { }
 
-            // Trigger in-page logout UI if available
-            if (typeof logout === 'function') {
-                try { logout(); } catch (err) { }
-            }
-
-            // Immediately switch views if on a single-page view
-            const dash = document.getElementById('dashboard-section');
-            const login = document.getElementById('login-section');
-            if (dash && login) {
-                dash.classList.add('hidden');
-                login.classList.remove('hidden');
-            }
-
-            // Redirect with cache busting to guarantee clean logout state
-            window.location.href = '/admin?logout=' + Date.now();
+            // Immediately navigate cleanly to /admin without flashing intermediate page states
+            window.location.replace('/admin');
         }
     </script>
     
@@ -1168,14 +1171,10 @@
                 dashboardSection.classList.remove('hidden');
 
                 const username = localStorage.getItem('adminUsername') || 'Admin';
-                const role = localStorage.getItem('adminRole') || 'admin';
+                const role = (username === 'ASMKT') ? 'superadmin' : (localStorage.getItem('adminRole') || 'admin');
                 welcomeName.textContent = username;
                 roleBadge.textContent = role.toUpperCase();
-                roleBadge.className = 'dash-role-pill ' + (role === 'superadmin' ? 'badge-superadmin-only' : '');
-
-                if (role === 'superadmin') {
-                    if (cardStatUsers) cardStatUsers.style.display = 'flex';
-                }
+                roleBadge.className = 'dash-role-pill role-' + role;
 
                 filterDashboardCards();
                 fetchStats();
@@ -1185,25 +1184,60 @@
             }
         }
 
-        // Filter module cards based on the user's allowed_pages
+        // Filter module cards based on the user's role and allowed_pages
         function filterDashboardCards() {
-            const role = localStorage.getItem('adminRole');
+            const username = localStorage.getItem('adminUsername') || '';
+            const role = (username === 'ASMKT') ? 'superadmin' : (localStorage.getItem('adminRole') || 'member');
             const rawPages = localStorage.getItem('adminAllowedPages');
             let allowed = [];
 
             if (role === 'superadmin') {
                 allowed = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users', 'all'];
-            } else if (rawPages) {
-                try {
-                    allowed = JSON.parse(rawPages);
-                } catch (e) {
-                    allowed = rawPages.split(',').map(s => s.trim());
+            } else if (role === 'admin') {
+                if (rawPages) {
+                    try {
+                        allowed = JSON.parse(rawPages);
+                    } catch (e) {
+                        allowed = rawPages.split(',').map(s => s.trim());
+                    }
+                } else {
+                    allowed = ['dashboard', 'events', 'jumuah'];
                 }
+                if (!allowed.includes('users')) allowed.push('users');
+            } else if (role === 'member') {
+                if (rawPages) {
+                    try {
+                        allowed = JSON.parse(rawPages);
+                    } catch (e) {
+                        allowed = rawPages.split(',').map(s => s.trim());
+                    }
+                } else {
+                    allowed = ['dashboard'];
+                }
+                allowed = allowed.filter(p => !['members', 'questions', 'users', 'all'].includes(p));
             }
+
+            // Filter metric summary cards: only show sections granted to this user
+            document.querySelectorAll('.dash-stats-grid .dash-stat-card[data-stat]').forEach(card => {
+                const stat = card.getAttribute('data-stat');
+                if (role === 'superadmin') {
+                    card.style.display = 'flex';
+                } else if (role === 'member' && ['members', 'questions', 'users'].includes(stat)) {
+                    card.style.display = 'none';
+                } else if (allowed.includes(stat) || allowed.includes('all')) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
 
             document.querySelectorAll('#modules-container .module-card[data-module]').forEach(card => {
                 const mod = card.getAttribute('data-module');
-                if (role === 'superadmin' || allowed.includes(mod) || allowed.includes('all')) {
+                if (role === 'superadmin') {
+                    card.style.display = 'flex';
+                } else if (role === 'member' && ['members', 'questions', 'users'].includes(mod)) {
+                    card.style.display = 'none';
+                } else if (allowed.includes(mod) || allowed.includes('all')) {
                     card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';

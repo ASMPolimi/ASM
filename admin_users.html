@@ -377,36 +377,36 @@
 
             <nav class="admin-links" id="admin-nav-menu">
                 <a href="/admin" data-page="dashboard" class="admin-link ">
-                    <span>🏠</span> Dashboard
+                    Dashboard
                 </a>
                 <a href="/admin_events" data-page="events" class="admin-link ">
-                    <span>📅</span> Events & News
+                    Events & News
                 </a>
                 <a href="/admin_members" data-page="members" class="admin-link ">
-                    <span>📋</span> Members & Mailing
+                    Members & Mailing
                 </a>
                 <a href="/admin_jumuah" data-page="jumuah" class="admin-link ">
-                    <span>🕌</span> Jumu'ah
+                    Jumu'ah
                 </a>
                 <a href="/admin_questions" data-page="questions" class="admin-link ">
-                    <span>❓</span> Questions
+                    Questions
                 </a>
                 <a href="/admin_scanner" data-page="scanner" class="admin-link ">
-                    <span>🥫</span> Scanned Products
+                    Scanned Products
                 </a>
                 <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link active">
-                    <span>👥</span> Users & Accounts
+                    Users & Accounts
                 </a>
-                                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
                     title="Open live public website (asmpolimi.it) in a new tab">
-                    <span>🌐</span> View Website ↗
+                    View Website ↗
                 </a>
                 <span id="nav-user-badge" style="display: none; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 999px; margin-left: 0.25rem;"></span>
                 <button type="button" class="btn-admin-logout" id="top-change-pw-btn" onclick="openChangePasswordModal()" title="Change Your Password" style="color: #475569; background: #f8fafc; border: 1px solid #cbd5e1;">
-                    <span>🔑</span> Password
+                    Password
                 </button>
                 <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
-                    <span>🚪</span> Logout
+                    Logout
                 </button>
             </nav>
         </div>
@@ -711,17 +711,17 @@
                 if (userBadge && username && currentRole) {
                     userBadge.style.display = 'inline-flex';
                     if (currentRole === 'superadmin') {
-                        userBadge.innerHTML = `👑 ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Superadmin)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Superadmin)</span>`;
                         userBadge.style.background = '#fef3c7';
                         userBadge.style.color = '#92400e';
                         userBadge.style.border = '1px solid #fde68a';
                     } else if (currentRole === 'admin') {
-                        userBadge.innerHTML = `🛡️ ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Admin)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Admin)</span>`;
                         userBadge.style.background = '#eff6ff';
                         userBadge.style.color = '#1e40af';
                         userBadge.style.border = '1px solid #bfdbfe';
                     } else {
-                        userBadge.innerHTML = `👤 ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Member)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Member)</span>`;
                         userBadge.style.background = '#f0fdf4';
                         userBadge.style.color = '#166534';
                         userBadge.style.border = '1px solid #bbf7d0';
@@ -871,21 +871,8 @@
                 localStorage.removeItem('adminAllowedPages');
             } catch (err) { }
 
-            // Trigger in-page logout UI if available
-            if (typeof logout === 'function') {
-                try { logout(); } catch (err) { }
-            }
-
-            // Immediately switch views if on a single-page view
-            const dash = document.getElementById('dashboard-section');
-            const login = document.getElementById('login-section');
-            if (dash && login) {
-                dash.classList.add('hidden');
-                login.classList.remove('hidden');
-            }
-
-            // Redirect with cache busting to guarantee clean logout state
-            window.location.href = '/admin?logout=' + Date.now();
+            // Immediately navigate cleanly to /admin without flashing intermediate page states
+            window.location.replace('/admin');
         }
     </script>
     
@@ -900,12 +887,12 @@
         const logoutBtn = document.getElementById('logout-btn');
 
         const ALL_PAGES = [
-            { key: 'events', label: 'Events & News', icon: '📅', memberAllowed: true },
-            { key: 'members', label: 'Members & Mailing', icon: '📋', memberAllowed: false },
-            { key: 'jumuah', label: "Jumu'ah Settings", icon: '🕌', memberAllowed: true },
-            { key: 'questions', label: 'Questions & Q&A', icon: '❓', memberAllowed: false },
-            { key: 'scanner', label: 'Scanned Products', icon: '🥫', memberAllowed: true },
-            { key: 'users', label: 'Users & Permissions', icon: '👥', memberAllowed: false }
+            { key: 'events', label: 'Events & News', memberAllowed: true },
+            { key: 'members', label: 'Members & Mailing', memberAllowed: false },
+            { key: 'jumuah', label: "Jumu'ah Settings", memberAllowed: true },
+            { key: 'questions', label: 'Questions & Q&A', memberAllowed: false },
+            { key: 'scanner', label: 'Scanned Products', memberAllowed: true },
+            { key: 'users', label: 'Users & Permissions', memberAllowed: false }
         ];
 
         let token = localStorage.getItem('adminToken');
@@ -1068,7 +1055,7 @@
                 grid.innerHTML += `
                     <label class="perm-checkbox-item">
                         <input type="checkbox" name="new_perms" value="${p.key}" ${isDefaultChecked ? 'checked' : ''}>
-                        <span>${p.icon} ${p.label}</span>
+                        <span>${p.label}</span>
                     </label>
                 `;
             });
@@ -1132,54 +1119,85 @@
             const isCallerSuper = (role === 'superadmin');
             const isCallerAdmin = (role === 'admin');
 
-            users.forEach((userObj) => {
+            // Sort: ASMKT strictly at the top, then admins, then members
+            const sortedUsers = [...users].sort((a, b) => {
+                if (a.username === 'ASMKT') return -1;
+                if (b.username === 'ASMKT') return 1;
+                if (a.role === 'admin' && b.role !== 'admin') return -1;
+                if (b.role === 'admin' && a.role !== 'admin') return 1;
+                return a.username.localeCompare(b.username);
+            });
+
+            sortedUsers.forEach((userObj) => {
                 const username = userObj.username;
                 const userRole = userObj.role || 'member';
-                const isTargetSuper = userRole === 'superadmin';
+                const isTargetAsmkt = (username === 'ASMKT');
+                const isTargetSuper = userRole === 'superadmin' || isTargetAsmkt;
                 const isTargetAdmin = userRole === 'admin';
                 const isTargetMember = userRole === 'member';
+
+                // Check if admin is viewing ASMKT
+                const isSpecialAdminViewingAsmkt = (isCallerAdmin && isTargetAsmkt);
 
                 const card = document.createElement('div');
                 card.className = 'user-card';
                 card.id = `user-card-${username}`;
 
-                // Role Badge
+                // Role Badge (clean text, no emojis)
                 let badgeHtml = '';
-                if (isTargetSuper) {
-                    badgeHtml = `<span class="badge-role-super">👑 Superadmin</span>`;
+                if (isSpecialAdminViewingAsmkt) {
+                    badgeHtml = ''; // For admin: do NOT show superadmin badge!
+                } else if (isTargetSuper) {
+                    badgeHtml = `<span class="badge-role-super">Superadmin</span>`;
                 } else if (isTargetAdmin) {
-                    badgeHtml = `<span class="badge-role-admin">🛡️ Admin</span>`;
+                    badgeHtml = `<span class="badge-role-admin">Admin</span>`;
                 } else {
-                    badgeHtml = `<span class="badge-role-member">👤 Member</span>`;
+                    badgeHtml = `<span class="badge-role-member">Member</span>`;
                 }
 
-                // Permitted pills
-                let userAllowed = userObj.allowed_pages || [];
-                if (isTargetSuper) {
-                    userAllowed = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'];
-                }
-                let pillsHtml = '';
-                ALL_PAGES.forEach(p => {
-                    const hasAccess = isTargetSuper || userAllowed.includes(p.key) || userAllowed.includes('all');
-                    pillsHtml += `
-                        <span class="page-pill ${hasAccess ? 'page-pill-active' : 'page-pill-inactive'}" title="${hasAccess ? 'Access granted' : 'No access'}">
-                            <span>${p.icon}</span> ${p.label}
-                        </span>
+                // Permitted sections block
+                let permsBlockHtml = '';
+                if (!isSpecialAdminViewingAsmkt) {
+                    let userAllowed = userObj.allowed_pages || [];
+                    if (isTargetSuper) {
+                        userAllowed = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'];
+                    }
+                    let pillsHtml = '';
+                    ALL_PAGES.forEach(p => {
+                        const hasAccess = isTargetSuper || userAllowed.includes(p.key) || userAllowed.includes('all');
+                        pillsHtml += `
+                            <span class="page-pill ${hasAccess ? 'page-pill-active' : 'page-pill-inactive'}" title="${hasAccess ? 'Access granted' : 'No access'}">
+                                ${p.label}
+                            </span>
+                        `;
+                    });
+
+                    permsBlockHtml = `
+                        <div style="border-top: 1px solid #f1f5f9; padding-top: 0.65rem;">
+                            <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 0.4rem;">
+                                Permitted Sections (${isTargetSuper ? 'All 6' : userAllowed.length} active):
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                ${pillsHtml}
+                            </div>
+                        </div>
                     `;
-                });
+                }
 
                 // Determine actions based on 3-tier hierarchy
                 let actionsHtml = '';
-                if (username === 'ASMKT') {
+                if (isSpecialAdminViewingAsmkt) {
+                    actionsHtml = `<span style="color: #64748b; font-size: 0.8rem; font-weight: 600;">System Account</span>`;
+                } else if (username === 'ASMKT') {
                     actionsHtml = `<span style="color: #92400e; font-size: 0.8rem; font-weight: 700; background: #fef3c7; padding: 0.25rem 0.6rem; border-radius: 999px; border: 1px solid #fde68a;">Master Superadmin</span>`;
                 } else if (isCallerSuper) {
                     // Superadmin can edit & delete any non-ASMKT user
                     actionsHtml = `
                         <button type="button" class="btn btn-secondary" onclick="toggleEditPanel('${username}')" style="padding: 0.35rem 0.75rem; font-size: 0.82rem; border-color: #cbd5e1; color: var(--color-primary);">
-                            <span>⚙️</span> Manage Access
+                            Manage Access
                         </button>
                         <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; border-color: #fca5a5; color: #dc2626; background: #fff;" onclick="deleteUser('${username}')">
-                            <span>🗑️</span> Delete
+                            Delete
                         </button>
                     `;
                 } else if (isCallerAdmin) {
@@ -1187,10 +1205,10 @@
                         // Admin can manage & delete members
                         actionsHtml = `
                             <button type="button" class="btn btn-secondary" onclick="toggleEditPanel('${username}')" style="padding: 0.35rem 0.75rem; font-size: 0.82rem; border-color: #cbd5e1; color: var(--color-primary);">
-                                <span>⚙️</span> Manage Member
+                                Manage Member
                             </button>
                             <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; border-color: #fca5a5; color: #dc2626; background: #fff;" onclick="deleteUser('${username}')">
-                                <span>🗑️</span> Delete
+                                Delete
                             </button>
                         `;
                     } else {
@@ -1200,28 +1218,18 @@
                 }
 
                 card.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; ${isSpecialAdminViewingAsmkt ? '' : 'margin-bottom: 0.75rem;'}">
                         <div style="display: flex; align-items: center; gap: 0.65rem;">
-                            <span style="font-size: 1.35rem;">👤</span>
                             <div>
                                 <strong style="font-size: 1.05rem; color: #1e293b;">${username}</strong>
-                                <span style="margin-left: 0.5rem;">${badgeHtml}</span>
+                                ${badgeHtml ? `<span style="margin-left: 0.5rem;">${badgeHtml}</span>` : ''}
                             </div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                             ${actionsHtml}
                         </div>
                     </div>
-
-                    <div style="border-top: 1px solid #f1f5f9; padding-top: 0.65rem;">
-                        <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 0.4rem;">
-                            Permitted Sections (${isTargetSuper ? 'All 6' : userAllowed.length} active):
-                        </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                            ${pillsHtml}
-                        </div>
-                    </div>
-
+                    ${permsBlockHtml}
                     <!-- Inline Edit Panel Container -->
                     <div id="edit-panel-${username}" class="edit-panel hidden"></div>
                 `;
@@ -1277,7 +1285,7 @@
                 checkboxesHtml += `
                     <label class="perm-checkbox-item">
                         <input type="checkbox" class="edit-cb-${username}" value="${p.key}" ${checked ? 'checked' : ''}>
-                        <span>${p.icon} ${p.label}</span>
+                        <span>${p.label}</span>
                     </label>
                 `;
             });

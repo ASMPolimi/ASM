@@ -207,36 +207,36 @@
 
             <nav class="admin-links" id="admin-nav-menu">
                 <a href="/admin" data-page="dashboard" class="admin-link {% if active_page == 'dashboard' %}active{% endif %}">
-                    <span>🏠</span> Dashboard
+                    Dashboard
                 </a>
                 <a href="/admin_events" data-page="events" class="admin-link {% if active_page == 'events' %}active{% endif %}">
-                    <span>📅</span> Events & News
+                    Events & News
                 </a>
                 <a href="/admin_members" data-page="members" class="admin-link {% if active_page == 'members' %}active{% endif %}">
-                    <span>📋</span> Members & Mailing
+                    Members & Mailing
                 </a>
                 <a href="/admin_jumuah" data-page="jumuah" class="admin-link {% if active_page == 'jumuah' %}active{% endif %}">
-                    <span>🕌</span> Jumu'ah
+                    Jumu'ah
                 </a>
                 <a href="/admin_questions" data-page="questions" class="admin-link {% if active_page == 'questions' %}active{% endif %}">
-                    <span>❓</span> Questions
+                    Questions
                 </a>
                 <a href="/admin_scanner" data-page="scanner" class="admin-link {% if active_page == 'scanner' %}active{% endif %}">
-                    <span>🥫</span> Scanned Products
+                    Scanned Products
                 </a>
                 <a href="/admin_users" id="nav-users-link" data-page="users" class="admin-link {% if active_page == 'users' %}active{% endif %}">
-                    <span>👥</span> Users & Accounts
+                    Users & Accounts
                 </a>
-                                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
+                <a href="https://asmpolimi.it" target="_blank" rel="noopener noreferrer" class="btn-public-site"
                     title="Open live public website (asmpolimi.it) in a new tab">
-                    <span>🌐</span> View Website ↗
+                    View Website ↗
                 </a>
                 <span id="nav-user-badge" style="display: none; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 999px; margin-left: 0.25rem;"></span>
                 <button type="button" class="btn-admin-logout" id="top-change-pw-btn" onclick="openChangePasswordModal()" title="Change Your Password" style="color: #475569; background: #f8fafc; border: 1px solid #cbd5e1;">
-                    <span>🔑</span> Password
+                    Password
                 </button>
                 <button type="button" class="btn-admin-logout" id="top-logout-btn" onclick="globalAdminLogout(event)" title="Sign out of Admin Portal">
-                    <span>🚪</span> Logout
+                    Logout
                 </button>
             </nav>
         </div>
@@ -383,17 +383,17 @@
                 if (userBadge && username && currentRole) {
                     userBadge.style.display = 'inline-flex';
                     if (currentRole === 'superadmin') {
-                        userBadge.innerHTML = `👑 ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Superadmin)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Superadmin)</span>`;
                         userBadge.style.background = '#fef3c7';
                         userBadge.style.color = '#92400e';
                         userBadge.style.border = '1px solid #fde68a';
                     } else if (currentRole === 'admin') {
-                        userBadge.innerHTML = `🛡️ ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Admin)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Admin)</span>`;
                         userBadge.style.background = '#eff6ff';
                         userBadge.style.color = '#1e40af';
                         userBadge.style.border = '1px solid #bfdbfe';
                     } else {
-                        userBadge.innerHTML = `👤 ${username} <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Member)</span>`;
+                        userBadge.innerHTML = `<strong>${username}</strong> <span style="font-size: 0.72rem; opacity: 0.85; margin-left: 0.2rem;">(Member)</span>`;
                         userBadge.style.background = '#f0fdf4';
                         userBadge.style.color = '#166534';
                         userBadge.style.border = '1px solid #bbf7d0';
@@ -543,21 +543,8 @@
                 localStorage.removeItem('adminAllowedPages');
             } catch (err) { }
 
-            // Trigger in-page logout UI if available
-            if (typeof logout === 'function') {
-                try { logout(); } catch (err) { }
-            }
-
-            // Immediately switch views if on a single-page view
-            const dash = document.getElementById('dashboard-section');
-            const login = document.getElementById('login-section');
-            if (dash && login) {
-                dash.classList.add('hidden');
-                login.classList.remove('hidden');
-            }
-
-            // Redirect with cache busting to guarantee clean logout state
-            window.location.href = '/admin?logout=' + Date.now();
+            // Immediately navigate cleanly to /admin without flashing intermediate page states
+            window.location.replace('/admin');
         }
     </script>
     {% block extra_scripts %}{% endblock %}
