@@ -205,6 +205,11 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         text-decoration: underline;
     }
 
+    .highlight-halal {
+        color: #16a34a;
+        font-weight: 700;
+    }
+
     /* Flag review prompt button */
     #user-review-section {
         margin: 0.5rem 0 1.15rem 0;
@@ -539,7 +544,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             { word: 'alcol', reason: 'Intoxicants are strictly Haram.' },
             { word: 'alcool', reason: 'Intoxicants are strictly Haram.' },
             { word: 'wine', reason: 'Wine contains alcohol and is Haram.' },
-            { word: 'vino', reason: 'Wine contains alcohol and is Haram.' },
+            { word: 'vino', reason: 'Wine contains alcohol and is Haram (Note: Wine vinegar / aceto di vino is Halal as the alcohol has fermented into acetic acid).' },
             { word: 'beer', reason: 'Beer is an alcoholic beverage.' },
             { word: 'birra', reason: 'Beer is an alcoholic beverage.' },
             { word: 'rum', reason: 'Rum contains alcohol.' },
@@ -576,9 +581,36 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         ]
     };
 
+    // Permissible Halal Exceptions in food technology & Islamic jurisprudence (Istihalah).
+    // In Islam, wine vinegar (aceto di vino / khall) is Halal once wine ferments into vinegar.
+    const HALAL_EXCEPTIONS_REGEX = [
+        /\baceto\s+(?:di\s+|da\s+)?vino(?:\s+(?:bianco|rosso))?\b/gi,
+        /\baceto\s+balsamico(?:\s+di\s+modena)?\b/gi,
+        /\baceto\s+(?:di\s+|d['’])?alcol\b/gi,
+        /\baceto\s+(?:di\s+|d['’])?alcool\b/gi,
+        /\b(?:white\s+|red\s+)?wine\s+vinegar\b/gi,
+        /\bbalsamic\s+vinegar(?:\s+of\s+modena)?\b/gi,
+        /\b(?:spirit|alcohol|distilled)\s+vinegar\b/gi,
+        /\bvinaigre\s+de\s+vin(?:\s+(?:blanc|rouge))?\b/gi,
+        /\bvinaigre\s+d['’]alcool\b/gi,
+        /\bvinagre\s+de\s+vino(?:\s+(?:blanco|tinto))?\b/gi,
+        /\bvinagre\s+de\s+alcohol\b/gi
+    ];
+
+    function maskHalalExceptions(str) {
+        if (!str) return '';
+        let result = str;
+        HALAL_EXCEPTIONS_REGEX.forEach(rgx => {
+            result = result.replace(rgx, '__HALAL_VINEGAR_SAFE__');
+        });
+        return result;
+    }
+
     // Main parser/analyzer logic
     function analyzeProductIngredients(ingredientsText, labelsText = '', hasIngredients = true) {
-        const text = (ingredientsText + ' ' + labelsText).toLowerCase();
+        const rawText = (ingredientsText + ' ' + labelsText).toLowerCase();
+        // Mask permissible vinegar exceptions so 'vino' or 'wine' won't trigger false Haram
+        const text = maskHalalExceptions(rawText);
         const foundHaram = [];
         const foundMashbuh = [];
 
@@ -639,18 +671,34 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
     // Highlight matched keywords in ingredients text
     function highlightIngredients(ingredientsText) {
+        if (!ingredientsText) return '';
         let highlighted = ingredientsText;
+
+        // Temporarily mask halal exceptions (like aceto di vino) so their internal words (like 'vino') are not colored red
+        const placeholders = [];
+        HALAL_EXCEPTIONS_REGEX.forEach((rgx, i) => {
+            highlighted = highlighted.replace(rgx, match => {
+                const token = `___HALAL_TOKEN_${i}_${placeholders.length}___`;
+                placeholders.push({ token, replacement: `<span class="highlight-halal">${match}</span>` });
+                return token;
+            });
+        });
 
         // Highlight Haram (Red)
         DICTIONARY.haram.forEach(item => {
-            const regex = new RegExp(`\\b(${item.word})\\b`, 'gi');
+            const regex = new RegExp(`\\b(${item.word})\\b|\\b(${item.word}s)\\b`, 'gi');
             highlighted = highlighted.replace(regex, '<span class="highlight-haram">$1</span>');
         });
 
         // Highlight Mashbuh (Amber)
         DICTIONARY.mashbuh.forEach(item => {
-            const regex = new RegExp(`\\b(${item.word})\\b`, 'gi');
+            const regex = new RegExp(`\\b(${item.word})\\b|\\b(${item.word}s)\\b`, 'gi');
             highlighted = highlighted.replace(regex, '<span class="highlight-mashbuh">$1</span>');
+        });
+
+        // Restore masked halal exceptions in green
+        placeholders.forEach(p => {
+            highlighted = highlighted.replace(p.token, p.replacement);
         });
 
         return highlighted;

@@ -2642,16 +2642,14 @@ window.setCookieConsent = function (status) {
     localStorage.setItem('asm_cookie_consent', status);
 
     if (status === 'accepted') {
-        window['ga-disable-' + GA_ID] = false;
-        if (typeof gtag === 'function') {
+                if (typeof gtag === 'function') {
             gtag('consent', 'update', {
                 'analytics_storage': 'granted'
             });
             gtag('event', 'cookie_consent_accepted');
         }
     } else {
-        window['ga-disable-' + GA_ID] = true;
-        if (typeof gtag === 'function') {
+                if (typeof gtag === 'function') {
             gtag('consent', 'update', {
                 'analytics_storage': 'denied'
             });
@@ -2667,8 +2665,7 @@ window.setCookieConsent = function (status) {
 
 window.resetCookieConsent = function () {
     localStorage.removeItem('asm_cookie_consent');
-    window['ga-disable-' + GA_ID] = true;
-    if (typeof gtag === 'function') {
+        if (typeof gtag === 'function') {
         gtag('consent', 'update', {
             'analytics_storage': 'denied'
         });

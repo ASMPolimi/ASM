@@ -48,15 +48,20 @@ student-friendly halal dining and food options around Politecnico di Milano camp
     <script src="/js/main.js" defer></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-    <!-- Google tag (gtag.js) with GDPR Consent Mode -->
+    <!-- Google tag (gtag.js) with GDPR Consent Mode v2 -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
 
-      // Initial consent check: Default to denied unless previously accepted
-      var initialConsent = localStorage.getItem('asm_cookie_consent');
-      if (initialConsent !== 'accepted') {
-          window['ga-disable-G-8N5B01YCZ4'] = true;
+      var savedConsent = localStorage.getItem('asm_cookie_consent');
+      if (savedConsent === 'accepted') {
+          gtag('consent', 'default', {
+              'analytics_storage': 'granted',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      } else if (savedConsent === 'declined') {
           gtag('consent', 'default', {
               'analytics_storage': 'denied',
               'ad_storage': 'denied',
@@ -64,6 +69,15 @@ student-friendly halal dining and food options around Politecnico di Milano camp
               'ad_personalization': 'denied'
           });
       } else {
+          // Strict GDPR opt-in default for European Economic Area + Switzerland + UK
+          gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO', 'GB', 'CH']
+          });
+          // Default granted for traffic outside the EEA (resolves Google 0% non-EEA alert)
           gtag('consent', 'default', {
               'analytics_storage': 'granted',
               'ad_storage': 'denied',
@@ -71,6 +85,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
               'ad_personalization': 'denied'
           });
       }
+
       gtag('js', new Date());
       gtag('config', 'G-8N5B01YCZ4');
     </script>
@@ -265,6 +280,11 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         color: #d97706;
         font-weight: 700;
         text-decoration: underline;
+    }
+
+    .highlight-halal {
+        color: #16a34a;
+        font-weight: 700;
     }
 
     /* Flag review prompt button */
@@ -761,7 +781,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             { word: 'alcol', reason: 'Intoxicants are strictly Haram.' },
             { word: 'alcool', reason: 'Intoxicants are strictly Haram.' },
             { word: 'wine', reason: 'Wine contains alcohol and is Haram.' },
-            { word: 'vino', reason: 'Wine contains alcohol and is Haram.' },
+            { word: 'vino', reason: 'Wine contains alcohol and is Haram (Note: Wine vinegar / aceto di vino is Halal as the alcohol has fermented into acetic acid).' },
             { word: 'beer', reason: 'Beer is an alcoholic beverage.' },
             { word: 'birra', reason: 'Beer is an alcoholic beverage.' },
             { word: 'rum', reason: 'Rum contains alcohol.' },
@@ -798,9 +818,36 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         ]
     };
 
+    // Permissible Halal Exceptions in food technology & Islamic jurisprudence (Istihalah).
+    // In Islam, wine vinegar (aceto di vino / khall) is Halal once wine ferments into vinegar.
+    const HALAL_EXCEPTIONS_REGEX = [
+        /\baceto\s+(?:di\s+|da\s+)?vino(?:\s+(?:bianco|rosso))?\b/gi,
+        /\baceto\s+balsamico(?:\s+di\s+modena)?\b/gi,
+        /\baceto\s+(?:di\s+|d['’])?alcol\b/gi,
+        /\baceto\s+(?:di\s+|d['’])?alcool\b/gi,
+        /\b(?:white\s+|red\s+)?wine\s+vinegar\b/gi,
+        /\bbalsamic\s+vinegar(?:\s+of\s+modena)?\b/gi,
+        /\b(?:spirit|alcohol|distilled)\s+vinegar\b/gi,
+        /\bvinaigre\s+de\s+vin(?:\s+(?:blanc|rouge))?\b/gi,
+        /\bvinaigre\s+d['’]alcool\b/gi,
+        /\bvinagre\s+de\s+vino(?:\s+(?:blanco|tinto))?\b/gi,
+        /\bvinagre\s+de\s+alcohol\b/gi
+    ];
+
+    function maskHalalExceptions(str) {
+        if (!str) return '';
+        let result = str;
+        HALAL_EXCEPTIONS_REGEX.forEach(rgx => {
+            result = result.replace(rgx, '__HALAL_VINEGAR_SAFE__');
+        });
+        return result;
+    }
+
     // Main parser/analyzer logic
     function analyzeProductIngredients(ingredientsText, labelsText = '', hasIngredients = true) {
-        const text = (ingredientsText + ' ' + labelsText).toLowerCase();
+        const rawText = (ingredientsText + ' ' + labelsText).toLowerCase();
+        // Mask permissible vinegar exceptions so 'vino' or 'wine' won't trigger false Haram
+        const text = maskHalalExceptions(rawText);
         const foundHaram = [];
         const foundMashbuh = [];
 
@@ -861,18 +908,34 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
     // Highlight matched keywords in ingredients text
     function highlightIngredients(ingredientsText) {
+        if (!ingredientsText) return '';
         let highlighted = ingredientsText;
+
+        // Temporarily mask halal exceptions (like aceto di vino) so their internal words (like 'vino') are not colored red
+        const placeholders = [];
+        HALAL_EXCEPTIONS_REGEX.forEach((rgx, i) => {
+            highlighted = highlighted.replace(rgx, match => {
+                const token = `___HALAL_TOKEN_${i}_${placeholders.length}___`;
+                placeholders.push({ token, replacement: `<span class="highlight-halal">${match}</span>` });
+                return token;
+            });
+        });
 
         // Highlight Haram (Red)
         DICTIONARY.haram.forEach(item => {
-            const regex = new RegExp(`\\b(${item.word})\\b`, 'gi');
+            const regex = new RegExp(`\\b(${item.word})\\b|\\b(${item.word}s)\\b`, 'gi');
             highlighted = highlighted.replace(regex, '<span class="highlight-haram">$1</span>');
         });
 
         // Highlight Mashbuh (Amber)
         DICTIONARY.mashbuh.forEach(item => {
-            const regex = new RegExp(`\\b(${item.word})\\b`, 'gi');
+            const regex = new RegExp(`\\b(${item.word})\\b|\\b(${item.word}s)\\b`, 'gi');
             highlighted = highlighted.replace(regex, '<span class="highlight-mashbuh">$1</span>');
+        });
+
+        // Restore masked halal exceptions in green
+        placeholders.forEach(p => {
+            highlighted = highlighted.replace(p.token, p.replacement);
         });
 
         return highlighted;

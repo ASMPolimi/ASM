@@ -45,15 +45,20 @@
     <script src="/js/main.js" defer></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-    <!-- Google tag (gtag.js) with GDPR Consent Mode -->
+    <!-- Google tag (gtag.js) with GDPR Consent Mode v2 -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
 
-      // Initial consent check: Default to denied unless previously accepted
-      var initialConsent = localStorage.getItem('asm_cookie_consent');
-      if (initialConsent !== 'accepted') {
-          window['ga-disable-G-8N5B01YCZ4'] = true;
+      var savedConsent = localStorage.getItem('asm_cookie_consent');
+      if (savedConsent === 'accepted') {
+          gtag('consent', 'default', {
+              'analytics_storage': 'granted',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      } else if (savedConsent === 'declined') {
           gtag('consent', 'default', {
               'analytics_storage': 'denied',
               'ad_storage': 'denied',
@@ -61,6 +66,15 @@
               'ad_personalization': 'denied'
           });
       } else {
+          // Strict GDPR opt-in default for European Economic Area + Switzerland + UK
+          gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO', 'GB', 'CH']
+          });
+          // Default granted for traffic outside the EEA (resolves Google 0% non-EEA alert)
           gtag('consent', 'default', {
               'analytics_storage': 'granted',
               'ad_storage': 'denied',
@@ -68,6 +82,7 @@
               'ad_personalization': 'denied'
           });
       }
+
       gtag('js', new Date());
       gtag('config', 'G-8N5B01YCZ4');
     </script>
