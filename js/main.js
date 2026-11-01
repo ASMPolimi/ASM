@@ -748,7 +748,7 @@ halal_legal_title: "Informativa Legale e Privacy",
 };
 window.ASM_I18N = ASM_I18N;
 
-let currentLang = localStorage.getItem('site_lang') || 'en';
+var currentLang = localStorage.getItem('site_lang') || 'en';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -961,12 +961,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
 
     function toggleMenu() {
+        if (!mobileMenuBtn || !mobileNavOverlay) return;
         mobileMenuBtn.classList.toggle('active');
         mobileNavOverlay.classList.toggle('active');
         document.body.style.overflow = mobileNavOverlay.classList.contains('active') ? 'hidden' : '';
     }
 
-    mobileMenuBtn.addEventListener('click', toggleMenu);
+    if (mobileMenuBtn && mobileNavOverlay) {
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+    }
 
     mobileNavLinks.forEach(link => {
         link.addEventListener('click', toggleMenu);

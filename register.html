@@ -2220,7 +2220,7 @@
         }
     };
 
-    let currentLang = 'en';
+    let regLang = 'en';
 
     // ----------------------------------------------------
     // Dynamic Membership Fee & Keychain Integration
@@ -2267,7 +2267,7 @@
     }
 
     function updateFeeUI() {
-        const t = i18n[currentLang] || i18n.en;
+        const t = i18n[regLang] || i18n.en;
         const feeBadge = document.getElementById('intro-fee-badge');
         const impactFee = document.getElementById('intro-impact-fee');
         const secPaymentTitle = document.getElementById('sec-payment-title');
@@ -2279,24 +2279,24 @@
 
         if (liveIsFree) {
             if (feeBadge) {
-                feeBadge.innerHTML = currentLang === 'it' ? '🎁 Quota: <strong>Gratuita (0€)</strong>' : '🎁 Fee: <strong>Free (€0)</strong>';
+                feeBadge.innerHTML = regLang === 'it' ? '🎁 Quota: <strong>Gratuita (0€)</strong>' : '🎁 Fee: <strong>Free (€0)</strong>';
                 feeBadge.style.background = '#dcfce7';
                 feeBadge.style.color = '#15803d';
                 feeBadge.style.border = '1.5px solid #86efac';
             }
             if (impactFee) {
-                impactFee.textContent = currentLang === 'it'
+                impactFee.textContent = regLang === 'it'
                     ? "L'iscrizione per questo periodo è completamente gratuita! Unisciti a noi senza alcuna quota."
                     : "Membership is currently completely free! Join our vibrant community without any fee.";
             }
             if (stepLabel5) {
-                stepLabel5.textContent = currentLang === 'it' ? "Conferma e Concludi" : "Review & Finish";
+                stepLabel5.textContent = regLang === 'it' ? "Conferma e Concludi" : "Review & Finish";
             }
             if (btnNextStep5) {
-                btnNextStep5.innerHTML = currentLang === 'it' ? "Avanti: Conferma e Consenso →" : "Next: Confirmation & Consent →";
+                btnNextStep5.innerHTML = regLang === 'it' ? "Avanti: Conferma e Consenso →" : "Next: Confirmation & Consent →";
             }
             if (secPaymentTitle) {
-                secPaymentTitle.textContent = currentLang === 'it' ? "Conferma Iscrizione e Feedback" : "Membership Confirmation & Feedback";
+                secPaymentTitle.textContent = regLang === 'it' ? "Conferma Iscrizione e Feedback" : "Membership Confirmation & Feedback";
             }
             if (paymentGroup) {
                 paymentGroup.style.display = 'none';
@@ -2307,10 +2307,10 @@
                     <span style="font-size: 2.2rem; flex-shrink: 0;">🎁</span>
                     <div>
                         <div style="font-weight: 700; color: #166534; font-size: 1.05rem;">
-                            ${currentLang === 'it' ? 'Iscrizione 100% Gratuita!' : '100% Free Membership!'}
+                            ${regLang === 'it' ? 'Iscrizione 100% Gratuita!' : '100% Free Membership!'}
                         </div>
                         <div style="font-size: 0.88rem; color: #15803d; margin-top: 0.25rem; line-height: 1.45;">
-                            ${currentLang === 'it'
+                            ${regLang === 'it'
                         ? 'Nessun pagamento o quota associativa richiesta per questo periodo. Compila il modulo e invia direttamente la tua richiesta!'
                         : 'No membership fee required for this period. Simply submit your application and your membership will be verified!'}
                         </div>
@@ -2322,13 +2322,13 @@
             }
         } else {
             if (feeBadge) {
-                feeBadge.innerHTML = currentLang === 'it' ? `🏷️ Quota Associativa: <strong>${liveFeeFormatted}</strong>` : `🏷️ Membership Fee: <strong>${liveFeeFormatted}</strong>`;
+                feeBadge.innerHTML = regLang === 'it' ? `🏷️ Quota Associativa: <strong>${liveFeeFormatted}</strong>` : `🏷️ Membership Fee: <strong>${liveFeeFormatted}</strong>`;
                 feeBadge.style.background = 'var(--color-secondary)';
                 feeBadge.style.color = 'var(--color-primary)';
                 feeBadge.style.border = 'none';
             }
             if (impactFee) {
-                impactFee.textContent = currentLang === 'it'
+                impactFee.textContent = regLang === 'it'
                     ? `La quota associativa di ${liveFeeFormatted} ci aiuta a mantenere questi eventi accessibili e alla portata di tutti.`
                     : `Your ${liveFeeFormatted} membership fee helps us keep these events accessible and affordable for all.`;
             }
@@ -2346,7 +2346,7 @@
             }
             const lblPaymentMethod = document.getElementById('lbl-payment-method');
             if (lblPaymentMethod) {
-                lblPaymentMethod.textContent = currentLang === 'it'
+                lblPaymentMethod.textContent = regLang === 'it'
                     ? `Come vuoi pagare la quota associativa di ${liveFeeFormatted}? *`
                     : `How do you want to pay the ${liveFeeFormatted} membership fee? *`;
             }
@@ -2375,7 +2375,7 @@
     }
 
     function chooseLanguage(lang) {
-        currentLang = lang;
+        regLang = lang;
         applyTranslations(lang);
         goToStep(2);
     }
@@ -2565,7 +2565,7 @@
         try {
             const draft = {
                 step: currentStep,
-                lang: currentLang,
+                lang: regLang,
                 text: {
                     fullname: document.getElementById('app-fullname')?.value || '',
                     matricola: document.getElementById('app-matricola')?.value || '',
@@ -2608,8 +2608,8 @@
             if (!draft) return;
 
             if (draft.lang && (draft.lang === 'en' || draft.lang === 'it')) {
-                currentLang = draft.lang;
-                applyTranslations(currentLang);
+                regLang = draft.lang;
+                applyTranslations(regLang);
             }
 
             if (draft.text) {
@@ -2727,7 +2727,7 @@
         const errBanner = document.getElementById('step-3-error-banner');
         errBanner.classList.remove('alert-error');
         errBanner.textContent = '';
-        const t = i18n[currentLang] || i18n.en;
+        const t = i18n[regLang] || i18n.en;
 
         const fullName = document.getElementById('app-fullname').value.trim();
         const matricola = document.getElementById('app-matricola').value.trim();
@@ -2773,7 +2773,7 @@
         const content = document.getElementById('payment-info-content');
         if (!box || !content) return;
 
-        const t = i18n[currentLang] || i18n.en;
+        const t = i18n[regLang] || i18n.en;
         let html = '';
         if (method === 'PayPal') {
             html = t.payInstructionsPaypal;
@@ -2888,7 +2888,7 @@
         errorBanner.classList.remove('alert-error');
         errorBanner.textContent = '';
 
-        const t = i18n[currentLang] || i18n.en;
+        const t = i18n[regLang] || i18n.en;
 
         const fullName = document.getElementById('app-fullname').value.trim();
         const matricola = document.getElementById('app-matricola').value.trim();
@@ -2966,7 +2966,7 @@
             volunteer_translator: volunteerTranslator,
             payment_method: paymentMethod,
             comments: comments,
-            lang_selected: currentLang,
+            lang_selected: regLang,
             keychain_requested: keychainRequested,
             keychain_name: keychainName
         };
@@ -3046,7 +3046,7 @@
 
         // Warn if user has typed info and accidentally tries to exit completely back to start
         if (currentStep > 2 && targetStep === 1 && hasWrittenData()) {
-            const confirmMsg = currentLang === 'it'
+            const confirmMsg = regLang === 'it'
                 ? "Hai inserito dei dati nella domanda di iscrizione. Vuoi davvero tornare alla schermata iniziale?"
                 : "You have written information in the application. Are you sure you want to return to the start?";
             if (!confirm(confirmMsg)) {
@@ -3069,6 +3069,14 @@
     // Initialize listeners on DOM load
     document.addEventListener('DOMContentLoaded', () => {
         loadFeeSetting();
+
+        // Synchronize language changes from header or mobile menu switcher
+        window.addEventListener('asmLanguageChanged', (e) => {
+            if (e.detail && e.detail.lang && (e.detail.lang === 'en' || e.detail.lang === 'it')) {
+                regLang = e.detail.lang;
+                applyTranslations(regLang);
+            }
+        });
 
         // Establish initial browser history state for seamless Return button stepping
         window.history.replaceState({ step: 1 }, '', window.location.href);
