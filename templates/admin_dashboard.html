@@ -431,18 +431,39 @@
         }
 
         .dash-modules-grid {
-            grid-template-columns: 1fr !important;
-            gap: 0.85rem !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
             margin-bottom: 2rem !important;
         }
 
         .module-card {
-            padding: 1.15rem 1.25rem !important;
-            border-radius: 12px !important;
+            padding: 1.15rem 1rem !important;
+        }
+
+        .module-header {
+            gap: 0.65rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        .module-icon-wrap {
+            width: 40px !important;
+            height: 40px !important;
+            font-size: 1.35rem !important;
+            border-radius: 10px !important;
         }
 
         .module-info h3 {
-            font-size: 1.05rem !important;
+            font-size: 0.95rem !important;
+        }
+
+        .module-badge {
+            font-size: 0.68rem !important;
+            padding: 1px 6px !important;
+        }
+
+        .module-footer {
+            padding-top: 0.5rem !important;
+            font-size: 0.78rem !important;
         }
 
         .login-container {
@@ -454,7 +475,27 @@
 
     @media (max-width: 420px) {
         .dash-stats-grid {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.5rem !important;
+        }
+
+        .dash-modules-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.5rem !important;
+        }
+
+        .module-card {
+            padding: 0.85rem 0.65rem !important;
+        }
+
+        .module-icon-wrap {
+            width: 34px !important;
+            height: 34px !important;
+            font-size: 1.15rem !important;
+        }
+
+        .module-info h3 {
+            font-size: 0.84rem !important;
         }
     }
 </style>
@@ -495,8 +536,7 @@
         <!-- Welcome Hero -->
         <div class="dash-hero-card">
             <div class="dash-hero-text">
-                <h1>
-                    <span>Salam, <span id="dash-welcome-name">Admin</span>!</span>
+                <h1><span>👋</span> <span>Salam, <span id="dash-welcome-name">Admin</span>!</span>
                     <span id="dash-role-badge" class="dash-role-pill role-admin">Admin</span>
                 </h1>
                 <p>
@@ -510,6 +550,7 @@
             <div class="dash-stat-card" data-stat="events">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Active Events</span>
+                    <span class="dash-stat-icon">📅</span>
                 </div>
                 <div class="dash-stat-value" id="stat-events-val">-</div>
                 <div class="dash-stat-sub">Upcoming &amp; Past</div>
@@ -518,6 +559,7 @@
             <div class="dash-stat-card" data-stat="members">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Memberships</span>
+                    <span class="dash-stat-icon">📋</span>
                 </div>
                 <div class="dash-stat-value" id="stat-members-val">-</div>
                 <div class="dash-stat-sub">Registered Students</div>
@@ -526,6 +568,7 @@
             <div class="dash-stat-card" data-stat="jumuah">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Friday Jumu'ah</span>
+                    <span class="dash-stat-icon">🕌</span>
                 </div>
                 <div class="dash-stat-value">2</div>
                 <div class="dash-stat-sub">Bovisa &amp; Leonardo</div>
@@ -534,6 +577,7 @@
             <div class="dash-stat-card" data-stat="questions">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Pending Questions</span>
+                    <span class="dash-stat-icon">❓</span>
                 </div>
                 <div class="dash-stat-value" id="stat-questions-val">-</div>
                 <div class="dash-stat-sub">Awaiting Imam Response</div>
@@ -542,6 +586,7 @@
             <div class="dash-stat-card" data-stat="scanner">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Scanned Products</span>
+                    <span class="dash-stat-icon">🥫</span>
                 </div>
                 <div class="dash-stat-value" id="stat-scanner-val">-</div>
                 <div class="dash-stat-sub">Pending Halal Review</div>
@@ -550,6 +595,7 @@
             <div class="dash-stat-card" data-stat="users" id="card-stat-users" style="display: none;">
                 <div class="dash-stat-header">
                     <span class="dash-stat-title">Portal Admins</span>
+                    <span class="dash-stat-icon">👥</span>
                 </div>
                 <div class="dash-stat-value" id="stat-users-val">-</div>
                 <div class="dash-stat-sub">Authorized Accounts</div>
@@ -558,7 +604,7 @@
 
         <!-- Management Modules Grid -->
         <div class="dash-section-header">
-            <h2>Administration Modules</h2>
+            <h2><span>⚡</span> Administration Modules</h2>
             <p>Access the sections you have been granted permissions to manage.</p>
         </div>
 
@@ -566,6 +612,7 @@
             <!-- Events -->
             <a href="/admin_events" class="module-card" data-module="events">
                 <div class="module-header">
+                    <div class="module-icon-wrap">📅</div>
                     <div class="module-info">
                         <h3>Events &amp; Activities</h3>
                         <span class="module-badge">Events Manager</span>
@@ -580,6 +627,7 @@
             <!-- Members -->
             <a href="/admin_members" class="module-card" data-module="members">
                 <div class="module-header">
+                    <div class="module-icon-wrap">📋</div>
                     <div class="module-info">
                         <h3>Members &amp; Mailing</h3>
                         <span class="module-badge">Membership Manager</span>
@@ -594,6 +642,7 @@
             <!-- Jumuah -->
             <a href="/admin_jumuah" class="module-card" data-module="jumuah">
                 <div class="module-header">
+                    <div class="module-icon-wrap">🕌</div>
                     <div class="module-info">
                         <h3>Friday Jumu'ah Prayers</h3>
                         <span class="module-badge">Prayer Shifts</span>
@@ -608,6 +657,7 @@
             <!-- Questions -->
             <a href="/admin_questions" class="module-card" data-module="questions">
                 <div class="module-header">
+                    <div class="module-icon-wrap">❓</div>
                     <div class="module-info">
                         <h3>Ask an Imam Q&amp;A</h3>
                         <span class="module-badge">Religious Support</span>
@@ -622,6 +672,7 @@
             <!-- Scanner -->
             <a href="/admin_scanner" class="module-card" data-module="scanner">
                 <div class="module-header">
+                    <div class="module-icon-wrap">🔍</div>
                     <div class="module-info">
                         <h3>Scanned Halal Products</h3>
                         <span class="module-badge">Halal Scanner Review</span>
@@ -636,8 +687,9 @@
             <!-- User -->
             <a href="/admin_users" class="module-card" data-module="users">
                 <div class="module-header">
+                    <div class="module-icon-wrap">👥</div>
                     <div class="module-info">
-                        <h3>👥 User</h3>
+                        <h3>User</h3>
                         <span class="module-badge badge-superadmin-only">Superadmin</span>
                     </div>
                 </div>

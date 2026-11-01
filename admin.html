@@ -525,16 +525,18 @@
         }
 
         .tab-pills-bar {
-            flex-direction: column;
-            gap: 0.35rem;
-            padding: 0.4rem;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            gap: 0.4rem !important;
+            padding: 0.35rem !important;
         }
 
         .tab-pill-btn {
-            min-width: 100%;
-            justify-content: space-between;
-            padding: 0.75rem 0.9rem;
-            font-size: 0.9rem;
+            flex: 1 1 calc(50% - 0.4rem) !important;
+            min-width: 130px !important;
+            justify-content: center !important;
+            padding: 0.6rem 0.5rem !important;
+            font-size: 0.82rem !important;
         }
 
         .table-responsive {
@@ -712,18 +714,18 @@
         <!-- Segmented Tab Navigation Bar -->
         <div class="tab-pills-bar">
             <button type="button" class="tab-pill-btn active" data-tab="tab-events">
-                <span>Events Manager</span>
+                <span>📅 Events Manager</span>
                 <span class="tab-pill-badge" id="tab-events-count">0</span>
             </button>
             <button type="button" class="tab-pill-btn" data-tab="tab-attendees">
-                <span>Applications & Attendees</span>
+                <span>📋 Applications & Attendees</span>
                 <span class="tab-pill-badge" id="tab-attendees-count">0</span>
             </button>
             <button type="button" class="tab-pill-btn" data-tab="tab-announcement">
-                <span>Announcement & Mission</span>
+                <span>📢 Announcement & Mission</span>
             </button>
             <button type="button" class="tab-pill-btn" data-tab="tab-gallery">
-                <span>Media Gallery</span>
+                <span>🖼️ Media Gallery</span>
             </button>
         </div>
 

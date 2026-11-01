@@ -225,16 +225,19 @@
         }
 
         .tab-pills-bar {
-            flex-direction: column;
-            gap: 0.35rem;
-            padding: 0.4rem;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            gap: 0.35rem !important;
+            padding: 0.35rem !important;
         }
 
         .tab-pill-btn {
-            min-width: 100%;
-            justify-content: space-between;
-            padding: 0.75rem 0.9rem;
-            font-size: 0.9rem;
+            flex: 1 1 50% !important;
+            min-width: 0 !important;
+            justify-content: center !important;
+            padding: 0.65rem 0.5rem !important;
+            font-size: 0.82rem !important;
+            white-space: nowrap !important;
         }
 
         .fee-settings-card,
@@ -404,11 +407,11 @@
         <!-- Segmented Tab Switcher -->
         <div class="tab-pills-bar">
             <button type="button" class="tab-pill-btn active" id="tab-btn-applications" onclick="switchSubTab('applications')">
-                <span>Membership Applications</span>
+                <span>🎓 Membership Applications</span>
                 <span class="tab-pill-badge" id="count-pill-apps">0</span>
             </button>
             <button type="button" class="tab-pill-btn" id="tab-btn-subscribers" onclick="switchSubTab('subscribers')">
-                <span>Mailing List Subscribers</span>
+                <span>📧 Mailing List Subscribers</span>
                 <span class="tab-pill-badge" id="count-pill-subs">0</span>
             </button>
         </div>
