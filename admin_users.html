@@ -1288,8 +1288,12 @@
                 }
 
                 // Permitted sections block
+                // CRITICAL PRIVACY: If caller is Admin, they can ONLY see permitted sections for Member accounts.
+                // Other admin accounts or superadmin permitted/unpermitted sections are hidden from admin.
                 let permsBlockHtml = '';
-                if (!isSpecialAdminViewingAsmkt) {
+                const shouldHidePermsFromAdmin = isCallerAdmin && (isTargetAdmin || isTargetSuper);
+
+                if (!isSpecialAdminViewingAsmkt && !shouldHidePermsFromAdmin) {
                     let userAllowed = userObj.allowed_pages || [];
                     if (isTargetSuper) {
                         userAllowed = ['events', 'members', 'jumuah', 'questions', 'scanner', 'users'];
