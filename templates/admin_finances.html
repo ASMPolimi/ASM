@@ -1,0 +1,1214 @@
+{% extends "admin_base.html" %}
+{% set active_page = 'finances' %}
+
+{% block title %}Financial Tracking & Auditing — ASM POLIMI Admin Portal{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Financial Portal Styling */
+    .fin-container {
+        max-width: 1280px;
+        margin: 2rem auto 4rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .fin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    .fin-title-group h1 {
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: var(--color-primary);
+        margin: 0 0 0.4rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+    }
+
+    .fin-title-group p {
+        color: #64748b;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    .fin-actions-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    /* KPI Summary Cards */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    .kpi-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 1.35rem 1.5rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .kpi-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .kpi-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.6rem;
+    }
+
+    .kpi-card-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .kpi-icon-wrap {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+    }
+
+    .kpi-value {
+        font-size: 1.85rem;
+        font-weight: 800;
+        margin: 0 0 0.35rem 0;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .kpi-subtext {
+        font-size: 0.82rem;
+        color: #94a3b8;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    /* Specific KPI card styles */
+    .kpi-balance { border-top: 4px solid var(--color-primary); }
+    .kpi-balance .kpi-icon-wrap { background: rgba(18, 74, 97, 0.1); color: var(--color-primary); }
+    
+    .kpi-income { border-top: 4px solid #16a34a; }
+    .kpi-income .kpi-icon-wrap { background: #dcfce7; color: #16a34a; }
+    .kpi-income .kpi-value { color: #16a34a; }
+
+    .kpi-outcome { border-top: 4px solid #dc2626; }
+    .kpi-outcome .kpi-icon-wrap { background: #fee2e2; color: #dc2626; }
+    .kpi-outcome .kpi-value { color: #dc2626; }
+
+    .kpi-reimburse { border-top: 4px solid #d97706; }
+    .kpi-reimburse .kpi-icon-wrap { background: #fef3c7; color: #d97706; }
+    .kpi-reimburse .kpi-value { color: #d97706; }
+
+    /* Filters & Search Toolbar */
+    .toolbar-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin-bottom: 1.5rem;
+    }
+
+    .toolbar-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr auto;
+        gap: 0.85rem;
+        align-items: center;
+    }
+
+    @media (max-width: 992px) {
+        .toolbar-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .toolbar-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .input-field, .select-field {
+        width: 100%;
+        padding: 0.65rem 0.85rem;
+        border-radius: 8px;
+        border: 1.5px solid #cbd5e1;
+        font-size: 0.9rem;
+        background: #ffffff;
+        color: #1e293b;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+    }
+
+    .input-field:focus, .select-field:focus {
+        border-color: var(--color-primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(18, 74, 97, 0.15);
+    }
+
+    /* Table Container */
+    .table-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+
+    .table-header-bar {
+        padding: 1rem 1.5rem;
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .table-header-title {
+        font-weight: 700;
+        color: #334155;
+        font-size: 0.98rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88rem;
+        text-align: left;
+    }
+
+    .data-table th {
+        background: #f1f5f9;
+        color: #475569;
+        font-weight: 700;
+        padding: 0.85rem 1rem;
+        border-bottom: 2px solid #e2e8f0;
+        white-space: nowrap;
+    }
+
+    .data-table td {
+        padding: 0.9rem 1rem;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+        color: #334155;
+    }
+
+    .data-table tbody tr:hover {
+        background: #f8fafc;
+    }
+
+    /* Badges & Tags */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.25rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .badge-income {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+
+    .badge-outcome {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+
+    .badge-cat {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+        text-transform: capitalize;
+    }
+
+    .badge-cat-events { background: #ede9fe; color: #5b21b6; border-color: #ddd6fe; }
+    .badge-cat-logistics { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+    .badge-cat-membership { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .badge-cat-it { background: #e0e7ff; color: #3730a3; border-color: #c7d2fe; }
+    .badge-cat-merchandise { background: #fce7f3; color: #9d174d; border-color: #fbcfe8; }
+    .badge-cat-other { background: #f1f5f9; color: #475569; border-color: #e2e8f0; }
+
+    .badge-reimb-pending {
+        background: #fef3c7;
+        color: #b45309;
+        border: 1px solid #fde68a;
+        cursor: pointer;
+    }
+
+    .badge-reimb-done {
+        background: #dcfce7;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+        cursor: pointer;
+    }
+
+    .badge-reimb-na {
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1px solid #e2e8f0;
+    }
+
+    .btn-receipt {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 6px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .btn-receipt:hover {
+        background: #1d4ed8;
+        color: #ffffff;
+    }
+
+    .btn-no-receipt {
+        color: #94a3b8;
+        font-size: 0.8rem;
+        font-style: italic;
+    }
+
+    .table-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .btn-action-icon {
+        background: none;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #64748b;
+        transition: all 0.15s;
+    }
+
+    .btn-action-icon:hover {
+        background: #f1f5f9;
+        color: var(--color-primary);
+        border-color: #cbd5e1;
+    }
+
+    .btn-action-delete:hover {
+        background: #fee2e2;
+        color: #dc2626;
+        border-color: #fca5a5;
+    }
+
+    /* Modal Styling */
+    .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .modal-card {
+        background: #ffffff;
+        border-radius: 14px;
+        width: 100%;
+        max-width: 620px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        border: 1px solid #e2e8f0;
+        padding: 1.75rem;
+        position: relative;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .modal-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--color-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .modal-close-btn {
+        background: none;
+        border: none;
+        font-size: 1.4rem;
+        color: #94a3b8;
+        cursor: pointer;
+        line-height: 1;
+        border-radius: 6px;
+        padding: 0.25rem;
+    }
+
+    .modal-close-btn:hover {
+        color: #334155;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 580px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 0.35rem;
+    }
+
+    .form-group label .req {
+        color: #dc2626;
+    }
+
+    .form-hint {
+        font-size: 0.78rem;
+        color: #64748b;
+        margin-top: 0.25rem;
+    }
+
+    /* Type Segmented Radio Buttons */
+    .type-toggle-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        background: #f1f5f9;
+        padding: 0.35rem;
+        border-radius: 8px;
+        margin-bottom: 1.25rem;
+    }
+
+    .type-toggle-btn {
+        padding: 0.65rem;
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.92rem;
+        border: none;
+        background: none;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #64748b;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+
+    .type-toggle-btn.active-income {
+        background: #ffffff;
+        color: #166534;
+        box-shadow: 0 2px 6px rgba(22, 101, 52, 0.15);
+    }
+
+    .type-toggle-btn.active-outcome {
+        background: #ffffff;
+        color: #dc2626;
+        box-shadow: 0 2px 6px rgba(220, 38, 38, 0.15);
+    }
+
+    /* Toast Notification */
+    .toast-box {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 999999;
+        padding: 0.85rem 1.35rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .toast-success { background: #dcfce7; color: #166534; border: 1.5px solid #86efac; }
+    .toast-error { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 3.5rem 1.5rem;
+        color: #64748b;
+    }
+
+    .empty-state-icon {
+        font-size: 2.75rem;
+        margin-bottom: 0.75rem;
+        opacity: 0.7;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="fin-container">
+    <!-- Header -->
+    <div class="fin-header">
+        <div class="fin-title-group">
+            <h1><span>💰</span> Financial Tracking & Auditing</h1>
+            <p>Track association income, expenses, destinations, spenders, reimbursements & digital receipts.</p>
+        </div>
+        <div class="fin-actions-group">
+            <button type="button" class="btn btn-secondary" onclick="exportFinancesToExcel()" title="Export transaction history to Excel">
+                <span>📥</span> Export Excel
+            </button>
+            <button type="button" class="btn btn-primary" onclick="openAddTransactionModal()" style="font-weight: 700;">
+                <span>➕</span> New Transaction
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI Metric Summary Cards -->
+    <div class="kpi-grid">
+        <div class="kpi-card kpi-balance">
+            <div class="kpi-card-header">
+                <span class="kpi-card-title">Net Balance</span>
+                <div class="kpi-icon-wrap">💳</div>
+            </div>
+            <div class="kpi-value" id="kpi-balance-val">€0.00</div>
+            <div class="kpi-subtext" id="kpi-balance-sub">Total Income minus Outflow</div>
+        </div>
+
+        <div class="kpi-card kpi-income">
+            <div class="kpi-card-header">
+                <span class="kpi-card-title">Total Income</span>
+                <div class="kpi-icon-wrap">📈</div>
+            </div>
+            <div class="kpi-value" id="kpi-income-val">+€0.00</div>
+            <div class="kpi-subtext">All-time revenue / collections</div>
+        </div>
+
+        <div class="kpi-card kpi-outcome">
+            <div class="kpi-card-header">
+                <span class="kpi-card-title">Total Outflow</span>
+                <div class="kpi-icon-wrap">📉</div>
+            </div>
+            <div class="kpi-value" id="kpi-outcome-val">-€0.00</div>
+            <div class="kpi-subtext">Total association expenses</div>
+        </div>
+
+        <div class="kpi-card kpi-reimburse">
+            <div class="kpi-card-header">
+                <span class="kpi-card-title">Pending Reimbursements</span>
+                <div class="kpi-icon-wrap">⏳</div>
+            </div>
+            <div class="kpi-value" id="kpi-reimb-val">€0.00</div>
+            <div class="kpi-subtext" id="kpi-reimb-count">0 expenses pending payout</div>
+        </div>
+    </div>
+
+    <!-- Filters & Search Toolbar -->
+    <div class="toolbar-card">
+        <div class="toolbar-grid">
+            <div>
+                <input type="text" id="search-input" class="input-field" placeholder="🔍 Search description, spender, vendor, notes..." oninput="handleSearchInput()">
+            </div>
+            <div>
+                <select id="filter-type" class="select-field" onchange="fetchTransactions()">
+                    <option value="all">All Types (Income & Outflow)</option>
+                    <option value="income">📈 Income Only (+)</option>
+                    <option value="outcome">📉 Outflow Only (-)</option>
+                </select>
+            </div>
+            <div>
+                <select id="filter-category" class="select-field" onchange="fetchTransactions()">
+                    <option value="all">All Categories</option>
+                    <option value="Events">Events</option>
+                    <option value="Logistics">Logistics</option>
+                    <option value="Membership">Membership</option>
+                    <option value="IT">IT</option>
+                    <option value="Merchandise">Merchandise</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div>
+                <select id="filter-reimburse" class="select-field" onchange="fetchTransactions()">
+                    <option value="all">All Reimbursement Statuses</option>
+                    <option value="pending">⏳ Pending Reimbursement</option>
+                    <option value="reimbursed">✅ Reimbursed</option>
+                    <option value="not_applicable">⚪ Settled / N/A</option>
+                </select>
+            </div>
+            <div>
+                <button type="button" class="btn btn-secondary" onclick="resetFilters()" style="width: 100%; white-space: nowrap;">
+                    Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transactions Data Table -->
+    <div class="table-card">
+        <div class="table-header-bar">
+            <h3 class="table-header-title">
+                <span>📑</span> Transaction History
+                <span id="trans-count-badge" class="badge" style="background: #e2e8f0; color: #475569; font-size: 0.75rem;">0 Records</span>
+            </h3>
+            <div style="font-size: 0.85rem; color: #64748b;">
+                Showing sorted by most recent date
+            </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 110px;">Date</th>
+                        <th style="width: 95px;">Type</th>
+                        <th>Description / Purpose</th>
+                        <th>Where Spent (Vendor)</th>
+                        <th>Category</th>
+                        <th>Who Spent / Handled</th>
+                        <th>Reimbursement</th>
+                        <th style="text-align: right;">Amount</th>
+                        <th style="text-align: center; width: 130px;">Receipt</th>
+                        <th style="text-align: right; width: 85px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="transactions-tbody">
+                    <tr>
+                        <td colspan="10" class="empty-state">
+                            <div class="empty-state-icon">⌛</div>
+                            <p style="margin: 0;">Loading transactions...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add / Edit Transaction Modal -->
+<div id="trans-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 id="modal-title"><span>➕</span> New Financial Transaction</h3>
+            <button type="button" class="modal-close-btn" onclick="closeTransactionModal()">✕</button>
+        </div>
+
+        <form id="trans-form" onsubmit="submitTransactionForm(event)">
+            <input type="hidden" id="form-trans-id" value="">
+
+            <!-- Type Selector -->
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.4rem;">
+                Transaction Type <span class="req">*</span>
+            </label>
+            <div class="type-toggle-group">
+                <button type="button" id="btn-toggle-income" class="type-toggle-btn" onclick="setFormType('income')">
+                    <span>📈</span> Income (+)
+                </button>
+                <button type="button" id="btn-toggle-outcome" class="type-toggle-btn active-outcome" onclick="setFormType('outcome')">
+                    <span>📉</span> Outflow / Expense (-)
+                </button>
+            </div>
+            <input type="hidden" id="form-type" value="outcome">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="form-amount">Amount (€) <span class="req">*</span></label>
+                    <input type="number" id="form-amount" class="input-field" step="0.01" min="0.01" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="form-date">Transaction Date <span class="req">*</span></label>
+                    <input type="date" id="form-date" class="input-field" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="form-title">Description / What was it for? <span class="req">*</span></label>
+                <input type="text" id="form-title" class="input-field" required placeholder="e.g. Snacks and drinks for Welcome Day, Microphone adapter">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="form-where-spent">Where has it been spent? (Vendor / Store)</label>
+                    <input type="text" id="form-where-spent" class="input-field" placeholder="e.g. Carrefour Bovisa, Amazon.it, Print Shop">
+                    <span class="form-hint">Destination, store, or payer for income</span>
+                </div>
+                <div class="form-group">
+                    <label for="form-spent-by">Who spent it? (Payer / Spender) <span class="req">*</span></label>
+                    <input type="text" id="form-spent-by" class="input-field" required placeholder="e.g. Ahmad, Fatima, ASM Board">
+                    <span class="form-hint">Person who paid or received the money</span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="form-category">Category <span class="req">*</span></label>
+                    <select id="form-category" class="select-field" required>
+                        <option value="Events">Events</option>
+                        <option value="Logistics">Logistics</option>
+                        <option value="Membership">Membership</option>
+                        <option value="IT">IT</option>
+                        <option value="Merchandise">Merchandise</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="form-payment-method">Payment Method</label>
+                    <select id="form-payment-method" class="select-field">
+                        <option value="Cash">Cash</option>
+                        <option value="Bank Transfer / IBAN">Bank Transfer / IBAN</option>
+                        <option value="Card">Credit / Debit Card</option>
+                        <option value="Satispay">Satispay</option>
+                        <option value="PayPal">PayPal</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Reimbursement Tracking -->
+            <div class="form-group">
+                <label for="form-reimbursement">Reimbursement Tracking Flag</label>
+                <select id="form-reimbursement" class="select-field">
+                    <option value="not_applicable">⚪ Not Applicable / Settled directly from ASM Funds</option>
+                    <option value="pending">⏳ Needs Reimbursement (Paid out-of-pocket by member)</option>
+                    <option value="reimbursed">✅ Reimbursed (Association already paid back member)</option>
+                </select>
+                <span class="form-hint">Use to keep track of students who paid from their own money awaiting repayment.</span>
+            </div>
+
+            <!-- External Receipt Link -->
+            <div class="form-group">
+                <label for="form-receipt-url">Receipt Link (Google Drive / Cloud URL)</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="url" id="form-receipt-url" class="input-field" placeholder="https://drive.google.com/file/d/... or web link">
+                    <button type="button" class="btn btn-secondary" onclick="testReceiptUrl()" style="white-space: nowrap; padding: 0.5rem 0.85rem;" title="Test open link">
+                        Test ↗
+                    </button>
+                </div>
+                <span class="form-hint">Paste Google Drive shareable link, OneDrive, or document photo link.</span>
+            </div>
+
+            <!-- Notes -->
+            <div class="form-group">
+                <label for="form-notes">Additional Notes / Details</label>
+                <textarea id="form-notes" class="input-field" rows="2" placeholder="Optional context, invoice number, or justification..."></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9;">
+                <button type="button" class="btn btn-secondary" onclick="closeTransactionModal()">Cancel</button>
+                <button type="submit" id="btn-save-trans" class="btn btn-primary" style="font-weight: 700; padding: 0.65rem 1.5rem;">
+                    Save Transaction
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card" style="max-width: 440px; text-align: center;">
+        <div style="font-size: 2.75rem; margin-bottom: 0.5rem;">⚠️</div>
+        <h3 style="color: #991b1b; margin-bottom: 0.5rem; font-size: 1.25rem;">Delete Transaction?</h3>
+        <p style="color: #64748b; font-size: 0.92rem; margin-bottom: 1.5rem; line-height: 1.5;">
+            Are you sure you want to permanently delete this financial record? This action cannot be undone.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+            <button type="button" id="btn-confirm-delete" class="btn" onclick="executeDeleteTransaction()" style="background: #dc2626; color: white; border: none; font-weight: 700; padding: 0.65rem 1.5rem; border-radius: 8px;">
+                Yes, Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Box Container -->
+<div id="toast" class="toast-box" style="display: none;"></div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let currentTransactions = [];
+    let deleteTargetId = null;
+    let searchDebounceTimer = null;
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        // Set today as default date in form
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('form-date');
+        if (dateInput) dateInput.value = today;
+
+        fetchTransactions();
+    });
+
+    // Helper: Toast Notifications
+    function showToast(message, isError = false) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = (isError ? '⚠️ ' : '✓ ') + message;
+        toast.className = 'toast-box ' + (isError ? 'toast-error' : 'toast-success');
+        toast.style.display = 'flex';
+        toast.style.opacity = '1';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => { toast.style.display = 'none'; }, 300);
+        }, 3000);
+    }
+
+    // Helper: Auth Token
+    function getAuthHeaders() {
+        const token = localStorage.getItem('adminToken') || '';
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        };
+    }
+
+    // Fetch and render transactions list
+    async function fetchTransactions() {
+        const token = localStorage.getItem('adminToken');
+        if (!token) return;
+
+        const typeFilter = document.getElementById('filter-type').value;
+        const catFilter = document.getElementById('filter-category').value;
+        const reimbFilter = document.getElementById('filter-reimburse').value;
+        const searchVal = document.getElementById('search-input').value.trim();
+
+        let url = `/api/finances?type=${encodeURIComponent(typeFilter)}&category=${encodeURIComponent(catFilter)}&reimbursement=${encodeURIComponent(reimbFilter)}&q=${encodeURIComponent(searchVal)}`;
+
+        try {
+            const res = await fetch(url, { headers: getAuthHeaders() });
+            if (!res.ok) {
+                if (res.status === 401 || res.status === 403) {
+                    showToast('Access restricted or unauthorized', true);
+                }
+                return;
+            }
+
+            const data = await res.json();
+            if (data.success) {
+                currentTransactions = data.transactions || [];
+                renderKPIs(data.summary || {});
+                renderTable(currentTransactions);
+            } else {
+                showToast(data.message || 'Failed to load finances', true);
+            }
+        } catch (err) {
+            console.error('Fetch finances error:', err);
+            showToast('Network error loading finances', true);
+        }
+    }
+
+    // Search input debounce
+    function handleSearchInput() {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
+            fetchTransactions();
+        }, 300);
+    }
+
+    function resetFilters() {
+        document.getElementById('search-input').value = '';
+        document.getElementById('filter-type').value = 'all';
+        document.getElementById('filter-category').value = 'all';
+        document.getElementById('filter-reimburse').value = 'all';
+        fetchTransactions();
+    }
+
+    // Render KPI Cards
+    function renderKPIs(summary) {
+        const balEl = document.getElementById('kpi-balance-val');
+        const incEl = document.getElementById('kpi-income-val');
+        const outEl = document.getElementById('kpi-outcome-val');
+        const reimbEl = document.getElementById('kpi-reimb-val');
+        const reimbCountEl = document.getElementById('kpi-reimb-count');
+
+        const bal = summary.net_balance !== undefined ? summary.net_balance : 0;
+        const inc = summary.total_income !== undefined ? summary.total_income : 0;
+        const out = summary.total_outcome !== undefined ? summary.total_outcome : 0;
+        const reimb = summary.pending_reimbursements_total !== undefined ? summary.pending_reimbursements_total : 0;
+        const reimbCount = summary.pending_reimbursements_count !== undefined ? summary.pending_reimbursements_count : 0;
+
+        const formatEUR = (val) => '€' + Number(Math.abs(val)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        if (balEl) {
+            const sign = bal >= 0 ? '+' : '-';
+            balEl.textContent = sign + formatEUR(bal);
+            balEl.style.color = bal >= 0 ? '#16a34a' : '#dc2626';
+        }
+
+        if (incEl) incEl.textContent = '+' + formatEUR(inc);
+        if (outEl) outEl.textContent = '-' + formatEUR(out);
+        if (reimbEl) reimbEl.textContent = formatEUR(reimb);
+        if (reimbCountEl) reimbCountEl.textContent = `${reimbCount} expense${reimbCount === 1 ? '' : 's'} pending repayment`;
+    }
+
+    // Render Data Table
+    function renderTable(items) {
+        const tbody = document.getElementById('transactions-tbody');
+        const countBadge = document.getElementById('trans-count-badge');
+        if (countBadge) countBadge.textContent = `${items.length} Record${items.length === 1 ? '' : 's'}`;
+
+        if (!items || items.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="10" class="empty-state">
+                        <div class="empty-state-icon">💸</div>
+                        <h4 style="margin: 0 0 0.35rem 0; color: #475569;">No transactions found</h4>
+                        <p style="margin: 0; font-size: 0.88rem;">Try clearing your filters or click "+ New Transaction" to record income or expenses.</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        const canDelete = localStorage.getItem('adminCanDelete') === 'true';
+
+        let html = '';
+        items.forEach(t => {
+            const isIncome = t.type === 'income';
+            const typeBadge = isIncome
+                ? `<span class="badge badge-income">📈 + Income</span>`
+                : `<span class="badge badge-outcome">📉 - Outflow</span>`;
+
+            const catClass = 'badge-cat-' + (t.category || 'other').toLowerCase();
+            const catBadge = `<span class="badge badge-cat ${catClass}">${t.category || 'Other'}</span>`;
+
+            let reimbBadge = '';
+            if (t.reimbursement_status === 'pending') {
+                reimbBadge = `<span class="badge badge-reimb-pending" onclick="toggleReimbursementStatus(${t.id}, 'reimbursed')" title="Click to mark as Reimbursed">⏳ Pending</span>`;
+            } else if (t.reimbursement_status === 'reimbursed') {
+                reimbBadge = `<span class="badge badge-reimb-done" onclick="toggleReimbursementStatus(${t.id}, 'pending')" title="Click to mark as Pending">✅ Reimbursed</span>`;
+            } else {
+                reimbBadge = `<span class="badge badge-reimb-na">⚪ N/A</span>`;
+            }
+
+            const amountSign = isIncome ? '+' : '-';
+            const amountColor = isIncome ? '#16a34a' : '#dc2626';
+            const amountFormatted = `${amountSign}€${Number(t.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            let receiptHtml = '';
+            if (t.receipt_url && t.receipt_url.trim()) {
+                receiptHtml = `<a href="${encodeURI(t.receipt_url)}" target="_blank" rel="noopener noreferrer" class="btn-receipt" title="Open receipt proof in a new tab">
+                    <span>🧾</span> Receipt ↗
+                </a>`;
+            } else {
+                receiptHtml = `<span class="btn-no-receipt">— None</span>`;
+            }
+
+            const whereSpentText = t.where_spent ? `<span style="font-size: 0.82rem; color: #64748b; display: block;">📍 ${escapeHtml(t.where_spent)}</span>` : '';
+            const notesText = t.notes ? `<span style="font-size: 0.78rem; color: #94a3b8; display: block; font-style: italic;">“${escapeHtml(t.notes)}”</span>` : '';
+
+            const deleteBtnHtml = canDelete ? `
+                <button type="button" class="btn-action-icon btn-action-delete" onclick="openDeleteModal(${t.id})" title="Delete Transaction">
+                    🗑️
+                </button>
+            ` : '';
+
+            html += `
+                <tr>
+                    <td style="font-weight: 600; white-space: nowrap; color: #475569;">${t.date}</td>
+                    <td>${typeBadge}</td>
+                    <td>
+                        <div style="font-weight: 700; color: #1e293b;">${escapeHtml(t.title)}</div>
+                        ${notesText}
+                    </td>
+                    <td>${whereSpentText || '<span style="color: #cbd5e1;">—</span>'}</td>
+                    <td>${catBadge}</td>
+                    <td>
+                        <div style="font-weight: 600; color: #334155;">${escapeHtml(t.spent_by)}</div>
+                        <span style="font-size: 0.75rem; color: #94a3b8;">${escapeHtml(t.payment_method || 'Cash')}</span>
+                    </td>
+                    <td>${reimbBadge}</td>
+                    <td style="text-align: right; font-weight: 800; font-size: 0.95rem; color: ${amountColor}; font-family: 'Outfit', sans-serif;">
+                        ${amountFormatted}
+                    </td>
+                    <td style="text-align: center;">${receiptHtml}</td>
+                    <td style="text-align: right;">
+                        <div class="table-actions">
+                            <button type="button" class="btn-action-icon" onclick="openEditTransactionModal(${t.id})" title="Edit Transaction">
+                                ✏️
+                            </button>
+                            ${deleteBtnHtml}
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = html;
+    }
+
+    // Modal Control: Add
+    function openAddTransactionModal() {
+        document.getElementById('form-trans-id').value = '';
+        document.getElementById('modal-title').innerHTML = `<span>➕</span> New Financial Transaction`;
+        document.getElementById('form-amount').value = '';
+        document.getElementById('form-title').value = '';
+        document.getElementById('form-where-spent').value = '';
+        document.getElementById('form-spent-by').value = localStorage.getItem('adminUsername') || '';
+        document.getElementById('form-category').value = 'Events';
+        document.getElementById('form-payment-method').value = 'Cash';
+        document.getElementById('form-reimbursement').value = 'not_applicable';
+        document.getElementById('form-receipt-url').value = '';
+        document.getElementById('form-notes').value = '';
+
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('form-date').value = today;
+
+        setFormType('outcome');
+        document.getElementById('trans-modal').style.display = 'flex';
+    }
+
+    // Modal Control: Edit
+    function openEditTransactionModal(id) {
+        const item = currentTransactions.find(t => t.id === id);
+        if (!item) return;
+
+        document.getElementById('form-trans-id').value = item.id;
+        document.getElementById('modal-title').innerHTML = `<span>✏️</span> Edit Transaction #${item.id}`;
+        document.getElementById('form-amount').value = item.amount;
+        document.getElementById('form-date').value = item.date;
+        document.getElementById('form-title').value = item.title;
+        document.getElementById('form-where-spent').value = item.where_spent || '';
+        document.getElementById('form-spent-by').value = item.spent_by;
+        document.getElementById('form-category').value = item.category || 'Other';
+        document.getElementById('form-payment-method').value = item.payment_method || 'Cash';
+        document.getElementById('form-reimbursement').value = item.reimbursement_status || 'not_applicable';
+        document.getElementById('form-receipt-url').value = item.receipt_url || '';
+        document.getElementById('form-notes').value = item.notes || '';
+
+        setFormType(item.type || 'outcome');
+        document.getElementById('trans-modal').style.display = 'flex';
+    }
+
+    function closeTransactionModal() {
+        document.getElementById('trans-modal').style.display = 'none';
+    }
+
+    // Toggle Income vs Outcome in Modal
+    function setFormType(type) {
+        const formTypeInput = document.getElementById('form-type');
+        const btnIncome = document.getElementById('btn-toggle-income');
+        const btnOutcome = document.getElementById('btn-toggle-outcome');
+        const reimbGroup = document.getElementById('form-reimbursement');
+
+        formTypeInput.value = type;
+
+        if (type === 'income') {
+            btnIncome.className = 'type-toggle-btn active-income';
+            btnOutcome.className = 'type-toggle-btn';
+            // Income rarely needs reimbursement
+            if (reimbGroup && reimbGroup.value === 'pending') {
+                reimbGroup.value = 'not_applicable';
+            }
+        } else {
+            btnIncome.className = 'type-toggle-btn';
+            btnOutcome.className = 'type-toggle-btn active-outcome';
+        }
+    }
+
+    // Submit Transaction (Create or Update)
+    async function submitTransactionForm(e) {
+        e.preventDefault();
+        const saveBtn = document.getElementById('btn-save-trans');
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+
+        const transId = document.getElementById('form-trans-id').value;
+        const payload = {
+            type: document.getElementById('form-type').value,
+            amount: parseFloat(document.getElementById('form-amount').value),
+            date: document.getElementById('form-date').value,
+            title: document.getElementById('form-title').value.trim(),
+            where_spent: document.getElementById('form-where-spent').value.trim(),
+            spent_by: document.getElementById('form-spent-by').value.trim(),
+            category: document.getElementById('form-category').value,
+            payment_method: document.getElementById('form-payment-method').value,
+            reimbursement_status: document.getElementById('form-reimbursement').value,
+            receipt_url: document.getElementById('form-receipt-url').value.trim(),
+            notes: document.getElementById('form-notes').value.trim()
+        };
+
+        const isEdit = !!transId;
+        const endpoint = isEdit ? `/api/finances/${transId}` : '/api/finances';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        try {
+            const res = await fetch(endpoint, {
+                method: method,
+                headers: getAuthHeaders(),
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message || (isEdit ? 'Transaction updated!' : 'Transaction created!'));
+                closeTransactionModal();
+                fetchTransactions();
+            } else {
+                showToast(data.message || 'Failed to save transaction', true);
+            }
+        } catch (err) {
+            console.error('Save transaction error:', err);
+            showToast('Server error while saving transaction', true);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save Transaction';
+        }
+    }
+
+    // Quick Toggle Reimbursement Status from Table
+    async function toggleReimbursementStatus(id, targetStatus) {
+        try {
+            const res = await fetch('/api/finances/toggle-reimbursement', {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ id: id, reimbursement_status: targetStatus })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(`Status updated to ${targetStatus === 'reimbursed' ? 'Reimbursed' : 'Pending'}`);
+                fetchTransactions();
+            } else {
+                showToast(data.message || 'Failed to update reimbursement status', true);
+            }
+        } catch (err) {
+            showToast('Network error updating reimbursement', true);
+        }
+    }
+
+    // Test Receipt URL button
+    function testReceiptUrl() {
+        const url = document.getElementById('form-receipt-url').value.trim();
+        if (!url) {
+            alert('Please paste a receipt URL first.');
+            return;
+        }
+        window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    // Delete Modal & Action
+    function openDeleteModal(id) {
+        deleteTargetId = id;
+        document.getElementById('delete-modal').style.display = 'flex';
+    }
+
+    function closeDeleteModal() {
+        deleteTargetId = null;
+        document.getElementById('delete-modal').style.display = 'none';
+    }
+
+    async function executeDeleteTransaction() {
+        if (!deleteTargetId) return;
+        const btn = document.getElementById('btn-confirm-delete');
+        btn.disabled = true;
+        btn.textContent = 'Deleting...';
+
+        try {
+            const res = await fetch(`/api/finances/${deleteTargetId}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('Transaction deleted successfully');
+                closeDeleteModal();
+                fetchTransactions();
+            } else {
+                showToast(data.message || 'Failed to delete transaction', true);
+            }
+        } catch (err) {
+            showToast('Server error deleting transaction', true);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Yes, Delete';
+        }
+    }
+
+    // Export to Excel
+    function exportFinancesToExcel() {
+        const token = localStorage.getItem('adminToken') || '';
+        window.location.href = `/api/finances/export?token=${encodeURIComponent(token)}`;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+</script>
+{% endblock %}

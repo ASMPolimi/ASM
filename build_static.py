@@ -108,6 +108,7 @@ template_names = [
     'admin_questions.html',
     'admin_scanner.html',
     'admin_users.html',
+    'admin_finances.html',
     'privacy.html',
     'terms.html',
     'cookies.html',

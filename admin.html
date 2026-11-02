@@ -613,6 +613,9 @@
                 <a href="/admin_members" data-page="members" class="admin-link ">
                     <span>📋</span> Members & Mailing
                 </a>
+                <a href="/admin_finances" data-page="finances" class="admin-link ">
+                    <span>💰</span> Finances
+                </a>
                 <a href="/admin_jumuah" data-page="jumuah" class="admin-link ">
                     <span>🕌</span> Jumu'ah
                 </a>
@@ -1133,7 +1136,7 @@
                 }
 
                 if (currentRole === 'superadmin') {
-                    allowedPages = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users', 'all'];
+                    allowedPages = ['dashboard', 'events', 'members', 'finances', 'jumuah', 'questions', 'scanner', 'users', 'all'];
                 } else if (currentRole === 'admin') {
                     if (rawPages) {
                         try {
@@ -1158,7 +1161,7 @@
                     }
                     if (!allowedPages.includes('dashboard')) allowedPages.unshift('dashboard');
                     // STRICT: members can NEVER access members, questions, or users
-                    allowedPages = allowedPages.filter(p => !['members', 'questions', 'users', 'all'].includes(p));
+                    allowedPages = allowedPages.filter(p => !['members', 'questions', 'users', 'finances', 'all'].includes(p));
                 } else {
                     allowedPages = ['dashboard'];
                 }
@@ -1168,7 +1171,7 @@
                     const page = link.getAttribute('data-page');
                     if (currentRole === 'superadmin') {
                         link.style.display = '';
-                    } else if (currentRole === 'member' && ['members', 'questions', 'users'].includes(page)) {
+                    } else if (currentRole === 'member' && ['members', 'questions', 'users', 'finances'].includes(page)) {
                         link.style.display = 'none';
                     } else if (allowedPages.includes(page) || allowedPages.includes('all')) {
                         link.style.display = '';
@@ -1183,7 +1186,7 @@
                 if (token && currentRole && currentRole !== 'superadmin' && activePage && activePage !== 'dashboard') {
                     let hasAccess = false;
                     if (currentRole === 'member') {
-                        hasAccess = !['members', 'questions', 'users'].includes(activePage) && allowedPages.includes(activePage);
+                        hasAccess = !['members', 'questions', 'users', 'finances'].includes(activePage) && allowedPages.includes(activePage);
                     } else if (currentRole === 'admin') {
                         hasAccess = allowedPages.includes(activePage) || allowedPages.includes('all') || activePage === 'users';
                     }
@@ -1247,6 +1250,7 @@
                 'dashboard': '/admin',
                 'events': '/admin_events',
                 'members': '/admin_members',
+                'finances': '/admin_finances',
                 'jumuah': '/admin_jumuah',
                 'questions': '/admin_questions',
                 'scanner': '/admin_scanner',

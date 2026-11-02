@@ -297,6 +297,55 @@ def init_db():
     except Exception:
         pass
 
+    # Finances table
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS finances (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            type TEXT NOT NULL,
+            amount REAL NOT NULL,
+            category TEXT NOT NULL,
+            title TEXT NOT NULL,
+            where_spent TEXT DEFAULT '',
+            spent_by TEXT NOT NULL,
+            payment_method TEXT DEFAULT 'Cash',
+            reimbursement_status TEXT DEFAULT 'not_applicable',
+            receipt_url TEXT DEFAULT '',
+            notes TEXT DEFAULT '',
+            created_by TEXT DEFAULT '',
+            date TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    try:
+        c.execute("CREATE INDEX IF NOT EXISTS idx_finances_date ON finances (date DESC)")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE finances ADD COLUMN reimbursement_status TEXT DEFAULT 'not_applicable'")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE finances ADD COLUMN where_spent TEXT DEFAULT ''")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE finances ADD COLUMN receipt_url TEXT DEFAULT ''")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE finances ADD COLUMN notes TEXT DEFAULT ''")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE finances ADD COLUMN created_by TEXT DEFAULT ''")
+    except Exception:
+        pass
+    try:
+        c.execute("ALTER TABLE finances ADD COLUMN payment_method TEXT DEFAULT 'Cash'")
+    except Exception:
+        pass
+
+
     conn.commit()
     conn.close()
 
@@ -331,6 +380,11 @@ def admin_dashboard_page():
 @app.route('/admin_events.html')
 def admin_events_page():
     return render_template('admin.html')
+
+@app.route('/admin_finances')
+@app.route('/admin_finances.html')
+def admin_finances_page():
+    return render_template('admin_finances.html')
 
 @app.route('/favicon.ico')
 def favicon():
@@ -432,7 +486,7 @@ def get_user_data(token):
 
     raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
     if role == 'superadmin' or raw_pages == 'all':
-        pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
+        pages_list = ['dashboard', 'events', 'members', 'finances', 'jumuah', 'questions', 'scanner', 'users']
     else:
         try:
             pages_list = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
@@ -443,7 +497,7 @@ def get_user_data(token):
             
     # CRITICAL 3-Tier Security: Members can NEVER access members, questions, or users
     if role == 'member':
-        pages_list = [p for p in pages_list if p not in ('members', 'questions', 'users')]
+        pages_list = [p for p in pages_list if p not in ('members', 'questions', 'users', 'finances')]
         
     return {
         'id': row['id'],
@@ -489,7 +543,7 @@ def login():
 
         raw_pages = row['allowed_pages'] if 'allowed_pages' in row.keys() and row['allowed_pages'] else 'all'
         if role == 'superadmin' or raw_pages == 'all':
-            pages_list = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users']
+            pages_list = ['dashboard', 'events', 'members', 'finances', 'jumuah', 'questions', 'scanner', 'users']
         else:
             try:
                 pages_list = json.loads(raw_pages) if str(raw_pages).startswith('[') else [p.strip() for p in str(raw_pages).split(',') if p.strip()]
@@ -500,7 +554,7 @@ def login():
                 
         # Members can never have members, questions, or users
         if role == 'member':
-            pages_list = [p for p in pages_list if p not in ('members', 'questions', 'users')]
+            pages_list = [p for p in pages_list if p not in ('members', 'questions', 'users', 'finances')]
                 
         conn.close()
         can_delete = (role == 'superadmin') or (role == 'admin' and 'delete_action' in pages_list)

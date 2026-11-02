@@ -742,7 +742,7 @@
             let allowed = [];
 
             if (role === 'superadmin') {
-                allowed = ['dashboard', 'events', 'members', 'jumuah', 'questions', 'scanner', 'users', 'all'];
+                allowed = ['dashboard', 'events', 'members', 'finances', 'jumuah', 'questions', 'scanner', 'users', 'all'];
             } else if (role === 'admin') {
                 if (rawPages) {
                     try {
@@ -764,7 +764,7 @@
                 } else {
                     allowed = ['dashboard'];
                 }
-                allowed = allowed.filter(p => !['members', 'questions', 'users', 'all'].includes(p));
+                allowed = allowed.filter(p => !['members', 'questions', 'users', 'finances', 'all'].includes(p));
             }
 
             // Filter metric summary cards: only show sections granted to this user
@@ -772,7 +772,7 @@
                 const stat = card.getAttribute('data-stat');
                 if (role === 'superadmin') {
                     card.style.display = 'flex';
-                } else if (role === 'member' && ['members', 'questions', 'users'].includes(stat)) {
+                } else if (role === 'member' && ['members', 'questions', 'users', 'finances'].includes(stat)) {
                     card.style.display = 'none';
                 } else if (allowed.includes(stat) || allowed.includes('all')) {
                     card.style.display = 'flex';
@@ -785,7 +785,7 @@
                 const mod = card.getAttribute('data-module');
                 if (role === 'superadmin') {
                     card.style.display = 'flex';
-                } else if (role === 'member' && ['members', 'questions', 'users'].includes(mod)) {
+                } else if (role === 'member' && ['members', 'questions', 'users', 'finances'].includes(mod)) {
                     card.style.display = 'none';
                 } else if (allowed.includes(mod) || allowed.includes('all')) {
                     card.style.display = 'flex';
@@ -816,6 +816,18 @@
                         setVal('stat-questions-val', data.questions_count);
                         setVal('stat-scanner-val', data.scanner_pending);
                         setVal('stat-users-val', data.users_count);
+                        if (data.finances_balance !== undefined) {
+                            const balEl = document.getElementById('stat-finances-val');
+                            if (balEl) {
+                                const sign = data.finances_balance >= 0 ? '+' : '';
+                                balEl.textContent = sign + '€' + Number(data.finances_balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                if (data.finances_balance > 0) {
+                                    balEl.style.color = '#16a34a';
+                                } else if (data.finances_balance < 0) {
+                                    balEl.style.color = '#dc2626';
+                                }
+                            }
+                        }
                     }
                 }
             } catch (err) { }
