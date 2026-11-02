@@ -37,6 +37,51 @@
         font-size: 0.95rem;
     }
 
+        /* Export Excel Button */
+    .btn-export-excel {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.65rem 1.15rem;
+        border-radius: 8px;
+        background: #10b981;
+        color: #ffffff !important;
+        border: 1px solid #059669;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 1px 3px rgba(16, 185, 129, 0.2);
+        transition: all 0.2s ease;
+    }
+
+    .btn-export-excel:hover {
+        background: #059669;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+        transform: translateY(-1px);
+        color: #ffffff !important;
+    }
+
+    /* Admin Secondary Button Contrast Fix */
+    .btn-secondary {
+        background: #f1f5f9 !important;
+        color: #334155 !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+    }
+
+    .btn-secondary:hover {
+        background: #e2e8f0 !important;
+        color: #0f172a !important;
+        border-color: #94a3b8 !important;
+    }
+
     .fin-actions-group {
         display: flex;
         align-items: center;
@@ -598,8 +643,8 @@
             <p>Track association income, expenses, destinations, spenders, reimbursements & digital receipts.</p>
         </div>
         <div class="fin-actions-group">
-            <button type="button" class="btn btn-secondary" onclick="exportFinancesToExcel()"
-                title="Export transaction history to Excel">
+            <button type="button" class="btn-export-excel" onclick="exportFinancesToExcel()"
+                title="Export transaction history to Excel (.xlsx)">
                 <span>📥</span> Export Excel
             </button>
             <button type="button" class="btn btn-primary" onclick="openAddTransactionModal()" style="font-weight: 700;">
