@@ -379,20 +379,53 @@
     }
 
     /* Specific KPI card styles */
-    .kpi-balance { border-top: 4px solid var(--color-primary); }
-    .kpi-balance .kpi-icon-wrap { background: rgba(18, 74, 97, 0.1); color: var(--color-primary); }
-    
-    .kpi-income { border-top: 4px solid #16a34a; }
-    .kpi-income .kpi-icon-wrap { background: #dcfce7; color: #16a34a; }
-    .kpi-income .kpi-value { color: #16a34a; }
+    .kpi-balance {
+        border-top: 4px solid var(--color-primary);
+    }
 
-    .kpi-outcome { border-top: 4px solid #dc2626; }
-    .kpi-outcome .kpi-icon-wrap { background: #fee2e2; color: #dc2626; }
-    .kpi-outcome .kpi-value { color: #dc2626; }
+    .kpi-balance .kpi-icon-wrap {
+        background: rgba(18, 74, 97, 0.1);
+        color: var(--color-primary);
+    }
 
-    .kpi-reimburse { border-top: 4px solid #d97706; }
-    .kpi-reimburse .kpi-icon-wrap { background: #fef3c7; color: #d97706; }
-    .kpi-reimburse .kpi-value { color: #d97706; }
+    .kpi-income {
+        border-top: 4px solid #16a34a;
+    }
+
+    .kpi-income .kpi-icon-wrap {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .kpi-income .kpi-value {
+        color: #16a34a;
+    }
+
+    .kpi-outcome {
+        border-top: 4px solid #dc2626;
+    }
+
+    .kpi-outcome .kpi-icon-wrap {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .kpi-outcome .kpi-value {
+        color: #dc2626;
+    }
+
+    .kpi-reimburse {
+        border-top: 4px solid #d97706;
+    }
+
+    .kpi-reimburse .kpi-icon-wrap {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .kpi-reimburse .kpi-value {
+        color: #d97706;
+    }
 
     /* Filters & Search Toolbar */
     .toolbar-card {
@@ -423,7 +456,8 @@
         }
     }
 
-    .input-field, .select-field {
+    .input-field,
+    .select-field {
         width: 100%;
         padding: 0.65rem 0.85rem;
         border-radius: 8px;
@@ -435,7 +469,8 @@
         box-sizing: border-box;
     }
 
-    .input-field:focus, .select-field:focus {
+    .input-field:focus,
+    .select-field:focus {
         border-color: var(--color-primary);
         outline: none;
         box-shadow: 0 0 0 3px rgba(18, 74, 97, 0.15);
@@ -529,12 +564,41 @@
         text-transform: capitalize;
     }
 
-    .badge-cat-events { background: #ede9fe; color: #5b21b6; border-color: #ddd6fe; }
-    .badge-cat-logistics { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
-    .badge-cat-membership { background: #fef3c7; color: #92400e; border-color: #fde68a; }
-    .badge-cat-it { background: #e0e7ff; color: #3730a3; border-color: #c7d2fe; }
-    .badge-cat-merchandise { background: #fce7f3; color: #9d174d; border-color: #fbcfe8; }
-    .badge-cat-other { background: #f1f5f9; color: #475569; border-color: #e2e8f0; }
+    .badge-cat-events {
+        background: #ede9fe;
+        color: #5b21b6;
+        border-color: #ddd6fe;
+    }
+
+    .badge-cat-logistics {
+        background: #e0f2fe;
+        color: #0369a1;
+        border-color: #bae6fd;
+    }
+
+    .badge-cat-membership {
+        background: #fef3c7;
+        color: #92400e;
+        border-color: #fde68a;
+    }
+
+    .badge-cat-it {
+        background: #e0e7ff;
+        color: #3730a3;
+        border-color: #c7d2fe;
+    }
+
+    .badge-cat-merchandise {
+        background: #fce7f3;
+        color: #9d174d;
+        border-color: #fbcfe8;
+    }
+
+    .badge-cat-other {
+        background: #f1f5f9;
+        color: #475569;
+        border-color: #e2e8f0;
+    }
 
     .badge-reimb-pending {
         background: #fef3c7;
@@ -759,15 +823,24 @@
         border-radius: 8px;
         font-size: 0.9rem;
         font-weight: 600;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         display: flex;
         align-items: center;
         gap: 0.5rem;
         transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    .toast-success { background: #dcfce7; color: #166534; border: 1.5px solid #86efac; }
-    .toast-error { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
+    .toast-success {
+        background: #dcfce7;
+        color: #166534;
+        border: 1.5px solid #86efac;
+    }
+
+    .toast-error {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1.5px solid #fca5a5;
+    }
 
     /* Empty state */
     .empty-state {
@@ -884,7 +957,8 @@
             <p>Track association income, expenses, destinations, spenders, reimbursements & digital receipts.</p>
         </div>
         <div class="fin-actions-group">
-            <button type="button" class="btn btn-secondary" onclick="exportFinancesToExcel()" title="Export transaction history to Excel">
+            <button type="button" class="btn btn-secondary" onclick="exportFinancesToExcel()"
+                title="Export transaction history to Excel">
                 <span>📥</span> Export Excel
             </button>
             <button type="button" class="btn btn-primary" onclick="openAddTransactionModal()" style="font-weight: 700;">
@@ -936,7 +1010,8 @@
     <div class="toolbar-card">
         <div class="toolbar-grid">
             <div>
-                <input type="text" id="search-input" class="input-field" placeholder="🔍 Search description, spender, vendor, notes..." oninput="handleSearchInput()">
+                <input type="text" id="search-input" class="input-field"
+                    placeholder="🔍 Search description, spender, vendor, notes..." oninput="handleSearchInput()">
             </div>
             <div>
                 <select id="filter-type" class="select-field" onchange="fetchTransactions()">
@@ -965,7 +1040,8 @@
                 </select>
             </div>
             <div>
-                <button type="button" class="btn btn-secondary" onclick="resetFilters()" style="width: 100%; white-space: nowrap;">
+                <button type="button" class="btn btn-secondary" onclick="resetFilters()"
+                    style="width: 100%; white-space: nowrap;">
                     Reset
                 </button>
             </div>
@@ -977,7 +1053,8 @@
         <div class="table-header-bar">
             <h3 class="table-header-title">
                 <span>📑</span> Transaction History
-                <span id="trans-count-badge" class="badge" style="background: #e2e8f0; color: #475569; font-size: 0.75rem;">0 Records</span>
+                <span id="trans-count-badge" class="badge"
+                    style="background: #e2e8f0; color: #475569; font-size: 0.75rem;">0 Records</span>
             </h3>
             <div style="font-size: 0.85rem; color: #64748b;">
                 Showing sorted by most recent date
@@ -1032,7 +1109,8 @@
                 <button type="button" id="btn-toggle-income" class="type-toggle-btn" onclick="setFormType('income')">
                     <span>📈</span> Income (+)
                 </button>
-                <button type="button" id="btn-toggle-outcome" class="type-toggle-btn active-outcome" onclick="setFormType('outcome')">
+                <button type="button" id="btn-toggle-outcome" class="type-toggle-btn active-outcome"
+                    onclick="setFormType('outcome')">
                     <span>📉</span> Outflow / Expense (-)
                 </button>
             </div>
@@ -1041,7 +1119,8 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="form-amount">Amount (€) <span class="req">*</span></label>
-                    <input type="number" id="form-amount" class="input-field" step="0.01" min="0.01" required placeholder="0.00">
+                    <input type="number" id="form-amount" class="input-field" step="0.01" min="0.01" required
+                        placeholder="0.00">
                 </div>
                 <div class="form-group">
                     <label for="form-date">Transaction Date <span class="req">*</span></label>
@@ -1051,18 +1130,21 @@
 
             <div class="form-group">
                 <label for="form-title">Description / What was it for? <span class="req">*</span></label>
-                <input type="text" id="form-title" class="input-field" required placeholder="e.g. Snacks and drinks for Welcome Day, Microphone adapter">
+                <input type="text" id="form-title" class="input-field" required
+                    placeholder="e.g. Snacks and drinks for Welcome Day, Microphone adapter">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="form-where-spent">Where has it been spent? (Vendor / Store)</label>
-                    <input type="text" id="form-where-spent" class="input-field" placeholder="e.g. Carrefour Bovisa, Amazon.it, Print Shop">
+                    <input type="text" id="form-where-spent" class="input-field"
+                        placeholder="e.g. Esselunga, Amazon.it, Print Shop">
                     <span class="form-hint">Destination, store, or payer for income</span>
                 </div>
                 <div class="form-group">
                     <label for="form-spent-by">Who spent it? (Payer / Spender) <span class="req">*</span></label>
-                    <input type="text" id="form-spent-by" class="input-field" required placeholder="e.g. Ahmad, Fatima, ASM Board">
+                    <input type="text" id="form-spent-by" class="input-field" required
+                        placeholder="e.g. Ahmad, Fatima, ASM Board">
                     <span class="form-hint">Person who paid or received the money</span>
                 </div>
             </div>
@@ -1100,15 +1182,18 @@
                     <option value="pending">⏳ Needs Reimbursement (Paid out-of-pocket by member)</option>
                     <option value="reimbursed">✅ Reimbursed (Association already paid back member)</option>
                 </select>
-                <span class="form-hint">Use to keep track of students who paid from their own money awaiting repayment.</span>
+                <span class="form-hint">Use to keep track of students who paid from their own money awaiting
+                    repayment.</span>
             </div>
 
             <!-- External Receipt Link -->
             <div class="form-group">
                 <label for="form-receipt-url">Receipt Link (Google Drive / Cloud URL)</label>
                 <div style="display: flex; gap: 0.5rem;">
-                    <input type="url" id="form-receipt-url" class="input-field" placeholder="https://drive.google.com/file/d/... or web link">
-                    <button type="button" class="btn btn-secondary" onclick="testReceiptUrl()" style="white-space: nowrap; padding: 0.5rem 0.85rem;" title="Test open link">
+                    <input type="url" id="form-receipt-url" class="input-field"
+                        placeholder="https://drive.google.com/file/d/... or web link">
+                    <button type="button" class="btn btn-secondary" onclick="testReceiptUrl()"
+                        style="white-space: nowrap; padding: 0.5rem 0.85rem;" title="Test open link">
                         Test ↗
                     </button>
                 </div>
@@ -1118,12 +1203,15 @@
             <!-- Notes -->
             <div class="form-group">
                 <label for="form-notes">Additional Notes / Details</label>
-                <textarea id="form-notes" class="input-field" rows="2" placeholder="Optional context, invoice number, or justification..."></textarea>
+                <textarea id="form-notes" class="input-field" rows="2"
+                    placeholder="Optional context, invoice number, or justification..."></textarea>
             </div>
 
-            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9;">
+            <div
+                style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9;">
                 <button type="button" class="btn btn-secondary" onclick="closeTransactionModal()">Cancel</button>
-                <button type="submit" id="btn-save-trans" class="btn btn-primary" style="font-weight: 700; padding: 0.65rem 1.5rem;">
+                <button type="submit" id="btn-save-trans" class="btn btn-primary"
+                    style="font-weight: 700; padding: 0.65rem 1.5rem;">
                     Save Transaction
                 </button>
             </div>
@@ -1141,7 +1229,8 @@
         </p>
         <div style="display: flex; justify-content: center; gap: 0.75rem;">
             <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-            <button type="button" id="btn-confirm-delete" class="btn" onclick="executeDeleteTransaction()" style="background: #dc2626; color: white; border: none; font-weight: 700; padding: 0.65rem 1.5rem; border-radius: 8px;">
+            <button type="button" id="btn-confirm-delete" class="btn" onclick="executeDeleteTransaction()"
+                style="background: #dc2626; color: white; border: none; font-weight: 700; padding: 0.65rem 1.5rem; border-radius: 8px;">
                 Yes, Delete
             </button>
         </div>
