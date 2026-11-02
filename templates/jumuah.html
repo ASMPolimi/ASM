@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}Friday Jumu'ah Prayer Schedule & Locations | ASM Polimi{% endblock %}
-{% block meta_description %}Find Friday Jumu'ah prayer times, hall locations, and directions for Politecnico di Milano students across Bovisa and Leonardo campuses. Updated weekly prayer shifts and maps.{% endblock %}
+{% block meta_description %}Find Friday Jumu'ah prayer times, hall locations, and directions for Politecnico di Milano
+students across Bovisa and Leonardo campuses. Updated weekly prayer shifts and maps.{% endblock %}
 {% block canonical_url %}https://asmpolimi.it/jumuah{% endblock %}
 {% block og_url %}https://asmpolimi.it/jumuah{% endblock %}
 {% block og_title %}Friday Jumu'ah Prayer Schedule & Locations | ASM Polimi{% endblock %}
-{% block og_description %}Find Friday Jumu'ah prayer times, hall locations, and directions for Politecnico di Milano students across Bovisa and Leonardo campuses. Updated weekly prayer shifts and maps.{% endblock %}
+{% block og_description %}Find Friday Jumu'ah prayer times, hall locations, and directions for Politecnico di Milano
+students across Bovisa and Leonardo campuses. Updated weekly prayer shifts and maps.{% endblock %}
 {% block twitter_url %}https://asmpolimi.it/jumuah{% endblock %}
 {% block twitter_title %}Friday Jumu'ah Prayer Schedule & Locations | ASM Polimi{% endblock %}
-{% block twitter_description %}Find Friday Jumu'ah prayer times, hall locations, and directions for Politecnico di Milano students across Bovisa and Leonardo campuses. Updated weekly prayer shifts and maps.{% endblock %}
+{% block twitter_description %}Find Friday Jumu'ah prayer times, hall locations, and directions for Politecnico di
+Milano students across Bovisa and Leonardo campuses. Updated weekly prayer shifts and maps.{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -48,10 +51,12 @@
         <div class="contact-grid stagger-children">
             <!-- Location & Timing -->
             <div class="contact-info">
-                <h3 class="jumuah-details-title"><span data-i18n="jumuah_details_prefix">Prayer Details for</span> <span id="next-friday-date"></span></h3>
+                <h3 class="jumuah-details-title"><span data-i18n="jumuah_details_prefix">Prayer Details for</span> <span
+                        id="next-friday-date"></span></h3>
 
                 <div class="jumuah-campus-card">
-                    <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;" data-i18n="jumuah_bovisa_title">Bovisa
+                    <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;"
+                        data-i18n="jumuah_bovisa_title">Bovisa
                         Campus</h4>
                     <div id="bovisa-status" style="font-size: 1.05rem; font-weight: 500; margin-bottom: 0.4rem;">
                         Loading...
@@ -59,14 +64,16 @@
                     <div style="color: var(--color-text-light); font-size: 0.9rem; line-height: 1.4;">
                         Location: <a href="#locations"
                             onclick="if(typeof focusLocationById==='function'){focusLocationById('bovisa');}"
-                            style="color: var(--color-primary); text-decoration: underline; font-weight: 500;" data-i18n="jumuah_bovisa_loc">Building
+                            style="color: var(--color-primary); text-decoration: underline; font-weight: 500;"
+                            data-i18n="jumuah_bovisa_loc">Building
                             24 level -1, Bovisa Campus</a><br>
                         <span data-i18n="jumuah_arrive_early">Please arrive early to secure a spot.</span>
                     </div>
                 </div>
 
                 <div class="jumuah-campus-card">
-                    <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;" data-i18n="jumuah_unimi_title">Unimi
+                    <h4 style="color: var(--color-secondary); margin-bottom: 0.6rem; font-size: 1.2rem;"
+                        data-i18n="jumuah_unimi_title">Unimi
                         Building</h4>
                     <div id="leonardo-status" style="font-size: 1.05rem; font-weight: 500; margin-bottom: 0.4rem;">
                         Loading...
@@ -74,7 +81,8 @@
                     <div style="color: var(--color-text-light); font-size: 0.9rem; line-height: 1.4;">
                         Location: <a href="#locations"
                             onclick="if(typeof focusLocationById==='function'){focusLocationById('unimi');}"
-                            style="color: var(--color-primary); text-decoration: underline; font-weight: 500;" data-i18n="jumuah_unimi_loc">Room 300
+                            style="color: var(--color-primary); text-decoration: underline; font-weight: 500;"
+                            data-i18n="jumuah_unimi_loc">Room 300
                             Unimi Building</a><br>
                         <span data-i18n="jumuah_arrive_early">Please arrive early to secure a spot.</span>
                     </div>
@@ -83,19 +91,26 @@
 
             <!-- Sunnahs of Jumu'ah -->
             <div class="contact-form-container">
-                <h3 style="color: var(--color-primary); margin-bottom: 0.75rem;" data-i18n="jumuah_sunnah_heading">Sunnahs of Friday</h3>
+                <h3 style="color: var(--color-primary); margin-bottom: 0.75rem;" data-i18n="jumuah_sunnah_heading">
+                    Sunnahs of Friday</h3>
                 <ul class="feature-list checklist" id="sunnah-checklist">
-                    <li data-i18n="jumuah_sunnah_ghusl"><strong>Ghusl (غسل):</strong> Performing the ritual bath before heading to the prayer.</li>
-                    <li data-i18n="jumuah_sunnah_clothes"><strong>Clean Clothes:</strong> Wearing your best and cleanest clothes.</li>
+                    <li data-i18n="jumuah_sunnah_ghusl"><strong>Ghusl (غسل):</strong> Performing the ritual bath before
+                        heading to the prayer.</li>
+                    <li data-i18n="jumuah_sunnah_clothes"><strong>Clean Clothes:</strong> Wearing your best and cleanest
+                        clothes.</li>
                     <li data-i18n="jumuah_sunnah_perfume"><strong>Perfume:</strong> Applying perfume (for men).</li>
-                    <li data-i18n="jumuah_sunnah_siwak"><strong>Siwak (سواك):</strong> Using the miswak to clean your teeth.</li>
-                    <li data-i18n="jumuah_sunnah_kahf"><strong>Surah Al-Kahf (سورة الكهف):</strong> Reciting Surah Al-Kahf during the day or the
+                    <li data-i18n="jumuah_sunnah_siwak"><strong>Siwak (سواك):</strong> Using the miswak to clean your
+                        teeth.</li>
+                    <li data-i18n="jumuah_sunnah_kahf"><strong>Surah Al-Kahf (سورة الكهف):</strong> Reciting Surah
+                        Al-Kahf during the day or the
                         night before.
                     </li>
-                    <li data-i18n="jumuah_sunnah_salawat"><strong>Prayer on the Prophet (الصلاة على النبي ﷺ):</strong> Sending abundant blessings upon
+                    <li data-i18n="jumuah_sunnah_salawat"><strong>Prayer on the Prophet (الصلاة على النبي ﷺ):</strong>
+                        Sending abundant blessings upon
                         the Prophet
                         Muhammad (PBUH).</li>
-                    <li data-i18n="jumuah_sunnah_dua"><strong>Dua (الدعاء):</strong> Making earnest supplications, especially during the 'hour of
+                    <li data-i18n="jumuah_sunnah_dua"><strong>Dua (الدعاء):</strong> Making earnest supplications,
+                        especially during the 'hour of
                         acceptance'.</li>
                 </ul>
             </div>
@@ -156,7 +171,8 @@
                     <span class="hero-pulse-dot" aria-hidden="true"></span>
                     <span class="next-prayer-icon">🕌</span>
                     <span class="next-prayer-text">
-                        <span data-i18n="prayer_next_prefix">Next Prayer:</span> <strong class="next-prayer-name" id="card-next-prayer-name">Loading...</strong>
+                        <span data-i18n="prayer_next_prefix">Next Prayer:</span> <strong class="next-prayer-name"
+                            id="card-next-prayer-name">Loading...</strong>
                         <span class="hero-countdown-pill" id="card-next-prayer-countdown">--:--</span>
                         <span class="next-prayer-time-sub" id="card-next-prayer-time"></span>
                     </span>
@@ -185,7 +201,8 @@
         <div class="section-header text-center">
             <h2 data-i18n="map_heading">Locations & Mosques Map</h2>
             <div class="divider"></div>
-            <p data-i18n="map_sub">Interactive guide to all university prayer spaces and prominent mosques in Milan. Click any location card
+            <p data-i18n="map_sub">Interactive guide to all university prayer spaces and prominent mosques in Milan.
+                Click any location card
                 or pin to see room video guides, Jumu'ah availability, or open 1-click GPS navigation in Google Maps.
             </p>
         </div>
@@ -196,10 +213,12 @@
                 <span data-i18n="map_filter_all">📍 All</span> <span class="filter-count" id="count-all">13</span>
             </button>
             <button type="button" class="map-filter-btn" data-category="campus">
-                <span data-i18n="map_filter_campus">🎓 Campus</span> <span class="filter-count" id="count-campus">3</span>
+                <span data-i18n="map_filter_campus">🎓 Campus</span> <span class="filter-count"
+                    id="count-campus">3</span>
             </button>
             <button type="button" class="map-filter-btn" data-category="mosque">
-                <span data-i18n="map_filter_mosque">🕌 Mosques</span> <span class="filter-count" id="count-mosque">10</span>
+                <span data-i18n="map_filter_mosque">🕌 Mosques</span> <span class="filter-count"
+                    id="count-mosque">10</span>
             </button>
         </div>
 
@@ -209,8 +228,10 @@
             <div class="map-frame-wrapper">
                 <div id="prayer-leaflet-map"></div>
                 <div class="map-legend">
-                    <span class="legend-item"><span class="legend-dot dot-campus"></span> <span data-i18n="map_legend_campus">Campus Room</span></span>
-                    <span class="legend-item"><span class="legend-dot dot-mosque"></span> <span data-i18n="map_legend_mosque">Milan Mosque</span></span>
+                    <span class="legend-item"><span class="legend-dot dot-campus"></span> <span
+                            data-i18n="map_legend_campus">Campus Room</span></span>
+                    <span class="legend-item"><span class="legend-dot dot-mosque"></span> <span
+                            data-i18n="map_legend_mosque">Milan Mosque</span></span>
                 </div>
             </div>
 
@@ -260,20 +281,20 @@
             videoUrl: 'https://youtube.com/shorts/A5vwr2wduu4?is=2Yd-BOlo2g3o-ypL',
             desc: 'Room 300 in the Unimi sector. Friday Jumu\'ah prayers organized for students.'
         },
-        /*      {
-                  id: 'leonardo2',
-                  name: 'Leonardo Campus Prayer Room',
-                  category: 'campus',
-                  categoryLabel: 'Politecnico di Milano',
-                  badge: 'Daily Prayers Only (No Jumu\'ah)',
-                  badgeClass: 'badge-daily',
-                  icon: '🎓',
-                  address: 'Building 32.1.2, Leonardo Campus, Piazza Leonardo da Vinci 32, 20133 Milano',
-                  coords: [45.47841, 9.22952],
-                  mapsUrl: 'https://maps.app.goo.gl/FFZ3KJW3ns3FZHXDA',
-                  videoUrl: 'https://youtube.com/shorts/I_jQXZ8b7zU?is=2z-M87fbhU_21VSL',
-                  desc: 'Convenient space for daily Zuhr, Asr, and Maghrib. Note: Jumu\'ah is not hosted here.'
-              },*/
+        {
+            id: 'leonardo2',
+            name: 'Leonardo Campus Prayer Room',
+            category: 'campus',
+            categoryLabel: 'Politecnico di Milano',
+            badge: 'Daily Prayers Only (No Jumu\'ah)',
+            badgeClass: 'badge-daily',
+            icon: '🎓',
+            address: 'Building 32.1.2, Leonardo Campus, Piazza Leonardo da Vinci 32, 20133 Milano',
+            coords: [45.47841, 9.22952],
+            mapsUrl: 'https://maps.app.goo.gl/FFZ3KJW3ns3FZHXDA',
+            videoUrl: 'https://youtube.com/shorts/I_jQXZ8b7zU?is=2z-M87fbhU_21VSL',
+            desc: 'Convenient space for daily Zuhr, Asr, and Maghrib. Note: Jumu\'ah is not hosted here.'
+        },
         {
             id: 'casa-cultura',
             name: 'Casa della Cultura Islamica Onlus',

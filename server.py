@@ -636,6 +636,19 @@ def admin_stats():
         scanner_cnt = c.fetchone()['cnt']
         c.execute("SELECT COUNT(*) as cnt FROM users")
         users_cnt = c.fetchone()['cnt']
+        
+        try:
+            c.execute("SELECT COALESCE(SUM(amount), 0) as total FROM finances WHERE type = 'income'")
+            fin_inc = float(c.fetchone()['total'] or 0)
+            c.execute("SELECT COALESCE(SUM(amount), 0) as total FROM finances WHERE type = 'outcome'")
+            fin_out = float(c.fetchone()['total'] or 0)
+            c.execute("SELECT COUNT(*) as cnt, COALESCE(SUM(amount), 0) as total FROM finances WHERE reimbursement_status = 'pending'")
+            row_p = c.fetchone()
+            p_cnt = row_p['cnt']
+            p_tot = float(row_p['total'] or 0)
+        except Exception:
+            fin_inc, fin_out, p_cnt, p_tot = 0.0, 0.0, 0, 0.0
+
         conn.close()
         
         return jsonify({
@@ -644,7 +657,12 @@ def admin_stats():
             "members_count": members_cnt,
             "questions_count": questions_cnt,
             "scanner_pending": scanner_cnt,
-            "users_count": users_cnt
+            "users_count": users_cnt,
+            "finances_balance": round(fin_inc - fin_out, 2),
+            "finances_income": round(fin_inc, 2),
+            "finances_outcome": round(fin_out, 2),
+            "finances_pending_reimb_count": p_cnt,
+            "finances_pending_reimb_total": round(p_tot, 2)
         })
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
