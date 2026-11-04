@@ -505,7 +505,10 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 {% endblock %}
 
 {% block extra_scripts %}
+<script src="/js/halal-scanner.js"></script>
 <script>
+    const scannerHelpers = window.HalalScanner;
+
     // Tab switching logic
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -608,58 +611,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
     // Main parser/analyzer logic
     function analyzeProductIngredients(ingredientsText, labelsText = '', hasIngredients = true) {
-        const rawText = (ingredientsText + ' ' + labelsText).toLowerCase();
-        // Mask permissible vinegar exceptions so 'vino' or 'wine' won't trigger false Haram
-        const text = maskHalalExceptions(rawText);
-        const foundHaram = [];
-        const foundMashbuh = [];
-
-        // Check if explicitly halal certified
-        const isHalalCertified = text.includes('halal certified') ||
-            text.includes('halal-certified') ||
-            (text.includes('halal') && !text.includes('non-halal') && !text.includes('not halal'));
-
-        DICTIONARY.haram.forEach(item => {
-            const regex = new RegExp(`\\b${item.word}\\b|\\b${item.word}s\\b`, 'i');
-            if (regex.test(text)) {
-                foundHaram.push(item);
-            }
-        });
-
-        DICTIONARY.mashbuh.forEach(item => {
-            // If it is halal certified, we can skip general mashbuh items since they are verified
-            if (isHalalCertified) return;
-
-            const regex = new RegExp(`\\b${item.word}\\b|\\b${item.word}s\\b`, 'i');
-            if (regex.test(text)) {
-                // Avoid duplicate warnings if haram already flagged (e.g. pork gelatin vs gelatin)
-                const matchesHaram = foundHaram.some(h => h.word.includes(item.word));
-                if (!matchesHaram) {
-                    foundMashbuh.push(item);
-                }
-            }
-        });
-
-        // Return state
-        if (foundHaram.length > 0) {
-            return { status: 'haram', reasons: foundHaram, certified: false };
-        } else if (foundMashbuh.length > 0) {
-            return { status: 'mashbuh', reasons: foundMashbuh, certified: false };
-        } else if (isHalalCertified) {
-            return { status: 'halal', certified: true, reasons: [] };
-        } else if (!hasIngredients) {
-            // No ingredients were provided or available in online repositories
-            return {
-                status: 'not_listed',
-                certified: false,
-                reasons: [{
-                    word: 'No ingredients listed',
-                    reason: 'No ingredients list is available in online databases for this product. Halal status cannot be verified without ingredient data.'
-                }]
-            };
-        } else {
-            return { status: 'halal', certified: false, reasons: [] };
-        }
+        return scannerHelpers.analyzeProductIngredients(ingredientsText, labelsText, hasIngredients);
     }
 
     // Safe HTML escaper
@@ -671,37 +623,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
     // Highlight matched keywords in ingredients text
     function highlightIngredients(ingredientsText) {
-        if (!ingredientsText) return '';
-        let highlighted = ingredientsText;
-
-        // Temporarily mask halal exceptions (like aceto di vino) so their internal words (like 'vino') are not colored red
-        const placeholders = [];
-        HALAL_EXCEPTIONS_REGEX.forEach((rgx, i) => {
-            highlighted = highlighted.replace(rgx, match => {
-                const token = `___HALAL_TOKEN_${i}_${placeholders.length}___`;
-                placeholders.push({ token, replacement: `<span class="highlight-halal">${match}</span>` });
-                return token;
-            });
-        });
-
-        // Highlight Haram (Red)
-        DICTIONARY.haram.forEach(item => {
-            const regex = new RegExp(`\\b(${item.word})\\b|\\b(${item.word}s)\\b`, 'gi');
-            highlighted = highlighted.replace(regex, '<span class="highlight-haram">$1</span>');
-        });
-
-        // Highlight Mashbuh (Amber)
-        DICTIONARY.mashbuh.forEach(item => {
-            const regex = new RegExp(`\\b(${item.word})\\b|\\b(${item.word}s)\\b`, 'gi');
-            highlighted = highlighted.replace(regex, '<span class="highlight-mashbuh">$1</span>');
-        });
-
-        // Restore masked halal exceptions in green
-        placeholders.forEach(p => {
-            highlighted = highlighted.replace(p.token, p.replacement);
-        });
-
-        return highlighted;
+        return scannerHelpers.highlightIngredients(ingredientsText);
     }
 
     // Send anonymous scan report to backend admin log
@@ -749,6 +671,10 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         const name = product.product_name || product.product_name_en || (isIt ? 'Prodotto Non in Lista' : 'Product Not Listed');
         const brand = product.brands || (isIt ? 'Marca non specificata' : 'Unknown Brand');
         const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
+        const lastModified = Number(product.last_modified_t);
+        const openFoodFactsAttribution = product.source === 'openfoodfacts'
+            ? `<p class="result-prod-barcode">${isIt ? 'Fonte dati:' : 'Data source:'} <a href="https://world.openfoodfacts.org/product/${encodeURIComponent(String(product.code || ''))}" target="_blank" rel="noopener noreferrer">Open Food Facts</a>${Number.isFinite(lastModified) && lastModified > 0 ? ` · ${isIt ? 'Aggiornato:' : 'Updated:'} ${new Date(lastModified * 1000).toLocaleDateString(isIt ? 'it-IT' : 'en-GB')}` : ''}</p>`
+            : '';
 
         const rawIngredients = product.ingredients_text;
         const placeholderNotice = isIt ? 'Nessun elenco ingredienti disponibile per questo prodotto in Open Food Facts o nel database locale.' : 'No ingredients list available for this product in Open Food Facts or local database.';
@@ -757,7 +683,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
         // Run analysis
         const labels = product.labels || '';
-        const analysis = customAnalysis || analyzeProductIngredients(hasIngredients ? ingredients : '', (name + ' ' + labels).trim(), hasIngredients);
+        const analysis = customAnalysis || scannerHelpers.analyzeProductIngredients(hasIngredients ? ingredients : '', (name + ' ' + labels).trim(), hasIngredients);
 
         window._lastHalalResult = { product, customAnalysis };
 
@@ -774,7 +700,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             statusText = isIt ? 'Haram (Non Halal)' : 'Haram / Non-Halal';
             reasonListHtml = `<h4 style="margin-top: 1rem; color: #842029;">${isIt ? 'Motivazioni:' : 'Reasons:'}</h4>
                     <ul style="margin-left: 1.5rem; color: var(--color-text);">
-                        ${analysis.reasons.map(r => `<li style="margin-bottom: 0.25rem;"><strong>${r.word}</strong>: ${r.reason}</li>`).join('')}
+                        ${analysis.reasons.map(r => `<li style="margin-bottom: 0.25rem;"><strong>${escapeHtml(r.word)}</strong>: ${escapeHtml(r.reason)}</li>`).join('')}
                     </ul>`;
         } else if (analysis.status === 'mashbuh') {
             statusClass = 'status-mashbuh';
@@ -783,7 +709,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             statusText = isIt ? 'Mashbuh (Dubbio)' : 'Mashbuh (Doubtful)';
             reasonListHtml = `<h4 style="margin-top: 1rem; color: #664d03;">${isIt ? 'Ingredienti Dubbi Rilevati:' : 'Doubtful Ingredients Found:'}</h4>
                     <ul style="margin-left: 1.5rem; color: var(--color-text);">
-                        ${analysis.reasons.map(r => `<li style="margin-bottom: 0.25rem;"><strong>${r.word}</strong>: ${r.reason}</li>`).join('')}
+                        ${analysis.reasons.map(r => `<li style="margin-bottom: 0.25rem;"><strong>${escapeHtml(r.word)}</strong>: ${escapeHtml(r.reason)}</li>`).join('')}
                     </ul>`;
         } else if (analysis.status === 'not_listed') {
             statusClass = 'status-not-listed';
@@ -818,7 +744,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         }
 
         const highlightedIngredients = hasIngredients
-            ? highlightIngredients(ingredients)
+            ? scannerHelpers.highlightIngredients(ingredients)
             : `<span style="color: #64748b; font-style: italic;">${placeholderNotice}</span>`;
 
         resultsDiv.innerHTML = `
@@ -830,6 +756,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                             <h3 class="result-prod-name">${escapeHtml(name)}</h3>
                             <p class="result-prod-brand">${isIt ? 'Marca:' : 'Brand:'} <strong>${escapeHtml(brand)}</strong></p>
                             ${product.code ? `<p class="result-prod-barcode">Barcode: <span>${escapeHtml(product.code)}</span></p>` : ''}
+                            ${openFoodFactsAttribution}
                         </div>
                     </div>
 
@@ -1053,7 +980,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             const customAnalysis = {
                 status: customData.status,
                 reasons: customData.reasons || [],
-                certified: customData.status === 'halal'
+                certified: customData.certified === true
             };
 
             setTimeout(() => {
@@ -1064,17 +991,16 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         }
 
         try {
-            const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcode}.json`);
+            const fields = 'code,product_name,product_name_en,brands,image_url,ingredients_text,labels,last_modified_t';
+            const response = await fetch(`https://world.openfoodfacts.org/api/v3.6/product/${encodeURIComponent(barcode)}.json?fields=${fields}`);
             if (!response.ok) throw new Error("Server error fetching product.");
 
             const data = await response.json();
+            const openFoodFactsProduct = scannerHelpers.normalizeOpenFoodFactsProduct(data, barcode);
             loader.classList.add('hidden');
 
-            if (data.status === 1 && data.product) {
-                const prod = data.product;
-                prod.code = barcode;
-                prod.source = 'openfoodfacts';
-                displayResults(prod);
+            if (openFoodFactsProduct) {
+                displayResults(openFoodFactsProduct);
             } else {
                 // Product not found in Open Food Facts or Custom DB -> Display Not Listed Card & Report to Admin
                 const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
@@ -1102,22 +1028,10 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             loader.classList.add('hidden');
             const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
             const isIt = currentLang === 'it';
-            const unlistedProduct = {
-                code: barcode,
-                product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
-                brands: isIt ? 'Barcode non trovato (Errore connessione)' : 'Barcode unverified (Connection Issue)',
-                image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
-                ingredients_text: '',
-                source: 'unlisted_offline'
-            };
-            const unlistedAnalysis = {
-                status: 'not_listed',
-                reasons: [{
-                    word: barcode,
-                    reason: isIt ? 'Impossibile verificare online. Inviato anonimamente agli amministratori.' : 'Unable to verify online. Forwarded anonymously to administrators.'
-                }]
-            };
-            displayResults(unlistedProduct, unlistedAnalysis);
+            errorDiv.textContent = isIt
+                ? 'Impossibile contattare Open Food Facts. Controlla la connessione e riprova.'
+                : 'Could not reach Open Food Facts. Check your connection and try again.';
+            errorDiv.classList.remove('hidden');
             console.error(err);
         }
     }
