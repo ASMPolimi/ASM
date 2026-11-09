@@ -1,0 +1,41 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+
+# Node / JavaScript
+node_modules/
+*.log
+
+# OS‑specific
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE / editor
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Data files & local databases
+users.json
+*.db
+asm.db
+HalalScanner.xlsx
+
+# Server backend & admin management (contained in private repo)
+server.py
+admin.html
+admin_*.html
+templates/admin*.html
+walkthrough.md
+build_static.py
+run.bat
+run.sh
+
+# Nested standalone repositories
+asm-admin/
+BackendASM/
+ASM_Local/

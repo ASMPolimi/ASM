@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "1234567890123": {
+      "product_name": "Custom Halal Product",
+      "brands": "Custom Brand",
+      "ingredients_text": "Manual entry",
+      "status": "halal",
+      "reasons": []
+    },
+    "987654321098": {
+      "product_name": "Unknown Product",
+      "brands": "Unknown Brand",
+      "ingredients_text": "Manual Entry",
+      "status": "mashbuh",
+      "reasons": []
+    },
+    "45731848897645": {
+      "product_name": "Unknown Product",
+      "brands": "Unknown Brand",
+      "ingredients_text": "Manual Entry",
+      "status": "mashbuh",
+      "reasons": []
+    },
+    "3209503341": {
+      "product_name": "TestName",
+      "brands": "TestBrand",
+      "ingredients_text": "TestIngredients",
+      "status": "halal",
+      "reasons": []
+    },
+    "3209503342": {
+      "product_name": "TestNameM",
+      "brands": "TestBrandM",
+      "ingredients_text": "TestIngredientsM",
+      "status": "mashbuh",
+      "reasons": []
+    },
+    "3209503343": {
+      "product_name": "TestNameM",
+      "brands": "TestBrandM",
+      "ingredients_text": "TestIngredientsM",
+      "status": "haram",
+      "reasons": []
+    }
+  }
+}

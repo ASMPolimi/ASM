@@ -1,0 +1,14 @@
+# robots.txt for Associazione Studenti Musulmani - Politecnico di Milano
+# Website: https://asmpolimi.it
+
+User-agent: *
+Allow: /
+
+# Disallow private admin dashboards and backend API endpoints
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /admin_*.html
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://asmpolimi.it/sitemap.xml

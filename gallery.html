@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Photo Gallery & Campus Events | ASM Polimi</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <meta name="description"
+        content="Explore photos and highlights from ASM Polimi events, community dinners, campus seminars, and student gatherings at Politecnico di Milano. Relive our memorable moments!">
+    <link rel="canonical" href="https://asmpolimi.it/gallery">
+
+    <!-- Open Graph / Facebook / WhatsApp / Telegram / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://asmpolimi.it/gallery">
+    <meta property="og:title" content="Community Photo Gallery & Campus Events | ASM Polimi">
+    <meta property="og:description" content="Explore photos and highlights from ASM Polimi events, community dinners, campus seminars, and student gatherings at Politecnico di Milano. Relive our memorable moments!">
+    <meta property="og:image" content="https://asmpolimi.it/assets/og-banner.png">
+    <meta property="og:image:secure_url" content="https://asmpolimi.it/assets/og-banner.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
+    <meta property="og:site_name" content="ASM Polimi">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="it_IT">
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://asmpolimi.it/gallery">
+    <meta name="twitter:title" content="Community Photo Gallery & Campus Events | ASM Polimi">
+    <meta name="twitter:description" content="Explore photos and highlights from ASM Polimi events, community dinners, campus seminars, and student gatherings at Politecnico di Milano. Relive our memorable moments!">
+    <meta name="twitter:image" content="https://asmpolimi.it/assets/og-banner.png">
+    <meta name="twitter:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/main.js" defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <!-- Google tag (gtag.js) with GDPR Consent Mode v2 -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      var savedConsent = localStorage.getItem('asm_cookie_consent');
+      if (savedConsent === 'accepted') {
+          gtag('consent', 'default', {
+              'analytics_storage': 'granted',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      } else if (savedConsent === 'declined') {
+          gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      } else {
+          // Strict GDPR opt-in default for European Economic Area + Switzerland + UK
+          gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO', 'GB', 'CH']
+          });
+          // Default granted for traffic outside the EEA (resolves Google 0% non-EEA alert)
+          gtag('consent', 'default', {
+              'analytics_storage': 'granted',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      }
+
+      gtag('js', new Date());
+      gtag('config', 'G-8N5B01YCZ4');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8N5B01YCZ4"></script>
+    
+<style>
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .gallery-item {
+        position: relative;
+        border-radius: 1rem;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+        aspect-ratio: 4/3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transition: transform var(--transition-fast);
+        cursor: pointer;
+    }
+
+    .gallery-item:hover {
+        transform: scale(1.02);
+    }
+
+    .gallery-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+        transform: translateY(100%);
+        transition: transform var(--transition-normal);
+    }
+
+    .gallery-item:hover .gallery-caption {
+        transform: translateY(0);
+    }
+</style>
+
+</head>
+
+<body class="bg-light">
+
+    <!-- Header & Navigation -->
+    <header class="navbar" >
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <img src="/assets/asm_logo.png" alt="ASM Logo">
+                <span>ASM POLIMI</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="/#home" data-i18n="nav_home">Home</a>
+                <a href="/events" data-i18n="nav_events">Events</a>
+                <a href="/halal" data-i18n="nav_halal">Halal Scanner</a>
+                <a href="/support" data-i18n="nav_support">Ask an Imam</a>
+                <a href="/gallery" data-i18n="nav_gallery">Gallery</a>
+                <a href="/jumuah" data-i18n="nav_jumuah">Jumu'ah</a>
+                <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer" data-i18n="nav_quran">Quran Irtaqi</a>
+                <a href="/register" class="btn btn-primary" style="padding: 0.5rem 1rem; margin-left: 1rem;" data-i18n="nav_join">Join Us</a>
+                <div class="dropdown">
+                    <button class="dropbtn" aria-label="Settings">
+                        &#8942;
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="https://admin.asmpolimi.it/admin" data-i18n="nav_admin">Admin</a>
+                    </div>
+                </div>
+            </nav>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Announcement Banner -->
+    <div id="announcement-banner" class="hidden">
+        <span class="announcement-content-wrap">
+            <span style="margin-right: 0.5rem;">&#128226;</span> <span id="announcement-text"></span>
+        </span>
+        <button type="button" id="close-announcement-btn" aria-label="Close Announcement" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; line-height: 1; cursor: pointer; color: var(--color-text); opacity: 0.7; padding: 0.25rem; transition: opacity 0.2s;">&times;</button>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <nav class="mobile-nav-links">
+            <a href="/#home"><span class="mobile-nav-icon">🏠</span><span data-i18n="nav_home">Home</span></a>
+            <a href="/events"><span class="mobile-nav-icon">📅</span><span data-i18n="nav_events">Events</span></a>
+            <a href="/halal"><span class="mobile-nav-icon">🥗</span><span data-i18n="nav_halal">Halal Scanner</span></a>
+            <a href="/support"><span class="mobile-nav-icon">💬</span><span data-i18n="nav_support">Ask an Imam</span></a>
+            <a href="/gallery"><span class="mobile-nav-icon">📸</span><span data-i18n="nav_gallery">Gallery</span></a>
+            <a href="/jumuah"><span class="mobile-nav-icon">🕌</span><span data-i18n="nav_jumuah">Jumu'ah</span></a>
+            <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer"><span class="mobile-nav-icon">📖</span><span data-i18n="nav_quran">Quran Irtaqi</span></a>
+            <a href="/register"><span class="mobile-nav-icon">🤝</span><span data-i18n="nav_join">Join Us</span></a>
+        </nav>
+    </div>
+
+    
+<section class="section first-section" style="min-height: 80vh;">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 data-i18n="gallery_heading">Media Gallery</h2>
+            <div class="divider"></div>
+            <p data-i18n="gallery_sub">Memories from our past events, halaqas, and community gatherings.</p>
+        </div>
+
+        <div class="gallery-grid stagger-children" id="dynamic-gallery-container">
+            
+                
+                <div class="gallery-item fade-in-up is-visible" style="transition-delay: 0ms;">
+                    <img src="assets/gallery_event1.png" alt="Escape Room" loading="lazy" decoding="async" onerror="this.style.display='none'"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                    <span style="position: relative; z-index: 0;">Image 1</span>
+                    <div class="gallery-caption" style="z-index: 2;">Escape Room</div>
+                </div>
+                
+                <div class="gallery-item fade-in-up is-visible" style="transition-delay: 120ms;">
+                    <img src="assets/gallery_event2.png" alt="Horse riding" loading="lazy" decoding="async" onerror="this.style.display='none'"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                    <span style="position: relative; z-index: 0;">Image 2</span>
+                    <div class="gallery-caption" style="z-index: 2;">Horse riding</div>
+                </div>
+                
+                <div class="gallery-item fade-in-up is-visible" style="transition-delay: 240ms;">
+                    <img src="assets/gallery_event3.png" alt="Islam Awareness Week" loading="lazy" decoding="async" onerror="this.style.display='none'"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                    <span style="position: relative; z-index: 0;">Image 3</span>
+                    <div class="gallery-caption" style="z-index: 2;">Islam Awareness Week</div>
+                </div>
+                
+                <div class="gallery-item fade-in-up is-visible" style="transition-delay: 360ms;">
+                    <img src="assets/gallery_event4.png" alt="Arabic Calligraphy" loading="lazy" decoding="async" onerror="this.style.display='none'"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                    <span style="position: relative; z-index: 0;">Image 4</span>
+                    <div class="gallery-caption" style="z-index: 2;">Arabic Calligraphy</div>
+                </div>
+                
+                <div class="gallery-item fade-in-up is-visible" style="transition-delay: 480ms;">
+                    <img src="assets/gallery_event5.png" alt="Ramadiamo" loading="lazy" decoding="async" onerror="this.style.display='none'"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                    <span style="position: relative; z-index: 0;">Image 5</span>
+                    <div class="gallery-caption" style="z-index: 2;">Ramadiamo</div>
+                </div>
+                
+                <div class="gallery-item fade-in-up is-visible" style="transition-delay: 600ms;">
+                    <img src="assets/gallery_event6.png" alt="Islamic activities" loading="lazy" decoding="async" onerror="this.style.display='none'"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                    <span style="position: relative; z-index: 0;">Image 6</span>
+                    <div class="gallery-caption" style="z-index: 2;">Islamic activities</div>
+                </div>
+                
+            
+        </div>
+
+        <div class="text-center mt-4" style="margin-top: 4rem;">
+            <h3 style="color: var(--color-primary); margin-bottom: 1rem;" data-i18n="gallery_recordings_heading">Halaqa Recordings</h3>
+            <p style="color: var(--color-text-light); margin-bottom: 2rem;" data-i18n="gallery_recordings_sub">Would like to see more pictures? Visit our
+                One drive channel.</p>
+            <a href="https://drive.google.com/drive/folders/1GhQIIkkX7YGqXYGeQ_l-ivXWjE3IrCqw"
+                class="btn btn-primary" data-i18n="gallery_onedrive_btn">Visit our One drive</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+
+
+    <!-- Qibla Compass Modal -->
+    <div id="qibla-modal" class="qibla-modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="qibla-modal-title">
+        <div class="qibla-modal-dialog">
+            <div class="qibla-modal-header">
+                <h3 id="qibla-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        style="color: var(--color-secondary); vertical-align: middle;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+                            fill="var(--color-secondary)"></polygon>
+                    </svg>
+                    <span data-i18n="qibla_title">Milan Qibla Compass</span>
+                </h3>
+                <button type="button" class="qibla-modal-close close-qibla-modal-btn"
+                    aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="qibla-modal-body">
+                <div class="qibla-compass-visual">
+                    <div class="compass-dial" id="compass-dial-ring">
+                        <span class="compass-cardinal compass-n">N</span>
+                        <span class="compass-cardinal compass-e">E</span>
+                        <span class="compass-cardinal compass-s">S</span>
+                        <span class="compass-cardinal compass-w">W</span>
+                        <div class="compass-needle-kaaba" id="compass-needle-arm" style="transform: rotate(124deg);">
+                            <div class="kaaba-marker" title="Kaaba (Makkah)">
+                                <span class="kaaba-icon">🕋</span>
+                            </div>
+                            <div class="needle-arrow-line"></div>
+                        </div>
+                        <div class="compass-center-dot"></div>
+                    </div>
+                </div>
+
+                <div class="qibla-readout-card">
+                    <div class="qibla-angle-big">124° <span class="qibla-dir-text">SE (South-East)</span></div>
+                    <div class="qibla-city-sub" data-i18n="qibla_city_sub">Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km</div>
+                </div>
+
+                <div id="sensor-status-msg" class="qibla-sensor-note">
+                    <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text" data-i18n="qibla_sensor_text">Align phone until the 🕋
+                        Kaaba points to the top.</span>
+                </div>
+                <div class="qibla-calib-hint" style="font-size: 0.74rem; color: #64748b; margin-top: 0.25rem;" data-i18n="qibla_calib_hint">
+                    💡 Hold phone flat or move in a <strong>figure-8</strong> motion if direction drifts.
+                </div>
+            </div>
+            <div class="qibla-modal-footer" style="display: flex; gap: 0.5rem; justify-content: space-between; align-items: center;">
+                <button type="button" id="btn-recalibrate-compass" class="btn" style="background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; padding: 0.45rem 0.85rem; font-size: 0.82rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; font-weight: 600;">
+                    <span>🔄</span> <span data-i18n="qibla_recalibrate">Reset / Calibrate</span>
+                </button>
+                <button type="button" class="btn btn-primary close-qibla-modal-btn"
+                    style="padding: 0.45rem 1.15rem; font-size: 0.85rem; border-radius: 6px;" data-i18n="qibla_close_btn">
+                    Close Compass
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="/assets/asm_logo.png" alt="ASM Logo" width="40" loading="lazy" decoding="async">
+                    <span>ASM POLIMI</span>
+                </div>
+                <div class="footer-legal-links">
+                    <a href="/privacy" data-i18n="footer_privacy">Privacy Policy</a>
+                    <span class="footer-separator">&bull;</span>
+                    <a href="/terms" data-i18n="footer_terms">Terms &amp; Conditions</a>
+                    <span class="footer-separator">&bull;</span>
+                    <a href="/cookies" data-i18n="footer_cookies">Cookie Policy</a>
+                </div>
+                <div class="footer-copyright" data-i18n="footer_copyright">
+                    &copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.
+                    <br> All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GDPR Cookie Consent Confirmation Banner -->
+    <div id="cookie-consent-banner" class="cookie-banner-wrap" role="dialog" aria-live="polite" aria-label="Cookie consent">
+        <div class="cookie-banner-title">
+            <span>🍪</span> <span data-i18n="cookie_banner_title">Salam! Halal Cookies Only</span>
+        </div>
+        <p class="cookie-banner-text">
+            <span data-i18n="cookie_banner_desc">We only serve halal cookies: essential storage to run the site and optional analytics to improve student services. Accept all or decline non-essential anytime in our</span>
+            <a href="/cookies" data-i18n="cookie_banner_link">Cookie Policy</a>.
+        </p>
+        <div class="cookie-banner-actions">
+            <button type="button" id="btn-cookie-accept" class="cookie-btn-accept" data-i18n="cookie_btn_accept">
+                Accept All
+            </button>
+            <button type="button" id="btn-cookie-decline" class="cookie-btn-decline" data-i18n="cookie_btn_decline">
+                Decline Non-Essential
+            </button>
+        </div>
+    </div>
+
+    
+<script>
+    async function loadGalleryContent() {
+        let data = null;
+        for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
+            try {
+                const res = await fetch(url);
+                if (res.ok) { data = await res.json(); break; }
+            } catch (e) {}
+        }
+        if (!data) return;
+
+        const galleryContainer = document.getElementById('dynamic-gallery-container');
+        if (galleryContainer && data.gallery) {
+            const existingItems = galleryContainer.querySelectorAll('.gallery-item');
+            if (existingItems.length > 0 && existingItems.length === data.gallery.length) {
+                return;
+            }
+            galleryContainer.innerHTML = '';
+            data.gallery.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item fade-in-up';
+                div.style.transitionDelay = `${index * 120}ms`;
+                div.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" onerror="this.style.display='none'"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                        <span style="position: relative; z-index: 0;">Image ${index + 1}</span>
+                        <div class="gallery-caption" style="z-index: 2;">${item.title}</div>
+                    `;
+                galleryContainer.appendChild(div);
+
+                if (window.scrollObserver) {
+                    window.scrollObserver.observe(div);
+                } else {
+                    div.classList.add('is-visible');
+                }
+            });
+        }
+    }
+
+    loadGalleryContent().catch(err => console.error('Error fetching gallery content:', err));
+</script>
+
+</body>
+
+</html>

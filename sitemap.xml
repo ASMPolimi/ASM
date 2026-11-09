@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    <!-- ASM Polimi Homepage -->
+    <url>
+        <loc>https://asmpolimi.it/</loc>
+        <lastmod>2026-10-26</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.00</priority>
+    </url>
+    <!-- Friday Jumu'ah Prayers & Locations -->
+    <url>
+        <loc>https://asmpolimi.it/jumuah</loc>
+        <lastmod>2026-10-26</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+    </url>
+    <!-- Events & Workshops Calendar -->
+    <url>
+        <loc>https://asmpolimi.it/events</loc>
+        <lastmod>2026-10-26</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    <!-- Halal Food Scanner & Campus Dining Guide -->
+    <url>
+        <loc>https://asmpolimi.it/halal</loc>
+        <lastmod>2026-10-26</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    <!-- Join Us / Membership Registration -->
+    <url>
+        <loc>https://asmpolimi.it/register</loc>
+        <lastmod>2026-10-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <!-- Community Photo Gallery -->
+    <url>
+        <loc>https://asmpolimi.it/gallery</loc>
+        <lastmod>2026-10-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.70</priority>
+    </url>
+    <!-- Ask an Imam / Student Support -->
+    <url>
+        <loc>https://asmpolimi.it/support</loc>
+        <lastmod>2026-10-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.70</priority>
+    </url>
+</urlset>

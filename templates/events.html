@@ -1,0 +1,555 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Events, Workshops & Registration | ASM Polimi{% endblock %}
+{% block meta_description %}Discover upcoming events, academic workshops, guest lectures, and social gatherings organized by the Muslim Student Association at Politecnico di Milano. Register online today!{% endblock %}
+{% block canonical_url %}https://asmpolimi.it/events{% endblock %}
+{% block og_url %}https://asmpolimi.it/events{% endblock %}
+{% block og_title %}Student Events, Workshops & Registration | ASM Polimi{% endblock %}
+{% block og_description %}Discover upcoming events, academic workshops, guest lectures, and social gatherings organized by the Muslim Student Association at Politecnico di Milano. Register online today!{% endblock %}
+{% block twitter_url %}https://asmpolimi.it/events{% endblock %}
+{% block twitter_title %}Student Events, Workshops & Registration | ASM Polimi{% endblock %}
+{% block twitter_description %}Discover upcoming events, academic workshops, guest lectures, and social gatherings organized by the Muslim Student Association at Politecnico di Milano. Register online today!{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Event Cards Grid & Ticket Styling */
+    .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.75rem;
+        margin-top: 2rem;
+    }
+
+    .event-card {
+        background: #ffffff;
+        border-radius: 1.25rem;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .event-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(18, 74, 97, 0.12);
+        border-color: rgba(18, 74, 97, 0.3);
+    }
+
+    .event-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .event-cat-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .cat-islamic { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .cat-ramadiamo { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    .cat-physical { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .cat-cultural { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+    .cat-other { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+
+    .event-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.3rem 0.65rem;
+        border-radius: 999px;
+    }
+
+    .status-open { background: #dcfce7; color: #15803d; }
+    .status-closed { background: #fee2e2; color: #b91c1c; }
+
+    .event-title {
+        color: var(--color-primary);
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin: 0 0 0.85rem 0;
+        line-height: 1.35;
+        font-family: var(--font-heading);
+    }
+
+    .event-meta-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.92rem;
+        color: #475569;
+    }
+
+    .event-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+    }
+
+    .event-meta-icon {
+        font-size: 1.05rem;
+        width: 1.4rem;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    .event-desc {
+        color: #64748b;
+        font-size: 0.94rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .event-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #f1f5f9;
+        margin-top: auto;
+    }
+
+    .event-cost-pill {
+        font-weight: 700;
+        color: var(--color-primary);
+        background: rgba(18, 74, 97, 0.08);
+        padding: 0.35rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.88rem;
+    }
+
+    /* Native Registration Form Card */
+    .native-event-form-wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 1.5rem;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.07);
+        padding: 2.5rem;
+        position: relative;
+    }
+
+    @media (max-width: 640px) {
+        .native-event-form-wrap {
+            padding: 1.5rem;
+            border-radius: 1rem;
+        }
+    }
+
+    .selected-event-hero {
+        background: linear-gradient(135deg, rgba(18, 74, 97, 0.06), rgba(251, 191, 36, 0.1));
+        border: 1.5px solid rgba(18, 74, 97, 0.15);
+        border-radius: 1rem;
+        padding: 1.25rem 1.4rem;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .form-step-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--color-primary);
+        margin: 1.75rem 0 1rem 0;
+        padding-bottom: 0.4rem;
+        border-bottom: 1.5px solid #f1f5f9;
+    }
+
+    .form-step-num {
+        width: 1.85rem;
+        height: 1.85rem;
+        border-radius: 50%;
+        background: var(--color-primary);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .form-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .checkbox-pill-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 0.45rem;
+    }
+
+    .checkbox-pill-wrap:hover {
+        border-color: #cbd5e1;
+        background: #f1f5f9;
+    }
+
+    .free-celebration-banner {
+        background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+        border: 1.5px solid #a7f3d0;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .paid-instructions-banner {
+        background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+        border: 1.5px solid #bfdbfe;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    /* Success Card Screen */
+    .success-celebration-card {
+        text-align: center;
+        padding: 3rem 1.5rem;
+    }
+
+    .success-icon-badge {
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
+        background: #dcfce7;
+        color: #15803d;
+        font-size: 2.25rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 4px 15px rgba(34, 197, 94, 0.25);
+    }
+</style>
+{% endblock %}
+
+{% block header_style %}style="background-color: var(--color-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 0;"{% endblock %}
+
+{% block content %}
+<!-- Section: Featured Events -->
+<section id="events" class="section first-section bg-light">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 data-i18n="events_page_heading">Featured Events</h2>
+            <div class="divider"></div>
+            <p data-i18n="events_page_sub">Join our halaqas, Ramadan gatherings, sports trips, and cultural workshops across campus.</p>
+        </div>
+
+        <!-- Horizontal Scrolling Campus Events Track (Islamic Events Style) -->
+        <div class="islamic-events-scroll-wrap" style="margin-bottom: 2rem;">
+            <div id="dynamic-events-container" class="islamic-events-grid stagger-children">
+                <p class="text-center w-100" style="padding: 2.5rem; color: #64748b;" data-i18n="events_loading">Loading events...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Islamic Events Highlights on Events Page -->
+<section id="islamic-events" class="section bg-light" style="padding: 3.5rem 0;">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 data-i18n="hijri_heading">Major Islamic Events</h2>
+            <div class="divider"></div>
+            <p data-i18n="hijri_subhead">Major Islamic celebrations and spiritual milestones across the academic year.</p>
+        </div>
+
+        <div class="islamic-events-scroll-wrap">
+            <div class="islamic-events-grid stagger-children">
+                <!-- Ramadan Card -->
+                <div class="islamic-event-card event-ramadan">
+                    <div class="islamic-event-badge-strip">
+                        <span class="event-type-badge" data-i18n="event_ramadan_badge">Holy Month of Fasting</span>
+                        <span class="event-countdown-pill" id="events-countdown-ramadan">Calculating...</span>
+                    </div>
+                    <div class="islamic-event-icon">🌙</div>
+                    <h3 class="islamic-event-title" data-i18n="event_ramadan_title">Ramadan</h3>
+                    <div class="islamic-event-hijri">1 Ramadan 1448 AH</div>
+                    <div class="islamic-event-gregorian" id="events-date-greg-ramadan">~ February 2027</div>
+                    <p class="islamic-event-desc" data-i18n="event_ramadan_desc">
+                        The sacred month of fasting from dawn to sunset, daily Quran recitation, nightly Taraweeh prayers, and community Iftar dinners.
+                    </p>
+                </div>
+
+                <!-- Eid al-Fitr Card -->
+                <div class="islamic-event-card event-eid-fitr">
+                    <div class="islamic-event-badge-strip">
+                        <span class="event-type-badge" data-i18n="event_eid_fitr_badge">Festival of Breaking the Fast</span>
+                        <span class="event-countdown-pill" id="events-countdown-eid-fitr">Calculating...</span>
+                    </div>
+                    <div class="islamic-event-icon">✨</div>
+                    <h3 class="islamic-event-title" data-i18n="event_eid_fitr_title">Eid al-Fitr</h3>
+                    <div class="islamic-event-hijri">1 Shawwal 1448 AH</div>
+                    <div class="islamic-event-gregorian" id="events-date-greg-eid-fitr">~ March 2027</div>
+                    <p class="islamic-event-desc" data-i18n="event_eid_fitr_desc">
+                        The joyous celebration marking the end of Ramadan, celebrated with morning Eid congregational prayer, charity, and festive campus gatherings.
+                    </p>
+                </div>
+
+                <!-- Day of Arafah Card -->
+                <div class="islamic-event-card event-arafah">
+                    <div class="islamic-event-badge-strip">
+                        <span class="event-type-badge" data-i18n="event_arafah_badge">Pinnacle of Hajj</span>
+                        <span class="event-countdown-pill" id="events-countdown-arafah">Calculating...</span>
+                    </div>
+                    <div class="islamic-event-icon">⛰️</div>
+                    <h3 class="islamic-event-title" data-i18n="event_arafah_title">Day of Arafah</h3>
+                    <div class="islamic-event-hijri">9 Dhu al-Hijjah 1448 AH</div>
+                    <div class="islamic-event-gregorian" id="events-date-greg-arafah">~ May 2027</div>
+                    <p class="islamic-event-desc" data-i18n="event_arafah_desc">
+                        The most sacred day of the Islamic year. Pilgrims gather on Mount Arafat in prayer. Fasting is highly recommended for non-pilgrims.
+                    </p>
+                </div>
+
+                <!-- Eid al-Adha Card -->
+                <div class="islamic-event-card event-eid-adha">
+                    <div class="islamic-event-badge-strip">
+                        <span class="event-type-badge" data-i18n="event_eid_adha_badge">Feast of the Sacrifice</span>
+                        <span class="event-countdown-pill" id="events-countdown-eid-adha">Calculating...</span>
+                    </div>
+                    <div class="islamic-event-icon">🕋</div>
+                    <h3 class="islamic-event-title" data-i18n="event_eid_adha_title">Eid al-Adha</h3>
+                    <div class="islamic-event-hijri">10 Dhu al-Hijjah 1448 AH</div>
+                    <div class="islamic-event-gregorian" id="events-date-greg-eid-adha">~ May 2027</div>
+                    <p class="islamic-event-desc" data-i18n="event_eid_adha_desc">
+                        Commemorates Prophet Ibrahim’s (AS) devotion and sacrifice. Celebrated with morning Eid prayer, Qurbani charity, and community feasts.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- DEDICATED EVENT REGISTRATION PORTAL CTA SECTION              -->
+<!-- ============================================================ -->
+<section id="register-cta" class="section bg-light" style="padding: 4.5rem 0;">
+    <div class="container text-center" style="max-width: 780px;">
+        <div style="background: white; border-radius: 1.5rem; padding: 3.5rem 2.2rem; border: 1.5px solid #e2e8f0; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);">
+            <div style="font-size: 3rem; margin-bottom: 0.75rem;">🎟️</div>
+            <h2 style="color: var(--color-primary); font-size: 2rem; margin-bottom: 0.75rem;" data-i18n="events_portal_cta_title">Ready to Join an Event?</h2>
+            <div class="divider"></div>
+            <p style="color: #64748b; font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem;" data-i18n="events_portal_cta_desc">
+                Registration is completed through our dedicated step-by-step application portal. Browse all upcoming sessions, check membership tier discounts, and secure your spot online.
+            </p>
+            <a href="/event-register" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.15rem; font-weight: 700; border-radius: 12px; display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; box-shadow: 0 4px 15px rgba(18, 74, 97, 0.25);" data-i18n="events_open_portal_btn">
+                <span>🚀</span> Open Event Application Portal &rarr;
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let siteEvents = [];
+    let selectedEvent = null;
+
+    function getCategoryBadgeHtml(cat) {
+        const c = cat || 'Islamic Event';
+        let cls = 'cat-other';
+        let icon = '🌟';
+        if (c.includes('Islamic')) { cls = 'cat-islamic'; icon = '🕌'; }
+        else if (c.includes('Ramadiamo') || c.includes('Iftar')) { cls = 'cat-ramadiamo'; icon = '🌙'; }
+        else if (c.includes('Physical') || c.includes('Hike') || c.includes('Laser')) { cls = 'cat-physical'; icon = '🧗'; }
+        else if (c.includes('Cultural') || c.includes('Calligraphy') || c.includes('Henna')) { cls = 'cat-cultural'; icon = '🎨'; }
+        return `<span class="event-cat-badge ${cls}">${icon} ${escapeHtml(c)}</span>`;
+    }
+
+    async function loadEventsContent() {
+        let data = null;
+        for (const url of ['https://admin.asmpolimi.it/api/content', '/api/content', 'data/content.json', 'api/content.json']) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    data = await response.json();
+                    break;
+                }
+            } catch (e) { }
+        }
+        if (!data) return;
+
+        siteEvents = data.events || [];
+
+        // Announcement Banner
+        if (data.announcement && data.announcement.trim() !== '') {
+            const banner = document.getElementById('announcement-banner');
+            const text = document.getElementById('announcement-text');
+            if (banner && text) {
+                text.innerHTML = typeof formatAnnouncementHtml === 'function' ? formatAnnouncementHtml(data.announcement) : data.announcement;
+                banner.classList.remove('hidden');
+                banner.style.display = 'block';
+                document.body.classList.add('has-announcement-banner');
+                if (typeof scheduleAnnouncementAutoHide === 'function') {
+                    scheduleAnnouncementAutoHide(20000);
+                }
+            }
+        }
+
+        renderEventsGrid();
+        populateEventDropdown();
+
+        // Check if event ID or reg_link was passed in URL query
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryEventId = urlParams.get('event') || urlParams.get('event_id');
+        if (queryEventId) {
+            selectEventByIdOrTitle(queryEventId);
+        } else if (siteEvents.length > 0) {
+            // Default select first open event
+            const firstOpen = siteEvents.find(e => e.registration_open === 1 || e.registration_open === true || e.registration_open === '1') || siteEvents[0];
+            selectEvent(firstOpen);
+        }
+    }
+
+    function getEventStatus(ev) {
+        if (!ev) return 'closed';
+        if (ev.registration_status) return ev.registration_status;
+        return (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1') ? 'open' : 'closed';
+    }
+
+    function renderEventsGrid() {
+        const container = document.getElementById('dynamic-events-container');
+        if (!container) return;
+
+        if (siteEvents.length === 0) {
+            container.innerHTML = `
+                <div style="width: 100%; text-align: center; padding: 3rem; background: white; border-radius: 1.25rem; border: 1px dashed #cbd5e1;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📅</div>
+                    <p style="color: #64748b; font-size: 1.05rem; margin: 0;">No upcoming events scheduled at this moment. Stay tuned for exciting announcements!</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = '';
+        siteEvents.forEach((ev, idx) => {
+            const status = getEventStatus(ev);
+            const card = document.createElement('div');
+            
+            const cat = ev.category || 'Islamic Event';
+            let topBorderColor = '#10b981';
+            let catIcon = '🕌';
+            if (cat.includes('Islamic')) { topBorderColor = '#10b981'; catIcon = '🕌'; }
+            else if (cat.includes('Ramadiamo') || cat.includes('Iftar')) { topBorderColor = '#f59e0b'; catIcon = '🌙'; }
+            else if (cat.includes('Physical') || cat.includes('Hike') || cat.includes('Sport') || cat.includes('Laser')) { topBorderColor = '#3b82f6'; catIcon = '🧗'; }
+            else if (cat.includes('Cultural') || cat.includes('Calligraphy') || cat.includes('Henna')) { topBorderColor = '#ec4899'; catIcon = '🎨'; }
+            else { topBorderColor = '#06b6d4'; catIcon = '🌟'; }
+
+            card.className = 'islamic-event-card animate-up';
+            card.style.cssText = `border-top: 4px solid ${topBorderColor} !important; flex: 0 0 310px; min-width: 285px; max-width: 340px; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: space-between;`;
+
+            let statusBadgeHtml = '';
+            let actionBtnHtml = '';
+
+            if (status === 'open') {
+                statusBadgeHtml = '<span class="event-status-pill status-open" style="font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 999px;">🟢 Open</span>';
+                actionBtnHtml = `
+                    <a href="/event-register?event=${encodeURIComponent(ev.id || ev.title)}" class="btn btn-primary text-center" style="display: block; width: 100%; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; text-decoration: none;">
+                        Register Now 🎟️
+                    </a>
+                `;
+            } else if (status === 'soon') {
+                statusBadgeHtml = '<span class="event-status-pill" style="font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: #fef3c7; color: #b45309; border: 1px solid #fde68a;">⏳ Soon</span>';
+                actionBtnHtml = `
+                    <button type="button" class="btn text-center" disabled style="display: block; width: 100%; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; background: #fef3c7; color: #b45309; border: 1.5px solid #fde68a; cursor: not-allowed;">
+                        ⏳ Opening Soon
+                    </button>
+                `;
+            } else {
+                statusBadgeHtml = '<span class="event-status-pill status-closed" style="font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 999px;">🔴 Closed</span>';
+                actionBtnHtml = `
+                    <button type="button" class="btn btn-secondary text-center" disabled style="display: block; width: 100%; padding: 0.65rem 1rem; font-size: 0.92rem; opacity: 0.65; cursor: not-allowed; border-color: #cbd5e1; color: #94a3b8; border-radius: 8px;">
+                        Registration Closed
+                    </button>
+                `;
+            }
+
+            card.innerHTML = `
+                <div>
+                    <div class="islamic-event-badge-strip" style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; margin-bottom: 0.75rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">${getCategoryBadgeHtml(ev.category)}</span>
+                        ${statusBadgeHtml}
+                    </div>
+
+                    <div class="islamic-event-icon" style="font-size: 2.2rem; margin: 0.35rem 0 0.5rem 0;">${catIcon}</div>
+                    
+                    <h3 class="islamic-event-title" style="font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem 0; line-height: 1.35; color: var(--color-primary);">${escapeHtml(ev.title)}</h3>
+
+                    <div class="islamic-event-hijri" style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.35rem; color: #334155;">
+                        📅 ${escapeHtml(ev.date || 'Date TBD')} ${ev.time ? '• ' + escapeHtml(ev.time) : ''}
+                    </div>
+                    
+                    <div class="islamic-event-gregorian" style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.85rem;">
+                        📍 ${escapeHtml(ev.location || 'Campus Leonardo')}
+                    </div>
+
+                    <p class="islamic-event-desc" style="font-size: 0.88rem; line-height: 1.5; color: #475569; margin: 0 0 1rem 0;">
+                        ${escapeHtml(ev.desc || '')}
+                    </p>
+                </div>
+
+                <div style="margin-top: auto; padding-top: 0.85rem; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.75rem; font-weight: 700; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 0.2rem 0.55rem; border-radius: 999px;">
+                            🏅 Members: ${escapeHtml(ev.price_member || ev.cost || 'Free')}
+                        </span>
+                        <span style="font-size: 0.75rem; font-weight: 700; color: #1e40af; background: #eff6ff; border: 1px solid #bfdbfe; padding: 0.2rem 0.55rem; border-radius: 999px;">
+                            👥 Guests: ${escapeHtml(ev.price_non_member || ev.cost || 'Free')}
+                        </span>
+                    </div>
+
+                    ${actionBtnHtml}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    loadEventsContent().catch(err => console.error('Error fetching events:', err));
+    window.addEventListener('asmLanguageChanged', () => loadEventsContent());
+</script>
+{% endblock %}
