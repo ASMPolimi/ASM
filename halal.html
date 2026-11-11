@@ -1034,17 +1034,47 @@
         return highlighted;
     }
 
+    // Helper to extract best product image URL across all Open Food Facts variants and languages
+    const DEFAULT_PRODUCT_PLACEHOLDER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120"><rect width="120" height="120" rx="12" fill="%23f1f5f9"/><path d="M40 45a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm-14 47l22-26 14 16 18-22 16 32H26z" fill="%23cbd5e1"/></svg>';
+
+    function extractProductImageUrl(prod) {
+        if (!prod) return DEFAULT_PRODUCT_PLACEHOLDER;
+        if (typeof prod === 'string' && prod.trim()) return prod.trim();
+
+        const candidates = [
+            prod.image_url,
+            prod.image_front_url,
+            prod.image_front_small_url,
+            prod.image_small_url,
+            prod.image_thumb_url,
+            prod.image_front_thumb_url,
+            prod.selected_images?.front?.display?.en,
+            prod.selected_images?.front?.display?.it,
+            prod.selected_images?.front?.display?.fr,
+            prod.selected_images?.front?.small?.en,
+            prod.selected_images?.front?.small?.it
+        ];
+
+        for (const url of candidates) {
+            if (url && typeof url === 'string' && url.trim().startsWith('http')) {
+                return url.trim();
+            }
+        }
+        return DEFAULT_PRODUCT_PLACEHOLDER;
+    }
+
     // Send anonymous scan report to backend admin log
     async function reportScannedProduct(product, analysis) {
         if (!product || !product.code) return;
         try {
+            const resolvedImg = extractProductImageUrl(product);
             const payload = {
                 barcode: String(product.code).trim(),
                 product_name: product.product_name || product.product_name_en || '',
                 brand: product.brands || '',
                 ingredients_text: (product.ingredients_text && !product.ingredients_text.includes('No ingredients list available')) ? product.ingredients_text : '',
                 status: (analysis && analysis.status) ? analysis.status : 'not_listed',
-                image_url: product.image_url || '',
+                image_url: (resolvedImg && !resolvedImg.startsWith('data:')) ? resolvedImg : '',
                 source: product.source || 'scanner'
             };
 
@@ -1078,7 +1108,7 @@
 
         const name = product.product_name || product.product_name_en || (isIt ? 'Prodotto Non in Lista' : 'Product Not Listed');
         const brand = product.brands || (isIt ? 'Marca non specificata' : 'Unknown Brand');
-        const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
+        const img = extractProductImageUrl(product);
 
         const rawIngredients = product.ingredients_text;
         const placeholderNotice = isIt ? 'Nessun elenco ingredienti disponibile per questo prodotto in Open Food Facts o nel database locale.' : 'No ingredients list available for this product in Open Food Facts or local database.';
@@ -1154,7 +1184,7 @@
         resultsDiv.innerHTML = `
                 <div class="result-card" style="border: 2px solid ${cardBorderColor}; background-color: ${cardBgColor};">
                     <div class="result-header-flex">
-                        <img class="result-image" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
+                        <img class="result-image" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=DEFAULT_PRODUCT_PLACEHOLDER">
                         <div class="result-title-meta">
                             <div class="status-badge ${statusClass}">${statusText}</div>
                             <h3 class="result-prod-name">${escapeHtml(name)}</h3>
@@ -1413,7 +1443,7 @@
                     code: barcode,
                     product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
                     brands: isIt ? 'Barcode non censito' : 'Barcode not in database',
-                    image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
+                    image_url: DEFAULT_PRODUCT_PLACEHOLDER,
                     ingredients_text: '',
                     source: 'unlisted'
                 };
@@ -1436,7 +1466,7 @@
                 code: barcode,
                 product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
                 brands: isIt ? 'Barcode non trovato (Errore connessione)' : 'Barcode unverified (Connection Issue)',
-                image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
+                image_url: DEFAULT_PRODUCT_PLACEHOLDER,
                 ingredients_text: '',
                 source: 'unlisted_offline'
             };

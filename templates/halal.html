@@ -1,16 +1,93 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Halal Food Scanner & Ingredients Checker | ASM Polimi{% endblock %}
-{% block meta_description %}Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.{% endblock %}
-{% block canonical_url %}https://asmpolimi.it/halal{% endblock %}
-{% block og_url %}https://asmpolimi.it/halal{% endblock %}
-{% block og_title %}Halal Food Scanner & Ingredients Checker | ASM Polimi{% endblock %}
-{% block og_description %}Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.{% endblock %}
-{% block twitter_url %}https://asmpolimi.it/halal{% endblock %}
-{% block twitter_title %}Halal Food Scanner & Ingredients Checker | ASM Polimi{% endblock %}
-{% block twitter_description %}Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halal Food Scanner & Ingredients Checker | ASM Polimi</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <meta name="description"
+        content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+    <link rel="canonical" href="https://asmpolimi.it/halal">
 
-{% block extra_head %}
+    <!-- Open Graph / Facebook / WhatsApp / Telegram / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://asmpolimi.it/halal">
+    <meta property="og:title" content="Halal Food Scanner & Ingredients Checker | ASM Polimi">
+    <meta property="og:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+    <meta property="og:image" content="https://asmpolimi.it/assets/og-banner.png">
+    <meta property="og:image:secure_url" content="https://asmpolimi.it/assets/og-banner.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
+    <meta property="og:site_name" content="ASM Polimi">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="it_IT">
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://asmpolimi.it/halal">
+    <meta name="twitter:title" content="Halal Food Scanner & Ingredients Checker | ASM Polimi">
+    <meta name="twitter:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+    <meta name="twitter:image" content="https://asmpolimi.it/assets/og-banner.png">
+    <meta name="twitter:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/main.js" defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <!-- Google tag (gtag.js) with GDPR Consent Mode v2 -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      var savedConsent = localStorage.getItem('asm_cookie_consent');
+      if (savedConsent === 'accepted') {
+          gtag('consent', 'default', {
+              'analytics_storage': 'granted',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      } else if (savedConsent === 'declined') {
+          gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      } else {
+          // Strict GDPR opt-in default for European Economic Area + Switzerland + UK
+          gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO', 'GB', 'CH']
+          });
+          // Default granted for traffic outside the EEA (resolves Google 0% non-EEA alert)
+          gtag('consent', 'default', {
+              'analytics_storage': 'granted',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+          });
+      }
+
+      gtag('js', new Date());
+      gtag('config', 'G-8N5B01YCZ4');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8N5B01YCZ4"></script>
+    
 <!-- html5-qrcode library for barcode scanning -->
 <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
@@ -445,11 +522,69 @@
         margin-bottom: 1.25rem;
     }
 </style>
-{% endblock %}
 
-{% block body_class %}class="bg-light"{% endblock %}
+</head>
 
-{% block content %}
+<body class="bg-light">
+
+    <!-- Header & Navigation -->
+    <header class="navbar" >
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <img src="/assets/asm_logo.png" alt="ASM Logo">
+                <span>ASM POLIMI</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="/#home" data-i18n="nav_home">Home</a>
+                <a href="/events" data-i18n="nav_events">Events</a>
+                <a href="/halal" data-i18n="nav_halal">Halal Scanner</a>
+                <a href="/support" data-i18n="nav_support">Ask an Imam</a>
+                <a href="/gallery" data-i18n="nav_gallery">Gallery</a>
+                <a href="/jumuah" data-i18n="nav_jumuah">Jumu'ah</a>
+                <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer" data-i18n="nav_quran">Quran Irtaqi</a>
+                <a href="/register" class="btn btn-primary" style="padding: 0.5rem 1rem; margin-left: 1rem;" data-i18n="nav_join">Join Us</a>
+                <div class="dropdown">
+                    <button class="dropbtn" aria-label="Settings">
+                        &#8942;
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="https://admin.asmpolimi.it/admin" data-i18n="nav_admin">Admin</a>
+                    </div>
+                </div>
+            </nav>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Announcement Banner -->
+    <div id="announcement-banner" class="hidden">
+        <span class="announcement-content-wrap">
+            <span style="margin-right: 0.5rem;">&#128226;</span> <span id="announcement-text"></span>
+        </span>
+        <button type="button" id="close-announcement-btn" aria-label="Close Announcement" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.25rem; line-height: 1; cursor: pointer; color: var(--color-text); opacity: 0.7; padding: 0.25rem; transition: opacity 0.2s;">&times;</button>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <nav class="mobile-nav-links">
+            <a href="/#home"><span class="mobile-nav-icon">🏠</span><span data-i18n="nav_home">Home</span></a>
+            <a href="/events"><span class="mobile-nav-icon">📅</span><span data-i18n="nav_events">Events</span></a>
+            <a href="/halal"><span class="mobile-nav-icon">🥗</span><span data-i18n="nav_halal">Halal Scanner</span></a>
+            <a href="/support"><span class="mobile-nav-icon">💬</span><span data-i18n="nav_support">Ask an Imam</span></a>
+            <a href="/gallery"><span class="mobile-nav-icon">📸</span><span data-i18n="nav_gallery">Gallery</span></a>
+            <a href="/jumuah"><span class="mobile-nav-icon">🕌</span><span data-i18n="nav_jumuah">Jumu'ah</span></a>
+            <a href="https://quran.asmpolimi.it" target="_blank" rel="noopener noreferrer"><span class="mobile-nav-icon">📖</span><span data-i18n="nav_quran">Quran Irtaqi</span></a>
+            <a href="/register"><span class="mobile-nav-icon">🤝</span><span data-i18n="nav_join">Join Us</span></a>
+        </nav>
+    </div>
+
+    
 <section class="section first-section">
     <div class="container">
         <div class="section-header text-center">
@@ -584,9 +719,111 @@
 
 
 <!-- Footer -->
-{% endblock %}
 
-{% block extra_scripts %}
+
+    <!-- Qibla Compass Modal -->
+    <div id="qibla-modal" class="qibla-modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="qibla-modal-title">
+        <div class="qibla-modal-dialog">
+            <div class="qibla-modal-header">
+                <h3 id="qibla-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        style="color: var(--color-secondary); vertical-align: middle;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+                            fill="var(--color-secondary)"></polygon>
+                    </svg>
+                    <span data-i18n="qibla_title">Milan Qibla Compass</span>
+                </h3>
+                <button type="button" class="qibla-modal-close close-qibla-modal-btn"
+                    aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="qibla-modal-body">
+                <div class="qibla-compass-visual">
+                    <div class="compass-dial" id="compass-dial-ring">
+                        <span class="compass-cardinal compass-n">N</span>
+                        <span class="compass-cardinal compass-e">E</span>
+                        <span class="compass-cardinal compass-s">S</span>
+                        <span class="compass-cardinal compass-w">W</span>
+                        <div class="compass-needle-kaaba" id="compass-needle-arm" style="transform: rotate(124deg);">
+                            <div class="kaaba-marker" title="Kaaba (Makkah)">
+                                <span class="kaaba-icon">🕋</span>
+                            </div>
+                            <div class="needle-arrow-line"></div>
+                        </div>
+                        <div class="compass-center-dot"></div>
+                    </div>
+                </div>
+
+                <div class="qibla-readout-card">
+                    <div class="qibla-angle-big">124° <span class="qibla-dir-text">SE (South-East)</span></div>
+                    <div class="qibla-city-sub" data-i18n="qibla_city_sub">Milan, Italy &bull; 45.46° N, 9.19° E &bull; ~3,820 km</div>
+                </div>
+
+                <div id="sensor-status-msg" class="qibla-sensor-note">
+                    <span id="qibla-sensor-indicator">📱</span> <span id="qibla-sensor-text" data-i18n="qibla_sensor_text">Align phone until the 🕋
+                        Kaaba points to the top.</span>
+                </div>
+                <div class="qibla-calib-hint" style="font-size: 0.74rem; color: #64748b; margin-top: 0.25rem;" data-i18n="qibla_calib_hint">
+                    💡 Hold phone flat or move in a <strong>figure-8</strong> motion if direction drifts.
+                </div>
+            </div>
+            <div class="qibla-modal-footer" style="display: flex; gap: 0.5rem; justify-content: space-between; align-items: center;">
+                <button type="button" id="btn-recalibrate-compass" class="btn" style="background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; padding: 0.45rem 0.85rem; font-size: 0.82rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; font-weight: 600;">
+                    <span>🔄</span> <span data-i18n="qibla_recalibrate">Reset / Calibrate</span>
+                </button>
+                <button type="button" class="btn btn-primary close-qibla-modal-btn"
+                    style="padding: 0.45rem 1.15rem; font-size: 0.85rem; border-radius: 6px;" data-i18n="qibla_close_btn">
+                    Close Compass
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="/assets/asm_logo.png" alt="ASM Logo" width="40" loading="lazy" decoding="async">
+                    <span>ASM POLIMI</span>
+                </div>
+                <div class="footer-legal-links">
+                    <a href="/privacy" data-i18n="footer_privacy">Privacy Policy</a>
+                    <span class="footer-separator">&bull;</span>
+                    <a href="/terms" data-i18n="footer_terms">Terms &amp; Conditions</a>
+                    <span class="footer-separator">&bull;</span>
+                    <a href="/cookies" data-i18n="footer_cookies">Cookie Policy</a>
+                </div>
+                <div class="footer-copyright" data-i18n="footer_copyright">
+                    &copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.
+                    <br> All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GDPR Cookie Consent Confirmation Banner -->
+    <div id="cookie-consent-banner" class="cookie-banner-wrap" role="dialog" aria-live="polite" aria-label="Cookie consent">
+        <div class="cookie-banner-title">
+            <span>🍪</span> <span data-i18n="cookie_banner_title">Salam! Halal Cookies Only</span>
+        </div>
+        <p class="cookie-banner-text">
+            <span data-i18n="cookie_banner_desc">We only serve halal cookies: essential storage to run the site and optional analytics to improve student services. Accept all or decline non-essential anytime in our</span>
+            <a href="/cookies" data-i18n="cookie_banner_link">Cookie Policy</a>.
+        </p>
+        <div class="cookie-banner-actions">
+            <button type="button" id="btn-cookie-accept" class="cookie-btn-accept" data-i18n="cookie_btn_accept">
+                Accept All
+            </button>
+            <button type="button" id="btn-cookie-decline" class="cookie-btn-decline" data-i18n="cookie_btn_decline">
+                Decline Non-Essential
+            </button>
+        </div>
+    </div>
+
+    
 <script>
     // Tab switching logic
     function switchTab(tabId) {
@@ -797,17 +1034,47 @@
         return highlighted;
     }
 
+    // Helper to extract best product image URL across all Open Food Facts variants and languages
+    const DEFAULT_PRODUCT_PLACEHOLDER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120"><rect width="120" height="120" rx="12" fill="%23f1f5f9"/><path d="M40 45a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm-14 47l22-26 14 16 18-22 16 32H26z" fill="%23cbd5e1"/></svg>';
+
+    function extractProductImageUrl(prod) {
+        if (!prod) return DEFAULT_PRODUCT_PLACEHOLDER;
+        if (typeof prod === 'string' && prod.trim()) return prod.trim();
+
+        const candidates = [
+            prod.image_url,
+            prod.image_front_url,
+            prod.image_front_small_url,
+            prod.image_small_url,
+            prod.image_thumb_url,
+            prod.image_front_thumb_url,
+            prod.selected_images?.front?.display?.en,
+            prod.selected_images?.front?.display?.it,
+            prod.selected_images?.front?.display?.fr,
+            prod.selected_images?.front?.small?.en,
+            prod.selected_images?.front?.small?.it
+        ];
+
+        for (const url of candidates) {
+            if (url && typeof url === 'string' && url.trim().startsWith('http')) {
+                return url.trim();
+            }
+        }
+        return DEFAULT_PRODUCT_PLACEHOLDER;
+    }
+
     // Send anonymous scan report to backend admin log
     async function reportScannedProduct(product, analysis) {
         if (!product || !product.code) return;
         try {
+            const resolvedImg = extractProductImageUrl(product);
             const payload = {
                 barcode: String(product.code).trim(),
                 product_name: product.product_name || product.product_name_en || '',
                 brand: product.brands || '',
                 ingredients_text: (product.ingredients_text && !product.ingredients_text.includes('No ingredients list available')) ? product.ingredients_text : '',
                 status: (analysis && analysis.status) ? analysis.status : 'not_listed',
-                image_url: product.image_url || '',
+                image_url: (resolvedImg && !resolvedImg.startsWith('data:')) ? resolvedImg : '',
                 source: product.source || 'scanner'
             };
 
@@ -841,7 +1108,7 @@
 
         const name = product.product_name || product.product_name_en || (isIt ? 'Prodotto Non in Lista' : 'Product Not Listed');
         const brand = product.brands || (isIt ? 'Marca non specificata' : 'Unknown Brand');
-        const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
+        const img = extractProductImageUrl(product);
 
         const rawIngredients = product.ingredients_text;
         const placeholderNotice = isIt ? 'Nessun elenco ingredienti disponibile per questo prodotto in Open Food Facts o nel database locale.' : 'No ingredients list available for this product in Open Food Facts or local database.';
@@ -917,7 +1184,7 @@
         resultsDiv.innerHTML = `
                 <div class="result-card" style="border: 2px solid ${cardBorderColor}; background-color: ${cardBgColor};">
                     <div class="result-header-flex">
-                        <img class="result-image" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
+                        <img class="result-image" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=DEFAULT_PRODUCT_PLACEHOLDER">
                         <div class="result-title-meta">
                             <div class="status-badge ${statusClass}">${statusText}</div>
                             <h3 class="result-prod-name">${escapeHtml(name)}</h3>
@@ -1176,7 +1443,7 @@
                     code: barcode,
                     product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
                     brands: isIt ? 'Barcode non censito' : 'Barcode not in database',
-                    image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
+                    image_url: DEFAULT_PRODUCT_PLACEHOLDER,
                     ingredients_text: '',
                     source: 'unlisted'
                 };
@@ -1199,7 +1466,7 @@
                 code: barcode,
                 product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
                 brands: isIt ? 'Barcode non trovato (Errore connessione)' : 'Barcode unverified (Connection Issue)',
-                image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
+                image_url: DEFAULT_PRODUCT_PLACEHOLDER,
                 ingredients_text: '',
                 source: 'unlisted_offline'
             };
@@ -1399,4 +1666,7 @@
         }
     });
 </script>
-{% endblock %}
+
+</body>
+
+</html>
