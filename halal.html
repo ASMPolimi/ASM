@@ -521,6 +521,38 @@
         letter-spacing: 0.5px;
         margin-bottom: 1.25rem;
     }
+    #featured-products-section {
+        max-width: 1000px;
+        margin: 3rem auto 0;
+    }
+
+    #featured-products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+        gap: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .featured-product-card {
+        min-width: 0;
+        padding: 1.5rem;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        overflow-wrap: anywhere;
+    }
+
+    .featured-product-card img {
+        width: 100%;
+        height: 160px;
+        object-fit: contain;
+        margin-bottom: 1rem;
+    }
+
+    .featured-product-card h4 { color: var(--color-primary); margin-bottom: 0.5rem; }
+    .featured-product-card p { margin-bottom: 0.75rem; }
+    .featured-product-card summary { cursor: pointer; font-weight: 600; }
+    .featured-product-card details p { margin-top: 0.75rem; white-space: pre-wrap; }
 </style>
 
 </head>
@@ -702,6 +734,13 @@
             </div>
         </div>
 
+        <section id="featured-products-section" class="hidden" aria-labelledby="featured-products-title">
+            <h3 id="featured-products-title">Featured Products</h3>
+            <p id="featured-products-description">Products selected by the ASM team. Check each classification and ingredients: being featured is not halal certification.</p>
+            <p id="featured-products-message" role="status"></p>
+            <div id="featured-products-grid"></div>
+        </section>
+
         <!-- Halal Scanner Legal Agreement Notice -->
         <p style="text-align: center; font-size: 0.82rem; color: #64748b; margin: 1.25rem auto 0 auto; max-width: 650px; line-height: 1.5;">
             <span data-i18n="halal_auto_agree_prefix">By using the Halal Food Scanner, you automatically agree to our</span>
@@ -824,6 +863,7 @@
     </div>
 
     
+<script src="/js/featured-products.js" defer></script>
 <script>
     // Tab switching logic
     function switchTab(tabId) {

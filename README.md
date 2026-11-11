@@ -11,6 +11,7 @@ GitHub Pages: Enable GitHub Pages in repository settings pointing to `/ (root)` 
 - **Daily Prayer Timings & Ayah**: Automatic Milan prayer schedule (Aladhan API) with daily Ayah (AlQuran API).
 - **Jumu'ah Timings & Locations**: Friday prayer information for Bovisa and Leonardo with interactive maps.
 - **Halal Product Scanner**: Live camera barcode scanner, manual barcode lookup via Open Food Facts, ingredients analyzer with Haram/Mashbuh classification, and custom barcodes database. Custom products (including Excel imports) without a photo automatically look up an Open Food Facts photo in the background, without changing their custom details or classification.
+- **Featured Products**: In Admin Scanner, open **Review & Edit**, select **Show on Halal page**, and save. Uncheck and save to remove a product. Selected products appear in a dedicated public section with their current classification, barcode, photo (when available), and expandable ingredients. Featuring a product does not certify it as halal. The section is hidden when no products are selected.
 - **Events & Registration**: Upcoming events calendar with linked Google Form registration.
 - **Ask an Imam**: Private question submission portal.
 - **Gallery**: Event photos and activities.
@@ -54,6 +55,8 @@ GitHub Pages: Enable GitHub Pages in repository settings pointing to `/ (root)` 
 This repository is pre-rendered and static-ready:
 - All main pages (`index.html`, `events.html`, `halal.html`, `jumuah.html`, `gallery.html`, `register.html`, etc.) are located in the root directory.
 - Dynamic data is pre-compiled into `data/content.json` and `data/custom_barcodes.json`, allowing the site to work on static web hosts (GitHub Pages) without needing a Python backend.
+- Featured products load from `GET /api/featured_products` on the admin backend, with `data/featured_products.json` and `api/featured_products.json` as offline/static snapshots. A successful empty live response hides the section rather than restoring an outdated snapshot. Live admin selections do not require a static rebuild.
+- Deploy the updated `asm-admin/server.py` and `asm-admin/templates/admin_scanner.html` to the separate admin backend as well as the public site changes. Backend startup adds the `is_featured` database column automatically; existing products remain unselected.
 - To re-generate or refresh the static files after updating templates or database entries, run:
   ```bash
   python build_static.py
