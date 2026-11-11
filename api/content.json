@@ -5,6 +5,9 @@
   "join_us_link": "https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true",
   "global_event_reg_link": "https://docs.google.com/forms/d/e/1FAIpQLSdn7mOfaRcwuXGe9EGuX_iSSHcE15m-87AM3_Uv3PpRWTLUsA/viewform?embedded=true",
   "show_board_section": true,
+  "halal_maintenance_enabled": false,
+  "halal_maintenance_message": "The Halal Food Scanner is currently undergoing scheduled maintenance and updates. Barcode scanning and ingredient checks are temporarily unavailable. Please check back shortly.",
+  "halal_maintenance_message_it": "Lo Scanner Halal è attualmente in manutenzione programmata. La scansione dei codici a barre e la verifica degli ingredienti sono temporaneamente sospese. Ci scusiamo per l'attesa.",
   "events": [
     {
       "id": 14,

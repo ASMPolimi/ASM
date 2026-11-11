@@ -464,6 +464,63 @@
             padding: 0.75rem 0.65rem;
         }
     }
+
+    /* Maintenance mode styles */
+    .maintenance-banner-card {
+        background: #ffffff;
+        border: 2px solid #fde68a;
+        border-radius: 1.5rem;
+        padding: 3rem 2rem;
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.08);
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .maintenance-icon-wrap {
+        width: 72px;
+        height: 72px;
+        background: #fef3c7;
+        color: #d97706;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        margin: 0 auto 1.25rem auto;
+        border: 2px solid #fde68a;
+    }
+
+    .maintenance-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #92400e;
+        margin-bottom: 0.75rem;
+    }
+
+    .maintenance-message {
+        font-size: 1.05rem;
+        line-height: 1.65;
+        color: #475569;
+        max-width: 620px;
+        margin: 0 auto 1.5rem auto;
+    }
+
+    .maintenance-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #fef3c7;
+        color: #b45309;
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        border: 1px solid #fde68a;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.25rem;
+    }
 </style>
 
 </head>
@@ -533,11 +590,39 @@
         <div class="section-header text-center">
             <h2 data-i18n="halal_page_heading">Halal Product Scanner</h2>
             <div class="divider"></div>
-            <p data-i18n="halal_page_sub">Check products instantly via barcode scanning or manual ingredients analysis.
+            <p id="halal-page-sub-text" data-i18n="halal_page_sub">Check products instantly via barcode scanning or manual ingredients analysis.
             </p>
         </div>
 
-        <div class="scanner-card">
+        <!-- Maintenance Mode Notice Box (Shown when activated from Admin Scanner) -->
+        <div id="halal-maintenance-banner" class="hidden">
+            <div class="maintenance-banner-card">
+                <div class="maintenance-badge">
+                    <span>🛠️</span>
+                    <span id="maint-badge-text">Temporary Maintenance</span>
+                </div>
+                <div class="maintenance-icon-wrap">
+                    <span>🥫</span>
+                </div>
+                <h3 class="maintenance-title" id="maint-banner-title">
+                    Scanner Temporarily Unavailable
+                </h3>
+                <p class="maintenance-message" id="maint-banner-text">
+                    The Halal Food Scanner is currently undergoing scheduled maintenance and updates. Barcode scanning and ingredient checks are temporarily unavailable. Please check back shortly.
+                </p>
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; max-width: 540px; margin: 0 auto; text-align: left;">
+                    <div style="font-weight: 700; color: var(--color-primary); font-size: 0.95rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <span>💡</span>
+                        <span id="maint-alt-title">Need food ingredients verified?</span>
+                    </div>
+                    <p style="margin: 0; font-size: 0.88rem; color: #64748b; line-height: 1.5;" id="maint-alt-desc">
+                        Our Muslim Student Association team can help clarify ambiguous food products. Feel free to submit your question directly to our scholars.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scanner-card" id="halal-scanner-card">
             <div class="tab-buttons">
                 <button class="tab-btn active" onclick="switchTab('camera-tab')" data-i18n="halal_tab_cam">📷 Live
                     Camera Scan</button>
@@ -1445,8 +1530,95 @@
     document.getElementById('start-camera-btn').addEventListener('click', startScanner);
     document.getElementById('stop-camera-btn').addEventListener('click', stopScanner);
 
+    // Maintenance Mode Management
+    let isHalalMaintenanceActive = false;
+    let halalMaintenanceMessages = {
+        en: "The Halal Food Scanner is currently undergoing scheduled maintenance and updates. Barcode scanning and ingredient checks are temporarily unavailable. Please check back shortly.",
+        it: "Lo Scanner Halal è attualmente in manutenzione programmata. La scansione dei codici a barre e la verifica degli ingredienti sono temporaneamente sospese. Ci scusiamo per l'attesa."
+    };
+
+    async function checkHalalMaintenanceStatus() {
+        const endpoints = [
+            window.location.origin.includes('localhost') ? '/api/settings/halal-maintenance' : 'https://admin.asmpolimi.it/api/settings/halal-maintenance',
+            '/api/settings/halal-maintenance',
+            'https://admin.asmpolimi.it/api/content',
+            '/api/content',
+            'data/content.json',
+            'api/content.json'
+        ];
+
+        for (const ep of endpoints) {
+            try {
+                const resp = await fetch(ep);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data && (data.enabled !== undefined || data.halal_maintenance_enabled !== undefined)) {
+                        const isEnabled = data.enabled !== undefined ? Boolean(data.enabled) : Boolean(data.halal_maintenance_enabled);
+                        isHalalMaintenanceActive = isEnabled;
+                        if (data.message) halalMaintenanceMessages.en = data.message;
+                        if (data.message_it) halalMaintenanceMessages.it = data.message_it;
+                        if (data.halal_maintenance_message) halalMaintenanceMessages.en = data.halal_maintenance_message;
+                        if (data.halal_maintenance_message_it) halalMaintenanceMessages.it = data.halal_maintenance_message_it;
+                        break;
+                    }
+                }
+            } catch (e) { }
+        }
+
+        applyMaintenanceDisplay();
+    }
+
+    function applyMaintenanceDisplay() {
+        const scannerCard = document.getElementById('halal-scanner-card');
+        const banner = document.getElementById('halal-maintenance-banner');
+        const bannerTitle = document.getElementById('maint-banner-title');
+        const bannerText = document.getElementById('maint-banner-text');
+        const badgeText = document.getElementById('maint-badge-text');
+        const altTitle = document.getElementById('maint-alt-title');
+        const altDesc = document.getElementById('maint-alt-desc');
+        const subText = document.getElementById('halal-page-sub-text');
+
+        const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+        const isIt = currentLang === 'it';
+
+        if (isHalalMaintenanceActive) {
+            if (scannerCard) scannerCard.classList.add('hidden');
+            if (banner) banner.classList.remove('hidden');
+            stopScanner();
+
+            if (bannerTitle) bannerTitle.textContent = isIt ? 'Scanner Temporaneamente Non Disponibile' : 'Scanner Temporarily Unavailable';
+            if (badgeText) badgeText.textContent = isIt ? 'Manutenzione in corso' : 'Temporary Maintenance';
+            if (altTitle) altTitle.textContent = isIt ? 'Hai bisogno di verificare un prodotto?' : 'Need food ingredients verified?';
+            if (altDesc) {
+                altDesc.textContent = isIt 
+                    ? 'Il nostro team ASM può aiutarti a chiarire ingredienti o certificazioni dubbie. Invia la tua richiesta direttamente tramite la sezione "Ask an Imam".' 
+                    : 'Our Muslim Student Association team can help clarify ambiguous food products. Feel free to submit your question directly to our scholars.';
+            }
+            if (bannerText) {
+                const customMsg = isIt ? (halalMaintenanceMessages.it || halalMaintenanceMessages.en) : halalMaintenanceMessages.en;
+                bannerText.textContent = customMsg;
+            }
+            if (subText) {
+                subText.textContent = isIt ? 'La scansione dei prodotti è temporaneamente disattivata per aggiornamento.' : 'Product scanning is temporarily paused for updates.';
+            }
+        } else {
+            if (scannerCard) scannerCard.classList.remove('hidden');
+            if (banner) banner.classList.add('hidden');
+        }
+    }
+
+    window.addEventListener('asmLanguageChanged', () => {
+        applyMaintenanceDisplay();
+    });
+
     // Deep linking support from main page
     window.addEventListener('DOMContentLoaded', async () => {
+        await checkHalalMaintenanceStatus();
+
+        if (isHalalMaintenanceActive) {
+            return; // Suppress auto camera and lookups while maintenance is on
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         const barcodeParam = urlParams.get('barcode');
         const actionParam = urlParams.get('action');
