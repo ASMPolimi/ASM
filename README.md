@@ -10,7 +10,7 @@ GitHub Pages: Enable GitHub Pages in repository settings pointing to `/ (root)` 
 - **Community & Mission**: Overview of ASM Polimi, community photo, board members.
 - **Daily Prayer Timings & Ayah**: Automatic Milan prayer schedule (Aladhan API) with daily Ayah (AlQuran API).
 - **Jumu'ah Timings & Locations**: Friday prayer information for Bovisa and Leonardo with interactive maps.
-- **Halal Product Scanner**: Live camera barcode scanner, manual barcode lookup via Open Food Facts, ingredients analyzer with Haram/Mashbuh classification, and custom barcodes database.
+- **Halal Product Scanner**: Live camera barcode scanner, manual barcode lookup via Open Food Facts, ingredients analyzer with Haram/Mashbuh classification, and custom barcodes database. Custom products (including Excel imports) without a photo automatically look up an Open Food Facts photo in the background, without changing their custom details or classification.
 - **Events & Registration**: Upcoming events calendar with linked Google Form registration.
 - **Ask an Imam**: Private question submission portal.
 - **Gallery**: Event photos and activities.
