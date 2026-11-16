@@ -11,14 +11,16 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <meta name="description"
-        content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+        content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
+student-friendly halal dining and food options around Politecnico di Milano campuses.">
     <link rel="canonical" href="https://asmpolimi.it/halal">
 
     <!-- Open Graph / Facebook / WhatsApp / Telegram / LinkedIn -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://asmpolimi.it/halal">
     <meta property="og:title" content="Halal Food Scanner & Ingredients Checker | ASM Polimi">
-    <meta property="og:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+    <meta property="og:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
+student-friendly halal dining and food options around Politecnico di Milano campuses.">
     <meta property="og:image" content="https://asmpolimi.it/assets/og-banner.png">
     <meta property="og:image:secure_url" content="https://asmpolimi.it/assets/og-banner.png">
     <meta property="og:image:type" content="image/png">
@@ -33,7 +35,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://asmpolimi.it/halal">
     <meta name="twitter:title" content="Halal Food Scanner & Ingredients Checker | ASM Polimi">
-    <meta name="twitter:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore student-friendly halal dining and food options around Politecnico di Milano campuses.">
+    <meta name="twitter:description" content="Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
+student-friendly halal dining and food options around Politecnico di Milano campuses.">
     <meta name="twitter:image" content="https://asmpolimi.it/assets/og-banner.png">
     <meta name="twitter:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -521,6 +524,7 @@
         letter-spacing: 0.5px;
         margin-bottom: 1.25rem;
     }
+
     #featured-products-section {
         max-width: 1000px;
         margin: 3rem auto 0;
@@ -549,10 +553,24 @@
         margin-bottom: 1rem;
     }
 
-    .featured-product-card h4 { color: var(--color-primary); margin-bottom: 0.5rem; }
-    .featured-product-card p { margin-bottom: 0.75rem; }
-    .featured-product-card summary { cursor: pointer; font-weight: 600; }
-    .featured-product-card details p { margin-top: 0.75rem; white-space: pre-wrap; }
+    .featured-product-card h4 {
+        color: var(--color-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .featured-product-card p {
+        margin-bottom: 0.75rem;
+    }
+
+    .featured-product-card summary {
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .featured-product-card details p {
+        margin-top: 0.75rem;
+        white-space: pre-wrap;
+    }
 </style>
 
 </head>
@@ -622,7 +640,8 @@
         <div class="section-header text-center">
             <h2 data-i18n="halal_page_heading">Halal Product Scanner</h2>
             <div class="divider"></div>
-            <p id="halal-page-sub-text" data-i18n="halal_page_sub">Check products instantly via barcode scanning or manual ingredients analysis.
+            <p id="halal-page-sub-text" data-i18n="halal_page_sub">Check products instantly via barcode scanning or
+                manual ingredients analysis.
             </p>
         </div>
 
@@ -640,15 +659,19 @@
                     Scanner Temporarily Unavailable
                 </h3>
                 <p class="maintenance-message" id="maint-banner-text">
-                    The Halal Food Scanner is currently undergoing scheduled maintenance and updates. Barcode scanning and ingredient checks are temporarily unavailable. Please check back shortly.
+                    The Halal Food Scanner is currently undergoing scheduled maintenance and updates. Barcode scanning
+                    and ingredient checks are temporarily unavailable. Please check back shortly.
                 </p>
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; max-width: 540px; margin: 0 auto; text-align: left;">
-                    <div style="font-weight: 700; color: var(--color-primary); font-size: 0.95rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                <div
+                    style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; max-width: 540px; margin: 0 auto; text-align: left;">
+                    <div
+                        style="font-weight: 700; color: var(--color-primary); font-size: 0.95rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
                         <span>💡</span>
                         <span id="maint-alt-title">Need food ingredients verified?</span>
                     </div>
                     <p style="margin: 0; font-size: 0.88rem; color: #64748b; line-height: 1.5;" id="maint-alt-desc">
-                        Our Muslim Student Association team can help clarify ambiguous food products. Feel free to submit your question directly to our scholars.
+                        Our Muslim Student Association team can help clarify ambiguous food products. Feel free to
+                        submit your question directly to our scholars.
                     </p>
                 </div>
             </div>
@@ -736,25 +759,31 @@
 
         <section id="featured-products-section" class="hidden" aria-labelledby="featured-products-title">
             <h3 id="featured-products-title">Featured Products</h3>
-            <p id="featured-products-description">Products selected by the ASM team. Check each classification and ingredients: being featured is not halal certification.</p>
+            <p id="featured-products-description">Products selected by the ASM team. Check each classification and
+                ingredients.</p>
             <p id="featured-products-message" role="status"></p>
             <div id="featured-products-grid"></div>
         </section>
 
         <!-- Halal Scanner Legal Agreement Notice -->
-        <p style="text-align: center; font-size: 0.82rem; color: #64748b; margin: 1.25rem auto 0 auto; max-width: 650px; line-height: 1.5;">
-            <span data-i18n="halal_auto_agree_prefix">By using the Halal Food Scanner, you automatically agree to our</span>
-            <a href="/halal-terms" style="color: var(--color-primary); font-weight: 700; text-decoration: underline;" data-i18n="halal_auto_agree_link">Halal Scanner Legal Terms &amp; Disclaimer</a>.
+        <p
+            style="text-align: center; font-size: 0.82rem; color: #64748b; margin: 1.25rem auto 0 auto; max-width: 650px; line-height: 1.5;">
+            <span data-i18n="halal_auto_agree_prefix">By using the Halal Food Scanner, you automatically agree to
+                our</span>
+            <a href="/halal-terms" style="color: var(--color-primary); font-weight: 700; text-decoration: underline;"
+                data-i18n="halal_auto_agree_link">Halal Scanner Legal Terms &amp; Disclaimer</a>.
         </p>
     </div>
-    <div class="text-center" style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; align-items: center;">
-        <a href="https://chat.whatsapp.com/LhULMwU6OkMCboPEpmfhy2" target="_blank" rel="noopener noreferrer"
-            class="btn"
+    <div class="text-center"
+        style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; align-items: center;">
+        <a href="https://chat.whatsapp.com/Jsspjn4N2R7JGTvugaPHof?s=cl&p=a&iam=2" target="_blank"
+            rel="noopener noreferrer" class="btn"
             style="background: #25D366; color: white; padding: 1.1rem 2rem; font-size: 1.05rem; font-weight: 700; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; border-radius: 0.5rem; text-decoration: none; transition: all 0.3s ease;">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink: 0;">
-                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                <path
+                    d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
             </svg>
-            <span data-i18n="halal_whatsapp_group_cta">Join WhatsApp Discussion Group</span>
+            <span data-i18n="halal_whatsapp_group_cta">Halal Scanner Group</span>
         </a>
         <a href="/support" class="btn btn-primary"
             style="padding: 1.1rem 2rem; font-size: 1.05rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 0.5rem; text-decoration: none; transition: all 0.3s ease;"
@@ -1082,47 +1111,17 @@
         return highlighted;
     }
 
-    // Helper to extract best product image URL across all Open Food Facts variants and languages
-    const DEFAULT_PRODUCT_PLACEHOLDER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120"><rect width="120" height="120" rx="12" fill="%23f1f5f9"/><path d="M40 45a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm-14 47l22-26 14 16 18-22 16 32H26z" fill="%23cbd5e1"/></svg>';
-
-    function extractProductImageUrl(prod) {
-        if (!prod) return DEFAULT_PRODUCT_PLACEHOLDER;
-        if (typeof prod === 'string' && prod.trim()) return prod.trim();
-
-        const candidates = [
-            prod.image_url,
-            prod.image_front_url,
-            prod.image_front_small_url,
-            prod.image_small_url,
-            prod.image_thumb_url,
-            prod.image_front_thumb_url,
-            prod.selected_images?.front?.display?.en,
-            prod.selected_images?.front?.display?.it,
-            prod.selected_images?.front?.display?.fr,
-            prod.selected_images?.front?.small?.en,
-            prod.selected_images?.front?.small?.it
-        ];
-
-        for (const url of candidates) {
-            if (url && typeof url === 'string' && url.trim().startsWith('http')) {
-                return url.trim();
-            }
-        }
-        return DEFAULT_PRODUCT_PLACEHOLDER;
-    }
-
     // Send anonymous scan report to backend admin log
     async function reportScannedProduct(product, analysis) {
         if (!product || !product.code) return;
         try {
-            const resolvedImg = extractProductImageUrl(product);
             const payload = {
                 barcode: String(product.code).trim(),
                 product_name: product.product_name || product.product_name_en || '',
                 brand: product.brands || '',
                 ingredients_text: (product.ingredients_text && !product.ingredients_text.includes('No ingredients list available')) ? product.ingredients_text : '',
                 status: (analysis && analysis.status) ? analysis.status : 'not_listed',
-                image_url: (resolvedImg && !resolvedImg.startsWith('data:')) ? resolvedImg : '',
+                image_url: product.image_url || '',
                 source: product.source || 'scanner'
             };
 
@@ -1156,7 +1155,7 @@
 
         const name = product.product_name || product.product_name_en || (isIt ? 'Prodotto Non in Lista' : 'Product Not Listed');
         const brand = product.brands || (isIt ? 'Marca non specificata' : 'Unknown Brand');
-        const img = extractProductImageUrl(product);
+        const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
 
         const rawIngredients = product.ingredients_text;
         const placeholderNotice = isIt ? 'Nessun elenco ingredienti disponibile per questo prodotto in Open Food Facts o nel database locale.' : 'No ingredients list available for this product in Open Food Facts or local database.';
@@ -1232,7 +1231,7 @@
         resultsDiv.innerHTML = `
                 <div class="result-card" style="border: 2px solid ${cardBorderColor}; background-color: ${cardBgColor};">
                     <div class="result-header-flex">
-                        <img class="result-image" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=DEFAULT_PRODUCT_PLACEHOLDER">
+                        <img class="result-image" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://images.openfoodfacts.org/images/placeholder/en.png'">
                         <div class="result-title-meta">
                             <div class="status-badge ${statusClass}">${statusText}</div>
                             <h3 class="result-prod-name">${escapeHtml(name)}</h3>
@@ -1464,28 +1463,9 @@
                 certified: customData.status === 'halal'
             };
 
-            setTimeout(async () => {
+            setTimeout(() => {
                 loader.classList.add('hidden');
                 displayResults(product, customAnalysis);
-                if (!product.image_url) {
-                    try {
-                        const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}.json?fields=image_front_url,image_url`);
-                        if (!response.ok) throw new Error('Server error fetching product photo.');
-                        const data = await response.json();
-                        if (data.status !== 1 || !data.product) return;
-                        const imageUrl = extractProductImageUrl(data.product);
-                        if (imageUrl === DEFAULT_PRODUCT_PLACEHOLDER) return;
-
-                        product.image_url = imageUrl;
-                        customData.image_url = imageUrl;
-                        if (window._lastHalalResult?.product === product) {
-                            const image = resultsDiv.querySelector('.result-image');
-                            if (image) image.src = imageUrl;
-                        }
-                    } catch (err) {
-                        console.warn('Open Food Facts photo lookup failed:', err);
-                    }
-                }
             }, 500); // Add a slight delay for UX
             return;
         }
@@ -1510,7 +1490,7 @@
                     code: barcode,
                     product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
                     brands: isIt ? 'Barcode non censito' : 'Barcode not in database',
-                    image_url: DEFAULT_PRODUCT_PLACEHOLDER,
+                    image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
                     ingredients_text: '',
                     source: 'unlisted'
                 };
@@ -1533,7 +1513,7 @@
                 code: barcode,
                 product_name: isIt ? 'Prodotto Non in Lista' : 'Product Not Listed',
                 brands: isIt ? 'Barcode non trovato (Errore connessione)' : 'Barcode unverified (Connection Issue)',
-                image_url: DEFAULT_PRODUCT_PLACEHOLDER,
+                image_url: 'https://images.openfoodfacts.org/images/placeholder/en.png',
                 ingredients_text: '',
                 source: 'unlisted_offline'
             };
@@ -1687,8 +1667,8 @@
             if (badgeText) badgeText.textContent = isIt ? 'Manutenzione in corso' : 'Temporary Maintenance';
             if (altTitle) altTitle.textContent = isIt ? 'Hai bisogno di verificare un prodotto?' : 'Need food ingredients verified?';
             if (altDesc) {
-                altDesc.textContent = isIt 
-                    ? 'Il nostro team ASM può aiutarti a chiarire ingredienti o certificazioni dubbie. Invia la tua richiesta direttamente tramite la sezione "Ask an Imam".' 
+                altDesc.textContent = isIt
+                    ? 'Il nostro team ASM può aiutarti a chiarire ingredienti o certificazioni dubbie. Invia la tua richiesta direttamente tramite la sezione "Ask an Imam".'
                     : 'Our Muslim Student Association team can help clarify ambiguous food products. Feel free to submit your question directly to our scholars.';
             }
             if (bannerText) {
