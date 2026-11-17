@@ -17,10 +17,10 @@ const ASM_I18N = {
         nav_quran: "Quran Irtaqi",
         nav_join: "Join Us",
         nav_admin: "Admin",
-                footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> All rights reserved.",
+        footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> All rights reserved.",
         footer_privacy: "Privacy Policy",
         footer_terms: "Terms & Conditions",
-                footer_cookies: "Cookie Policy",
+        footer_cookies: "Cookie Policy",
         cookie_banner_title: "Salam! Halal Cookies Only 🍪",
         cookie_banner_desc: "We only serve halal cookies: essential storage to run the site and optional analytics to improve student services. Accept all or decline non-essential anytime in our",
         cookie_banner_link: "Cookie Policy",
@@ -203,9 +203,9 @@ const ASM_I18N = {
         halal_ing_ph: "Paste ingredients list here...",
         halal_ing_btn: "Analyze Ingredients",
         halal_querying: "Querying Database...",
-                halal_auto_agree_prefix: "By using the Halal Food Scanner, you automatically agree to our",
+        halal_auto_agree_prefix: "By using the Halal Food Scanner, you automatically agree to our",
         halal_auto_agree_link: "Halal Scanner Legal Terms & Disclaimer",
-halal_legal_title: "Legal Disclaimer & Privacy Notice",
+        halal_legal_title: "Legal Disclaimer & Privacy Notice",
         halal_legal_agree: "<strong>Automatic Agreement:</strong> By using the Halal Food Scanner, Live Camera Scan, or Ingredients Analyzer, you automatically agree to these legal terms, our <a href='/terms' style='color: #1e40af; text-decoration: underline; font-weight: 700;'>Terms & Conditions</a>, and our <a href='/privacy' style='color: #1e40af; text-decoration: underline; font-weight: 700;'>Privacy Policy</a>.",
         halal_legal_p1_title: "Informational Support Only:",
         halal_legal_p1_desc: "This tool is a volunteer-run student aid and does not constitute formal religious rulings (fatwas), laboratory testing, or official Halal certification.",
@@ -217,7 +217,7 @@ halal_legal_title: "Legal Disclaimer & Privacy Notice",
         halal_legal_p4_desc: "ASM POLIMI disclaims liability for any dietary, health, or religious discrepancies resulting from external database records (Open Food Facts) or manufacturer recipe updates.",
 
         halal_ask_imam_cta: "Ask an Imam",
-        halal_whatsapp_group_cta: "Join WhatsApp Discussion Group",
+        halal_whatsapp_group_cta: "Halal Scanner Group",
         halal_status_certified: "Certified Halal",
         halal_status_halal: "Halal (No Haram Ingredients Found)",
         halal_status_mashbuh: "Doubtful / Mashbuh",
@@ -389,10 +389,10 @@ halal_legal_title: "Legal Disclaimer & Privacy Notice",
         nav_quran: "Corano Irtaqi",
         nav_join: "Unisciti a noi",
         nav_admin: "Amministrazione",
-                footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> Tutti i diritti riservati.",
+        footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> Tutti i diritti riservati.",
         footer_privacy: "Informativa sulla Privacy",
         footer_terms: "Termini e Condizioni",
-                footer_cookies: "Informativa sui Cookie",
+        footer_cookies: "Informativa sui Cookie",
         cookie_banner_title: "Salam! Solo Biscotti Halal 🍪",
         cookie_banner_desc: "Serviamo solo biscotti halal: memoria tecnica essenziale per il sito e analisi facoltative per migliorare i servizi agli studenti. Accetta o rifiuta quando vuoi nella nostra",
         cookie_banner_link: "Informativa sui Cookie",
@@ -575,9 +575,9 @@ halal_legal_title: "Legal Disclaimer & Privacy Notice",
         halal_ing_ph: "Incolla qui l'elenco degli ingredienti...",
         halal_ing_btn: "Analizza Ingredienti",
         halal_querying: "Interrogazione del database in corso...",
-                halal_auto_agree_prefix: "Utilizzando lo Scanner Halal, accetti automaticamente i nostri",
+        halal_auto_agree_prefix: "Utilizzando lo Scanner Halal, accetti automaticamente i nostri",
         halal_auto_agree_link: "Termini Legali e Disclaimer dello Scanner Halal",
-halal_legal_title: "Informativa Legale e Privacy",
+        halal_legal_title: "Informativa Legale e Privacy",
         halal_legal_agree: "<strong>Accettazione Automatica:</strong> Utilizzando lo Scanner Halal, la Scansione Fotocamera o l'Analisi Ingredienti, accetti automaticamente questi termini, i nostri <a href='/terms' style='color: #1e40af; text-decoration: underline; font-weight: 700;'>Termini e Condizioni</a> e l'<a href='/privacy' style='color: #1e40af; text-decoration: underline; font-weight: 700;'>Informativa sulla Privacy</a>.",
         halal_legal_p1_title: "Solo Supporto Informativo:",
         halal_legal_p1_desc: "Questo strumento è un supporto informativo gestito da volontari e non costituisce parere religioso formale (fatwa), analisi di laboratorio o certificazione Halal ufficiale.",
@@ -589,7 +589,7 @@ halal_legal_title: "Informativa Legale e Privacy",
         halal_legal_p4_desc: "ASM POLIMI declina ogni responsabilità per eventuali discrepanze alimentari, religiose o sanitarie derivanti da banche dati esterne (Open Food Facts) o modifiche dei produttori.",
 
         halal_ask_imam_cta: "Chiedi all'Imam",
-        halal_whatsapp_group_cta: "Unisciti al Gruppo WhatsApp",
+        halal_whatsapp_group_cta: "Gruppo Halal Scanner",
         halal_status_certified: "Certificato Halal",
         halal_status_halal: "Halal (Nessun ingrediente Haram rilevato)",
         halal_status_mashbuh: "Dubbio / Mashbuh",
@@ -2124,7 +2124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 sensorMsg.innerHTML = `<strong style="color: #10b981;">🕋 ${isIt ? 'Allineato con la Qibla! Sei rivolto verso la Mecca.' : 'Aligned with Qibla! Facing Makkah.'}</strong>`;
                             } else {
                                 const rounded = Math.round(heading);
-                                sensorMsg.textContent = isIt 
+                                sensorMsg.textContent = isIt
                                     ? `Ruota il telefono finché la Kaaba 🕋 non punta in alto (${rounded}°)`
                                     : `Turn phone until 🕋 Kaaba aligns with the top (${rounded}°)`;
                             }
@@ -2144,8 +2144,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 sensorActive = true;
                 if (sensorMsg) {
                     const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
-                    sensorMsg.textContent = currentLang === 'it' 
-                        ? 'Sensore bussola attivo. Ruota il telefono per allinearti con la Kaaba 🕋.' 
+                    sensorMsg.textContent = currentLang === 'it'
+                        ? 'Sensore bussola attivo. Ruota il telefono per allinearti con la Kaaba 🕋.'
                         : 'Phone compass active. Rotate phone to align with 🕋 Kaaba.';
                 }
             };
@@ -2651,14 +2651,14 @@ window.setCookieConsent = function (status) {
     localStorage.setItem('asm_cookie_consent', status);
 
     if (status === 'accepted') {
-                if (typeof gtag === 'function') {
+        if (typeof gtag === 'function') {
             gtag('consent', 'update', {
                 'analytics_storage': 'granted'
             });
             gtag('event', 'cookie_consent_accepted');
         }
     } else {
-                if (typeof gtag === 'function') {
+        if (typeof gtag === 'function') {
             gtag('consent', 'update', {
                 'analytics_storage': 'denied'
             });
@@ -2674,7 +2674,7 @@ window.setCookieConsent = function (status) {
 
 window.resetCookieConsent = function () {
     localStorage.removeItem('asm_cookie_consent');
-        if (typeof gtag === 'function') {
+    if (typeof gtag === 'function') {
         gtag('consent', 'update', {
             'analytics_storage': 'denied'
         });
