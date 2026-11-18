@@ -867,7 +867,13 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             { word: 'suine', reason: 'Suine indicates pork derivation, strictly prohibited in Islam.', reason_it: 'La dicitura suine indica carne o derivati di maiale, severamente proibiti (Haram).' },
             { word: 'porcine', reason: 'Porcine means derived from pig/swine, strictly prohibited in Islam.', reason_it: 'Porcine indica provenienza dal maiale/suino, severamente proibito (Haram).' },
             { word: 'pork', reason: 'Pork meat is strictly prohibited in Islam.', reason_it: 'La carne di maiale (pork) è severamente proibita nell\'Islam (Haram).' },
+            { word: 'tallow', reason: 'Tallow is a fatty substance derived from animal fat. If the source is not specified, it is assumed to be from pork.', reason_it: 'Il sego (tallow) è una sostanza grassa derivata da grassi animali. Se la fonte non è specificata, si presume che provenga dal maiale.' },
+            { word: 'Sego', reason: 'Tallow is a fatty substance derived from animal fat. If the source is not specified, it is assumed to be from pork.', reason_it: 'Il sego (tallow) è una sostanza grassa derivata da grassi animali. Se la fonte non è specificata, si presume che provenga dal maiale.' },
+            { word: 'grasso animale', reason: 'Tallow is a fatty substance derived from animal fat. If the source is not specified, it is assumed to be from pork.', reason_it: 'Il sego (tallow) è una sostanza grassa derivata da grassi animali. Se la fonte non è specificata, si presume che provenga dal maiale.' },
+            { word: 'animal fat', reason: 'Tallow is a fatty substance derived from animal fat. If the source is not specified, it is assumed to be from pork.', reason_it: 'Il sego (tallow) è una sostanza grassa derivata da grassi animali. Se la fonte non è specificata, si presume che provenga dal maiale.' },
             { word: 'maiale', reason: 'Pork meat is strictly prohibited in Islam.', reason_it: 'La carne di maiale è severamente proibita nell\'Islam (Haram).' },
+            { word: 'maiali', reason: 'Pork meat is strictly prohibited in Islam.', reason_it: 'La carne di maiale è severamente proibita nell\'Islam (Haram).' },
+
             { word: 'lard', reason: 'Lard is fat from pig/pork, which is prohibited.', reason_it: 'Lo strutto/lardo di maiale è severamente proibito (Haram).' },
             { word: 'strutto', reason: 'Lard (strutto) is fat from pig/pork, which is prohibited.', reason_it: 'Lo strutto è grasso ricavato dal maiale, severamente proibito (Haram).' },
             { word: 'lardo', reason: 'Lardo is pork fat, strictly prohibited in Islam.', reason_it: 'Il lardo è grasso di maiale, severamente proibito (Haram).' },
@@ -898,7 +904,18 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             { word: 'vino', reason: 'Wine contains alcohol and is Haram (Note: Wine vinegar / aceto di vino is Halal as the alcohol has fermented into acetic acid).', reason_it: 'Il vino contiene alcol ed è Haram (Nota: l\'aceto di vino è Halal in quanto l\'alcol si è trasformato in acido acetico).' },
             { word: 'beer', reason: 'Beer is an alcoholic beverage.', reason_it: 'La birra è una bevanda alcolica, severamente proibita (Haram).' },
             { word: 'birra', reason: 'Beer is an alcoholic beverage.', reason_it: 'La birra è una bevanda alcolica, severamente proibita (Haram).' },
-            { word: 'rum', reason: 'Rum contains alcohol.', reason_it: 'Il rum contiene alcol, severamente proibito (Haram).' }
+            { word: 'rum', reason: 'Rum contains alcohol.', reason_it: 'Il rum contiene alcol, severamente proibito (Haram).' },
+            { word: 'ethanol', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'etanolo', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'etilico', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'brandy', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'liquore', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'brandy', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'whisky', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'marsala', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'grappa', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'amaretto', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'amaretto', reason: 'Amaretto contains alcohol.', reason_it: 'L\'amaretto contiene alcol, severamente proibito (Haram).' }
         ],
         mashbuh: [
             // E441 & Gelatin general variants
@@ -1355,8 +1372,8 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                     <div class="off-attribution" style="margin-top: 1.25rem; padding-top: 0.85rem; border-top: 1px dashed #e2e8f0; font-size: 0.82rem; color: #64748b; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
                         <span>
                             ${isIt
-                                ? 'Dati e ingredienti da <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Open Food Facts</a> (licenza <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">ODbL</a>).'
-                                : 'Data &amp; ingredients from <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Open Food Facts</a> (licensed under <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">ODbL</a>).'}
+                    ? 'Dati e ingredienti da <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Open Food Facts</a> (licenza <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">ODbL</a>).'
+                    : 'Data &amp; ingredients from <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Open Food Facts</a> (licensed under <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">ODbL</a>).'}
                         </span>
                         <a href="${escapeHtml(offProductUrl)}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.35rem; color: #0284c7; font-weight: 600; text-decoration: underline; font-size: 0.82rem;">
                             <span>${isIt ? 'Vedi su Open Food Facts' : 'View on Open Food Facts'}</span>
