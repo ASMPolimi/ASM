@@ -1066,60 +1066,111 @@ student-friendly halal dining and food options around Politecnico di Milano camp
     // Haram & Mashbuh keywords dictionary
     const DICTIONARY = {
         haram: [
-            { word: 'pork', reason: 'Pork meat is strictly prohibited in Islam.' },
-            { word: 'maiale', reason: 'Pork meat is strictly prohibited in Islam.' },
-            { word: 'lard', reason: 'Lard is fat from pig/pork, which is prohibited.' },
-            { word: 'strutto', reason: 'Lard is fat from pig/pork, which is prohibited.' },
-            { word: 'lardo', reason: 'Lard is fat from pig/pork, which is prohibited.' },
-            { word: 'bacon', reason: 'Bacon comes from pork.' },
-            { word: 'pancetta', reason: 'Bacon/Pancetta comes from pork.' },
-            { word: 'gelatine (pork)', reason: 'Pork-derived gelatin is strictly Haram.' },
-            { word: 'gelatin (pork)', reason: 'Pork-derived gelatin is strictly Haram.' },
-            { word: 'gelatina di maiale', reason: 'Pork-derived gelatin is strictly Haram.' },
-            { word: 'carmine', reason: 'Carmine (E120) is a red dye extracted from insects, considered Haram by the majority of scholars.' },
-            { word: 'carminio', reason: 'Carmine (E120) is a red dye extracted from insects, considered Haram by the majority of scholars.' },
-            { word: 'cochineal', reason: 'Cochineal extract (E120) is a dye derived from insects.' },
-            { word: 'cocciniglia', reason: 'Cochineal extract (E120) is a dye derived from insects.' },
-            { word: 'e120', reason: 'E120 (Carmine/Cochineal) is insect-derived red food color.' },
-            { word: 'e 120', reason: 'E120 (Carmine/Cochineal) is insect-derived red food color.' },
-            { word: 'alcohol', reason: 'Intoxicants are strictly Haram.' },
-            { word: 'alcol', reason: 'Intoxicants are strictly Haram.' },
-            { word: 'alcool', reason: 'Intoxicants are strictly Haram.' },
-            { word: 'wine', reason: 'Wine contains alcohol and is Haram.' },
-            { word: 'vino', reason: 'Wine contains alcohol and is Haram (Note: Wine vinegar / aceto di vino is Halal as the alcohol has fermented into acetic acid).' },
-            { word: 'beer', reason: 'Beer is an alcoholic beverage.' },
-            { word: 'birra', reason: 'Beer is an alcoholic beverage.' },
-            { word: 'rum', reason: 'Rum contains alcohol.' },
-            { word: 'lardum', reason: 'Lardum is pork fat.' },
-            { word: 'ham', reason: 'Ham is pork meat.' },
-            { word: 'prosciutto', reason: 'Ham/Prosciutto is pork meat.' }
+            // Pork-derived gelatin & compound variants (matched first by length)
+            { word: 'gelatine of porcine origin', reason: 'Pork-derived gelatin (porcine origin) is strictly Haram.', reason_it: 'La gelatina di origine suina è severamente proibita (Haram).' },
+            { word: 'gelatin of porcine origin', reason: 'Pork-derived gelatin (porcine origin) is strictly Haram.', reason_it: 'La gelatina di origine suina è severamente proibita (Haram).' },
+            { word: 'gelatine of pork origin', reason: 'Pork-derived gelatin is strictly Haram.', reason_it: 'La gelatina di origine suina è severamente proibita (Haram).' },
+            { word: 'gelatin of pork origin', reason: 'Pork-derived gelatin is strictly Haram.', reason_it: 'La gelatina di origine suina è severamente proibita (Haram).' },
+            { word: 'gelatina di origine suina', reason: 'Pork-derived gelatin (gelatina suina) is strictly Haram.', reason_it: 'La gelatina di origine suina è severamente proibita (Haram).' },
+            { word: 'gelatina d\'origine suina', reason: 'Pork-derived gelatin (gelatina suina) is strictly Haram.', reason_it: 'La gelatina d\'origine suina è severamente proibita (Haram).' },
+            { word: 'gelatina di maiale', reason: 'Pork-derived gelatin is strictly Haram.', reason_it: 'La gelatina di maiale è severamente proibita (Haram).' },
+            { word: 'gelatina di suino', reason: 'Pork-derived gelatin is strictly Haram.', reason_it: 'La gelatina di suino è severamente proibita (Haram).' },
+            { word: 'gelatina suina', reason: 'Pork-derived gelatin (gelatina suina) is strictly Haram.', reason_it: 'La gelatina suina è severamente proibita (Haram).' },
+            { word: 'porcine gelatin', reason: 'Porcine (pork) gelatin is strictly Haram.', reason_it: 'La gelatina porcina (suina) è severamente proibita (Haram).' },
+            { word: 'porcine gelatine', reason: 'Porcine (pork) gelatin is strictly Haram.', reason_it: 'La gelatina porcina (suina) è severamente proibita (Haram).' },
+            { word: 'pork gelatin', reason: 'Pork gelatin is strictly Haram.', reason_it: 'La gelatina di maiale è severamente proibita (Haram).' },
+            { word: 'pork gelatine', reason: 'Pork gelatin is strictly Haram.', reason_it: 'La gelatina di maiale è severamente proibita (Haram).' },
+            { word: 'gelatine (pork)', reason: 'Pork-derived gelatin is strictly Haram.', reason_it: 'La gelatina di maiale è severamente proibita (Haram).' },
+            { word: 'gelatin (pork)', reason: 'Pork-derived gelatin is strictly Haram.', reason_it: 'La gelatina di maiale è severamente proibita (Haram).' },
+            { word: 'gélatine de porc', reason: 'Pork-derived gelatin is strictly Haram.', reason_it: 'La gelatina di maiale è severamente proibita (Haram).' },
+            { word: 'gélatine porcine', reason: 'Pork-derived gelatin is strictly Haram.', reason_it: 'La gelatina porcina (suina) è severamente proibita (Haram).' },
+
+            // E441 Pork variants
+            { word: 'e441 (suina)', reason: 'E441 (gelatin) from pork is strictly Haram.', reason_it: 'E441 (gelatina) di origine suina è severamente proibito (Haram).' },
+            { word: 'e441 (pork)', reason: 'E441 (gelatin) from pork is strictly Haram.', reason_it: 'E441 (gelatina) di maiale è severamente proibito (Haram).' },
+            { word: 'e441 suina', reason: 'E441 (gelatin) from pork is strictly Haram.', reason_it: 'E441 (gelatina) di origine suina è severamente proibito (Haram).' },
+            { word: 'e441 porcine', reason: 'E441 (gelatin) of porcine origin is strictly Haram.', reason_it: 'E441 (gelatina) di origine suina è severamente proibito (Haram).' },
+            { word: 'e 441 (suina)', reason: 'E441 (gelatin) from pork is strictly Haram.', reason_it: 'E441 (gelatina) di origine suina è severamente proibito (Haram).' },
+            { word: 'e 441 (pork)', reason: 'E441 (gelatin) from pork is strictly Haram.', reason_it: 'E441 (gelatina) di maiale è severamente proibito (Haram).' },
+
+            // Pork meats & derivatives
+            { word: 'carne suina', reason: 'Carne suina is pork meat, strictly prohibited in Islam.', reason_it: 'La carne suina è carne di maiale, severamente proibita (Haram).' },
+            { word: 'carni suine', reason: 'Carni suine is pork meat, strictly prohibited in Islam.', reason_it: 'Le carni suine sono carne di maiale, severamente proibite (Haram).' },
+            { word: 'grasso suino', reason: 'Pork fat (grasso suino) is strictly prohibited in Islam.', reason_it: 'Il grasso suino è grasso di maiale, severamente proibito (Haram).' },
+            { word: 'grassi suini', reason: 'Pork fats (grassi suini) are strictly prohibited in Islam.', reason_it: 'I grassi suini sono grassi di maiale, severamente proibiti (Haram).' },
+            { word: 'derivati suini', reason: 'Pork derivatives are strictly prohibited in Islam.', reason_it: 'I derivati suini provengono dal maiale, severamente proibiti (Haram).' },
+            { word: 'origine suina', reason: 'Porcine/pork origin is strictly prohibited in Islam.', reason_it: 'L\'origine suina indica provenienza dal maiale, severamente proibita (Haram).' },
+            { word: 'porcine origin', reason: 'Porcine origin indicates pig/pork source, which is Haram.', reason_it: 'L\'origine porcina indica provenienza dal maiale, severamente proibita (Haram).' },
+            { word: 'cinghiale', reason: 'Wild boar (cinghiale) is from the swine family, strictly prohibited in Islam.', reason_it: 'La carne di cinghiale fa parte della famiglia suina, severamente proibita (Haram).' },
+            { word: 'wild boar', reason: 'Wild boar is from the swine family, strictly prohibited in Islam.', reason_it: 'La carne di cinghiale fa parte della famiglia suina, severamente proibita (Haram).' },
+            { word: 'suino', reason: 'Suino means pig/pork, strictly prohibited in Islam.', reason_it: 'Il suino (maiale) è severamente proibito nell\'Islam (Haram).' },
+            { word: 'suina', reason: 'Suina indicates pork derivation, strictly prohibited in Islam.', reason_it: 'La dicitura suina indica carne o derivati di maiale, severamente proibiti (Haram).' },
+            { word: 'suini', reason: 'Suini indicates pork derivation, strictly prohibited in Islam.', reason_it: 'I suini (maiali) e i loro derivati sono severamente proibiti nell\'Islam (Haram).' },
+            { word: 'suine', reason: 'Suine indicates pork derivation, strictly prohibited in Islam.', reason_it: 'La dicitura suine indica carne o derivati di maiale, severamente proibiti (Haram).' },
+            { word: 'porcine', reason: 'Porcine means derived from pig/swine, strictly prohibited in Islam.', reason_it: 'Porcine indica provenienza dal maiale/suino, severamente proibito (Haram).' },
+            { word: 'pork', reason: 'Pork meat is strictly prohibited in Islam.', reason_it: 'La carne di maiale (pork) è severamente proibita nell\'Islam (Haram).' },
+            { word: 'maiale', reason: 'Pork meat is strictly prohibited in Islam.', reason_it: 'La carne di maiale è severamente proibita nell\'Islam (Haram).' },
+            { word: 'lard', reason: 'Lard is fat from pig/pork, which is prohibited.', reason_it: 'Lo strutto/lardo di maiale è severamente proibito (Haram).' },
+            { word: 'strutto', reason: 'Lard (strutto) is fat from pig/pork, which is prohibited.', reason_it: 'Lo strutto è grasso ricavato dal maiale, severamente proibito (Haram).' },
+            { word: 'lardo', reason: 'Lardo is pork fat, strictly prohibited in Islam.', reason_it: 'Il lardo è grasso di maiale, severamente proibito (Haram).' },
+            { word: 'lardum', reason: 'Lardum is pork fat, strictly prohibited in Islam.', reason_it: 'Il lardo/strutto di maiale è severamente proibito (Haram).' },
+            { word: 'bacon', reason: 'Bacon comes from pork.', reason_it: 'Il bacon proviene dal maiale, severamente proibito (Haram).' },
+            { word: 'pancetta', reason: 'Pancetta/Bacon comes from pork.', reason_it: 'La pancetta proviene dal maiale, severamente proibita (Haram).' },
+            { word: 'ham', reason: 'Ham is pork meat.', reason_it: 'Il prosciutto/ham è carne di maiale, severamente proibito (Haram).' },
+            { word: 'prosciutto', reason: 'Prosciutto/Ham is pork meat.', reason_it: 'Il prosciutto è carne di maiale, severamente proibito (Haram).' },
+
+            // Carmine (E120)
+            { word: 'carmine', reason: 'Carmine (E120) is a red dye extracted from insects, considered Haram by the majority of scholars.', reason_it: 'Il carminio (E120) è un colorante rosso estratto da insetti (cocciniglia), considerato Haram dalla maggioranza degli studiosi.' },
+            { word: 'carminio', reason: 'Carmine (E120) is a red dye extracted from insects, considered Haram by the majority of scholars.', reason_it: 'Il carminio (E120) è un colorante rosso estratto dalla cocciniglia, considerato Haram.' },
+            { word: 'cochineal', reason: 'Cochineal extract (E120) is a dye derived from insects.', reason_it: 'L\'estratto di cocciniglia (E120) è un colorante ottenuto da insetti, considerato Haram.' },
+            { word: 'cocciniglia', reason: 'Cochineal extract (E120) is a dye derived from insects.', reason_it: 'L\'estratto di cocciniglia (E120) è un colorante ottenuto da insetti, considerato Haram.' },
+            { word: 'e120', reason: 'E120 (Carmine/Cochineal) is insect-derived red food color.', reason_it: 'E120 (Carminio/Cocciniglia) è un colorante ricavato da insetti, considerato Haram.' },
+            { word: 'e 120', reason: 'E120 (Carmine/Cochineal) is insect-derived red food color.', reason_it: 'E120 (Carminio/Cocciniglia) è un colorante ricavato da insetti, considerato Haram.' },
+
+            // Alcohol & Intoxicants
+            { word: 'alcohol', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'alcol', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcol è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'alcool', reason: 'Intoxicants are strictly Haram.', reason_it: 'L\'alcool è una sostanza inebriante, severamente proibita nell\'Islam (Haram).' },
+            { word: 'wine', reason: 'Wine contains alcohol and is Haram.', reason_it: 'Il vino contiene alcol ed è Haram (Nota: l\'aceto di vino è Halal in quanto l\'alcol si trasforma in acido acetico).' },
+            { word: 'vino', reason: 'Wine contains alcohol and is Haram (Note: Wine vinegar / aceto di vino is Halal as the alcohol has fermented into acetic acid).', reason_it: 'Il vino contiene alcol ed è Haram (Nota: l\'aceto di vino è Halal in quanto l\'alcol si è trasformato in acido acetico).' },
+            { word: 'beer', reason: 'Beer is an alcoholic beverage.', reason_it: 'La birra è una bevanda alcolica, severamente proibita (Haram).' },
+            { word: 'birra', reason: 'Beer is an alcoholic beverage.', reason_it: 'La birra è una bevanda alcolica, severamente proibita (Haram).' },
+            { word: 'rum', reason: 'Rum contains alcohol.', reason_it: 'Il rum contiene alcol, severamente proibito (Haram).' }
         ],
         mashbuh: [
-            { word: 'gelatine', reason: 'Gelatin is doubtful unless specifically certified as Halal (it may be pork or non-dhabihah beef).' },
-            { word: 'gelatin', reason: 'Gelatin is doubtful unless specifically certified as Halal.' },
-            { word: 'gelatina', reason: 'Gelatin is doubtful unless specifically certified as Halal.' },
-            { word: 'whey', reason: 'Whey protein is doubtful as the rennet used in cheese production could come from non-halal slaughtered animals.' },
-            { word: 'siero di latte', reason: 'Whey protein is doubtful as the rennet used in cheese production could come from non-halal slaughtered animals.' },
-            { word: 'rennet', reason: 'Rennet is doubtful unless from a halal/microbial source.' },
-            { word: 'caglio', reason: 'Rennet is doubtful unless from a halal/microbial source.' },
-            { word: 'pepsin', reason: 'Pepsin is an enzyme often sourced from pigs.' },
-            { word: 'pepsina', reason: 'Pepsin is an enzyme often sourced from pigs.' },
-            { word: 'emulsifier', reason: 'Emulsifiers (like mono- and diglycerides) can be derived from either animal or plant fats.' },
-            { word: 'emulsionante', reason: 'Emulsifiers (like mono- and diglycerides) can be derived from either animal or plant fats.' },
-            { word: 'mono- and diglycerides', reason: 'Could be of animal fat origin.' },
-            { word: 'mono and diglycerides', reason: 'Could be of animal fat origin.' },
-            { word: 'mono- & diglycerides', reason: 'Could be of animal fat origin.' },
-            { word: 'mono- e digliceridi', reason: 'Could be of animal fat origin.' },
-            { word: 'mono e digliceridi', reason: 'Could be of animal fat origin.' },
-            { word: 'mono e digliceridi degli acidi grassi', reason: 'Could be of animal fat origin.' },
-            { word: 'e471', reason: 'E471 (mono- and diglycerides) is doubtful as it may come from animal fats.' },
-            { word: 'e472', reason: 'E472 emulsifiers can be derived from animal fat.' },
-            { word: 'lecithin', reason: 'Lecithin (E322) is doubtful unless specified as soy/plant lecithin.' },
-            { word: 'lecitina', reason: 'Lecithin (E322) is doubtful unless specified as soy/plant lecithin.' },
-            { word: 'glycerin', reason: 'Glycerin (E422) can be animal-derived.' },
-            { word: 'glicerina', reason: 'Glycerin (E422) can be animal-derived.' },
-            { word: 'glycerol', reason: 'Glycerol can be derived from animal lipids.' },
-            { word: 'glicerolo', reason: 'Glycerol can be derived from animal lipids.' }
+            // E441 & Gelatin general variants
+            { word: 'e441', reason: 'E441 is gelatin, doubtful unless specifically certified Halal (often derived from pork or non-dhabihah cattle).', reason_it: 'E441 è gelatina, dubbia a meno che non sia specificamente certificata Halal (spesso ricavata da maiale o bovino non macellato ritualmente).' },
+            { word: 'e 441', reason: 'E441 is gelatin, doubtful unless specifically certified Halal.', reason_it: 'E441 è gelatina, dubbia a meno che non sia specificamente certificata Halal.' },
+            { word: 'animal gelatin', reason: 'Animal gelatin is doubtful unless specifically certified Halal.', reason_it: 'La gelatina animale è dubbia a meno che non sia certificata Halal.' },
+            { word: 'gelatina animale', reason: 'Animal gelatin is doubtful unless specifically certified Halal.', reason_it: 'La gelatina animale è dubbia a meno che non sia certificata Halal.' },
+            { word: 'gelatine', reason: 'Gelatin is doubtful unless specifically certified as Halal (it may be pork or non-dhabihah beef).', reason_it: 'La gelatina è dubbia a meno che non sia specificata Halal (può provenire da suino o bovino non rituale).' },
+            { word: 'gelatin', reason: 'Gelatin is doubtful unless specifically certified as Halal.', reason_it: 'La gelatina è dubbia a meno che non sia specificata Halal.' },
+            { word: 'gelatina', reason: 'Gelatin is doubtful unless specifically certified as Halal.', reason_it: 'La gelatina è dubbia a meno che non sia specificata Halal.' },
+            { word: 'gélatine', reason: 'Gelatin is doubtful unless specifically certified as Halal.', reason_it: 'La gelatina è dubbia a meno che non sia specificata Halal.' },
+
+            // Other doubtful additives & enzymes
+            { word: 'whey', reason: 'Whey protein is doubtful as the rennet used in cheese production could come from non-halal slaughtered animals.', reason_it: 'Il siero di latte è dubbio poiché il caglio utilizzato nei formaggi potrebbe provenire da animali non macellati secondo il rito.' },
+            { word: 'siero di latte', reason: 'Whey protein is doubtful as the rennet used in cheese production could come from non-halal slaughtered animals.', reason_it: 'Il siero di latte è dubbio poiché il caglio utilizzato nei formaggi potrebbe provenire da animali non macellati secondo il rito.' },
+            { word: 'rennet', reason: 'Rennet is doubtful unless from a halal/microbial source.', reason_it: 'Il caglio è dubbio a meno che non sia microbico, vegetale o certificato Halal.' },
+            { word: 'caglio', reason: 'Rennet is doubtful unless from a halal/microbial source.', reason_it: 'Il caglio è dubbio a meno che non sia di origine microbica, vegetale o certificato Halal.' },
+            { word: 'pepsin', reason: 'Pepsin is an enzyme often sourced from pigs.', reason_it: 'La pepsina è un enzima spesso estratto dallo stomaco dei suini.' },
+            { word: 'pepsina', reason: 'Pepsin is an enzyme often sourced from pigs.', reason_it: 'La pepsina è un enzima spesso estratto dallo stomaco dei suini.' },
+            { word: 'emulsifier', reason: 'Emulsifiers (like mono- and diglycerides) can be derived from either animal or plant fats.', reason_it: 'Gli emulsionanti possono essere di origine vegetale oppure animale.' },
+            { word: 'emulsionante', reason: 'Emulsifiers (like mono- and diglycerides) can be derived from either animal or plant fats.', reason_it: 'Gli emulsionanti possono essere di origine vegetale oppure animale.' },
+            { word: 'mono- and diglycerides', reason: 'Could be of animal fat origin.', reason_it: 'Mono- e digliceridi possono derivare da grassi animali.' },
+            { word: 'mono and diglycerides', reason: 'Could be of animal fat origin.', reason_it: 'Mono- e digliceridi possono derivare da grassi animali.' },
+            { word: 'mono- & diglycerides', reason: 'Could be of animal fat origin.', reason_it: 'Mono- e digliceridi possono derivare da grassi animali.' },
+            { word: 'mono- e digliceridi', reason: 'Could be of animal fat origin.', reason_it: 'Mono- e digliceridi possono derivare da grassi animali.' },
+            { word: 'mono e digliceridi', reason: 'Could be of animal fat origin.', reason_it: 'Mono- e digliceridi possono derivare da grassi animali.' },
+            { word: 'mono e digliceridi degli acidi grassi', reason: 'Could be of animal fat origin.', reason_it: 'I mono- e digliceridi degli acidi grassi possono derivare da lipidi animali.' },
+            { word: 'e471', reason: 'E471 (mono- and diglycerides) is doubtful as it may come from animal fats.', reason_it: 'E471 (mono- e digliceridi) è dubbio poiché può provenire da grassi animali.' },
+            { word: 'e472', reason: 'E472 emulsifiers can be derived from animal fat.', reason_it: 'Gli emulsionanti E472 possono essere di origine animale.' },
+            { word: 'lecithin', reason: 'Lecithin (E322) is doubtful unless specified as soy/plant lecithin.', reason_it: 'La lecitina (E322) è dubbia a meno che non sia specificata come lecitina di soia o girasole.' },
+            { word: 'lecitina', reason: 'Lecithin (E322) is doubtful unless specified as soy/plant lecithin.', reason_it: 'La lecitina (E322) è dubbia a meno che non sia specificata come soia o girasole.' },
+            { word: 'glycerin', reason: 'Glycerin (E422) can be animal-derived.', reason_it: 'La glicerina (E422) può essere di origine animale.' },
+            { word: 'glicerina', reason: 'Glycerin (E422) can be animal-derived.', reason_it: 'La glicerina (E422) può essere di origine animale.' },
+            { word: 'glycerol', reason: 'Glycerol can be derived from animal lipids.', reason_it: 'Il glicerolo può derivare da lipidi animali.' },
+            { word: 'glicerolo', reason: 'Glycerol can be derived from animal lipids.', reason_it: 'Il glicerolo può derivare da lipidi animali.' }
         ]
     };
 
@@ -1127,9 +1178,9 @@ student-friendly halal dining and food options around Politecnico di Milano camp
     DICTIONARY.haram.sort((a, b) => b.word.length - a.word.length);
     DICTIONARY.mashbuh.sort((a, b) => b.word.length - a.word.length);
 
-    // Permissible Halal Exceptions in food technology & Islamic jurisprudence (Istihalah).
-    // In Islam, wine vinegar (aceto di vino / khall) is Halal once wine ferments into vinegar.
+    // Permissible Halal Exceptions, safe ingredients, and negated phrases
     const HALAL_EXCEPTIONS_REGEX = [
+        // Permissible Vinegars (Istihalah in Islamic jurisprudence)
         /\baceto\s+(?:di\s+|da\s+)?vino(?:\s+(?:bianco|rosso))?\b/gi,
         /\baceto\s+balsamico(?:\s+di\s+modena)?\b/gi,
         /\baceto\s+(?:di\s+|d['’])?alcol\b/gi,
@@ -1141,7 +1192,40 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         /\bvinaigre\s+d['’]alcool\b/gi,
         /\bvinagre\s+de\s+vino(?:\s+(?:blanco|tinto))?\b/gi,
         /\bvinagre\s+de\s+alcohol\b/gi,
-        /\b(?:soy|soya|soia|sunflower|girasole)\s+lecit(?:in|ina)\b/gi
+
+        // Permissible plant/soy lecithins
+        /\b(?:soy|soya|soia|sunflower|girasole)\s+lecit(?:in|ina)\b/gi,
+
+        // Alcohol Negations (e.g. alcohol-free, senza alcol, 0.0%)
+        /\b(?:non[\s-]alcoholic|alcohol[\s-]free|zero[\s-]alcohol)\s+(?:beer|wine|malt|cider|beverage|drink)s?\b/gi,
+        /\bbirr[ae]\s+(?:senza\s+alco+l|analcolic[oaei]|alco+l[\s-]free|zero\s+alco+l|0(?:[.,]0)?%)\b/gi,
+        /\bvin[oi]\s+(?:senza\s+alco+l|analcolic[oaei]|dealcolat[oaei]|de-?alcolat[oaei]|0(?:[.,]0)?%)\b/gi,
+        /\b(?:non[\s-]alcoholic|alcohol[\s-]free|free\s+(?:from|of)\s+alcohol|zero\s+alcohol|0(?:[.,]0)?%\s*(?:vol\b|alco+l\b)|no\s+alcohol|without\s+(?:added\s+)?alcohol)\b/gi,
+        /\b(?:senza\s+(?:aggiunta\s+di\s+)?alco+l(?:ico)?|analcolic[oaei]|priv[oaei]\s+di\s+alco+l|alco+l[\s-]free|zero\s+alco+l)\b/gi,
+        /\b(?:sans\s+alcool|alkoholfrei|de-?alcoholi[sz]ed|dealcolat[oaei]|de-?alcolat[oaei])\b/gi,
+
+        // Pork / Swine / Lard / Ham Negations (e.g. no pork, senza maiale, pork-free)
+        /\b(?:pork[\s-]free|free\s+(?:from|of)\s+pork|no\s+pork|without\s+pork|contains?\s+no\s+pork)\b/gi,
+        /\b(?:senza\s+(?:carne\s+(?:di\s+|da\s+)?)?maiale|priv[oaei]\s+di\s+(?:carne\s+)?maiale)\b/gi,
+        /\b(?:senza\s+(?:carne\s+)?suin[oaei]|priv[oaei]\s+di\s+(?:carne\s+)?suin[oaei]|senza\s+derivati\s+suini)\b/gi,
+        /\b(?:senza\s+strutto|priv[oaei]\s+di\s+strutto|senza\s+lardo|priv[oaei]\s+di\s+lardo)\b/gi,
+        /\b(?:senza\s+pancetta|senza\s+prosciutto|bacon[\s-]free|no\s+bacon|without\s+bacon|no\s+lard|without\s+lard|no\s+ham|ham[\s-]free)\b/gi,
+        /\b(?:sans\s+porc|ohne\s+schweinefleisch)\b/gi,
+
+        // Gelatin Negations & Permissible Gelatin Types (Fish, Plant, Agar-Agar)
+        /\b(?:gelatin[e]?[\s-]free|free\s+(?:from|of)\s+gelatin[e]?|senza\s+gelatina(?:\s+animale)?|no\s+gelatin[e]?)\b/gi,
+        /\b(?:fish|pesce|poisson)\s+gelatin[ea]?\b/gi,
+        /\bgelatin[ea]?\s+(?:di\s+|de\s+)?(?:pesce|poisson|fish)\b/gi,
+        /\b(?:vegetal|vegetale|plant)[\s-]based\s+gelatin[ea]?\b/gi,
+        /\bgelatina\s+vegetale\b/gi,
+        /\bagar[\s-]agar\b/gi,
+
+        // Carmine / E120 Negations
+        /\b(?:carmine[\s-]free|cochineal[\s-]free|senza\s+(?:colorante\s+)?carminio|senza\s+cocciniglia|senza\s+e120)\b/gi,
+
+        // Porcini Mushrooms (Boletus edulis - 100% Halal edible mushroom, must never match 'porcine')
+        /\b(?:fungh[ie]\s+)?porcin[io]\b/gi,
+        /\bporcini\s+mushrooms?\b/gi
     ];
 
     // Escape regex special characters
@@ -1151,46 +1235,100 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
     // Whole-word matcher with optional plural 's'
     function wordRegex(word, flags) {
-        return new RegExp(`\\b(${escapeRegExp(word)}s?)(?![a-z0-9])`, flags);
+        const escaped = escapeRegExp(word);
+        if (/[)\]]$/.test(word)) {
+            return new RegExp(`\\b${escaped}(?![a-z0-9])`, flags);
+        }
+        return new RegExp(`\\b(${escaped}s?)(?![a-z0-9])`, flags);
     }
 
     function maskHalalExceptions(str) {
         if (!str) return '';
         let result = str;
         HALAL_EXCEPTIONS_REGEX.forEach(rgx => {
-            result = result.replace(rgx, '__HALAL_VINEGAR_SAFE__');
+            result = result.replace(rgx, '__HALAL_SAFE_EXCEPTION__');
         });
         return result;
     }
 
+    // Validates true Halal certification and protects against pseudo-halal claims & negations
+    function checkHalalCertification(text, rawLabels = '') {
+        const combined = (text + ' ' + rawLabels).toLowerCase();
+
+        // Disqualifying phrases (pseudo-halal, negations, questions)
+        const disqualifiers = [
+            /\b(?:not|non|no|zero|never|without|senza|priv[oaei]\s+di)\s+(?:officially\s+)?(?:essere\s+)?(?:certifi\w+\s+)?halal\b/i,
+            /\b(?:not|non)\s+(?:suitable|adatt[oaei]|consigliat[oaei])\s+(?:for|per|a)\s+(?:diete?\s+)?halal\b/i,
+            /\bhalal[\s-](?:style|flavour(?:ed)?|gusto|tipo)\b/i,
+            /\b(?:unverified|uncertified|fake|pseudo)[\s-]halal\b/i,
+            /\bnon[\s-]certificat[oa]\s+halal\b/i,
+            /\bsenza\s+certificazione\s+halal\b/i,
+            /\bcontains?\s+no\s+halal\b/i,
+            /\bnon[\s-]halal\b/i,
+            /\bnot[\s-]halal\b/i
+        ];
+
+        for (const dq of disqualifiers) {
+            if (dq.test(combined)) return false;
+        }
+
+        // Explicit certification phrases or verified certification bodies
+        const certificationPatterns = [
+            /\b(?:halal[\s-]certified|certified[\s-]halal|certificat[oa][\s-]halal|certificazione\s+halal|halal\s+certification)\b/i,
+            /\b(?:certifi[eé][\s-]halal|halal[\s-]zertifiziert|certificad[oa][\s-]halal)\b/i,
+            /\b(?:100%\s+halal|garantit[oa]\s+halal|halal\s+guaranteed)\b/i,
+            /\b(?:halal\s+italia|halal\s+italy|whad|hiah|halal\s+correct|halal\s+control|jakim|muis|esma|fambras)\b/i,
+            /\bprodotto\s+certificato\s+halal\b/i
+        ];
+
+        for (const cp of certificationPatterns) {
+            if (cp.test(combined)) return true;
+        }
+
+        // Check Open Food Facts formal labels tags
+        if (typeof rawLabels === 'string') {
+            const lbls = rawLabels.toLowerCase();
+            if (/\b(?:en:halal|fr:halal|it:halal)\b/.test(lbls)) return true;
+        }
+
+        return false;
+    }
+
     // Main parser/analyzer logic
     function analyzeProductIngredients(ingredientsText, labelsText = '', hasIngredients = true) {
+        const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
+        const isIt = currentLang === 'it';
+
         const rawText = (ingredientsText + ' ' + labelsText).toLowerCase();
-        // Mask permissible vinegar exceptions so 'vino' or 'wine' won't trigger false Haram
+        // Mask permissible exceptions and negated haram terms (e.g. 'no pork', 'alcohol-free', 'wine vinegar')
         const text = maskHalalExceptions(rawText);
         const foundHaram = [];
         const foundMashbuh = [];
 
-        // Check if explicitly halal certified
-        const isHalalCertified = text.includes('halal certified') ||
-            text.includes('halal-certified') ||
-            (text.includes('halal') && !text.includes('non-halal') && !text.includes('non halal') && !text.includes('not halal'));
+        // Check if explicitly halal certified using strict validation
+        const isHalalCertified = checkHalalCertification(rawText, labelsText);
 
         DICTIONARY.haram.forEach(item => {
             if (wordRegex(item.word, 'i').test(text)) {
-                foundHaram.push(item);
+                foundHaram.push({
+                    word: item.word,
+                    reason: isIt && item.reason_it ? item.reason_it : item.reason
+                });
             }
         });
 
         DICTIONARY.mashbuh.forEach(item => {
-            // If it is halal certified, we can skip general mashbuh items since they are verified
+            // If it is strictly halal certified, skip general mashbuh items as they are verified
             if (isHalalCertified) return;
 
             if (wordRegex(item.word, 'i').test(text)) {
                 // Avoid duplicate warnings if haram already flagged (e.g. pork gelatin vs gelatin)
-                const matchesHaram = foundHaram.some(h => h.word.includes(item.word));
+                const matchesHaram = foundHaram.some(h => h.word.includes(item.word) || item.word.includes(h.word));
                 if (!matchesHaram) {
-                    foundMashbuh.push(item);
+                    foundMashbuh.push({
+                        word: item.word,
+                        reason: isIt && item.reason_it ? item.reason_it : item.reason
+                    });
                 }
             }
         });
@@ -1208,8 +1346,10 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 status: 'not_listed',
                 certified: false,
                 reasons: [{
-                    word: 'No ingredients listed',
-                    reason: 'No ingredients list is available in online databases for this product. Halal status cannot be verified without ingredient data.'
+                    word: isIt ? 'Ingredienti non disponibili' : 'No ingredients listed',
+                    reason: isIt
+                        ? 'Nessun elenco degli ingredienti è presente nei database online per questo prodotto. Lo stato Halal non può essere verificato senza la lista ingredienti.'
+                        : 'No ingredients list is available in online databases for this product. Halal status cannot be verified without ingredient data.'
                 }]
             };
         } else {
