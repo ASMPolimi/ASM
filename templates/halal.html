@@ -688,6 +688,8 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                     Camera Scan</button>
                 <button class="tab-btn" onclick="switchTab('barcode-tab')" data-i18n="halal_tab_barcode">🔢 Enter
                     Barcode</button>
+                <button class="tab-btn" onclick="switchTab('visual-tab')" data-i18n="halal_tab_visual">📸 Photo / Label
+                    Scan</button>
                 <button class="tab-btn" onclick="switchTab('ingredients-tab')" data-i18n="halal_tab_ingredients">📝
                     Ingredients Analyzer</button>
             </div>
@@ -725,7 +727,73 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 </form>
             </div>
 
-            <!-- Tab 3: Ingredients Text Analyzer -->
+            <!-- Tab 3: Visual Label / Photo Scanner (Gemini Flash Vision) -->
+            <div id="visual-tab" class="tab-content">
+                <p class="mb-3" style="color: var(--color-text-light); margin-bottom: 1.25rem;"
+                    data-i18n="halal_visual_instruction">
+                    Snap a photo of the ingredients list on any product packaging or upload an image. Our AI will automatically read and classify the ingredients.
+                </p>
+                <div class="visual-quota-badge-wrap" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <span id="visual-quota-indicator" style="font-size: 0.82rem; background: #ecfdf5; color: #047857; padding: 0.3rem 0.75rem; border-radius: 999px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid #a7f3d0;">
+                        <span>⚡</span> <span id="visual-quota-text" data-i18n="halal_visual_active">Free AI Scans Active</span>
+                    </span>
+                    <span style="font-size: 0.78rem; color: #64748b;" data-i18n="halal_visual_free_note">100% Free Daily Allowance</span>
+                </div>
+
+                <div id="visual-dropzone" class="visual-upload-zone" style="border: 2px dashed #cbd5e1; border-radius: 0.75rem; padding: 2rem 1rem; text-align: center; cursor: pointer; background: #f8fafc; transition: all 0.2s ease;">
+                    <div id="visual-prompt-content">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📷</div>
+                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1.15rem; color: var(--color-text); font-weight: 700;" data-i18n="halal_visual_drag_title">
+                            Take Photo or Upload Packaging Image
+                        </h4>
+                        <p style="color: #64748b; font-size: 0.88rem; margin: 0 0 1.25rem 0;" data-i18n="halal_visual_drag_sub">
+                            Make sure the ingredients text is well-lit and in focus.
+                        </p>
+                        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-primary" id="btn-snap-photo" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; font-weight: 600;">
+                                <span>📸</span> <span data-i18n="halal_btn_take_photo">Take Photo</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btn-upload-file" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; font-weight: 600; border-color: var(--color-primary); color: var(--color-primary);">
+                                <span>📁</span> <span data-i18n="halal_btn_choose_image">Choose Image</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hidden file inputs -->
+                    <input type="file" id="visual-camera-input" accept="image/*" capture="environment" style="display: none;">
+                    <input type="file" id="visual-file-input" accept="image/*" style="display: none;">
+
+                    <!-- Image Preview Area -->
+                    <div id="visual-preview-wrap" style="display: none; margin-top: 0.5rem;">
+                        <div style="position: relative; max-width: 380px; margin: 0 auto;">
+                            <img id="visual-preview-img" src="" alt="Ingredients preview" style="width: 100%; max-height: 280px; object-fit: contain; border-radius: 0.5rem; border: 1px solid #cbd5e1; background: #0f172a;">
+                            <button type="button" id="btn-clear-photo" style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.65); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: 14px; line-height: 28px; text-align: center;" title="Remove image">✕</button>
+                        </div>
+                        <div style="margin-top: 1.25rem; display: flex; gap: 0.65rem; justify-content: center; flex-wrap: wrap;">
+                            <button type="button" id="btn-run-visual-scan" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; font-weight: 700;">
+                                <span>✨</span> <span data-i18n="halal_btn_analyze_photo">Analyze Ingredients with AI</span>
+                            </button>
+                            <button type="button" id="btn-retake-photo" class="btn btn-secondary" style="border-color: #cbd5e1; color: #475569; padding: 0.75rem 1.25rem;">
+                                <span data-i18n="halal_btn_retake">Retake / Change</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="visual-loading" style="display: none; margin-top: 1.5rem; text-align: center;">
+                    <div class="spinner" style="margin: 0 auto 0.75rem auto; width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: var(--color-primary); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                    <div style="font-weight: 600; color: var(--color-primary);" data-i18n="halal_visual_analyzing">
+                        Reading ingredients with Gemini Flash Vision...
+                    </div>
+                    <div style="font-size: 0.82rem; color: #64748b; margin-top: 0.25rem;" data-i18n="halal_visual_analyzing_sub">
+                        Extracting packaging text, additives, and E-numbers
+                    </div>
+                </div>
+
+                <div id="visual-status-box" style="display: none; margin-top: 1rem; padding: 0.85rem; border-radius: 0.5rem; font-size: 0.88rem; line-height: 1.5;"></div>
+            </div>
+
+            <!-- Tab 4: Ingredients Text Analyzer -->
             <div id="ingredients-tab" class="tab-content">
                 <p class="mb-4" style="color: var(--color-text-light); margin-bottom: 1.5rem;"
                     data-i18n="halal_ing_instruction">
@@ -807,13 +875,13 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 <script>
     // Tab switching logic
     function switchTab(tabId) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-        // Find clicked button based on tabId
-        const btnIndex = tabId === 'camera-tab' ? 0 : (tabId === 'barcode-tab' ? 1 : 2);
-        document.querySelectorAll('.tab-btn')[btnIndex].classList.add('active');
-        document.getElementById(tabId).classList.add('active');
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            const oc = btn.getAttribute('onclick') || '';
+            btn.classList.toggle('active', oc.includes(`'${tabId}'`));
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.toggle('active', content.id === tabId);
+        });
 
         // Stop camera if leaving camera tab
         if (tabId !== 'camera-tab') {
@@ -1789,8 +1857,251 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         applyMaintenanceDisplay();
     });
 
+    // Visual AI (Gemini Flash Vision) Label Scanner
+    let visualSelectedBase64 = null;
+    let visualPreviewDataUrl = null;
+
+    function initVisualScanner() {
+        const dropzone = document.getElementById('visual-dropzone');
+        const cameraInput = document.getElementById('visual-camera-input');
+        const fileInput = document.getElementById('visual-file-input');
+        const btnSnap = document.getElementById('btn-snap-photo');
+        const btnUpload = document.getElementById('btn-upload-file');
+        const btnRunScan = document.getElementById('btn-run-visual-scan');
+        const btnClear = document.getElementById('btn-clear-photo');
+        const btnRetake = document.getElementById('btn-retake-photo');
+
+        if (!dropzone) return;
+
+        // Fetch visual scan status & remaining free scans
+        fetch('/api/scan-ingredients-visual/status')
+            .then(res => res.json())
+            .then(data => {
+                const indicator = document.getElementById('visual-quota-text');
+                if (data.success && indicator) {
+                    if (data.available) {
+                        indicator.textContent = (window.currentLang === 'it' ? 'Scansioni IA Gratuite Attive: ' : 'Free AI Scans Active: ') + data.remaining_daily_scans + ' left today';
+                    } else {
+                        indicator.textContent = (window.currentLang === 'it' ? 'IA in configurazione' : 'AI Setup Mode');
+                    }
+                }
+            })
+            .catch(() => {});
+
+        if (btnSnap) btnSnap.addEventListener('click', (e) => { e.stopPropagation(); cameraInput.click(); });
+        if (btnUpload) btnUpload.addEventListener('click', (e) => { e.stopPropagation(); fileInput.click(); });
+        if (dropzone) dropzone.addEventListener('click', () => { if (!visualSelectedBase64) fileInput.click(); });
+
+        if (cameraInput) cameraInput.addEventListener('change', handleVisualFileSelect);
+        if (fileInput) fileInput.addEventListener('change', handleVisualFileSelect);
+
+        if (btnClear) btnClear.addEventListener('click', (e) => { e.stopPropagation(); resetVisualScanner(); });
+        if (btnRetake) btnRetake.addEventListener('click', (e) => { e.stopPropagation(); fileInput.click(); });
+        if (btnRunScan) btnRunScan.addEventListener('click', (e) => { e.stopPropagation(); executeVisualScan(); });
+
+        // Drag and drop support
+        ['dragenter', 'dragover'].forEach(name => {
+            dropzone.addEventListener(name, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.style.borderColor = 'var(--color-primary)';
+                dropzone.style.background = '#f0fdf4';
+            });
+        });
+        ['dragleave', 'drop'].forEach(name => {
+            dropzone.addEventListener(name, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.style.borderColor = '#cbd5e1';
+                dropzone.style.background = '#f8fafc';
+            });
+        });
+        dropzone.addEventListener('drop', (e) => {
+            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                processSelectedImageFile(e.dataTransfer.files[0]);
+            }
+        });
+    }
+
+    function handleVisualFileSelect(e) {
+        if (e.target.files && e.target.files[0]) {
+            processSelectedImageFile(e.target.files[0]);
+        }
+    }
+
+    function processSelectedImageFile(file) {
+        if (!file.type.startsWith('image/')) {
+            alert(window.currentLang === 'it' ? 'Carica un file immagine valido (JPEG, PNG, WebP).' : 'Please upload a valid image file (JPEG, PNG, WebP).');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const rawDataUrl = evt.target.result;
+            // Downscale image to max 1024px to conserve bandwidth & free-tier tokens
+            compressImage(rawDataUrl, 1024, 0.82, function(compressedDataUrl) {
+                visualSelectedBase64 = compressedDataUrl;
+                visualPreviewDataUrl = compressedDataUrl;
+                
+                const previewImg = document.getElementById('visual-preview-img');
+                const promptContent = document.getElementById('visual-prompt-content');
+                const previewWrap = document.getElementById('visual-preview-wrap');
+                const statusBox = document.getElementById('visual-status-box');
+
+                if (previewImg) previewImg.src = compressedDataUrl;
+                if (promptContent) promptContent.style.display = 'none';
+                if (previewWrap) previewWrap.style.display = 'block';
+                if (statusBox) statusBox.style.display = 'none';
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function compressImage(dataUrl, maxDim, quality, callback) {
+        const img = new Image();
+        img.onload = function() {
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxDim || height > maxDim) {
+                if (width > height) {
+                    height = Math.round((height * maxDim) / width);
+                    width = maxDim;
+                } else {
+                    width = Math.round((width * maxDim) / height);
+                    height = maxDim;
+                }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            callback(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = dataUrl;
+    }
+
+    function resetVisualScanner() {
+        visualSelectedBase64 = null;
+        visualPreviewDataUrl = null;
+        const promptContent = document.getElementById('visual-prompt-content');
+        const previewWrap = document.getElementById('visual-preview-wrap');
+        const previewImg = document.getElementById('visual-preview-img');
+        const statusBox = document.getElementById('visual-status-box');
+        const loading = document.getElementById('visual-loading');
+
+        if (promptContent) promptContent.style.display = 'block';
+        if (previewWrap) previewWrap.style.display = 'none';
+        if (previewImg) previewImg.src = '';
+        if (statusBox) statusBox.style.display = 'none';
+        if (loading) loading.style.display = 'none';
+
+        const camInput = document.getElementById('visual-camera-input');
+        const fileInput = document.getElementById('visual-file-input');
+        if (camInput) camInput.value = '';
+        if (fileInput) fileInput.value = '';
+    }
+
+    async function executeVisualScan() {
+        if (!visualSelectedBase64) return;
+
+        const loading = document.getElementById('visual-loading');
+        const statusBox = document.getElementById('visual-status-box');
+        const btnRunScan = document.getElementById('btn-run-visual-scan');
+        const resultsDiv = document.getElementById('scanner-results');
+        const isIt = (window.currentLang === 'it');
+
+        loading.style.display = 'block';
+        statusBox.style.display = 'none';
+        resultsDiv.classList.add('hidden');
+        btnRunScan.disabled = true;
+
+        try {
+            const resp = await fetch('/api/scan-ingredients-visual', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    image: visualSelectedBase64
+                })
+            });
+
+            const data = await resp.json();
+            loading.style.display = 'none';
+            btnRunScan.disabled = false;
+
+            if (!resp.ok || !data.success) {
+                statusBox.style.display = 'block';
+                statusBox.style.background = '#fef2f2';
+                statusBox.style.color = '#991b1b';
+                statusBox.style.border = '1px solid #fecaca';
+
+                if (data.code === 'DAILY_QUOTA_REACHED' || data.code === 'RATE_LIMIT_EXCEEDED') {
+                    statusBox.innerHTML = `<strong>${isIt ? 'Limite gratuito raggiunto' : 'Free Limit Reached'}:</strong> ${escapeHtml(data.message)} <br><button type="button" class="btn btn-secondary mt-2" onclick="switchTab('ingredients-tab')">${isIt ? 'Apri Analisi Manuale' : 'Open Manual Text Analyzer'}</button>`;
+                } else if (data.code === 'API_NOT_CONFIGURED') {
+                    statusBox.innerHTML = `<strong>${isIt ? 'Servizio non configurato' : 'Service Notice'}:</strong> ${escapeHtml(data.message)} <br><button type="button" class="btn btn-secondary mt-2" onclick="switchTab('ingredients-tab')">${isIt ? 'Incolla Testo Manualmente' : 'Paste Text Manually'}</button>`;
+                } else {
+                    statusBox.textContent = data.message || (isIt ? 'Impossibile completare la scansione visiva.' : 'Could not complete visual scan.');
+                }
+                return;
+            }
+
+            // Update remaining scans quota indicator
+            if (data.remaining_daily_scans !== undefined) {
+                const indicator = document.getElementById('visual-quota-text');
+                if (indicator) {
+                    indicator.textContent = (isIt ? 'Scansioni IA Gratuite Attive: ' : 'Free AI Scans Active: ') + data.remaining_daily_scans + ' left today';
+                }
+            }
+
+            const rawIngredients = (data.ingredients_text || '').trim();
+            if (!rawIngredients || data.confidence === 'none') {
+                statusBox.style.display = 'block';
+                statusBox.style.background = '#fffbeb';
+                statusBox.style.color = '#92400e';
+                statusBox.style.border = '1px solid #fde68a';
+                statusBox.innerHTML = isIt
+                    ? '⚠️ Non sono stati individuati ingredienti chiari in questa foto. Assicurati che il testo della confezione sia a fuoco e ben illuminato, o <a href="javascript:void(0)" onclick="switchTab(\'ingredients-tab\')" style="font-weight:700; text-decoration:underline;">incolla il testo manualmente</a>.'
+                    : '⚠️ No clear ingredients list could be read from this photo. Please make sure the text is well-lit and in focus, or <a href="javascript:void(0)" onclick="switchTab(\'ingredients-tab\')" style="font-weight:700; text-decoration:underline;">paste the ingredients manually</a>.';
+                return;
+            }
+
+            // Populate manual textarea so user can see & edit if desired
+            const ingTextarea = document.getElementById('ingredients-input');
+            if (ingTextarea) ingTextarea.value = rawIngredients;
+
+            // Display results using existing ASM classification pipeline
+            const parsedProduct = {
+                product_name: data.product_name || (isIt ? "Scansione Etichetta (IA)" : "Label AI Scan"),
+                brands: data.brand || (isIt ? "Acquisizione Visiva" : "Visual Capture"),
+                ingredients_text: rawIngredients,
+                image_url: visualPreviewDataUrl,
+                source: 'gemini_vision'
+            };
+
+            displayResults(parsedProduct);
+
+            // Smooth scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        } catch (err) {
+            loading.style.display = 'none';
+            btnRunScan.disabled = false;
+            statusBox.style.display = 'block';
+            statusBox.style.background = '#fef2f2';
+            statusBox.style.color = '#991b1b';
+            statusBox.style.border = '1px solid #fecaca';
+            statusBox.textContent = isIt
+                ? 'Errore di connessione durante l\'analisi visiva. Verifica la tua rete e riprova.'
+                : 'Network error during visual analysis. Please check your connection and try again.';
+            console.error('Visual scan error:', err);
+        }
+    }
+
     // Deep linking support from main page
     window.addEventListener('DOMContentLoaded', async () => {
+        initVisualScanner();
         await checkHalalMaintenanceStatus();
 
         if (isHalalMaintenanceActive) {
@@ -1811,6 +2122,8 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             setTimeout(() => {
                 startScanner();
             }, 300);
+        } else if (actionParam === 'visual' || actionParam === 'photo') {
+            switchTab('visual-tab');
         }
     });
 </script>
