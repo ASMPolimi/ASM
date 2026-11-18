@@ -127,6 +127,16 @@
     .legal-card li {
         margin-bottom: 0.5rem;
     }
+    .legal-card a:not(.btn) {
+        color: var(--color-primary);
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        transition: color 0.2s ease;
+    }
+    .legal-card a:not(.btn):hover {
+        color: var(--color-secondary-hover, #f59e0b);
+    }
     .legal-badge-header {
         display: inline-flex;
         align-items: center;
@@ -291,7 +301,7 @@
                 When a barcode is scanned or entered, only the numeric barcode string (e.g., EAN-13 digits) is queried:
             </p>
             <ul>
-                <li><strong>Open Food Facts:</strong> Public product data is retrieved from the Open Food Facts API. Data &copy; <a href="https://world.openfoodfacts.org/terms-of-use" target="_blank" rel="noopener noreferrer">Open Food Facts contributors</a>, available under the <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">Open Database License (ODbL) 1.0</a>; product images are under CC BY-SA. ASM POLIMI does not guarantee the completeness or absolute accuracy of third-party public records.</li>
+                <li><strong>Open Food Facts:</strong> Public product data is retrieved from the Open Food Facts API. Data &copy; <a href="https://world.openfoodfacts.org/terms-of-use" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Open Food Facts contributors</a>, available under the <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Open Database License (ODbL) 1.0</a>; product images are under CC BY-SA. ASM POLIMI does not guarantee the completeness or absolute accuracy of third-party public records.</li>
                 <li><strong>ASM Local Cache:</strong> Custom product statuses reviewed and verified by student association admins.</li>
                 <li><strong>Optional Community Reports:</strong> If you submit an unlisted product or correction, only product metadata (barcode, name, brand, store address, ingredient notes) is submitted. No student matricola, personal identity, or contact details are required or attached.</li>
             </ul>

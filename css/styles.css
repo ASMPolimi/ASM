@@ -5230,3 +5230,16 @@ body.dark-mode .month-brief-notes {
         text-overflow: ellipsis;
     }
 }
+
+/* Legal Cards Link Styling */
+.legal-card a:not(.btn) {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition-fast, 0.2s ease);
+}
+
+.legal-card a:not(.btn):hover {
+    color: var(--color-secondary-hover, #f59e0b);
+}
