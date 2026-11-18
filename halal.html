@@ -1373,6 +1373,15 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             ? highlightIngredients(ingredients)
             : `<span style="color: #64748b; font-style: italic;">${placeholderNotice}</span>`;
 
+        const isOpenFoodFacts = product.source === 'openfoodfacts' || (!product.source && Boolean(product.code) && product.source !== 'custom_db' && product.source !== 'unlisted' && product.source !== 'unlisted_offline' && product.source !== 'manual' && Boolean(product.url || product.creator || product._id || product.id || product.ingredients_text_with_allergens || product.selected_images));
+
+        let offProductUrl = (product.url && typeof product.url === 'string' && product.url.startsWith('http'))
+            ? product.url
+            : (product.code ? `https://world.openfoodfacts.org/product/${encodeURIComponent(product.code)}` : 'https://world.openfoodfacts.org');
+        if (isIt && offProductUrl.includes('://world.openfoodfacts.org')) {
+            offProductUrl = offProductUrl.replace('://world.openfoodfacts.org', '://it.openfoodfacts.org');
+        }
+
         resultsDiv.innerHTML = `
                 <div class="result-card" style="border: 2px solid ${cardBorderColor}; background-color: ${cardBgColor};">
                     <div class="result-header-flex">
@@ -1426,6 +1435,19 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                     <p style="font-size: 0.92rem; color: var(--color-text-light); line-height: 1.55; word-break: break-word;">
                         ${highlightedIngredients}
                     </p>
+                    ${isOpenFoodFacts ? `
+                    <div class="off-attribution" style="margin-top: 1.25rem; padding-top: 0.85rem; border-top: 1px dashed #e2e8f0; font-size: 0.82rem; color: #64748b; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                        <span>
+                            ${isIt
+                                ? 'Dati e ingredienti da <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Open Food Facts</a> (licenza <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">ODbL</a>).'
+                                : 'Data &amp; ingredients from <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">Open Food Facts</a> (licensed under <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600; text-decoration: underline;">ODbL</a>).'}
+                        </span>
+                        <a href="${escapeHtml(offProductUrl)}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.35rem; color: #0284c7; font-weight: 600; text-decoration: underline; font-size: 0.82rem;">
+                            <span>${isIt ? 'Vedi su Open Food Facts' : 'View on Open Food Facts'}</span>
+                            <span aria-hidden="true">↗</span>
+                        </a>
+                    </div>
+                    ` : ''}
                 </div>
             `;
         resultsDiv.scrollIntoView({ behavior: 'smooth' });
@@ -1694,7 +1716,8 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 product_name: "Manual Text Analysis",
                 brands: "User Entered",
                 ingredients_text: text,
-                image_url: ""
+                image_url: "",
+                source: 'manual'
             };
             displayResults(parsedProduct);
         }, 500);
