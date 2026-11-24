@@ -479,6 +479,11 @@
 
             let statusBadgeHtml = '';
             let actionBtnHtml = '';
+            const detailsBtnHtml = `
+                <a href="/event.html?id=${encodeURIComponent(ev.id || '')}" class="btn btn-secondary text-center" style="display: block; width: 100%; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; text-decoration: none;">
+                    View event details
+                </a>
+            `;
 
             if (status === 'open') {
                 statusBadgeHtml = '<span class="event-status-pill status-open" style="font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 999px;">🟢 Open</span>';
@@ -537,6 +542,7 @@
                         </span>
                     </div>
 
+                    ${detailsBtnHtml}
                     ${actionBtnHtml}
                 </div>
             `;
