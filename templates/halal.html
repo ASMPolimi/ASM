@@ -301,16 +301,16 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
         .tab-buttons {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-            padding-bottom: 0.75rem;
-            margin-bottom: 1.25rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.4rem;
+            padding: 0.35rem;
+            margin-bottom: 1rem;
             overflow-x: visible;
         }
 
         .tab-btn {
-            font-size: 0.88rem;
-            padding: 0.5rem 0.35rem;
+            font-size: 0.95rem;
+            padding: 0.65rem 0.5rem;
             white-space: normal;
             text-align: center;
             line-height: 1.25;
@@ -318,6 +318,18 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             align-items: center;
             justify-content: center;
             min-height: 48px;
+        }
+
+        .mode-buttons {
+            gap: 0.3rem;
+            margin: 0 0 1rem;
+            padding: 0.25rem;
+        }
+
+        .mode-btn {
+            min-height: 44px;
+            font-size: 0.92rem;
+            padding: 0.55rem 0.45rem;
         }
 
         .result-card {
@@ -362,26 +374,45 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
         .tab-buttons {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            border: 1px solid #dbe3ec;
+            padding: 0.25rem;
+            margin-bottom: 0.75rem;
             gap: 0.3rem;
             overflow-x: visible;
         }
 
         .tab-btn {
             flex: unset;
-            font-size: 0.73rem;
-            padding: 0.45rem 0.2rem;
+            font-size: 0.88rem;
+            padding: 0.55rem 0.3rem;
             white-space: normal;
             text-align: center;
             line-height: 1.2;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 0.4rem;
-            min-height: 46px;
+            border-radius: 0.48rem;
+            min-height: 48px;
+        }
+
+        .mode-buttons {
+            margin-bottom: 0.75rem;
+            padding: 0.2rem;
+            gap: 0.25rem;
+        }
+
+        .mode-btn {
+            min-height: 42px;
+            font-size: 0.84rem;
+            padding: 0.5rem 0.25rem;
+        }
+
+        #barcode-input,
+        #ingredients-input,
+        #flag-user-note {
+            font-size: 16px !important;
+            touch-action: manipulation;
         }
 
         /* Result card on mobile: clean, tight padding, maximize usable reading width */
@@ -681,6 +712,166 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             font-size: 0.8rem;
         }
     }
+
+    /* FAQ Section Styles */
+    .halal-faq-section {
+        margin-top: 3.5rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .faq-accordion {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .faq-item {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.85rem;
+        padding: 0;
+        transition: all 0.25s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+
+    .faq-item[open] {
+        border-color: #cbd5e1;
+        box-shadow: 0 4px 12px rgba(18, 74, 97, 0.08);
+    }
+
+    .faq-question {
+        padding: 1.15rem 1.35rem;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.02rem;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        user-select: none;
+        list-style: none;
+    }
+
+    .faq-question::-webkit-details-marker {
+        display: none;
+    }
+
+    .faq-question::after {
+        content: '›';
+        font-size: 1.4rem;
+        line-height: 1;
+        color: #64748b;
+        transition: transform 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .faq-item[open] .faq-question::after {
+        transform: rotate(90deg);
+        color: var(--color-primary);
+    }
+
+    .faq-question:hover {
+        background-color: #f8fafc;
+    }
+
+    .faq-answer {
+        padding: 0 1.35rem 1.25rem 1.35rem;
+        color: #475569;
+        font-size: 0.93rem;
+        line-height: 1.6;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 0.9rem;
+    }
+
+    .faq-answer strong {
+        color: var(--color-primary);
+    }
+
+    .faq-answer ul {
+        margin: 0.5rem 0 0.5rem 1.25rem;
+        padding: 0;
+    }
+
+    .faq-answer li {
+        margin-bottom: 0.35rem;
+    }
+
+    .faq-category-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1.75rem;
+        margin-bottom: 0.65rem;
+        padding-left: 0.25rem;
+    }
+
+    .faq-category-header:first-of-type {
+        margin-top: 0;
+    }
+
+    .faq-category-icon {
+        font-size: 1.25rem;
+    }
+
+    .faq-category-title {
+        color: var(--color-primary);
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .halal-cta-buttons {
+        margin-top: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    @media (max-width: 576px) {
+        .halal-cta-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .halal-cta-buttons a.btn {
+            width: 100%;
+            justify-content: center;
+            padding: 0.95rem 1.25rem;
+            font-size: 0.95rem;
+        }
+
+        .faq-question {
+            padding: 0.95rem 0.9rem;
+            font-size: 0.95rem;
+        }
+
+        .faq-answer {
+            padding: 0 0.9rem 0.95rem 0.9rem;
+            font-size: 0.88rem;
+        }
+
+        .faq-category-title {
+            font-size: 1.05rem;
+        }
+
+        .visual-upload-zone {
+            padding: 1.25rem 0.75rem !important;
+        }
+
+        #btn-snap-photo,
+        #btn-upload-file {
+            width: 100%;
+            justify-content: center;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -793,8 +984,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             <div id="visual-tab" class="tab-content">
                 <p class="mb-3" style="color: var(--color-text-light); margin-bottom: 1.25rem;"
                     data-i18n="halal_visual_instruction">
-                    Snap a photo of the ingredients list on any product packaging or upload an image. Our AI will
-                    automatically read and classify the ingredients.
+                    Snap a photo of the ingredients list on any product packaging or upload an image. AI is used solely to extract and read the ingredients, and then our system classifies them.
                 </p>
                 <div class="visual-quota-badge-wrap"
                     style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -952,8 +1142,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 data-i18n="halal_auto_agree_link">Halal Scanner Legal Terms &amp; Disclaimer</a>.
         </p>
     </div>
-    <div class="text-center"
-        style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; align-items: center;">
+    <div class="halal-cta-buttons text-center">
         <a href="https://chat.whatsapp.com/Jsspjn4N2R7JGTvugaPHof?s=cl&p=a&iam=2" target="_blank"
             rel="noopener noreferrer" class="btn"
             style="background: #25D366; color: white; padding: 1.1rem 2rem; font-size: 1.05rem; font-weight: 700; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; border-radius: 0.5rem; text-decoration: none; transition: all 0.3s ease;">
@@ -967,6 +1156,175 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             style="padding: 1.1rem 2rem; font-size: 1.05rem; font-weight: 700; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); border: none; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 0.5rem; text-decoration: none; transition: all 0.3s ease;"
             data-i18n="halal_ask_imam_cta">
             Ask an Imam</a>
+    </div>
+
+    <!-- Frequently Asked Questions (FAQ) Section -->
+    <div class="container" style="margin-top: 3.5rem;">
+        <section class="halal-faq-section" id="halal-faq-section" aria-labelledby="halal-faq-title">
+            <div class="section-header text-center" style="margin-bottom: 2rem;">
+                <h2 id="halal-faq-title" style="color: var(--color-primary); font-size: 1.8rem; font-weight: 700;" data-i18n="halal_faq_title">
+                    ❓ Halal Food Scanner — Frequently Asked Questions (FAQ)
+                </h2>
+                <div class="divider" style="margin: 0.75rem auto 1rem auto;"></div>
+                <p style="color: var(--color-text-light); max-width: 680px; margin: 0 auto; font-size: 0.95rem;" data-i18n="halal_faq_sub">
+                    Everything you need to know about our food screening process, AI optical reading, and Halal classification standards.
+                </p>
+            </div>
+
+            <div class="faq-accordion">
+                <!-- 1. General & Purpose -->
+                <div class="faq-category-header">
+                    <span class="faq-category-icon">📌</span>
+                    <h3 class="faq-category-title" data-i18n="halal_faq_cat1">1. General &amp; Purpose</h3>
+                </div>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q1">What is the ASM Halal Food Scanner?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a1">
+                        The ASM Halal Food Scanner is an automated screening tool developed for students and the community in Italy to quickly inspect food ingredients, detect prohibited (Haram) or doubtful (Mashbuh) additives, and verify Halal compliance against Italian and EU food labeling standards.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q2">Is this scanner an official religious ruling (Fatwa)?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a2">
+                        <strong>No.</strong> The scanner is an automated decision-support tool. It analyzes ingredient texts and known additives against established Islamic dietary guidelines. Manufacturers frequently change ingredient formulations, sourcing, and production lines. When in doubt, consult product packaging directly or ask a qualified scholar.
+                    </div>
+                </details>
+
+                <!-- 2. How to Use the Scanner -->
+                <div class="faq-category-header">
+                    <span class="faq-category-icon">🔍</span>
+                    <h3 class="faq-category-title" data-i18n="halal_faq_cat2">2. How to Use the Scanner</h3>
+                </div>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q3">What are the two main ways to check a product?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a3">
+                        <p>The scanner offers two primary screening modes:</p>
+                        <ul>
+                            <li><strong>Barcode Mode:</strong>
+                                <ul>
+                                    <li><strong>Camera:</strong> Uses your device camera to scan EAN-13 / UPC barcodes in real-time.</li>
+                                    <li><strong>Manual:</strong> Lets you type in the barcode numbers directly.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Ingredients Mode:</strong>
+                                <ul>
+                                    <li><strong>Photo (AI Vision):</strong> Take a picture or upload a packaging photo of the ingredients list; <em>AI is used only to extract and read the ingredients, and then our system classifies it</em>.</li>
+                                    <li><strong>Paste Text:</strong> Paste or type the ingredients list manually in Italian, English, or French for instant cross-examination.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q_ai">Does AI decide whether a product is Halal or Haram?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a_ai">
+                        <strong>No, AI does NOT decide the Halal/Haram status.</strong> Artificial intelligence is used <strong>only to extract and read the raw ingredients</strong> and E-numbers from your packaging photo (Optical Character Recognition / OCR). Once the text is extracted, <strong>our own verified rule-based system inspects and classifies each ingredient</strong> against scholarly Islamic dietary guidelines. This ensures deterministic, verified classification rather than AI hallucinations or guesses.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q4">Does the scanner store my camera feed or personal data?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a4">
+                        <strong>No.</strong> Camera access operates locally in your web browser via secure WebRTC/getUserMedia protocols to detect barcodes or capture single ingredient photos. No live video stream is transmitted or saved.
+                    </div>
+                </details>
+
+                <!-- 3. Classification & Results -->
+                <div class="faq-category-header">
+                    <span class="faq-category-icon">🏷️</span>
+                    <h3 class="faq-category-title" data-i18n="halal_faq_cat3">3. Classification &amp; Results</h3>
+                </div>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q5">What do the different status badges mean?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a5">
+                        <ul>
+                            <li>🟢 <strong>Halal (Permissible / Certificato Halal):</strong> No prohibited or questionable ingredients were detected. If the product holds recognized Halal certification, this will also be highlighted.</li>
+                            <li>🔴 <strong>Haram (Prohibited):</strong> Contains ingredients or derivatives strictly prohibited in Islam (e.g., pork derivatives, animal gelatin of non-Halal origin, carmine/cochineal dye, added alcohol).</li>
+                            <li>🟡 <strong>Mashbuh (Doubtful / Needs Verification):</strong> Contains substances that could be of either animal or plant/synthetic origin (e.g., mono- and diglycerides of fatty acids E471, pepsin, enzymes, tallow derivatives) without specifying vegetable origin.</li>
+                            <li>⚪ <strong>Not Listed / Needs Review (Non in Lista):</strong> The barcode is not currently in Open Food Facts or our database, or no ingredients list is available to analyze.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- 4. Ingredients & Additives Explained -->
+                <div class="faq-category-header">
+                    <span class="faq-category-icon">🧪</span>
+                    <h3 class="faq-category-title" data-i18n="halal_faq_cat4">4. Ingredients &amp; Additives Explained</h3>
+                </div>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q6">Why was my product flagged as Haram for &ldquo;Gelatin&rdquo; or &ldquo;E441&rdquo;?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a6">
+                        Gelatin (<em>gelatina</em>, <em>gélatine</em>) in European products is predominantly derived from pork skin/bones unless explicitly certified as <strong>Halal beef gelatin</strong> (<em>gelatina bovina halal</em>) or <strong>fish gelatin</strong> (<em>gelatina di pesce</em>). Any general or porcine gelatin is flagged as Haram.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q7">Why is E120 (Carmine / Cochineal) flagged as Haram?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a7">
+                        E120 (Carminio, Cochineal, Acid Carminic) is a red food dye extracted from crushed insects (<em>Dactylopius coccus</em>). Under the majority scholarly consensus, insect-derived coloring is not permissible for consumption.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q8">How does the scanner handle alcohol and vinegar?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a8">
+                        <ul>
+                            <li><strong>Flagged (Haram):</strong> Added drinking alcohols, ethyl alcohol (<em>alcol etilico</em>), wine, rum, liqueurs, brandy, and ethanol used as flavor carriers or preservatives in baked goods (e.g., <em>tramezzini</em>, bread, cakes).</li>
+                            <li><strong>Allowed (Halal):</strong> Naturally fermented vinegars (<em>aceto di vino</em>, <em>aceto balsamico</em>, cider vinegar), sugar alcohols/polyols (such as sorbitol, maltitol, xylitol, erythritol), and non-food cetyl/stearyl alcohols.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q9">What about E471 (Mono- and Diglycerides of Fatty Acids)?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a9">
+                        E471 and related emulsifiers (E472a&ndash;f) can be synthesized from plant oils or animal fats. Unless the label specifies <strong>&ldquo;100% vegetale&rdquo;</strong> (vegetable origin), it will be marked as <strong>Mashbuh</strong> (doubtful).
+                    </div>
+                </details>
+
+                <!-- 5. Troubleshooting & Limitations -->
+                <div class="faq-category-header">
+                    <span class="faq-category-icon">⚠️</span>
+                    <h3 class="faq-category-title" data-i18n="halal_faq_cat5">5. Troubleshooting &amp; Limitations</h3>
+                </div>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q10">Why does the scanner say &ldquo;Product Not Listed / Da Verificare&rdquo;?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a10">
+                        The database relies on Open Food Facts and ASM's verified database. If a brand or generic store product has not been registered yet, switch to the <strong>Ingredients</strong> tab, snap a photo of the ingredients list, or paste the text directly.
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q11">What should I do if the AI misread an ingredient photo?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a11">
+                        <ul>
+                            <li>Ensure the packaging text is well-lit, flat, and in sharp focus without glare.</li>
+                            <li>If text was missed, tap <strong>&ldquo;Paste text&rdquo;</strong> and copy the ingredients directly.</li>
+                            <li>Use the <strong>🚩 &ldquo;Think result is incorrect? Flag for review&rdquo;</strong> button on the result card to submit a quick note to the ASM administration team.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question" data-i18n="halal_faq_q12">Can I suggest new products or get help with complex ingredients?</summary>
+                    <div class="faq-answer" data-i18n="halal_faq_a12">
+                        Yes! You can:
+                        <ul>
+                            <li>Flag any product directly within the scanner results for review.</li>
+                            <li>Join the <strong>Halal Scanner WhatsApp Group</strong> via the button below the scanner.</li>
+                            <li>Use the <strong>&ldquo;Ask an Imam&rdquo;</strong> link on the page to submit complex dietary inquiries to scholars.</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
     </div>
 
     <section id="featured-products-section" class="hidden" aria-labelledby="featured-products-title">
