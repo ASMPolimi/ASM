@@ -1018,7 +1018,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 <section class="section first-section">
     <div class="container">
         <div class="section-header text-center">
-            <h2 data-i18n="halal_page_heading">Halal Scanner AI v.2.0.0</h2>
+            <h2 data-i18n="halal_page_heading">Halal Scanner AI</h2>
             <div class="divider"></div>
             <p id="halal-page-sub-text" data-i18n="halal_page_sub">Check products instantly via barcode scanning or
                 manual ingredients analysis.
@@ -1296,6 +1296,14 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             Ask an Imam</a>
     </div>
 
+    <section id="featured-products-section" class="hidden" aria-labelledby="featured-products-title">
+        <h3 id="featured-products-title">Featured Products</h3>
+        <p id="featured-products-description">Products selected by the ASM team. Check each classification and
+            ingredients.</p>
+        <p id="featured-products-message" role="status"></p>
+        <div id="featured-products-grid"></div>
+    </section>
+
     <!-- Frequently Asked Questions (FAQ) Section -->
     <div class="container" style="margin-top: 3.5rem;">
         <section class="halal-faq-section" id="halal-faq-section" aria-labelledby="halal-faq-title">
@@ -1524,27 +1532,6 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             </div>
         </section>
     </div>
-
-    <section id="featured-products-section" class="hidden" aria-labelledby="featured-products-title">
-        <h3 id="featured-products-title">Featured Products</h3>
-        <p id="featured-products-description">Products selected by the ASM team. Check each classification and
-            ingredients.</p>
-        <div class="featured-products-header">
-            <div class="featured-products-header-text">
-                <h3 id="featured-products-title">Featured Products</h3>
-                <p id="featured-products-description">Products selected by the ASM team. Check each classification and
-                    ingredients.</p>
-            </div>
-            <div class="featured-scroll-controls" aria-label="Scroll featured products">
-                <button type="button" class="featured-scroll-btn" id="featured-scroll-left"
-                    aria-label="Previous products" onclick="scrollFeaturedProducts(-1)">‹</button>
-                <button type="button" class="featured-scroll-btn" id="featured-scroll-right" aria-label="Next products"
-                    onclick="scrollFeaturedProducts(1)">›</button>
-            </div>
-        </div>
-        <p id="featured-products-message" role="status"></p>
-        <div id="featured-products-grid"></div>
-    </section>
 </section>
 
 
