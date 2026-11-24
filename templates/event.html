@@ -18,17 +18,21 @@
     .event-detail-title { margin: 1rem 0; color: var(--color-primary); font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.2; }
     .event-detail-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; margin: 1rem 0; }
     .event-detail-meta-item { min-width: 0; padding: 0.7rem 0.8rem; border: 1px solid #e2e8f0; border-radius: 0.7rem; background: #f8fafc; }
+    .event-detail-datetime { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .event-detail-datetime-part { min-width: 0; }
+    .event-detail-datetime-part + .event-detail-datetime-part { padding-left: 1rem; border-left: 1px solid #dbe5e8; }
     .event-detail-meta-label { display: block; margin-bottom: 0.15rem; color: #475569; font-size: 0.76rem; font-weight: 700; }
     .event-detail-meta-value { color: #1e293b; font-weight: 600; overflow-wrap: anywhere; line-height: 1.4; }
     .event-detail-description { color: #334155; font-size: 1.03rem; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
     .event-detail-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
     .event-detail-actions .btn { min-width: 190px; }
     .event-detail-actions .event-detail-tool-btn { min-width: 190px; }
-    .event-detail-status { display: inline-flex; margin-top: 1rem; padding: 0.4rem 0.75rem; border-radius: 999px; font-size: 0.84rem; font-weight: 700; }
+    .event-detail-status-row { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0 0.9rem; }
+    .event-detail-status { display: inline-flex; align-items: center; margin: 0; padding: 0.4rem 0.75rem; border-radius: 999px; font-size: 0.84rem; font-weight: 700; }
     .event-detail-status.open { background: #dcfce7; color: #166534; }
     .event-detail-status.soon { background: #fef3c7; color: #92400e; }
     .event-detail-status.closed { background: #f1f5f9; color: #475569; }
-    .event-detail-poster { display: block; width: 100%; max-height: 460px; margin: 1rem 0 1.5rem; border-radius: 1rem; object-fit: cover; background: #f1f5f9; }
+    .event-detail-poster { display: block; width: 100%; max-height: 460px; margin: 0 0 1.5rem; border-radius: 1rem; object-fit: cover; background: #f1f5f9; }
     .event-detail-section { margin-top: 1.75rem; }
     .event-detail-section h2 { margin: 0 0 0.65rem; color: var(--color-primary); font-size: 1.25rem; }
     .event-detail-list { margin: 0; padding-left: 1.35rem; color: #334155; line-height: 1.7; }
@@ -39,8 +43,12 @@
     .event-detail-location-link { display: inline-flex; margin-top: 0.35rem; padding: 0.3rem 0.55rem; border-radius: 0.45rem; background: #e0f2fe; color: #075985; font-size: 0.84rem; font-weight: 700; text-decoration: none; }
     .event-detail-location-link:hover, .event-detail-location-link:focus-visible { background: #bae6fd; color: #0c4a6e; }
     .event-detail-price-line { display: block; }
-    .event-detail-capacity { display: inline-flex; margin-top: 0.65rem; padding: 0.4rem 0.75rem; border-radius: 999px; background: #eff6ff; color: #1d4ed8; font-size: 0.84rem; font-weight: 700; }
+    .event-detail-capacity { display: inline-flex; align-items: center; margin: 0; padding: 0.4rem 0.75rem; border-radius: 999px; background: #eff6ff; color: #1d4ed8; font-size: 0.84rem; font-weight: 700; }
+    .event-detail-capacity[hidden] { display: none; }
     .event-detail-capacity.full { background: #fff7ed; color: #c2410c; }
+    body.dark-mode .event-detail-datetime-part + .event-detail-datetime-part { border-color: #42545a; }
+    @media (max-width: 576px) { .event-detail-datetime { gap: 0.65rem; } .event-detail-datetime-part + .event-detail-datetime-part { padding-left: 0.65rem; } }
+    @media (max-width: 380px) { .event-detail-datetime { grid-template-columns: 1fr; } .event-detail-datetime-part + .event-detail-datetime-part { padding: 0.45rem 0 0; border-top: 1px solid #dbe5e8; border-left: 0; } }
     @media (max-width: 576px) { .event-detail-card { padding: 1rem; } .event-detail-actions, .event-detail-tools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .event-detail-actions .btn, .event-detail-actions .event-detail-tool-btn, .event-detail-tools .event-detail-tool-btn { width: 100%; min-width: 0; padding: 0.6rem; font-size: 0.86rem; } }
     @media (max-width: 380px) { .event-detail-meta, .event-detail-tools, .event-detail-actions { grid-template-columns: 1fr; } }
 </style>
@@ -249,12 +257,16 @@
         content.innerHTML = `
             <span class="event-detail-category">${eventDetailEscape(event.category || (isItalian ? 'Evento' : 'Event'))}</span>
             <h1 class="event-detail-title">${eventDetailEscape(title)}</h1>
-            <span class="event-detail-status ${['open', 'soon'].includes(status) ? status : 'closed'}">${eventDetailEscape(statusLabels[status] || statusLabels.closed)}</span>
-            <div id="event-detail-capacity" class="event-detail-capacity" hidden></div>
+            <div class="event-detail-status-row">
+                <span class="event-detail-status ${['open', 'soon'].includes(status) ? status : 'closed'}">${eventDetailEscape(statusLabels[status] || statusLabels.closed)}</span>
+                <div id="event-detail-capacity" class="event-detail-capacity" hidden></div>
+            </div>
             ${event.event_image ? `<img class="event-detail-poster" src="${eventDetailEscape(event.event_image)}" alt="${eventDetailEscape(title)}" loading="eager">` : ''}
             <div class="event-detail-meta">
-                <div class="event-detail-meta-item"><span class="event-detail-meta-label">📅 ${dateLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.date || (isItalian ? 'Data da definire' : 'Date to be announced'))}</span></div>
-                <div class="event-detail-meta-item"><span class="event-detail-meta-label">🕒 ${timeLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
+                <div class="event-detail-meta-item event-detail-datetime">
+                    <div class="event-detail-datetime-part"><span class="event-detail-meta-label">📅 ${dateLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.date || (isItalian ? 'Data da definire' : 'Date to be announced'))}</span></div>
+                    <div class="event-detail-datetime-part"><span class="event-detail-meta-label">🕒 ${timeLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
+                </div>
                 <div class="event-detail-meta-item"><span class="event-detail-meta-label">📍 ${locationLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(eventLocation)}</span>${directionsButton}</div>
                 <div class="event-detail-meta-item"><span class="event-detail-meta-label">💳 ${isItalian ? 'Prezzo' : 'Price'}</span><span class="event-detail-meta-value event-detail-price-line">${eventDetailEscape(membersLabel)}: ${eventDetailEscape(priceMembers)}</span><span class="event-detail-meta-value event-detail-price-line">${eventDetailEscape(guestsLabel)}: ${eventDetailEscape(priceGuests)}</span></div>
             </div>
