@@ -1296,7 +1296,19 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             { word: 'e354', reason: 'E354 (Calcium Tartrate) may be derived from wine lees; its permissibility depends on the fermentation source — doubtful (Mashbuh).', reason_it: 'E354 (tartrato di calcio) può derivare dalle fecce del vino; la sua liceità dipende dalla fonte di fermentazione — dubbio (Mashbuh).' },
             { word: 'e 354', reason: 'E354 (Calcium Tartrate) may derive from wine lees, making its halal status uncertain — doubtful (Mashbuh).', reason_it: 'E354 (tartrato di calcio) può derivare dalle fecce del vino, rendendo incerto il suo status halal (Mashbuh).' },
             { word: 'calcium tartrate', reason: 'Calcium tartrate (E354) may derive from wine lees; halal status is uncertain — doubtful (Mashbuh).', reason_it: 'Il tartrato di calcio (E354) può derivare dalle fecce del vino; stato halal incerto (Mashbuh).' },
-            { word: 'tartrato di calcio', reason: 'Calcium tartrate (E354) may derive from wine lees; halal status is uncertain — doubtful (Mashbuh).', reason_it: 'Il tartrato di calcio (E354) può derivare dalle fecce del vino; stato halal incerto (Mashbuh).' }
+            { word: 'tartrato di calcio', reason: 'Calcium tartrate (E354) may derive from wine lees; halal status is uncertain — doubtful (Mashbuh).', reason_it: 'Il tartrato di calcio (E354) può derivare dalle fecce del vino; stato halal incerto (Mashbuh).' },
+
+            // Surface alcohol treatment in bakery products (Mashbuh / Doubtful)
+            { word: 'trattato con alcool etilico', reason: 'Surface treatment with ethyl alcohol (used as an antimicrobial preservative on baked goods/bread packaging) is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento in superficie con alcool etilico (antimuffa per pan bauletto/prodotti da forno) è considerato dubbio (Mashbuh) per divergenza giurisprudenziale sull\'alcol usato come conservante e il suo residuo.' },
+            { word: 'trattato con alcol etilico', reason: 'Surface treatment with ethyl alcohol (used as an antimicrobial preservative on baked goods/bread packaging) is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento in superficie con alcool etilico (antimuffa per pan bauletto/prodotti da forno) è considerato dubbio (Mashbuh) per divergenza giurisprudenziale sull\'alcol usato come conservante e il suo residuo.' },
+            { word: 'trattato in superficie con alcool etilico', reason: 'Surface treatment with ethyl alcohol is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento in superficie con alcool etilico è considerato dubbio (Mashbuh) per divergenza giurisprudenziale.' },
+            { word: 'trattato in superficie con alcol etilico', reason: 'Surface treatment with ethyl alcohol is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento in superficie con alcool etilico è considerato dubbio (Mashbuh) per divergenza giurisprudenziale.' },
+            { word: 'trattamento con alcool etilico', reason: 'Surface treatment with ethyl alcohol is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento con alcool etilico è considerato dubbio (Mashbuh) per divergenza giurisprudenziale.' },
+            { word: 'trattamento con alcol etilico', reason: 'Surface treatment with ethyl alcohol is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento con alcool etilico è considerato dubbio (Mashbuh) per divergenza giurisprudenziale.' },
+            { word: 'trattato con alcool', reason: 'Surface treatment with alcohol is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento con alcool (antimuffa per panificati) è considerato dubbio (Mashbuh) per divergenza giurisprudenziale sull\'alcol residuo.' },
+            { word: 'trattato con alcol', reason: 'Surface treatment with alcohol is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento con alcol (antimuffa per panificati) è considerato dubbio (Mashbuh) per divergenza giurisprudenziale sull\'alcol residuo.' },
+            { word: 'treated with ethyl alcohol', reason: 'Surface treatment with ethyl alcohol is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento in superficie con alcol etilico (antimuffa per prodotti da forno) è considerato dubbio (Mashbuh).' },
+            { word: 'treated with alcohol', reason: 'Surface treatment with alcohol is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.', reason_it: 'Il trattamento con alcol (antimuffa per prodotti da forno) è considerato dubbio (Mashbuh).' }
         ]
     };
 
@@ -1351,8 +1363,23 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
         // Porcini Mushrooms (Boletus edulis - 100% Halal edible mushroom, must never match 'porcine')
         /\b(?:fungh[ie]\s+)?porcin[io]\b/gi,
-        /\bporcini\s+mushrooms?\b/gi
+        /\bporcini\s+mushrooms?\b/gi,
+
+        // Brewer's / Baker's Yeast (Lievito di birra - 100% Halal yeast / Saccharomyces cerevisiae, must never match 'birra')
+        /\blievito\s+(?:naturale\s+|fresco\s+|secco\s+|disidratato\s+)?(?:di\s+|da\s+)?birra(?:\s+(?:disidratato|secco|fresco|in\s+polvere|compresso|liquido|naturale))?\b/gi,
+        /\b(?:brewer'?s|baker'?s)\s+yeast\b/gi,
+        /\blevure\s+de\s+bi[eè]re\b/gi,
+        /\blevadura\s+de\s+cerveza\b/gi
     ];
+
+    // Surface treatment with ethyl alcohol in bakery products (Mashbuh / Doubtful)
+    // Mold-inhibitor sprayed on packaging surfaces of sandwich bread, piadine, and bakery items
+    const SURFACE_ALCOHOL_REGEX = /\b(?:(?:trattat[oaei]|trattamento|conservat[oaei])\s+(?:in\s+superficie\s+|in\s+superficie\s+con\s+|superficiale\s+(?:con\s+)?|con\s+)?(?:alco+l(?:\s+etilico)?|etilico)|(?:surface[\s-])?treated\s+with\s+(?:ethyl\s+)?alcohol|trait[eé][e]?\s+(?:en\s+surface\s+)?(?:[aà]\s+(?:l['’])?alco+l(?:\s+[eé]thylique)?|avec\s+(?:de\s+l['’])?alco+l(?:\s+[eé]thylique)?))\b/gi;
+
+    const SURFACE_ALCOHOL_REASON = {
+        en: 'Surface treatment with ethyl alcohol (used as an antimicrobial preservative on baked goods/bread packaging) is considered doubtful (Mashbuh) due to scholarly differences regarding residual alcohol.',
+        it: 'Il trattamento in superficie con alcool etilico (antimuffa per pan bauletto/prodotti da forno) è considerato dubbio (Mashbuh) per divergenza giurisprudenziale sull\'alcol usato come conservante e il suo residuo.'
+    };
 
     // Escape regex special characters
     function escapeRegExp(text) {
@@ -1426,13 +1453,26 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         const isIt = currentLang === 'it';
 
         const rawText = (ingredientsText + ' ' + labelsText).toLowerCase();
-        // Mask permissible exceptions and negated haram terms (e.g. 'no pork', 'alcohol-free', 'wine vinegar')
-        const text = maskHalalExceptions(rawText);
+        // Mask permissible exceptions and negated haram terms (e.g. 'no pork', 'alcohol-free', 'wine vinegar', 'lievito di birra')
+        let text = maskHalalExceptions(rawText);
         const foundHaram = [];
         const foundMashbuh = [];
 
         // Check if explicitly halal certified using strict validation
         const isHalalCertified = checkHalalCertification(rawText, labelsText);
+
+        // Check for surface alcohol treatment (Mashbuh / Doubtful - bakery packaging mold inhibitor)
+        // Must be evaluated and masked before DICTIONARY.haram so 'alcool' / 'etilico' in surface treatment doesn't falsely trigger Haram
+        if (!isHalalCertified) {
+            const surfaceMatches = text.match(SURFACE_ALCOHOL_REGEX);
+            if (surfaceMatches && surfaceMatches.length > 0) {
+                foundMashbuh.push({
+                    word: surfaceMatches[0].trim(),
+                    reason: isIt ? SURFACE_ALCOHOL_REASON.it : SURFACE_ALCOHOL_REASON.en
+                });
+            }
+        }
+        text = text.replace(SURFACE_ALCOHOL_REGEX, '__MASHBUH_SAFE_TOKEN__');
 
         DICTIONARY.haram.forEach(item => {
             if (wordRegex(item.word, 'i').test(text)) {
@@ -1506,6 +1546,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         HALAL_EXCEPTIONS_REGEX.forEach(rgx => {
             highlighted = highlighted.replace(rgx, match => mask(match, 'highlight-halal'));
         });
+        highlighted = highlighted.replace(SURFACE_ALCOHOL_REGEX, match => mask(match, 'highlight-mashbuh'));
         DICTIONARY.haram.forEach(item => {
             highlighted = highlighted.replace(wordRegex(item.word, 'gi'), match => mask(match, 'highlight-haram'));
         });
