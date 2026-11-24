@@ -2344,13 +2344,14 @@ student-friendly halal dining and food options around Politecnico di Milano camp
     }
 
     // Send anonymous scan report to backend admin log
-    async function reportScannedProduct(product, analysis) {
+    async function reportScannedProduct(product, analysis, suppliedBarcode = '') {
         if (!product) return;
         const rawIngredients = product.ingredients_text;
         const hasIngredients = Boolean(rawIngredients && rawIngredients.trim().length > 0 && !rawIngredients.includes('No ingredients list available'));
 
         // Ensure every scanned product or analyzed ingredient gets an identifier for admin tracking
-        let barcode = String(product.code || '').trim();
+        const scanId = String(product.scan_id || product.code || '').trim();
+        let barcode = String(suppliedBarcode || product.user_barcode || product.code || '').trim();
         if (!barcode && hasIngredients) {
             let hash = 0;
             const clean = rawIngredients.trim();
@@ -2369,6 +2370,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         try {
             const payload = {
                 barcode: barcode,
+                scan_id: scanId || barcode,
                 product_name: product.product_name || product.product_name_en || (product.source === 'gemini_vision' ? 'Label AI Scan' : 'Ingredients Analysis'),
                 brand: product.brands || (product.source === 'gemini_vision' ? 'Visual Capture' : 'User Entered'),
                 ingredients_text: hasIngredients ? rawIngredients : '',
@@ -2389,11 +2391,13 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-                    if (resp.ok) break;
+                    if (resp.ok) return true;
                 } catch (e) { }
             }
+            return false;
         } catch (err) {
             console.error('Anonymous scan reporting notice:', err);
+            return false;
         }
     }
 
@@ -2422,10 +2426,12 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             const prefix = product.source === 'gemini_vision' ? 'ING-PHOTO' : 'ING-TXT';
             product.code = `${prefix}-${hex}`;
         }
+        if (product.source === 'gemini_vision' && !product.scan_id) product.scan_id = product.code;
 
         const name = product.product_name || product.product_name_en || (isIt ? (product.source === 'gemini_vision' ? 'Scansione Etichetta (IA)' : 'Analisi Ingredienti') : (product.source === 'gemini_vision' ? 'Label AI Scan' : 'Ingredients Analysis'));
         const brand = product.brands || (isIt ? (product.source === 'gemini_vision' ? 'Acquisizione Visiva' : 'Inserito da Utente') : (product.source === 'gemini_vision' ? 'Visual Capture' : 'User Entered'));
         const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
+        const isAiPhotoScan = product.source === 'gemini_vision';
 
         // Run analysis
         const labels = product.labels || '';
@@ -2530,12 +2536,30 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                             <div class="status-badge ${statusClass}">${statusText}</div>
                             <h3 class="result-prod-name">${escapeHtml(name)}</h3>
                             <p class="result-prod-brand">${isIt ? 'Marca:' : 'Brand:'} <strong>${escapeHtml(brand)}</strong></p>
-                            ${product.code ? `<p class="result-prod-barcode">Barcode: <span>${escapeHtml(product.code)}</span></p>` : ''}
+                            ${isAiPhotoScan
+                ? `<p class="result-prod-barcode">Scan ID: <span>${escapeHtml(product.scan_id || product.code)}</span></p>`
+                : (product.code ? `<p class="result-prod-barcode">Barcode: <span>${escapeHtml(product.code)}</span></p>` : '')}
                         </div>
                     </div>
 
+                    ${isAiPhotoScan ? `
+                    <div id="ai-photo-barcode-step"${product.reportedToAdmin ? ' style="display: none;"' : ' style="margin: 1rem 0; padding: 1rem; border: 1px solid #bfdbfe; border-radius: 0.75rem; background: #eff6ff;"'}>
+                        <h4 style="margin: 0 0 0.35rem; color: #124a61; font-size: 1rem;">${isIt ? 'Aggiungi il codice a barre (facoltativo)' : 'Add the product barcode (optional)'}</h4>
+                        <p style="margin: 0 0 0.75rem; color: #475569; font-size: 0.88rem; line-height: 1.45;">${isIt ? 'Scansiona il codice a barre con la fotocamera o inseriscilo manualmente per aiutare gli amministratori a identificare il prodotto.' : 'Scan the barcode with your camera or enter it manually to help administrators identify the product.'}</p>
+                        <label for="ai-photo-barcode-input" style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; font-weight: 600; color: #334155;">${isIt ? 'Codice a barre del prodotto' : 'Product barcode'}</label>
+                        <div style="display: flex; gap: 0.55rem; align-items: stretch; flex-wrap: wrap;">
+                            <input id="ai-photo-barcode-input" type="text" inputmode="numeric" autocomplete="off" maxlength="32" placeholder="EAN / UPC" style="flex: 1 1 220px; min-width: 0; padding: 0.65rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; font: inherit; box-sizing: border-box;">
+                            <button type="button" id="ai-photo-barcode-camera-btn" onclick="startAiBarcodeScanner()" class="btn btn-secondary" style="padding: 0.65rem 0.9rem; border: 1px solid #94a3b8; border-radius: 0.5rem;">${isIt ? 'Scansiona codice' : 'Scan barcode'}</button>
+                        </div>
+                        <div id="ai-barcode-reader" class="hidden" style="max-width: 360px; margin: 0.75rem auto 0;"></div>
+                        <p id="ai-photo-barcode-status" role="status" style="min-height: 1.2em; margin: 0.5rem 0; font-size: 0.82rem; color: #475569;"></p>
+                        <button type="button" id="ai-photo-report-btn" onclick="submitAiPhotoReport()" class="btn btn-primary" style="width: 100%; max-width: 360px; display: block; margin: 0.25rem auto 0;">${isIt ? 'Invia agli amministratori ASM' : 'Send to ASM administrators'}</button>
+                    </div>
+                    ${product.reportedToAdmin ? `<p role="status" style="margin: 1rem 0; color: #047857; font-weight: 600;">${isIt ? 'Scansione inviata agli amministratori ASM.' : 'Scan sent to ASM administrators.'}${product.user_barcode ? ` ${isIt ? 'Codice a barre:' : 'Barcode:'} ${escapeHtml(product.user_barcode)}` : ''}</p>` : ''}
+                    ` : ''}
+
                     <!-- User Flag / Review Request Section (Prominently placed at the top under name, brand and barcode) -->
-                    <div id="user-review-section">
+                    <div id="user-review-section"${isAiPhotoScan && !product.reportedToAdmin ? ' style="display: none;"' : ''}>
                         <div id="flag-prompt-container">
                             <button type="button" id="btn-toggle-flag-form" onclick="toggleUserFlagForm()" class="btn-flag-toggle">
                                 <span>🚩</span>
@@ -2594,15 +2618,100 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
         // Save active scan info for user flagging
         window._currentScan = {
-            barcode: String(product.code || '').trim(),
+            barcode: String(product.user_barcode || product.code || '').trim(),
             name: name,
             brand: brand,
             status: (analysis && analysis.status) ? analysis.status : 'not_listed'
         };
 
         // Asynchronously report to admin backend
-        if (!skipReport) reportScannedProduct(product, analysis);
+        if (!skipReport && !isAiPhotoScan) reportScannedProduct(product, analysis);
     }
+
+    let aiBarcodeScanner = null;
+    let aiBarcodeScanHandled = false;
+
+    window.startAiBarcodeScanner = async function () {
+        const reader = document.getElementById('ai-barcode-reader');
+        const status = document.getElementById('ai-photo-barcode-status');
+        if (!reader || typeof Html5Qrcode === 'undefined') {
+            if (status) status.textContent = 'Camera barcode scanning is unavailable. Enter the barcode manually.';
+            return;
+        }
+        if (aiBarcodeScanner) return;
+        aiBarcodeScanHandled = false;
+        reader.classList.remove('hidden');
+        aiBarcodeScanner = new Html5Qrcode('ai-barcode-reader');
+        try {
+            await aiBarcodeScanner.start(
+                { facingMode: 'environment' },
+                { fps: 10, qrbox: { width: 250, height: 120 } },
+                async decodedText => {
+                    if (aiBarcodeScanHandled) return;
+                    aiBarcodeScanHandled = true;
+                    const input = document.getElementById('ai-photo-barcode-input');
+                    if (input) input.value = String(decodedText || '').trim();
+                    if (status) status.textContent = window.currentLang === 'it' ? 'Codice a barre acquisito.' : 'Barcode captured.';
+                    await window.stopAiBarcodeScanner();
+                },
+                () => { }
+            );
+        } catch (err) {
+            console.error('AI result barcode camera could not start:', err);
+            if (status) status.textContent = window.currentLang === 'it' ? 'Impossibile avviare la fotocamera. Inserisci il codice manualmente.' : 'Could not start the camera. Enter the barcode manually.';
+            await window.stopAiBarcodeScanner();
+        }
+    };
+
+    window.stopAiBarcodeScanner = async function () {
+        const scanner = aiBarcodeScanner;
+        aiBarcodeScanner = null;
+        if (scanner) {
+            try {
+                await scanner.stop();
+                scanner.clear();
+            } catch (err) { }
+        }
+        const reader = document.getElementById('ai-barcode-reader');
+        if (reader) reader.classList.add('hidden');
+    };
+
+    window.submitAiPhotoReport = async function () {
+        const product = window._lastHalalResult && window._lastHalalResult.product;
+        if (!product || product.source !== 'gemini_vision') return;
+        const analysis = window._lastHalalResult.customAnalysis || analyzeProductIngredients(product.ingredients_text || '', product.product_name || '', true);
+        const input = document.getElementById('ai-photo-barcode-input');
+        const button = document.getElementById('ai-photo-report-btn');
+        const status = document.getElementById('ai-photo-barcode-status');
+        const barcode = String(input ? input.value : '').replace(/\s+/g, '').trim();
+        if (barcode && !/^\d{4,32}$/.test(barcode)) {
+            if (status) status.textContent = window.currentLang === 'it' ? 'Inserisci un codice a barre numerico valido.' : 'Enter a valid numeric barcode.';
+            if (input) input.focus();
+            return;
+        }
+
+        product.user_barcode = barcode;
+        if (button) {
+            button.disabled = true;
+            button.textContent = window.currentLang === 'it' ? 'Invio in corso…' : 'Sending…';
+        }
+        if (status) status.textContent = '';
+        const sent = await reportScannedProduct(product, analysis, barcode);
+        if (sent) {
+            product.reportedToAdmin = true;
+            window._currentScan.barcode = barcode || product.scan_id || product.code;
+            const section = document.getElementById('user-review-section');
+            if (section) section.style.display = '';
+            const step = document.getElementById('ai-photo-barcode-step');
+            if (step) step.innerHTML = `<p role="status" style="margin: 0; color: #047857; font-weight: 600;">${window.currentLang === 'it' ? 'Scansione inviata agli amministratori ASM.' : 'Scan sent to ASM administrators.'}${barcode ? ` ${window.currentLang === 'it' ? 'Codice a barre:' : 'Barcode:'} ${escapeHtml(barcode)}` : ''}</p>`;
+        } else {
+            if (status) status.textContent = window.currentLang === 'it' ? 'Invio non riuscito. Riprova.' : 'Could not send the scan. Please try again.';
+            if (button) {
+                button.disabled = false;
+                button.textContent = window.currentLang === 'it' ? 'Riprova invio' : 'Retry sending';
+            }
+        }
+    };
 
     // Toggle user review request form
     window.toggleUserFlagForm = function () {
