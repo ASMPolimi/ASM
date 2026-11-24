@@ -757,10 +757,61 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="input-phone" data-i18n="event_phone_label">Phone Number / WhatsApp *</label>
-                <input type="tel" id="input-phone" placeholder="e.g. +39 340 123 4567" required>
-                <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_phone_hint">Used for day-of reminders and joining the event WhatsApp group.</small>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="input-phone" data-i18n="event_phone_label">Phone Number / WhatsApp *</label>
+                    <input type="tel" id="input-phone" placeholder="e.g. +39 340 123 4567" required>
+                    <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_phone_hint">Used for day-of reminders and joining the event WhatsApp group.</small>
+                </div>
+
+                <div class="form-group" id="group-origin-country">
+                    <label for="input-origin-country" data-i18n="event_origin_country_label">Country of Origin *</label>
+                    <input type="text" id="input-origin-country" list="origin-countries-list" placeholder="e.g. Italy, Morocco, Pakistan, Egypt..." autocomplete="country-name" required>
+                    <datalist id="origin-countries-list">
+                        <option value="Afghanistan">
+                        <option value="Albania">
+                        <option value="Algeria">
+                        <option value="Bahrain">
+                        <option value="Bangladesh">
+                        <option value="Bosnia and Herzegovina">
+                        <option value="Canada">
+                        <option value="Egypt">
+                        <option value="France">
+                        <option value="Germany">
+                        <option value="India">
+                        <option value="Indonesia">
+                        <option value="Iran">
+                        <option value="Iraq">
+                        <option value="Italy">
+                        <option value="Jordan">
+                        <option value="Kazakhstan">
+                        <option value="Kosovo">
+                        <option value="Kuwait">
+                        <option value="Lebanon">
+                        <option value="Libya">
+                        <option value="Malaysia">
+                        <option value="Morocco">
+                        <option value="Nigeria">
+                        <option value="Oman">
+                        <option value="Pakistan">
+                        <option value="Palestine">
+                        <option value="Qatar">
+                        <option value="Saudi Arabia">
+                        <option value="Somalia">
+                        <option value="Spain">
+                        <option value="Sudan">
+                        <option value="Syria">
+                        <option value="Tunisia">
+                        <option value="Turkey">
+                        <option value="United Arab Emirates">
+                        <option value="United Kingdom">
+                        <option value="United States">
+                        <option value="Uzbekistan">
+                        <option value="Yemen">
+                        <option value="Other">
+                    </datalist>
+                    <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_origin_country_hint">Tell us where you are from so we can celebrate our community's diversity.</small>
+                </div>
             </div>
 
             <div class="step-actions-bar">
@@ -888,6 +939,10 @@
                 <div class="summary-row">
                     <span class="summary-label" data-i18n="summary_attendee">Attendee</span>
                     <span class="summary-value" id="sum-attendee-name">-</span>
+                </div>
+                <div class="summary-row" id="sum-row-origin-country">
+                    <span class="summary-label" data-i18n="summary_origin_country">Country of Origin</span>
+                    <span class="summary-value" id="sum-attendee-country">-</span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label" data-i18n="summary_contact">Contact</span>
@@ -1222,6 +1277,20 @@
 
         document.getElementById('card-price-member').textContent = `Price: ${pMember}`;
         document.getElementById('card-price-non').textContent = `Price: ${pNon}`;
+
+        const groupOrigin = document.getElementById('group-origin-country');
+        const shouldAskOrigin = !ev || (ev.ask_origin_country !== 0 && ev.ask_origin_country !== false && ev.ask_origin_country !== '0');
+        if (groupOrigin) {
+            if (shouldAskOrigin) {
+                groupOrigin.classList.remove('hidden');
+                const inp = document.getElementById('input-origin-country');
+                if (inp) inp.required = true;
+            } else {
+                groupOrigin.classList.add('hidden');
+                const inp = document.getElementById('input-origin-country');
+                if (inp) inp.required = false;
+            }
+        }
     }
 
     function selectEventByIdOrTitle(idOrTitle) {
@@ -1234,8 +1303,9 @@
         const name = document.getElementById('input-full-name')?.value.trim();
         const email = document.getElementById('input-email')?.value.trim();
         const phone = document.getElementById('input-phone')?.value.trim();
+        const origin = document.getElementById('input-origin-country')?.value.trim();
         const matricola = document.getElementById('input-matricola')?.value.trim();
-        return Boolean(name || email || phone || matricola || currentStep > 1);
+        return Boolean(name || email || phone || origin || matricola || currentStep > 1);
     }
 
     function setupAccidentalExitGuard() {
@@ -1368,10 +1438,13 @@
             const name = document.getElementById('input-full-name').value.trim();
             const email = document.getElementById('input-email').value.trim();
             const phone = document.getElementById('input-phone').value.trim();
+            const originCountry = document.getElementById('input-origin-country').value.trim();
+            const shouldAskOrigin = !selectedEvent || (selectedEvent.ask_origin_country !== 0 && selectedEvent.ask_origin_country !== false && selectedEvent.ask_origin_country !== '0');
 
             if (!name) return showError("Please enter your Full Name.");
             if (!email || !email.includes('@') || !email.includes('.')) return showError("Please enter a valid email address.");
             if (!phone || phone.length < 6) return showError("Please enter a valid WhatsApp phone number.");
+            if (shouldAskOrigin && !originCountry) return showError("Please enter or select your Country of Origin.");
 
             goToStep(3);
         });
@@ -1405,6 +1478,7 @@
             document.getElementById('input-full-name').value = '';
             document.getElementById('input-email').value = '';
             document.getElementById('input-phone').value = '';
+            document.getElementById('input-origin-country').value = '';
             document.getElementById('input-matricola').value = '';
             document.getElementById('input-notes').value = '';
             const consentCb = document.getElementById('app-consent');
@@ -1434,6 +1508,7 @@
         const name = document.getElementById('input-full-name').value.trim();
         const email = document.getElementById('input-email').value.trim();
         const phone = document.getElementById('input-phone').value.trim();
+        const originCountry = document.getElementById('input-origin-country').value.trim();
         const isGuest = document.getElementById('check-is-external-guest').checked;
         const matricola = isGuest ? 'External Guest' : (document.getElementById('input-matricola').value.trim() || 'Guest');
 
@@ -1442,6 +1517,15 @@
         document.getElementById('sum-event-location').textContent = selectedEvent ? (selectedEvent.location || 'Campus Leonardo') : '-';
         document.getElementById('sum-attendee-name').textContent = `${name} (${matricola})`;
         document.getElementById('sum-attendee-contact').textContent = `${email} • ${phone}`;
+        
+        const sumCountryRow = document.getElementById('sum-row-origin-country');
+        const sumCountryVal = document.getElementById('sum-attendee-country');
+        if (sumCountryVal) sumCountryVal.textContent = originCountry || '-';
+        if (sumCountryRow) {
+            const shouldAskOrigin = !selectedEvent || (selectedEvent.ask_origin_country !== 0 && selectedEvent.ask_origin_country !== false && selectedEvent.ask_origin_country !== '0');
+            sumCountryRow.style.display = shouldAskOrigin ? 'flex' : 'none';
+        }
+
         document.getElementById('sum-membership-tier').textContent = isMemberSelected ? '🏅 Official ASM Member' : '👥 Non-Member / Guest';
 
         const finalPrice = isMemberSelected ? (selectedEvent.price_member || selectedEvent.cost || 'Free') : (selectedEvent.price_non_member || selectedEvent.cost || 'Free');
@@ -1480,6 +1564,7 @@
         const name = document.getElementById('input-full-name').value.trim();
         const email = document.getElementById('input-email').value.trim();
         const phone = document.getElementById('input-phone').value.trim();
+        const originCountry = document.getElementById('input-origin-country').value.trim();
         const isGuest = document.getElementById('check-is-external-guest').checked;
         const matricola = isGuest ? 'External Guest' : (document.getElementById('input-matricola').value.trim() || 'External Guest');
         const dietary = document.getElementById('input-dietary').value;
@@ -1499,6 +1584,7 @@
             full_name: name,
             email: email,
             phone: phone,
+            origin_country: originCountry,
             matricola: matricola,
             is_member: isMemberSelected ? 1 : 0,
             is_guest: isGuest ? 1 : 0,

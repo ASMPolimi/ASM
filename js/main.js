@@ -17,10 +17,10 @@ const ASM_I18N = {
         nav_quran: "Quran Irtaqi",
         nav_join: "Join Us",
         nav_admin: "Admin",
-                footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> All rights reserved.",
+        footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> All rights reserved.",
         footer_privacy: "Privacy Policy",
         footer_terms: "Terms & Conditions",
-                footer_cookies: "Cookie Policy",
+        footer_cookies: "Cookie Policy",
         cookie_banner_title: "Salam! Halal Cookies Only 🍪",
         cookie_banner_desc: "We only serve halal cookies: essential storage to run the site and optional analytics to improve student services. Accept all or decline non-essential anytime in our",
         cookie_banner_link: "Cookie Policy",
@@ -191,7 +191,23 @@ const ASM_I18N = {
         halal_page_sub: "Check products instantly via barcode scanning or manual ingredients analysis.",
         halal_tab_cam: "📷 Live Camera Scan",
         halal_tab_barcode: "🔢 Enter Barcode",
+        halal_tab_visual: "📸 Photo / Label Scan",
         halal_tab_ingredients: "📝 Ingredients Analyzer",
+        halal_visual_instruction: "Snap a photo of the ingredients list on any product packaging or upload an image. Our AI will automatically read and classify the ingredients.",
+        halal_visual_free_note: "100% Free Daily Allowance",
+        halal_visual_active: "Free AI Scans Active",
+        halal_visual_drag_title: "Take Photo or Upload Packaging Image",
+        halal_visual_drag_sub: "Make sure the ingredients text is well-lit and in focus.",
+        halal_btn_take_photo: "Take Photo",
+        halal_btn_capture_now: "Capture Photo",
+        halal_btn_cancel: "Cancel",
+        halal_btn_choose_image: "Choose Image",
+        halal_btn_analyze_photo: "Analyze Ingredients with AI",
+        halal_btn_retake: "Retake / Change",
+        halal_visual_analyzing: "Reading ingredients with Gemini Flash Vision...",
+        halal_visual_analyzing_sub: "Extracting packaging text, additives, and E-numbers",
+        halal_visual_quota_exceeded: "Daily free visual scan limit reached for today (resets at 00:00 UTC). You can paste the text manually in the Ingredients Analyzer.",
+        halal_visual_no_text: "No clear ingredients text could be detected in this photo. Please retake the photo with better lighting or paste the text manually.",
         halal_cam_instruction: "Align the barcode inside the camera viewpoint to scan automatically.",
         halal_cam_start: "Start Camera Scanner",
         halal_cam_stop: "Stop Camera",
@@ -203,9 +219,9 @@ const ASM_I18N = {
         halal_ing_ph: "Paste ingredients list here...",
         halal_ing_btn: "Analyze Ingredients",
         halal_querying: "Querying Database...",
-                halal_auto_agree_prefix: "By using the Halal Food Scanner, you automatically agree to our",
+        halal_auto_agree_prefix: "By using the Halal Food Scanner, you automatically agree to our",
         halal_auto_agree_link: "Halal Scanner Legal Terms & Disclaimer",
-halal_legal_title: "Legal Disclaimer & Privacy Notice",
+        halal_legal_title: "Legal Disclaimer & Privacy Notice",
         halal_legal_agree: "<strong>Automatic Agreement:</strong> By using the Halal Food Scanner, Live Camera Scan, or Ingredients Analyzer, you automatically agree to these legal terms, our <a href='/terms' style='color: #1e40af; text-decoration: underline; font-weight: 700;'>Terms & Conditions</a>, and our <a href='/privacy' style='color: #1e40af; text-decoration: underline; font-weight: 700;'>Privacy Policy</a>.",
         halal_legal_p1_title: "Informational Support Only:",
         halal_legal_p1_desc: "This tool is a volunteer-run student aid and does not constitute formal religious rulings (fatwas), laboratory testing, or official Halal certification.",
@@ -339,6 +355,8 @@ halal_legal_title: "Legal Disclaimer & Privacy Notice",
         event_email_hint: "We will send your event confirmation and pass here.",
         event_phone_label: "Phone Number / WhatsApp *",
         event_phone_hint: "Used for day-of reminders and joining the event WhatsApp group.",
+        event_origin_country_label: "Country of Origin *",
+        event_origin_country_hint: "Where are you from? (helps us celebrate our community's diversity)",
         event_btn_prev: "← Back",
         event_btn_continue_pricing: "Next: Membership & Pricing →",
         event_step3_heading: "Step 3: Membership Status & Price",
@@ -363,12 +381,15 @@ halal_legal_title: "Legal Disclaimer & Privacy Notice",
         summary_datetime: "Date & Time",
         summary_location: "Location",
         summary_attendee: "Attendee",
+        summary_origin_country: "Country of Origin",
         summary_contact: "Contact",
         summary_membership: "Membership Tier",
         summary_price_due: "Total Contribution Due",
         event_free_banner_title: "100% Free Event Registration!",
         event_free_banner_desc: "This event has zero entry fee for you. Click Confirm below to lock in your attendee reservation.",
         event_btn_submit: "🎟️ Confirm & Complete Registration",
+        event_consent_text: "I accept the <strong>ASM Statute</strong> and give my consent to the processing of personal data for association activities in accordance with European GDPR & Italian privacy regulations. *",
+        event_err_consent: "Please accept the Statute and GDPR privacy consent to complete your application.",
         event_success_title: "Registration Confirmed!",
         event_success_sub: "Alhamdulillah! Your spot has been secured. We look forward to seeing you.",
         event_register_another: "Register Another Person",
@@ -387,10 +408,10 @@ halal_legal_title: "Legal Disclaimer & Privacy Notice",
         nav_quran: "Corano Irtaqi",
         nav_join: "Unisciti a noi",
         nav_admin: "Amministrazione",
-                footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> Tutti i diritti riservati.",
+        footer_copyright: "&copy; 2026 Politecnico di Milano, Associazione Studenti Musulmani.<br> Tutti i diritti riservati.",
         footer_privacy: "Informativa sulla Privacy",
         footer_terms: "Termini e Condizioni",
-                footer_cookies: "Informativa sui Cookie",
+        footer_cookies: "Informativa sui Cookie",
         cookie_banner_title: "Salam! Solo Biscotti Halal 🍪",
         cookie_banner_desc: "Serviamo solo biscotti halal: memoria tecnica essenziale per il sito e analisi facoltative per migliorare i servizi agli studenti. Accetta o rifiuta quando vuoi nella nostra",
         cookie_banner_link: "Informativa sui Cookie",
@@ -561,7 +582,23 @@ halal_legal_title: "Legal Disclaimer & Privacy Notice",
         halal_page_sub: "Verifica istantaneamente i prodotti tramite scansione codice a barre o analisi degli ingredienti.",
         halal_tab_cam: "📷 Scansione Fotocamera",
         halal_tab_barcode: "🔢 Inserisci Codice a Barre",
+        halal_tab_visual: "📸 Scansiona Etichetta",
         halal_tab_ingredients: "📝 Analisi Ingredienti",
+        halal_visual_instruction: "Scatta una foto della lista ingredienti sulla confezione o carica un'immagine. L'IA leggerà e classificherà automaticamente gli ingredienti.",
+        halal_visual_free_note: "Quota giornaliera gratuita al 100%",
+        halal_visual_active: "Scansioni IA Gratuite Attive",
+        halal_visual_drag_title: "Scatta una foto o carica l'immagine",
+        halal_visual_drag_sub: "Assicurati che il testo degli ingredienti sia ben illuminato e a fuoco.",
+        halal_btn_take_photo: "Scatta Foto",
+        halal_btn_capture_now: "Scatta Ora",
+        halal_btn_cancel: "Annulla",
+        halal_btn_choose_image: "Scegli Immagine",
+        halal_btn_analyze_photo: "Analizza Ingredienti con IA",
+        halal_btn_retake: "Riscatta / Cambia",
+        halal_visual_analyzing: "Lettura ingredienti con Gemini Flash Vision...",
+        halal_visual_analyzing_sub: "Estrazione del testo della confezione, additivi e codici E",
+        halal_visual_quota_exceeded: "Limite giornaliero gratuito per le scansioni visive raggiunto (si azzera alle 00:00 UTC). Puoi incollare il testo manualmente nell'Analisi Ingredienti.",
+        halal_visual_no_text: "Nessun testo degli ingredienti leggibile rilevato in questa foto. Riprova con un'illuminazione migliore o incolla il testo manualmente.",
         halal_cam_instruction: "Inquadra il codice a barre con la fotocamera per eseguire la scansione automatica.",
         halal_cam_start: "Avvia Fotocamera",
         halal_cam_stop: "Ferma Fotocamera",
@@ -573,9 +610,9 @@ halal_legal_title: "Legal Disclaimer & Privacy Notice",
         halal_ing_ph: "Incolla qui l'elenco degli ingredienti...",
         halal_ing_btn: "Analizza Ingredienti",
         halal_querying: "Interrogazione del database in corso...",
-                halal_auto_agree_prefix: "Utilizzando lo Scanner Halal, accetti automaticamente i nostri",
+        halal_auto_agree_prefix: "Utilizzando lo Scanner Halal, accetti automaticamente i nostri",
         halal_auto_agree_link: "Termini Legali e Disclaimer dello Scanner Halal",
-halal_legal_title: "Informativa Legale e Privacy",
+        halal_legal_title: "Informativa Legale e Privacy",
         halal_legal_agree: "<strong>Accettazione Automatica:</strong> Utilizzando lo Scanner Halal, la Scansione Fotocamera o l'Analisi Ingredienti, accetti automaticamente questi termini, i nostri <a href='/terms' style='color: #1e40af; text-decoration: underline; font-weight: 700;'>Termini e Condizioni</a> e l'<a href='/privacy' style='color: #1e40af; text-decoration: underline; font-weight: 700;'>Informativa sulla Privacy</a>.",
         halal_legal_p1_title: "Solo Supporto Informativo:",
         halal_legal_p1_desc: "Questo strumento è un supporto informativo gestito da volontari e non costituisce parere religioso formale (fatwa), analisi di laboratorio o certificazione Halal ufficiale.",
@@ -709,6 +746,8 @@ halal_legal_title: "Informativa Legale e Privacy",
         event_email_hint: "Invieremo qui la conferma e il pass di ingresso.",
         event_phone_label: "Numero di Telefono / WhatsApp *",
         event_phone_hint: "Utilizzato per promemoria e l'accesso al gruppo WhatsApp dell'evento.",
+        event_origin_country_label: "Paese di Origine *",
+        event_origin_country_hint: "Da dove vieni? (ci aiuta a valorizzare la diversità della nostra comunità)",
         event_btn_prev: "← Indietro",
         event_btn_continue_pricing: "Avanti: Quota & Tessera →",
         event_step3_heading: "Passo 3: Stato Membro ASM & Prezzo",
@@ -733,12 +772,15 @@ halal_legal_title: "Informativa Legale e Privacy",
         summary_datetime: "Data e Ora",
         summary_location: "Luogo",
         summary_attendee: "Partecipante",
+        summary_origin_country: "Paese di Origine",
         summary_contact: "Contatto",
         summary_membership: "Tipologia Iscrizione",
         summary_price_due: "Totale Quota da Versare",
         event_free_banner_title: "Iscrizione 100% Gratuita!",
         event_free_banner_desc: "Questo evento non prevede alcuna quota di partecipazione. Clicca Conferma per bloccare il tuo posto.",
         event_btn_submit: "🎟️ Conferma e Completa Iscrizione",
+        event_consent_text: "Accetto lo <strong>Statuto di ASM</strong> e acconsento al trattamento dei dati personali per le attività associative in conformità al GDPR europeo e alla normativa italiana sulla privacy. *",
+        event_err_consent: "È necessario accettare lo Statuto e il consenso privacy GDPR per completare l'iscrizione.",
         event_success_title: "Iscrizione Confermata!",
         event_success_sub: "Alhamdulillah! Il tuo posto è stato riservato. Non vediamo l'ora di accoglierti.",
         event_register_another: "Iscrivi un'Altra Persona",
@@ -2120,7 +2162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 sensorMsg.innerHTML = `<strong style="color: #10b981;">🕋 ${isIt ? 'Allineato con la Qibla! Sei rivolto verso la Mecca.' : 'Aligned with Qibla! Facing Makkah.'}</strong>`;
                             } else {
                                 const rounded = Math.round(heading);
-                                sensorMsg.textContent = isIt 
+                                sensorMsg.textContent = isIt
                                     ? `Ruota il telefono finché la Kaaba 🕋 non punta in alto (${rounded}°)`
                                     : `Turn phone until 🕋 Kaaba aligns with the top (${rounded}°)`;
                             }
@@ -2140,8 +2182,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 sensorActive = true;
                 if (sensorMsg) {
                     const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
-                    sensorMsg.textContent = currentLang === 'it' 
-                        ? 'Sensore bussola attivo. Ruota il telefono per allinearti con la Kaaba 🕋.' 
+                    sensorMsg.textContent = currentLang === 'it'
+                        ? 'Sensore bussola attivo. Ruota il telefono per allinearti con la Kaaba 🕋.'
                         : 'Phone compass active. Rotate phone to align with 🕋 Kaaba.';
                 }
             };
@@ -2647,14 +2689,14 @@ window.setCookieConsent = function (status) {
     localStorage.setItem('asm_cookie_consent', status);
 
     if (status === 'accepted') {
-                if (typeof gtag === 'function') {
+        if (typeof gtag === 'function') {
             gtag('consent', 'update', {
                 'analytics_storage': 'granted'
             });
             gtag('event', 'cookie_consent_accepted');
         }
     } else {
-                if (typeof gtag === 'function') {
+        if (typeof gtag === 'function') {
             gtag('consent', 'update', {
                 'analytics_storage': 'denied'
             });
@@ -2670,7 +2712,7 @@ window.setCookieConsent = function (status) {
 
 window.resetCookieConsent = function () {
     localStorage.removeItem('asm_cookie_consent');
-        if (typeof gtag === 'function') {
+    if (typeof gtag === 'function') {
         gtag('consent', 'update', {
             'analytics_storage': 'denied'
         });
