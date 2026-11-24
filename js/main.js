@@ -108,7 +108,7 @@ const ASM_I18N = {
         services_heading: "Student Services & Guidance",
         services_subhead: "Essential services tailored to support your daily student life, faith, and well-being at Politecnico di Milano.",
         service_halal_category: "Food & Groceries",
-        service_halal_title: "Halal Product Scanner",
+        service_halal_title: "Halal Scanner",
         service_halal_desc: "Unsure about snacks, cafeteria food, or supermarket groceries in Milan? Our scanner checks barcodes against 500,000+ products using your camera, highlighting non-halal additives, pork gelatin, and alcohol in seconds.",
         service_halal_pt1: "📷 Live camera barcode scanner",
         service_halal_pt2: "🏷️ Search Italian & global databases",
@@ -187,7 +187,7 @@ const ASM_I18N = {
         events_untitled: "Untitled Event",
 
         // Halal Scanner Page
-        halal_page_heading: "Halal Product Scanner",
+        halal_page_heading: "Halal Scanner",
         halal_page_sub: "Check groceries instantly via barcode camera scanning, packaging photo analysis (OCR), or ingredients list verification.",
         halal_header_badge: "AI Optical Scanner & Verified Halal Rules",
         halal_feat_barcode: "Barcode Lookup",
@@ -244,7 +244,7 @@ const ASM_I18N = {
         halal_whatsapp_group_cta: "Halal Scanner Group",
 
         // Halal Scanner FAQ
-        halal_faq_title: "❓ Halal Product Scanner — Frequently Asked Questions (FAQ)",
+        halal_faq_title: "❓ Halal Scanner — Frequently Asked Questions (FAQ)",
         halal_faq_sub: "Everything you need to know about our food screening process, AI optical reading, and Halal classification standards.",
         halal_faq_cat1: "1. General & Purpose",
         halal_faq_q1: "What is the ASM Halal Food Scanner?",

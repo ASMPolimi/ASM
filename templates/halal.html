@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Halal Product Scanner & Ingredients Checker | ASM Polimi{% endblock %}
+{% block title %}Halal Scanner & Ingredients Checker | ASM Polimi{% endblock %}
 {% block meta_description %}Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
 student-friendly halal dining and food options around Politecnico di Milano campuses.{% endblock %}
 {% block canonical_url %}https://asmpolimi.it/halal{% endblock %}
 {% block og_url %}https://asmpolimi.it/halal{% endblock %}
-{% block og_title %}Halal Product Scanner & Ingredients Checker | ASM Polimi{% endblock %}
+{% block og_title %}Halal Scanner & Ingredients Checker | ASM Polimi{% endblock %}
 {% block og_description %}Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
 student-friendly halal dining and food options around Politecnico di Milano campuses.{% endblock %}
 {% block twitter_url %}https://asmpolimi.it/halal{% endblock %}
-{% block twitter_title %}Halal Product Scanner & Ingredients Checker | ASM Polimi{% endblock %}
+{% block twitter_title %}Halal Scanner & Ingredients Checker | ASM Polimi{% endblock %}
 {% block twitter_description %}Scan food barcodes instantly to check for halal, haram, and mashbuh ingredients. Explore
 student-friendly halal dining and food options around Politecnico di Milano campuses.{% endblock %}
 
@@ -851,183 +851,184 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         }
     }
 
-        /* FAQ Section Styles */
-        .halal-faq-section {
-            margin-top: 3.5rem;
-            padding-top: 2.5rem;
-            border-top: 1px solid #e2e8f0;
-        }
+    /* FAQ Section Styles */
+    .halal-faq-section {
+        margin-top: 3.5rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid #e2e8f0;
+    }
 
-        .faq-accordion {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
+    .faq-accordion {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .faq-item {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.85rem;
+        padding: 0;
+        transition: all 0.25s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+
+    .faq-item[open] {
+        border-color: #cbd5e1;
+        box-shadow: 0 4px 12px rgba(18, 74, 97, 0.08);
+    }
+
+    .faq-question {
+        padding: 1.15rem 1.35rem;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.02rem;
+        color: var(--color-primary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        user-select: none;
+        list-style: none;
+    }
+
+    .faq-question::-webkit-details-marker {
+        display: none;
+    }
+
+    .faq-question::after {
+        content: '›';
+        font-size: 1.4rem;
+        line-height: 1;
+        color: #64748b;
+        transition: transform 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .faq-item[open] .faq-question::after {
+        transform: rotate(90deg);
+        color: var(--color-primary);
+    }
+
+    .faq-question:hover {
+        background-color: #f8fafc;
+    }
+
+    .faq-answer {
+        padding: 0 1.35rem 1.25rem 1.35rem;
+        color: #475569;
+        font-size: 0.93rem;
+        line-height: 1.6;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 0.9rem;
+    }
+
+    .faq-answer strong {
+        color: var(--color-primary);
+    }
+
+    .faq-answer ul {
+        margin: 0.5rem 0 0.5rem 1.25rem;
+        padding: 0;
+    }
+
+    .faq-answer li {
+        margin-bottom: 0.35rem;
+    }
+
+    .faq-category-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1.75rem;
+        margin-bottom: 0.65rem;
+        padding-left: 0.25rem;
+    }
+
+    .faq-category-header:first-of-type {
+        margin-top: 0;
+    }
+
+    .faq-category-icon {
+        font-size: 1.25rem;
+    }
+
+    .faq-category-title {
+        color: var(--color-primary);
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .halal-cta-buttons {
+        margin-top: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    @media (max-width: 576px) {
+        .halal-cta-buttons {
             flex-direction: column;
-            gap: 0.85rem;
+            width: 100%;
         }
 
-        .faq-item {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.85rem;
-            padding: 0;
-            transition: all 0.25s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-            overflow: hidden;
-        }
-
-        .faq-item[open] {
-            border-color: #cbd5e1;
-            box-shadow: 0 4px 12px rgba(18, 74, 97, 0.08);
+        .halal-cta-buttons a.btn {
+            width: 100%;
+            justify-content: center;
+            padding: 0.95rem 1.25rem;
+            font-size: 0.95rem;
         }
 
         .faq-question {
-            padding: 1.15rem 1.35rem;
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 1.02rem;
-            color: var(--color-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            user-select: none;
-            list-style: none;
-        }
-
-        .faq-question::-webkit-details-marker {
-            display: none;
-        }
-
-        .faq-question::after {
-            content: '›';
-            font-size: 1.4rem;
-            line-height: 1;
-            color: #64748b;
-            transition: transform 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .faq-item[open] .faq-question::after {
-            transform: rotate(90deg);
-            color: var(--color-primary);
-        }
-
-        .faq-question:hover {
-            background-color: #f8fafc;
+            padding: 0.95rem 0.9rem;
+            font-size: 0.95rem;
         }
 
         .faq-answer {
-            padding: 0 1.35rem 1.25rem 1.35rem;
-            color: #475569;
-            font-size: 0.93rem;
-            line-height: 1.6;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 0.9rem;
-        }
-
-        .faq-answer strong {
-            color: var(--color-primary);
-        }
-
-        .faq-answer ul {
-            margin: 0.5rem 0 0.5rem 1.25rem;
-            padding: 0;
-        }
-
-        .faq-answer li {
-            margin-bottom: 0.35rem;
-        }
-
-        .faq-category-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1.75rem;
-            margin-bottom: 0.65rem;
-            padding-left: 0.25rem;
-        }
-
-        .faq-category-header:first-of-type {
-            margin-top: 0;
-        }
-
-        .faq-category-icon {
-            font-size: 1.25rem;
+            padding: 0 0.9rem 0.95rem 0.9rem;
+            font-size: 0.88rem;
         }
 
         .faq-category-title {
-            color: var(--color-primary);
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin: 0;
+            font-size: 1.05rem;
         }
 
-        .halal-cta-buttons {
-            margin-top: 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
+        .visual-upload-zone {
+            padding: 1.25rem 0.75rem !important;
+        }
+
+        #btn-snap-photo,
+        #btn-upload-file {
+            width: 100%;
             justify-content: center;
-            gap: 1rem;
-            align-items: center;
         }
 
-        @media (max-width: 576px) {
-            .halal-cta-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .halal-cta-buttons a.btn {
-                width: 100%;
-                justify-content: center;
-                padding: 0.95rem 1.25rem;
-                font-size: 0.95rem;
-            }
-
-            .faq-question {
-                padding: 0.95rem 0.9rem;
-                font-size: 0.95rem;
-            }
-
-            .faq-answer {
-                padding: 0 0.9rem 0.95rem 0.9rem;
-                font-size: 0.88rem;
-            }
-
-            .faq-category-title {
-                font-size: 1.05rem;
-            }
-
-            .visual-upload-zone {
-                padding: 1.25rem 0.75rem !important;
-            }
-
-            #btn-snap-photo,
-            #btn-upload-file {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .section-header h2 {
-                font-size: 1.85rem !important;
-            }
-
-            #halal-page-sub-text {
-                font-size: 0.92rem !important;
-            }
-
-            .halal-header-badge {
-                font-size: 0.78rem !important;
-                padding: 0.35rem 0.75rem !important;
-            }
-
-            .halal-header-features span {
-                font-size: 0.76rem !important;
-                padding: 0.28rem 0.65rem !important;
-            }
+        .section-header h2 {
+            font-size: 1.85rem !important;
         }
+
+        #halal-page-sub-text {
+            font-size: 0.92rem !important;
+        }
+
+        .halal-header-badge {
+            font-size: 0.78rem !important;
+            padding: 0.35rem 0.75rem !important;
+        }
+
+        .halal-header-features span {
+            font-size: 0.76rem !important;
+            padding: 0.28rem 0.65rem !important;
+        }
+    }
+
     /* Keep the community actions compact and the featured section centered on phones. */
     @media (max-width: 576px) {
         .halal-cta-buttons {
@@ -1371,7 +1372,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         <!-- Halal Scanner Legal Agreement Notice -->
         <p
             style="text-align: center; font-size: 0.82rem; color: #64748b; margin: 1.25rem auto 0 auto; max-width: 650px; line-height: 1.5;">
-            <span data-i18n="halal_auto_agree_prefix">By using the Halal Product Scanner, you automatically agree to
+            <span data-i18n="halal_auto_agree_prefix">By using the Halal Scanner, you automatically agree to
                 our</span>
             <a href="/halal-terms" style="color: var(--color-primary); font-weight: 700; text-decoration: underline;"
                 data-i18n="halal_auto_agree_link">Halal Scanner Legal Terms &amp; Disclaimer</a>.
@@ -1407,7 +1408,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             <div class="section-header text-center" style="margin-bottom: 2rem;">
                 <h2 id="halal-faq-title" style="color: var(--color-primary); font-size: 1.8rem; font-weight: 700;"
                     data-i18n="halal_faq_title">
-                    ❓ Halal Product Scanner — Frequently Asked Questions (FAQ)
+                    ❓ Halal Scanner — Frequently Asked Questions (FAQ)
                 </h2>
                 <div class="divider" style="margin: 0.75rem auto 1rem auto;"></div>
                 <p style="color: var(--color-text-light); max-width: 680px; margin: 0 auto; font-size: 0.95rem;"
@@ -1425,10 +1426,10 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 </div>
 
                 <details class="faq-item">
-                    <summary class="faq-question" data-i18n="halal_faq_q1">What is the ASM Halal Product Scanner?
+                    <summary class="faq-question" data-i18n="halal_faq_q1">What is the ASM Halal Scanner?
                     </summary>
                     <div class="faq-answer" data-i18n="halal_faq_a1">
-                        The ASM Halal Product Scanner is an automated screening tool developed for students and the
+                        The ASM Halal Scanner is an automated screening tool developed for students and the
                         community in Italy to quickly inspect food ingredients, detect prohibited (Haram) or doubtful
                         (Mashbuh) additives, and verify Halal compliance against Italian and EU food labeling standards.
                     </div>
