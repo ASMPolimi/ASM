@@ -27,7 +27,14 @@
     .event-detail-status.open { background: #dcfce7; color: #166534; }
     .event-detail-status.soon { background: #fef3c7; color: #92400e; }
     .event-detail-status.closed { background: #f1f5f9; color: #475569; }
-    @media (max-width: 576px) { .event-detail-actions { flex-direction: column; } .event-detail-actions .btn { width: 100%; } }
+    .event-detail-poster { display: block; width: 100%; max-height: 460px; margin: 1rem 0 1.5rem; border-radius: 1rem; object-fit: cover; background: #f1f5f9; }
+    .event-detail-section { margin-top: 1.75rem; }
+    .event-detail-section h2 { margin: 0 0 0.65rem; color: var(--color-primary); font-size: 1.25rem; }
+    .event-detail-list { margin: 0; padding-left: 1.35rem; color: #334155; line-height: 1.7; }
+    .event-detail-tools { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1rem; }
+    .event-detail-capacity { display: inline-flex; margin-top: 0.65rem; padding: 0.4rem 0.75rem; border-radius: 999px; background: #eff6ff; color: #1d4ed8; font-size: 0.84rem; font-weight: 700; }
+    .event-detail-capacity.full { background: #fff7ed; color: #c2410c; }
+    @media (max-width: 576px) { .event-detail-actions, .event-detail-tools { flex-direction: column; } .event-detail-actions .btn, .event-detail-tools .btn { width: 100%; } }
 </style>
 {% endblock %}
 
@@ -54,6 +61,45 @@
     function eventDetailSlug(title) {
         return String(title || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
             .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'event';
+    }
+
+    function eventDetailList(text) {
+        const items = String(text || '').split(/\r?\n/).map(item => item.trim()).filter(Boolean);
+        return items.length ? `<ul class="event-detail-list">${items.map(item => `<li>${eventDetailEscape(item)}</li>`).join('')}</ul>` : '';
+    }
+
+    function calendarLocalValue(value) {
+        return String(value || '').replace(/[-:]/g, '').replace('T', '') + '00';
+    }
+
+    function calendarUtcValue(localValue) {
+        const match = String(localValue || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+        if (!match) return '';
+        const targetUtc = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]), Number(match[4]), Number(match[5]));
+        let guess = targetUtc;
+        const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+        for (let i = 0; i < 3; i++) {
+            const parts = Object.fromEntries(formatter.formatToParts(new Date(guess)).map(part => [part.type, part.value]));
+            const representedUtc = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day), Number(parts.hour), Number(parts.minute));
+            guess += targetUtc - representedUtc;
+        }
+        return new Date(guess).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+    }
+
+    function calendarEscape(value) {
+        return String(value || '').replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+    }
+
+    async function getEventAvailability(eventId) {
+        for (const url of [`https://admin.asmpolimi.it/api/events/${eventId}/availability`, `/api/events/${eventId}/availability`, `https://asmpolimi.onrender.com/api/events/${eventId}/availability`]) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) continue;
+                const result = await response.json();
+                if (result && result.success) return result;
+            } catch (error) { }
+        }
+        return null;
     }
 
     async function loadEventDetail() {
@@ -103,13 +149,26 @@
         const priceMembers = event.price_member || event.cost || 'Free';
         const priceGuests = event.price_non_member || event.cost || 'Free';
         const dateLabel = isItalian ? 'Data' : 'Date';
-        const timeLabel = isItalian ? 'Orario' : 'Time';
+        const timeLabel = event.start_datetime && event.end_datetime ? (isItalian ? 'Orario (Europe/Rome)' : 'Time (Europe/Rome)') : (isItalian ? 'Orario' : 'Time');
         const locationLabel = isItalian ? 'Luogo' : 'Location';
         const membersLabel = isItalian ? 'Prezzo soci' : 'Member price';
         const guestsLabel = isItalian ? 'Prezzo ospiti' : 'Guest price';
         const registerButton = status === 'open'
             ? `<a class="btn btn-primary" href="/event-register?event=${encodeURIComponent(event.id)}">${isItalian ? 'Registrati' : 'Register for this event'}</a>`
             : '';
+        const directionsButton = event.location
+            ? `<a class="btn btn-secondary" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(event.location)}">${isItalian ? 'Indicazioni' : 'Get directions'}</a>`
+            : '';
+        const hasCalendarTimes = Boolean(event.start_datetime && event.end_datetime);
+        const googleCalendarUrl = hasCalendarTimes
+            ? `https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=${encodeURIComponent(title)}&amp;dates=${calendarLocalValue(event.start_datetime)}/${calendarLocalValue(event.end_datetime)}&amp;ctz=Europe%2FRome&amp;details=${encodeURIComponent(description)}&amp;location=${encodeURIComponent(event.location || '')}`
+            : '';
+        const icsStart = hasCalendarTimes ? calendarUtcValue(event.start_datetime) : '';
+        const icsEnd = hasCalendarTimes ? calendarUtcValue(event.end_datetime) : '';
+        const icsContent = hasCalendarTimes && icsStart && icsEnd
+            ? `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//ASM Polimi//Event//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:event-${eventDetailEscape(event.id)}@asmpolimi.it\r\nDTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')}\r\nDTSTART:${icsStart}\r\nDTEND:${icsEnd}\r\nSUMMARY:${calendarEscape(title)}\r\nDESCRIPTION:${calendarEscape(description)}\r\nLOCATION:${calendarEscape(event.location || '')}\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n`
+            : '';
+        const icsUrl = icsContent ? `data:text/calendar;charset=utf-8,${encodeURIComponent(icsContent)}` : '';
 
         document.title = `${title} | ASM Polimi`;
         const metaDescription = description.replace(/\s+/g, ' ').slice(0, 160);
@@ -129,6 +188,8 @@
             <span class="event-detail-category">${eventDetailEscape(event.category || (isItalian ? 'Evento' : 'Event'))}</span>
             <h1 class="event-detail-title">${eventDetailEscape(title)}</h1>
             <span class="event-detail-status ${['open', 'soon'].includes(status) ? status : 'closed'}">${eventDetailEscape(statusLabels[status] || statusLabels.closed)}</span>
+            <div id="event-detail-capacity" class="event-detail-capacity" hidden></div>
+            ${event.event_image ? `<img class="event-detail-poster" src="${eventDetailEscape(event.event_image)}" alt="${eventDetailEscape(title)}" loading="eager">` : ''}
             <div class="event-detail-meta">
                 <div class="event-detail-meta-item"><span class="event-detail-meta-label">${dateLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.date || (isItalian ? 'Data da definire' : 'Date to be announced'))}</span></div>
                 <div class="event-detail-meta-item"><span class="event-detail-meta-label">${timeLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
@@ -138,8 +199,29 @@
             </div>
             <h2 style="color: var(--color-primary); font-size: 1.25rem;">${isItalian ? 'Descrizione' : 'About this event'}</h2>
             <div class="event-detail-description">${eventDetailEscape(description)}</div>
+            ${event.agenda ? `<section class="event-detail-section"><h2>${isItalian ? 'Programma' : 'Agenda'}</h2>${eventDetailList(event.agenda)}</section>` : ''}
+            ${event.what_to_bring ? `<section class="event-detail-section"><h2>${isItalian ? 'Cosa portare' : 'What to bring'}</h2>${eventDetailList(event.what_to_bring)}</section>` : ''}
+            ${event.accessibility_info ? `<section class="event-detail-section"><h2>${isItalian ? 'Accessibilità' : 'Accessibility'}</h2><div class="event-detail-description">${eventDetailEscape(event.accessibility_info)}</div></section>` : ''}
+            <div class="event-detail-tools">
+                ${directionsButton}
+                ${hasCalendarTimes ? `<a class="btn btn-secondary" target="_blank" rel="noopener noreferrer" href="${googleCalendarUrl}">${isItalian ? 'Aggiungi a Google Calendar' : 'Add to Google Calendar'}</a><a class="btn btn-secondary" href="${icsUrl}" download="${eventDetailSlug(title)}.ics">${isItalian ? 'Scarica calendario (.ics)' : 'Download calendar (.ics)'}</a>` : ''}
+                <button class="btn btn-secondary" type="button" onclick="shareEventPage()">${isItalian ? 'Condividi evento' : 'Share event'}</button>
+            </div>
             <div class="event-detail-actions">${registerButton}<a class="btn btn-secondary" href="/events">${isItalian ? 'Torna agli eventi' : 'Back to all events'}</a></div>
         `;
+
+        const capacityBadge = document.getElementById('event-detail-capacity');
+        if (Number(event.max_capacity) > 0) {
+            const availability = await getEventAvailability(event.id);
+            if (availability && availability.spots_remaining !== null && capacityBadge) {
+                const remaining = Number(availability.spots_remaining);
+                capacityBadge.hidden = false;
+                capacityBadge.classList.toggle('full', remaining === 0);
+                capacityBadge.textContent = isItalian
+                    ? (remaining === 0 ? 'Posti esauriti' : `${remaining} posti disponibili`)
+                    : (remaining === 0 ? 'Fully booked' : `${remaining} spots remaining`);
+            }
+        }
     }
 
     function showEventNotFound(isItalian) {
@@ -147,6 +229,21 @@
         document.title = isItalian ? 'Evento non trovato | ASM Polimi' : 'Event not found | ASM Polimi';
         content.innerHTML = `<div style="text-align: center; padding: 1rem;"><h1 style="color: var(--color-primary);">${isItalian ? 'Evento non trovato' : 'Event not found'}</h1><p style="color: #64748b;">${isItalian ? 'Questo evento potrebbe essere stato rimosso o il link non è valido.' : 'This event may have been removed or the link is invalid.'}</p><a class="btn btn-primary" href="/events">${isItalian ? 'Visualizza tutti gli eventi' : 'Browse all events'}</a></div>`;
     }
+
+    window.shareEventPage = async function () {
+        const title = document.querySelector('.event-detail-title')?.textContent || document.title;
+        const shareData = { title, text: title, url: window.location.href };
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+                return;
+            }
+            await navigator.clipboard.writeText(window.location.href);
+            alert((window.currentLang || localStorage.getItem('site_lang') || 'en') === 'it' ? 'Link copiato.' : 'Event link copied.');
+        } catch (error) {
+            if (error.name !== 'AbortError') window.prompt('Copy event link:', window.location.href);
+        }
+    };
 
     loadEventDetail();
     window.addEventListener('asmLanguageChanged', loadEventDetail);
