@@ -823,6 +823,12 @@
 
             // Render Featured Events (Islamic Events Horizontal Scroll Style)
             if (data.events) {
+                const eventTitleSlug = title => String(title || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'event';
+                const eventDetailSlug = ev => {
+                    const baseSlug = eventTitleSlug(ev.title);
+                    const duplicates = data.events.filter(item => eventTitleSlug(item.title) === baseSlug);
+                    return duplicates.length > 1 ? `${baseSlug}-${ev.id}` : baseSlug;
+                };
                 const eventsContainer = document.getElementById('dynamic-events-container');
                 if (eventsContainer) {
                     if (data.events.length === 0) {
@@ -832,6 +838,12 @@
                         data.events.forEach(ev => {
                             const card = document.createElement('div');
                             card.className = 'islamic-event-card';
+                            const detailUrl = `/event/${encodeURIComponent(eventDetailSlug(ev))}`;
+                            card.style.cursor = 'pointer';
+                            card.addEventListener('click', event => {
+                                if (event.target.closest('a, button')) return;
+                                window.location.href = detailUrl;
+                            });
 
                             const cat = ev.category || 'Islamic Event';
                             let topBorderColor = '#10b981';
@@ -856,6 +868,7 @@
 
                             let statusBadgeHtml = '';
                             let actionBtnHtml = '';
+                            const detailsBtnHtml = `<a href="${detailUrl}" class="btn text-center" style="display: block; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; text-decoration: none; background: #124a61; color: #ffffff; border: 1px solid #124a61;">View Event</a>`;
                             const regUrl = `/event-register?event=${encodeURIComponent(ev.id || ev.title)}`;
 
                             if (status === 'open') {
@@ -912,6 +925,7 @@
                                         </span>
                                     </div>
 
+                                    ${detailsBtnHtml}
                                     ${actionBtnHtml}
                                 </div>
                             `;

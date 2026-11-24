@@ -728,13 +728,19 @@
             else { topBorderColor = '#06b6d4'; catIcon = '🌟'; }
 
             card.className = 'islamic-event-card animate-up';
+            const detailUrl = `/event/${encodeURIComponent(eventDetailSlug(ev))}`;
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', event => {
+                if (event.target.closest('a, button')) return;
+                window.location.href = detailUrl;
+            });
             card.style.cssText = `border-top: 4px solid ${topBorderColor} !important; flex: 0 0 310px; min-width: 285px; max-width: 340px; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: space-between;`;
 
             let statusBadgeHtml = '';
             let actionBtnHtml = '';
             const detailsBtnHtml = `
-                <a href="/event/${encodeURIComponent(eventDetailSlug(ev))}" class="btn btn-secondary text-center" style="display: block; width: 100%; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; text-decoration: none;">
-                    View event details
+                <a href="${detailUrl}" class="btn text-center" style="display: block; width: 100%; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; text-decoration: none; background: #124a61; color: #ffffff; border: 1px solid #124a61;">
+                    View Event
                 </a>
             `;
 
