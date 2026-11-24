@@ -132,6 +132,12 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         pointer-events: none;
     }
 
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
     @keyframes scanning {
         0% {
             top: 0%;
@@ -725,9 +731,8 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
         <div class="scanner-card" id="halal-scanner-card">
             <div class="tab-buttons" role="group" aria-label="Scanner type">
-                <button class="tab-btn active" type="button" aria-pressed="true"
-                    onclick="switchTab('camera-tab')"><span aria-hidden="true">&#128290;</span><span
-                        data-i18n="halal_tab_barcode">Barcode</span></button>
+                <button class="tab-btn active" type="button" aria-pressed="true" onclick="switchTab('camera-tab')"><span
+                        aria-hidden="true">&#128290;</span><span data-i18n="halal_tab_barcode">Barcode</span></button>
                 <button class="tab-btn" type="button" aria-pressed="false" onclick="switchTab('visual-tab')"><span
                         aria-hidden="true">&#129367;</span><span
                         data-i18n="halal_tab_ingredients">Ingredients</span></button>
@@ -738,8 +743,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                     onclick="switchTab('camera-tab')"><span aria-hidden="true">&#128247;</span> <span
                         data-i18n="halal_barcode_camera">Camera</span></button>
                 <button type="button" class="mode-btn" aria-pressed="false" onclick="switchTab('barcode-tab')"><span
-                        aria-hidden="true">&#9000;</span> <span
-                        data-i18n="halal_barcode_manual">Manual</span></button>
+                        aria-hidden="true">&#9000;</span> <span data-i18n="halal_barcode_manual">Manual</span></button>
             </div>
 
             <div class="mode-buttons" data-mode-group="ingredients" style="display:none;" role="group"
@@ -747,9 +751,9 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 <button type="button" class="mode-btn active" aria-pressed="true"
                     onclick="switchTab('visual-tab')"><span aria-hidden="true">&#128248;</span> <span
                         data-i18n="halal_ingredients_photo">Photo</span></button>
-                <button type="button" class="mode-btn" aria-pressed="false"
-                    onclick="switchTab('ingredients-tab')"><span aria-hidden="true">&#128196;</span> <span
-                        data-i18n="halal_ingredients_manual">Paste text</span></button>
+                <button type="button" class="mode-btn" aria-pressed="false" onclick="switchTab('ingredients-tab')"><span
+                        aria-hidden="true">&#128196;</span> <span data-i18n="halal_ingredients_manual">Paste
+                        text</span></button>
             </div>
 
             <!-- Tab 1: Camera Scanner -->
@@ -789,29 +793,39 @@ student-friendly halal dining and food options around Politecnico di Milano camp
             <div id="visual-tab" class="tab-content">
                 <p class="mb-3" style="color: var(--color-text-light); margin-bottom: 1.25rem;"
                     data-i18n="halal_visual_instruction">
-                    Snap a photo of the ingredients list on any product packaging or upload an image. Our AI will automatically read and classify the ingredients.
+                    Snap a photo of the ingredients list on any product packaging or upload an image. Our AI will
+                    automatically read and classify the ingredients.
                 </p>
-                <div class="visual-quota-badge-wrap" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
-                    <span id="visual-quota-indicator" style="font-size: 0.82rem; background: #ecfdf5; color: #047857; padding: 0.3rem 0.75rem; border-radius: 999px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid #a7f3d0;">
-                        <span>⚡</span> <span id="visual-quota-text" data-i18n="halal_visual_active">Free AI Scans Active</span>
+                <div class="visual-quota-badge-wrap"
+                    style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <span id="visual-quota-indicator"
+                        style="font-size: 0.82rem; background: #ecfdf5; color: #047857; padding: 0.3rem 0.75rem; border-radius: 999px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid #a7f3d0;">
+                        <span>⚡</span> <span id="visual-quota-text" data-i18n="halal_visual_active">Free AI Scans
+                            Active</span>
                     </span>
-                    <span style="font-size: 0.78rem; color: #64748b;" data-i18n="halal_visual_free_note">100% Free Daily Allowance</span>
+                    <span style="font-size: 0.78rem; color: #64748b;" data-i18n="halal_visual_free_note">100% Free Daily
+                        Allowance</span>
                 </div>
 
-                <div id="visual-dropzone" class="visual-upload-zone" style="border: 2px dashed #cbd5e1; border-radius: 0.75rem; padding: 2rem 1rem; text-align: center; cursor: pointer; background: #f8fafc; transition: all 0.2s ease;">
+                <div id="visual-dropzone" class="visual-upload-zone"
+                    style="border: 2px dashed #cbd5e1; border-radius: 0.75rem; padding: 2rem 1rem; text-align: center; cursor: pointer; background: #f8fafc; transition: all 0.2s ease;">
                     <div id="visual-prompt-content">
                         <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📷</div>
-                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1.15rem; color: var(--color-text); font-weight: 700;" data-i18n="halal_visual_drag_title">
+                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1.15rem; color: var(--color-text); font-weight: 700;"
+                            data-i18n="halal_visual_drag_title">
                             Take Photo or Upload Packaging Image
                         </h4>
-                        <p style="color: #64748b; font-size: 0.88rem; margin: 0 0 1.25rem 0;" data-i18n="halal_visual_drag_sub">
+                        <p style="color: #64748b; font-size: 0.88rem; margin: 0 0 1.25rem 0;"
+                            data-i18n="halal_visual_drag_sub">
                             Make sure the ingredients text is well-lit and in focus.
                         </p>
                         <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-                            <button type="button" class="btn btn-primary" id="btn-snap-photo" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; font-weight: 600;">
+                            <button type="button" class="btn btn-primary" id="btn-snap-photo"
+                                style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; font-weight: 600;">
                                 <span>📸</span> <span data-i18n="halal_btn_take_photo">Take Photo</span>
                             </button>
-                            <button type="button" class="btn btn-secondary" id="btn-upload-file" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; font-weight: 600; border-color: var(--color-primary); color: var(--color-primary);">
+                            <button type="button" class="btn btn-secondary" id="btn-upload-file"
+                                style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; font-weight: 600; border-color: var(--color-primary); color: var(--color-primary);">
                                 <span>📁</span> <span data-i18n="halal_btn_choose_image">Choose Image</span>
                             </button>
                         </div>
@@ -819,38 +833,55 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
                     <!-- Live Camera Viewfinder (getUserMedia) -->
                     <div id="visual-live-cam-wrap" style="display: none; max-width: 460px; margin: 0 auto;">
-                        <div style="position: relative; border-radius: 0.5rem; overflow: hidden; background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-                            <video id="visual-live-video" autoplay playsinline muted style="width: 100%; max-height: 320px; object-fit: cover; display: block;"></video>
-                            <div style="position: absolute; inset: 15px; border: 2px dashed rgba(255,255,255,0.7); border-radius: 8px; pointer-events: none; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
-                                <span style="background: rgba(0,0,0,0.65); color: #fff; font-size: 0.75rem; padding: 2px 8px; border-radius: 4px;">Align ingredients here</span>
+                        <div
+                            style="position: relative; border-radius: 0.5rem; overflow: hidden; background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                            <video id="visual-live-video" autoplay playsinline muted
+                                style="width: 100%; max-height: 320px; object-fit: cover; display: block;"></video>
+                            <div
+                                style="position: absolute; inset: 15px; border: 2px dashed rgba(255,255,255,0.7); border-radius: 8px; pointer-events: none; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
+                                <span
+                                    style="background: rgba(0,0,0,0.65); color: #fff; font-size: 0.75rem; padding: 2px 8px; border-radius: 4px;">Align
+                                    ingredients here</span>
                             </div>
                         </div>
-                        <div style="margin-top: 1rem; display: flex; gap: 0.75rem; justify-content: center; align-items: center; flex-wrap: wrap;">
-                            <button type="button" class="btn btn-primary" id="btn-snap-capture" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; font-weight: 700; border-radius: 50px; box-shadow: 0 4px 12px rgba(18, 74, 97, 0.35);">
-                                <span style="display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #fff;"></span>
+                        <div
+                            style="margin-top: 1rem; display: flex; gap: 0.75rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-primary" id="btn-snap-capture"
+                                style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; font-weight: 700; border-radius: 50px; box-shadow: 0 4px 12px rgba(18, 74, 97, 0.35);">
+                                <span
+                                    style="display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #fff;"></span>
                                 <span data-i18n="halal_btn_capture_now">Capture Photo</span>
                             </button>
-                            <button type="button" class="btn btn-secondary" id="btn-close-cam" style="border-radius: 50px; padding: 0.75rem 1.25rem;">
+                            <button type="button" class="btn btn-secondary" id="btn-close-cam"
+                                style="border-radius: 50px; padding: 0.75rem 1.25rem;">
                                 <span>✕</span> <span data-i18n="halal_btn_cancel">Cancel</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Hidden file inputs -->
-                    <input type="file" id="visual-camera-input" accept="image/*" capture="environment" style="display: none;">
+                    <input type="file" id="visual-camera-input" accept="image/*" capture="environment"
+                        style="display: none;">
                     <input type="file" id="visual-file-input" accept="image/*" style="display: none;">
 
                     <!-- Image Preview Area -->
                     <div id="visual-preview-wrap" style="display: none; margin-top: 0.5rem;">
                         <div style="position: relative; max-width: 380px; margin: 0 auto;">
-                            <img id="visual-preview-img" src="" alt="Ingredients preview" style="width: 100%; max-height: 280px; object-fit: contain; border-radius: 0.5rem; border: 1px solid #cbd5e1; background: #0f172a;">
-                            <button type="button" id="btn-clear-photo" style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.65); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: 14px; line-height: 28px; text-align: center;" title="Remove image">✕</button>
+                            <img id="visual-preview-img" src="" alt="Ingredients preview"
+                                style="width: 100%; max-height: 280px; object-fit: contain; border-radius: 0.5rem; border: 1px solid #cbd5e1; background: #0f172a;">
+                            <button type="button" id="btn-clear-photo"
+                                style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.65); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: 14px; line-height: 28px; text-align: center;"
+                                title="Remove image">✕</button>
                         </div>
-                        <div style="margin-top: 1.25rem; display: flex; gap: 0.65rem; justify-content: center; flex-wrap: wrap;">
-                            <button type="button" id="btn-run-visual-scan" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; font-weight: 700;">
-                                <span>✨</span> <span data-i18n="halal_btn_analyze_photo">Analyze Ingredients with AI</span>
+                        <div
+                            style="margin-top: 1.25rem; display: flex; gap: 0.65rem; justify-content: center; flex-wrap: wrap;">
+                            <button type="button" id="btn-run-visual-scan" class="btn btn-primary"
+                                style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; font-weight: 700;">
+                                <span>✨</span> <span data-i18n="halal_btn_analyze_photo">Analyze Ingredients with
+                                    AI</span>
                             </button>
-                            <button type="button" id="btn-retake-photo" class="btn btn-secondary" style="border-color: #cbd5e1; color: #475569; padding: 0.75rem 1.25rem;">
+                            <button type="button" id="btn-retake-photo" class="btn btn-secondary"
+                                style="border-color: #cbd5e1; color: #475569; padding: 0.75rem 1.25rem;">
                                 <span data-i18n="halal_btn_retake">Retake / Change</span>
                             </button>
                         </div>
@@ -858,16 +889,21 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 </div>
 
                 <div id="visual-loading" style="display: none; margin-top: 1.5rem; text-align: center;">
-                    <div class="spinner" style="margin: 0 auto 0.75rem auto; width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: var(--color-primary); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                    <div class="spinner"
+                        style="margin: 0 auto 0.75rem auto; width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: var(--color-primary); border-radius: 50%; animation: spin 0.8s linear infinite;">
+                    </div>
                     <div style="font-weight: 600; color: var(--color-primary);" data-i18n="halal_visual_analyzing">
                         Reading ingredients with AI...
                     </div>
-                    <div style="font-size: 0.82rem; color: #64748b; margin-top: 0.25rem;" data-i18n="halal_visual_analyzing_sub">
+                    <div style="font-size: 0.82rem; color: #64748b; margin-top: 0.25rem;"
+                        data-i18n="halal_visual_analyzing_sub">
                         Extracting packaging text, additives, and E-numbers
                     </div>
                 </div>
 
-                <div id="visual-status-box" style="display: none; margin-top: 1rem; padding: 0.85rem; border-radius: 0.5rem; font-size: 0.88rem; line-height: 1.5;"></div>
+                <div id="visual-status-box"
+                    style="display: none; margin-top: 1rem; padding: 0.85rem; border-radius: 0.5rem; font-size: 0.88rem; line-height: 1.5;">
+                </div>
             </div>
 
             <!-- Tab 4: Ingredients Text Analyzer -->
@@ -2074,7 +2110,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                         }
                         break;
                     }
-                } catch (e) {}
+                } catch (e) { }
             }
         })();
 
@@ -2218,7 +2254,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         stopVisualLiveCamera();
 
         const reader = new FileReader();
-        reader.onload = function(evt) {
+        reader.onload = function (evt) {
             compressImage(evt.target.result, 1024, 0.82, setVisualImage);
         };
         reader.readAsDataURL(file);
@@ -2226,7 +2262,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
     function compressImage(dataUrl, maxDim, quality, callback) {
         const img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             let width = img.width;
             let height = img.height;
 
