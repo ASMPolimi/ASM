@@ -187,7 +187,7 @@ const ASM_I18N = {
         events_untitled: "Untitled Event",
 
         // Halal Scanner Page
-        halal_page_heading: "Halal Product Scanner",
+        halal_page_heading: "Halal Scanner AI",
         halal_page_sub: "Check products instantly via barcode scanning or manual ingredients analysis.",
         halal_tab_cam: "📷 Live Camera Scan",
         halal_tab_barcode: "Barcode",
@@ -240,7 +240,7 @@ const ASM_I18N = {
         halal_whatsapp_group_cta: "Halal Scanner Group",
 
         // Halal Scanner FAQ
-        halal_faq_title: "❓ Halal Food Scanner — Frequently Asked Questions (FAQ)",
+        halal_faq_title: "❓ Halal Product Scanner — Frequently Asked Questions (FAQ)",
         halal_faq_sub: "Everything you need to know about our food screening process, AI optical reading, and Halal classification standards.",
         halal_faq_cat1: "1. General & Purpose",
         halal_faq_q1: "What is the ASM Halal Food Scanner?",
@@ -617,7 +617,7 @@ const ASM_I18N = {
         events_untitled: "Evento Senza Titolo",
 
         // Halal Scanner Page
-        halal_page_heading: "Scanner Prodotti Halal",
+        halal_page_heading: "Halal Scanner AI",
         halal_page_sub: "Verifica istantaneamente i prodotti tramite scansione codice a barre o analisi degli ingredienti.",
         halal_tab_cam: "📷 Scansione Fotocamera",
         halal_tab_barcode: "Codice a Barre",
