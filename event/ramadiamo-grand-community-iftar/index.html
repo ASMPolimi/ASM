@@ -98,13 +98,14 @@
     .event-detail-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 1.25rem; padding: clamp(1.25rem, 4vw, 2.5rem); box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07); }
     .event-detail-category { display: inline-flex; padding: 0.35rem 0.75rem; border-radius: 999px; background: #ecfdf5; color: #047857; font-size: 0.8rem; font-weight: 700; }
     .event-detail-title { margin: 1rem 0; color: var(--color-primary); font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.2; }
-    .event-detail-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.85rem; margin: 1.5rem 0; }
-    .event-detail-meta-item { padding: 0.9rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; background: #f8fafc; }
-    .event-detail-meta-label { display: block; margin-bottom: 0.2rem; color: #64748b; font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
-    .event-detail-meta-value { color: #1e293b; font-weight: 600; overflow-wrap: anywhere; }
+    .event-detail-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; margin: 1rem 0; }
+    .event-detail-meta-item { min-width: 0; padding: 0.7rem 0.8rem; border: 1px solid #e2e8f0; border-radius: 0.7rem; background: #f8fafc; }
+    .event-detail-meta-label { display: block; margin-bottom: 0.15rem; color: #475569; font-size: 0.76rem; font-weight: 700; }
+    .event-detail-meta-value { color: #1e293b; font-weight: 600; overflow-wrap: anywhere; line-height: 1.4; }
     .event-detail-description { color: #334155; font-size: 1.03rem; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
     .event-detail-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
     .event-detail-actions .btn { min-width: 190px; }
+    .event-detail-actions .event-detail-tool-btn { min-width: 190px; }
     .event-detail-status { display: inline-flex; margin-top: 1rem; padding: 0.4rem 0.75rem; border-radius: 999px; font-size: 0.84rem; font-weight: 700; }
     .event-detail-status.open { background: #dcfce7; color: #166534; }
     .event-detail-status.soon { background: #fef3c7; color: #92400e; }
@@ -113,10 +114,17 @@
     .event-detail-section { margin-top: 1.75rem; }
     .event-detail-section h2 { margin: 0 0 0.65rem; color: var(--color-primary); font-size: 1.25rem; }
     .event-detail-list { margin: 0; padding-left: 1.35rem; color: #334155; line-height: 1.7; }
-    .event-detail-tools { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1rem; }
+    .event-detail-tools { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 0.8rem; }
+    .event-detail-tool-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 44px; padding: 0.65rem 0.9rem; border: 2px solid #124a61; border-radius: 0.6rem; background: #124a61; color: #fff; font: inherit; font-size: 0.92rem; font-weight: 700; line-height: 1.25; text-align: center; text-decoration: none; cursor: pointer; transition: background-color 0.15s ease, transform 0.15s ease; }
+    .event-detail-tool-btn:hover, .event-detail-tool-btn:focus-visible { background: #0d3748; border-color: #0d3748; color: #fff; transform: translateY(-1px); }
+    .event-detail-tool-btn:focus-visible { outline: 3px solid #fbbf24; outline-offset: 2px; }
+    .event-detail-location-link { display: inline-flex; margin-top: 0.35rem; padding: 0.3rem 0.55rem; border-radius: 0.45rem; background: #e0f2fe; color: #075985; font-size: 0.84rem; font-weight: 700; text-decoration: none; }
+    .event-detail-location-link:hover, .event-detail-location-link:focus-visible { background: #bae6fd; color: #0c4a6e; }
+    .event-detail-price-line { display: block; }
     .event-detail-capacity { display: inline-flex; margin-top: 0.65rem; padding: 0.4rem 0.75rem; border-radius: 999px; background: #eff6ff; color: #1d4ed8; font-size: 0.84rem; font-weight: 700; }
     .event-detail-capacity.full { background: #fff7ed; color: #c2410c; }
-    @media (max-width: 576px) { .event-detail-actions { flex-direction: column; } .event-detail-actions .btn { width: 100%; } }
+    @media (max-width: 576px) { .event-detail-card { padding: 1rem; } .event-detail-actions, .event-detail-tools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .event-detail-actions .btn, .event-detail-actions .event-detail-tool-btn, .event-detail-tools .event-detail-tool-btn { width: 100%; min-width: 0; padding: 0.6rem; font-size: 0.86rem; } }
+    @media (max-width: 380px) { .event-detail-meta, .event-detail-tools, .event-detail-actions { grid-template-columns: 1fr; } }
 </style>
 
 </head>
@@ -214,6 +222,48 @@
         return String(value || '').replace(/[-:]/g, '').replace('T', '') + '00';
     }
 
+    function getEventCalendarTimes(event) {
+        if (event.start_datetime && event.end_datetime) {
+            return { start: event.start_datetime, end: event.end_datetime, allDay: false };
+        }
+
+        const dateMatch = String(event.date || '').match(/([A-Za-z]{3,})\s+(\d{1,2}),?\s+(\d{4})/);
+        if (!dateMatch) return null;
+        const parsedDate = new Date(`${dateMatch[1]} ${dateMatch[2]}, ${dateMatch[3]} UTC`);
+        if (Number.isNaN(parsedDate.getTime())) return null;
+
+        const dateParts = [parsedDate.getUTCFullYear(), String(parsedDate.getUTCMonth() + 1).padStart(2, '0'), String(parsedDate.getUTCDate()).padStart(2, '0')];
+        const timeMatches = [...String(event.time || '').matchAll(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?/gi)];
+        if (timeMatches.length < 2) {
+            const start = `${dateParts.join('-')}T00:00`;
+            const nextDay = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate() + 1));
+            const end = `${nextDay.getUTCFullYear()}-${String(nextDay.getUTCMonth() + 1).padStart(2, '0')}-${String(nextDay.getUTCDate()).padStart(2, '0')}T00:00`;
+            return { start, end, allDay: true };
+        }
+
+        const toMinutes = match => {
+            let hours = Number(match[1]);
+            const minutes = Number(match[2] || 0);
+            const meridiem = String(match[3] || '').toUpperCase();
+            if (meridiem === 'PM' && hours < 12) hours += 12;
+            if (meridiem === 'AM' && hours === 12) hours = 0;
+            return hours * 60 + minutes;
+        };
+        const startMinutes = toMinutes(timeMatches[0]);
+        let endMinutes = toMinutes(timeMatches[1]);
+        let endDay = 0;
+        if (endMinutes <= startMinutes) { endMinutes += 24 * 60; endDay = 1; }
+        const localValue = (minutes, dayOffset = 0) => {
+            const date = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate() + dayOffset));
+            return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}T${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+        };
+        return { start: localValue(startMinutes), end: localValue(endMinutes % (24 * 60), endDay), allDay: false };
+    }
+
+    function calendarDateValue(localValue) {
+        return String(localValue || '').slice(0, 10).replace(/-/g, '');
+    }
+
     function calendarUtcValue(localValue) {
         const match = String(localValue || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
         if (!match) return '';
@@ -290,25 +340,32 @@
         const description = event.desc || (isItalian ? 'Ulteriori dettagli saranno pubblicati a breve.' : 'More event details will be announced soon.');
         const priceMembers = event.price_member || event.cost || 'Free';
         const priceGuests = event.price_non_member || event.cost || 'Free';
+        const eventLocation = event.location || 'Campus Leonardo';
+        const calendarTimes = getEventCalendarTimes(event);
         const dateLabel = isItalian ? 'Data' : 'Date';
-        const timeLabel = isItalian ? 'Orario' : 'Time';
+        const timeLabel = calendarTimes ? (isItalian ? 'Orario (Europe/Rome)' : 'Time (Europe/Rome)') : (isItalian ? 'Orario' : 'Time');
         const locationLabel = isItalian ? 'Luogo' : 'Location';
         const membersLabel = isItalian ? 'Prezzo soci' : 'Member price';
         const guestsLabel = isItalian ? 'Prezzo ospiti' : 'Guest price';
         const registerButton = status === 'open'
             ? `<a class="btn btn-primary" href="/event-register?event=${encodeURIComponent(event.id)}">${isItalian ? 'Registrati' : 'Register for this event'}</a>`
             : '';
-        const directionsButton = event.location
-            ? `<a class="btn btn-secondary" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(event.location)}">${isItalian ? 'Indicazioni' : 'Get directions'}</a>`
+        const directionsButton = eventLocation
+            ? `<a class="event-detail-location-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(eventLocation)}">🧭 ${isItalian ? 'Indicazioni' : 'Get directions'}</a>`
             : '';
-        const hasCalendarTimes = Boolean(event.start_datetime && event.end_datetime);
+        const hasCalendarTimes = Boolean(calendarTimes);
+        const calendarDates = calendarTimes
+            ? calendarTimes.allDay
+                ? `${calendarDateValue(calendarTimes.start)}/${calendarDateValue(calendarTimes.end)}`
+                : `${calendarLocalValue(calendarTimes.start)}/${calendarLocalValue(calendarTimes.end)}`
+            : '';
         const googleCalendarUrl = hasCalendarTimes
-            ? `https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=${encodeURIComponent(title)}&amp;dates=${calendarLocalValue(event.start_datetime)}/${calendarLocalValue(event.end_datetime)}&amp;ctz=Europe%2FRome&amp;details=${encodeURIComponent(description)}&amp;location=${encodeURIComponent(event.location || '')}`
+            ? `https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=${encodeURIComponent(title)}&amp;dates=${calendarDates}${calendarTimes.allDay ? '' : '&amp;ctz=Europe%2FRome'}&amp;details=${encodeURIComponent(description)}&amp;location=${encodeURIComponent(eventLocation)}`
             : '';
-        const icsStart = hasCalendarTimes ? calendarUtcValue(event.start_datetime) : '';
-        const icsEnd = hasCalendarTimes ? calendarUtcValue(event.end_datetime) : '';
+        const icsStart = hasCalendarTimes ? (calendarTimes.allDay ? calendarDateValue(calendarTimes.start) : calendarUtcValue(calendarTimes.start)) : '';
+        const icsEnd = hasCalendarTimes ? (calendarTimes.allDay ? calendarDateValue(calendarTimes.end) : calendarUtcValue(calendarTimes.end)) : '';
         const icsContent = hasCalendarTimes && icsStart && icsEnd
-            ? `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//ASM Polimi//Event//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:event-${eventDetailEscape(event.id)}@asmpolimi.it\r\nDTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')}\r\nDTSTART:${icsStart}\r\nDTEND:${icsEnd}\r\nSUMMARY:${calendarEscape(title)}\r\nDESCRIPTION:${calendarEscape(description)}\r\nLOCATION:${calendarEscape(event.location || '')}\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n`
+            ? `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//ASM Polimi//Event//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:event-${eventDetailEscape(event.id)}@asmpolimi.it\r\nDTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')}\r\nDTSTART${calendarTimes.allDay ? ';VALUE=DATE' : ''}:${icsStart}\r\nDTEND${calendarTimes.allDay ? ';VALUE=DATE' : ''}:${icsEnd}\r\nSUMMARY:${calendarEscape(title)}\r\nDESCRIPTION:${calendarEscape(description)}\r\nLOCATION:${calendarEscape(eventLocation)}\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n`
             : '';
         const icsUrl = icsContent ? `data:text/calendar;charset=utf-8,${encodeURIComponent(icsContent)}` : '';
 
@@ -333,23 +390,21 @@
             <div id="event-detail-capacity" class="event-detail-capacity" hidden></div>
             ${event.event_image ? `<img class="event-detail-poster" src="${eventDetailEscape(event.event_image)}" alt="${eventDetailEscape(title)}" loading="eager">` : ''}
             <div class="event-detail-meta">
-                <div class="event-detail-meta-item"><span class="event-detail-meta-label">${dateLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.date || (isItalian ? 'Data da definire' : 'Date to be announced'))}</span></div>
-                <div class="event-detail-meta-item"><span class="event-detail-meta-label">${timeLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
-                <div class="event-detail-meta-item"><span class="event-detail-meta-label">${locationLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.location || 'Campus Leonardo')}</span></div>
-                <div class="event-detail-meta-item"><span class="event-detail-meta-label">${membersLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(priceMembers)}</span></div>
-                <div class="event-detail-meta-item"><span class="event-detail-meta-label">${guestsLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(priceGuests)}</span></div>
+                <div class="event-detail-meta-item"><span class="event-detail-meta-label">📅 ${dateLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.date || (isItalian ? 'Data da definire' : 'Date to be announced'))}</span></div>
+                <div class="event-detail-meta-item"><span class="event-detail-meta-label">🕒 ${timeLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
+                <div class="event-detail-meta-item"><span class="event-detail-meta-label">📍 ${locationLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(eventLocation)}</span>${directionsButton}</div>
+                <div class="event-detail-meta-item"><span class="event-detail-meta-label">💳 ${isItalian ? 'Prezzo' : 'Price'}</span><span class="event-detail-meta-value event-detail-price-line">${eventDetailEscape(membersLabel)}: ${eventDetailEscape(priceMembers)}</span><span class="event-detail-meta-value event-detail-price-line">${eventDetailEscape(guestsLabel)}: ${eventDetailEscape(priceGuests)}</span></div>
+            </div>
+            <div class="event-detail-tools">
+                ${hasCalendarTimes ? `<a class="event-detail-tool-btn" target="_blank" rel="noopener noreferrer" href="${googleCalendarUrl}">🗓️ ${isItalian ? 'Aggiungi a Google Calendar' : 'Add to Google Calendar'}</a><a class="event-detail-tool-btn" href="${icsUrl}" download="${eventDetailSlug(title)}.ics">⬇️ ${isItalian ? 'Scarica .ics' : 'Download .ics'}</a>` : ''}
+                <button class="event-detail-tool-btn" type="button" onclick="shareEventPage()">🔗 ${isItalian ? 'Condividi evento' : 'Share event'}</button>
             </div>
             <h2 style="color: var(--color-primary); font-size: 1.25rem;">${isItalian ? 'Descrizione' : 'About this event'}</h2>
             <div class="event-detail-description">${eventDetailEscape(description)}</div>
             ${event.agenda ? `<section class="event-detail-section"><h2>${isItalian ? 'Programma' : 'Agenda'}</h2>${eventDetailList(event.agenda)}</section>` : ''}
             ${event.what_to_bring ? `<section class="event-detail-section"><h2>${isItalian ? 'Cosa portare' : 'What to bring'}</h2>${eventDetailList(event.what_to_bring)}</section>` : ''}
             ${event.accessibility_info ? `<section class="event-detail-section"><h2>${isItalian ? 'Accessibilità' : 'Accessibility'}</h2><div class="event-detail-description">${eventDetailEscape(event.accessibility_info)}</div></section>` : ''}
-            <div class="event-detail-tools">
-                ${directionsButton}
-                ${hasCalendarTimes ? `<a class="btn btn-secondary" target="_blank" rel="noopener noreferrer" href="${googleCalendarUrl}">${isItalian ? 'Aggiungi a Google Calendar' : 'Add to Google Calendar'}</a><a class="btn btn-secondary" href="${icsUrl}" download="${eventDetailSlug(title)}.ics">${isItalian ? 'Scarica calendario (.ics)' : 'Download calendar (.ics)'}</a>` : ''}
-                <button class="btn btn-secondary" type="button" onclick="shareEventPage()">${isItalian ? 'Condividi evento' : 'Share event'}</button>
-            </div>
-            <div class="event-detail-actions">${registerButton}<a class="btn btn-secondary" href="/events">${isItalian ? 'Torna agli eventi' : 'Back to all events'}</a></div>
+            <div class="event-detail-actions">${registerButton}<a class="event-detail-tool-btn" href="/events">⬅️ ${isItalian ? 'Tutti gli eventi' : 'Back to events'}</a></div>
         `;
 
         const capacityBadge = document.getElementById('event-detail-capacity');
@@ -360,8 +415,8 @@
                 capacityBadge.hidden = false;
                 capacityBadge.classList.toggle('full', remaining === 0);
                 capacityBadge.textContent = isItalian
-                    ? (remaining === 0 ? 'Posti esauriti' : `${remaining} posti disponibili`)
-                    : (remaining === 0 ? 'Fully booked' : `${remaining} spots remaining`);
+                    ? (remaining === 0 ? '🎟️ Posti esauriti' : `🎟️ ${remaining} posti disponibili`)
+                    : (remaining === 0 ? '🎟️ Fully booked' : `🎟️ ${remaining} spots remaining`);
             }
         }
     }

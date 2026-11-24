@@ -729,11 +729,6 @@
 
             card.className = 'islamic-event-card animate-up';
             const detailUrl = `/event/${encodeURIComponent(eventDetailSlug(ev))}`;
-            card.style.cursor = 'pointer';
-            card.addEventListener('click', event => {
-                if (event.target.closest('a, button')) return;
-                window.location.href = detailUrl;
-            });
             card.style.cssText = `border-top: 4px solid ${topBorderColor} !important; flex: 0 0 310px; min-width: 285px; max-width: 340px; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: space-between;`;
 
             let statusBadgeHtml = '';

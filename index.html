@@ -1127,11 +1127,6 @@
                             const card = document.createElement('div');
                             card.className = 'islamic-event-card';
                             const detailUrl = `/event/${encodeURIComponent(eventDetailSlug(ev))}`;
-                            card.style.cursor = 'pointer';
-                            card.addEventListener('click', event => {
-                                if (event.target.closest('a, button')) return;
-                                window.location.href = detailUrl;
-                            });
 
                             const cat = ev.category || 'Islamic Event';
                             let topBorderColor = '#10b981';
