@@ -1008,6 +1008,24 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 width: 100%;
                 justify-content: center;
             }
+
+            .section-header h2 {
+                font-size: 1.85rem !important;
+            }
+
+            #halal-page-sub-text {
+                font-size: 0.92rem !important;
+            }
+
+            .halal-header-badge {
+                font-size: 0.78rem !important;
+                padding: 0.35rem 0.75rem !important;
+            }
+
+            .halal-header-features span {
+                font-size: 0.76rem !important;
+                padding: 0.28rem 0.65rem !important;
+            }
         }
 </style>
 {% endblock %}
@@ -1579,6 +1597,20 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         }
     }
 
+    // Switch directly to AI Ingredients Visual Scan (with optional live camera trigger)
+    window.switchToVisualScan = function (startCamera = false) {
+        switchTab('visual-tab');
+        const scannerCard = document.getElementById('halal-scanner-card');
+        if (scannerCard) {
+            scannerCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        if (startCamera && typeof startVisualLiveCamera === 'function') {
+            setTimeout(() => {
+                startVisualLiveCamera();
+            }, 350);
+        }
+    };
+
     // Haram & Mashbuh keywords dictionary
     const DICTIONARY = {
         haram: [
@@ -2114,14 +2146,34 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                     </h4>
                     <p style="margin: 0; color: var(--color-text); font-size: 0.9rem; line-height: 1.5;">
                         ${isIt
-                    ? 'Nessun elenco degli ingredienti è presente nei database online per questo prodotto. Lo stato Halal non può essere determinato senza ingredienti verificabili.'
-                    : 'No ingredients list is available in online databases for this product. Halal status cannot be determined without verifiable ingredients.'}
+                    ? 'Nessun elenco degli ingredienti è presente nei database online per questo barcode. Lo stato Halal non può essere determinato senza ingredienti verificabili.'
+                    : 'No ingredients list is available in online databases for this barcode. Halal status cannot be determined without verifiable ingredients.'}
                     </p>
                     <p style="margin: 0.5rem 0 0 0; color: #0284c7; font-size: 0.85rem; font-weight: 600;">
                         📬 ${isIt
                     ? '✓ Prodotto inoltrato anonimamente agli amministratori ASM per revisione.'
                     : '✓ Product forwarded anonymously to ASM administrators for review.'}
                     </p>
+                </div>
+
+                <!-- AI Ingredients Scanning CTA Button when Barcode is Not Listed -->
+                <div style="margin-top: 1.25rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfeff 100%); border: 2px dashed #0d9488; padding: 1.25rem; border-radius: 12px; text-align: center; box-shadow: 0 3px 12px rgba(13, 148, 136, 0.12);">
+                    <div style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: #ccfbf1; font-size: 1.4rem; margin-bottom: 0.4rem;">
+                        📸
+                    </div>
+                    <h4 style="margin: 0 0 0.35rem 0; color: #0f766e; font-size: 1.05rem; font-weight: 700;">
+                        ${isIt ? 'Scansiona gli Ingredienti con l\'IA' : 'Scan Ingredients with AI'}
+                    </h4>
+                    <p style="margin: 0 0 0.9rem 0; font-size: 0.88rem; color: #475569; line-height: 1.45; max-width: 460px; margin-left: auto; margin-right: auto;">
+                        ${isIt
+                    ? 'Hai la confezione del prodotto con te? Scatta o carica una foto della lista ingredienti: la nostra IA estrarrà il testo e il nostro sistema verificherà la conformità Halal all\'istante!'
+                    : 'Have the product packaging with you? Snap or upload a photo of the ingredients list: our AI will read the text and our system will verify the Halal status instantly!'}
+                    </p>
+                    <button type="button" onclick="switchToVisualScan(true)" class="btn btn-primary" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 0.85rem 1.6rem; font-weight: 700; font-size: 0.98rem; border-radius: 50px; box-shadow: 0 4px 15px rgba(18, 74, 97, 0.3); width: 100%; max-width: 380px; margin: 0 auto; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                        <span>📷</span>
+                        <span>${isIt ? 'Apri Scansione Foto Ingredienti' : 'Open AI Ingredients Photo Scan'}</span>
+                        <span aria-hidden="true">&rarr;</span>
+                    </button>
                 </div>
             `;
         } else {

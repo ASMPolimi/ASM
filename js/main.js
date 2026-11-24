@@ -187,8 +187,12 @@ const ASM_I18N = {
         events_untitled: "Untitled Event",
 
         // Halal Scanner Page
-        halal_page_heading: "Halal Scanner AI",
-        halal_page_sub: "Check products instantly via barcode scanning or manual ingredients analysis.",
+        halal_page_heading: "Halal Product Scanner",
+        halal_page_sub: "Check groceries instantly via barcode camera scanning, packaging photo analysis (OCR), or ingredients list verification.",
+        halal_header_badge: "AI Optical Scanner & Verified Halal Rules",
+        halal_feat_barcode: "Barcode Lookup",
+        halal_feat_ai: "AI Photo OCR",
+        halal_feat_rules: "Verified Islamic Guidelines",
         halal_tab_cam: "📷 Live Camera Scan",
         halal_tab_barcode: "Barcode",
         halal_tab_visual: "📸 Photo / Label Scan",
@@ -617,8 +621,12 @@ const ASM_I18N = {
         events_untitled: "Evento Senza Titolo",
 
         // Halal Scanner Page
-        halal_page_heading: "Halal Scanner AI",
-        halal_page_sub: "Verifica istantaneamente i prodotti tramite scansione codice a barre o analisi degli ingredienti.",
+        halal_page_heading: "Scanner Prodotti Halal",
+        halal_page_sub: "Verifica istantaneamente i prodotti tramite scansione codice a barre, analisi foto etichetta (OCR) o controllo ingredienti.",
+        halal_header_badge: "Lettura Ottica IA e Regole Halal Verificate",
+        halal_feat_barcode: "Ricerca Barcode",
+        halal_feat_ai: "OCR Foto con IA",
+        halal_feat_rules: "Linee Guida Islamiche Verificate",
         halal_tab_cam: "📷 Scansione Fotocamera",
         halal_tab_barcode: "Codice a Barre",
         halal_tab_visual: "📸 Scansiona Etichetta",

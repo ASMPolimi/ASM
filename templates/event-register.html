@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}Event Application & Registration | ASM Polimi{% endblock %}
-{% block meta_description %}Register and apply for upcoming student events, workshops, Ramadiamo community Iftars, hikes, and cultural sessions with the Muslim Student Association at Politecnico di Milano.{% endblock %}
+{% block meta_description %}Register and apply for upcoming student events, workshops, Ramadiamo community Iftars,
+hikes, and cultural sessions with the Muslim Student Association at Politecnico di Milano.{% endblock %}
 {% block canonical_url %}https://asmpolimi.it/event-register{% endblock %}
 {% block og_url %}https://asmpolimi.it/event-register{% endblock %}
 {% block og_title %}Event Application & Registration | ASM Polimi{% endblock %}
-{% block og_description %}Register and apply for upcoming student events, workshops, Ramadiamo community Iftars, hikes, and cultural sessions with the Muslim Student Association at Politecnico di Milano.{% endblock %}
+{% block og_description %}Register and apply for upcoming student events, workshops, Ramadiamo community Iftars, hikes,
+and cultural sessions with the Muslim Student Association at Politecnico di Milano.{% endblock %}
 {% block twitter_url %}https://asmpolimi.it/event-register{% endblock %}
 {% block twitter_title %}Event Application & Registration | ASM Polimi{% endblock %}
-{% block twitter_description %}Register and apply for upcoming student events, workshops, Ramadiamo community Iftars, hikes, and cultural sessions with the Muslim Student Association at Politecnico di Milano.{% endblock %}
+{% block twitter_description %}Register and apply for upcoming student events, workshops, Ramadiamo community Iftars,
+hikes, and cultural sessions with the Muslim Student Association at Politecnico di Milano.{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -81,6 +84,7 @@
         .step-item span:not(.step-badge) {
             display: none;
         }
+
         .step-divider {
             width: 14px;
         }
@@ -436,10 +440,12 @@
         transition: all var(--transition-fast);
         user-select: none;
     }
+
     .choice-card-label:hover {
         border-color: #94a3b8;
         background: #f1f5f9;
     }
+
     .choice-card-label input[type="checkbox"] {
         accent-color: var(--color-primary);
         width: 1.2rem;
@@ -448,19 +454,23 @@
         cursor: pointer;
         flex-shrink: 0;
     }
+
     .choice-card-label.selected {
         border-color: var(--color-primary);
         background: rgba(18, 74, 97, 0.04);
     }
+
     body.dark-mode .choice-card-label {
         background: #0f172a;
         border-color: #334155;
         color: #f1f5f9;
     }
+
     body.dark-mode .choice-card-label:hover {
         border-color: #475569;
         background: #1e293b;
     }
+
     body.dark-mode .choice-card-label.selected {
         border-color: var(--color-secondary);
         background: rgba(200, 169, 126, 0.1);
@@ -506,10 +516,14 @@
 
         <!-- Page Header -->
         <div class="section-header text-center" style="margin-bottom: 2.25rem;">
-            <span class="badge" style="background: rgba(18, 74, 97, 0.1); color: var(--color-primary); padding: 0.4rem 1rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase;" data-i18n="event_reg_badge">Official Event Application</span>
-            <h1 style="margin: 0.65rem 0 0.5rem 0; color: var(--color-primary); font-size: 2.25rem;" data-i18n="event_reg_title">Event Application & Registration</h1>
+            <span class="badge"
+                style="background: rgba(18, 74, 97, 0.1); color: var(--color-primary); padding: 0.4rem 1rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase;"
+                data-i18n="event_reg_badge">Official Event Application</span>
+            <h1 style="margin: 0.65rem 0 0.5rem 0; color: var(--color-primary); font-size: 2.25rem;"
+                data-i18n="event_reg_title">Event Application & Registration</h1>
             <div class="divider"></div>
-            <p style="color: #64748b; font-size: 1.05rem;" data-i18n="event_reg_subtitle">Step-by-step registration for upcoming ASM campus halaqas, Iftars, hikes, and workshops.</p>
+            <p style="color: #64748b; font-size: 1.05rem;" data-i18n="event_reg_subtitle">Step-by-step registration for
+                upcoming ASM campus halaqas, Iftars, hikes, and workshops.</p>
         </div>
 
         <!-- Stepper Indicators -->
@@ -551,13 +565,16 @@
                 <div class="step-title-icon">📅</div>
                 <div>
                     <h2 class="step-heading" data-i18n="event_step1_heading">Step 1: Choose Your Event</h2>
-                    <p class="step-desc" data-i18n="event_step1_desc">Select which event, hike, or gathering you would like to attend.</p>
+                    <p class="step-desc" data-i18n="event_step1_desc">Select which event, hike, or gathering you would
+                        like to attend.</p>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="event-select-dropdown" style="font-weight: 600;" data-i18n="event_select_prompt">Select an Event to Register: *</label>
-                <select id="event-select-dropdown" required style="font-size: 1.05rem; font-weight: 600; padding: 0.85rem 1rem;">
+                <label for="event-select-dropdown" style="font-weight: 600;" data-i18n="event_select_prompt">Select an
+                    Event to Register: *</label>
+                <select id="event-select-dropdown" required
+                    style="font-size: 1.05rem; font-weight: 600; padding: 0.85rem 1rem;">
                     <option value="">-- Choose an Upcoming Event --</option>
                 </select>
             </div>
@@ -565,28 +582,40 @@
             <!-- Event Highlight Preview Box -->
             <div id="event-highlight-box" class="event-preview-card hidden">
                 <div style="flex: 1;">
-                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">
-                        <span id="preview-event-cat" class="badge" style="font-weight: 700; font-size: 0.78rem; text-transform: uppercase;">Category</span>
-                        <span id="preview-event-status" style="font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px;">● Registration Open</span>
+                    <div
+                        style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                        <span id="preview-event-cat" class="badge"
+                            style="font-weight: 700; font-size: 0.78rem; text-transform: uppercase;">Category</span>
+                        <span id="preview-event-status"
+                            style="font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px;">●
+                            Registration Open</span>
                     </div>
-                    <h3 id="preview-event-title" style="margin: 0.25rem 0 0.5rem 0; color: var(--color-primary); font-size: 1.35rem;">Event Title</h3>
-                    
-                    <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; color: #475569; margin-bottom: 0.65rem;">
-                        <div><span>📅</span> <strong id="preview-event-date">Date</strong> <span id="preview-event-time"></span></div>
+                    <h3 id="preview-event-title"
+                        style="margin: 0.25rem 0 0.5rem 0; color: var(--color-primary); font-size: 1.35rem;">Event Title
+                    </h3>
+
+                    <div
+                        style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; color: #475569; margin-bottom: 0.65rem;">
+                        <div><span>📅</span> <strong id="preview-event-date">Date</strong> <span
+                                id="preview-event-time"></span></div>
                         <div><span>📍</span> <span id="preview-event-location">Location</span></div>
                     </div>
-                    <p id="preview-event-desc" style="margin: 0; font-size: 0.9rem; color: #64748b; line-height: 1.5;"></p>
+                    <p id="preview-event-desc" style="margin: 0; font-size: 0.9rem; color: #64748b; line-height: 1.5;">
+                    </p>
                 </div>
                 <div style="text-align: right; display: flex; flex-direction: column; gap: 0.4rem; min-width: 140px;">
-                    <div style="font-size: 0.78rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Ticket Pricing</div>
+                    <div style="font-size: 0.78rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Ticket
+                        Pricing</div>
                     <div class="tier-price-pill pill-member" id="preview-price-member">🏅 Members: Free</div>
                     <div class="tier-price-pill pill-non-member" id="preview-price-non">👥 Non-Members: €10</div>
                 </div>
             </div>
 
             <div class="step-actions-bar">
-                <a href="/events" class="btn btn-secondary btn-step-prev" id="btn-back-to-events-list" data-i18n="event_back_to_list">&larr; Back to Events</a>
-                <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-1" data-i18n="event_btn_continue">Continue to Attendee Info &rarr;</button>
+                <a href="/events" class="btn btn-secondary btn-step-prev" id="btn-back-to-events-list"
+                    data-i18n="event_back_to_list">&larr; Back to Events</a>
+                <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-1"
+                    data-i18n="event_btn_continue">Continue to Attendee Info &rarr;</button>
             </div>
         </div>
 
@@ -605,13 +634,14 @@
             <div class="form-grid-2">
                 <div class="form-group">
                     <label for="input-full-name" data-i18n="event_name_label">Full Name *</label>
-                    <input type="text" id="input-full-name" placeholder="e.g. Fatima Zahra" required>
+                    <input type="text" id="input-full-name" placeholder="e.g. Huthayfa Samir" required>
                 </div>
 
                 <div class="form-group">
                     <label for="input-email" data-i18n="event_email_label">Email Address *</label>
-                    <input type="email" id="input-email" placeholder="e.g. fatima@mail.polimi.it" required>
-                    <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_email_hint">We will send your event confirmation and pass here.</small>
+                    <input type="email" id="input-email" placeholder="e.g. huthifa@mail.polimi.it" required>
+                    <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_email_hint">We will send your
+                        event confirmation and pass here.</small>
                 </div>
             </div>
 
@@ -619,12 +649,14 @@
                 <div class="form-group">
                     <label for="input-phone" data-i18n="event_phone_label">Phone Number / WhatsApp *</label>
                     <input type="tel" id="input-phone" placeholder="e.g. +39 340 123 4567" required>
-                    <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_phone_hint">Used for day-of reminders and joining the event WhatsApp group.</small>
+                    <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_phone_hint">Used for day-of
+                        reminders and joining the event WhatsApp group.</small>
                 </div>
 
                 <div class="form-group" id="group-origin-country">
                     <label for="input-origin-country" data-i18n="event_origin_country_label">Country of Origin *</label>
-                    <input type="text" id="input-origin-country" list="origin-countries-list" placeholder="e.g. Italy, Morocco, Pakistan, Egypt..." autocomplete="country-name" required>
+                    <input type="text" id="input-origin-country" list="origin-countries-list"
+                        placeholder="e.g. Italy, Morocco, Pakistan, Egypt..." autocomplete="country-name" required>
                     <datalist id="origin-countries-list">
                         <option value="Afghanistan">
                         <option value="Albania">
@@ -668,13 +700,16 @@
                         <option value="Yemen">
                         <option value="Other">
                     </datalist>
-                    <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_origin_country_hint">Tell us where you are from so we can celebrate our community's diversity.</small>
+                    <small style="color: #64748b; font-size: 0.8rem;" data-i18n="event_origin_country_hint">Tell us
+                        where you are from so we can celebrate our community's diversity.</small>
                 </div>
             </div>
 
             <div class="step-actions-bar">
-                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-2">&larr; Back to Step 1</button>
-                <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-2" data-i18n="event_btn_continue_pricing">Next: Membership & Pricing &rarr;</button>
+                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-2">&larr; Back to Step
+                    1</button>
+                <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-2"
+                    data-i18n="event_btn_continue_pricing">Next: Membership & Pricing &rarr;</button>
             </div>
         </div>
 
@@ -686,19 +721,24 @@
                 <div class="step-title-icon">🎟️</div>
                 <div>
                     <h2 class="step-heading" data-i18n="event_step3_heading">Step 3: Membership Status & Price</h2>
-                    <p class="step-desc" data-i18n="event_step3_desc">ASM members enjoy discounted or free entry to our campus activities.</p>
+                    <p class="step-desc" data-i18n="event_step3_desc">ASM members enjoy discounted or free entry to our
+                        campus activities.</p>
                 </div>
             </div>
 
-            <label style="font-weight: 700; margin-bottom: 0.85rem; display: block; color: var(--color-primary);" data-i18n="event_member_question">Are you an official ASM Member for the 2025/2026 academic year? *</label>
-            
+            <label style="font-weight: 700; margin-bottom: 0.85rem; display: block; color: var(--color-primary);"
+                data-i18n="event_member_question">Are you an official ASM Member for the 2025/2026 academic year?
+                *</label>
+
             <div class="tier-cards-grid">
                 <!-- Option A: ASM Member -->
                 <div class="tier-card selected" id="tier-card-member">
                     <span class="tier-check-badge">✓</span>
                     <div style="font-size: 1.8rem; margin-bottom: 0.35rem;">🏅</div>
-                    <strong style="color: var(--color-primary); font-size: 1.15rem; display: block;" data-i18n="event_tier_member_title">Yes, I am an ASM Member</strong>
-                    <p style="color: #64748b; font-size: 0.85rem; margin: 0.3rem 0;" data-i18n="event_tier_member_desc">You registered for student membership and hold an active membership.</p>
+                    <strong style="color: var(--color-primary); font-size: 1.15rem; display: block;"
+                        data-i18n="event_tier_member_title">Yes, I am an ASM Member</strong>
+                    <p style="color: #64748b; font-size: 0.85rem; margin: 0.3rem 0;" data-i18n="event_tier_member_desc">
+                        You registered for student membership and hold an active membership.</p>
                     <div class="tier-price-pill pill-member" id="card-price-member">Price: Free</div>
                 </div>
 
@@ -706,25 +746,32 @@
                 <div class="tier-card" id="tier-card-non">
                     <span class="tier-check-badge">✓</span>
                     <div style="font-size: 1.8rem; margin-bottom: 0.35rem;">👥</div>
-                    <strong style="color: var(--color-primary); font-size: 1.15rem; display: block;" data-i18n="event_tier_non_title">Non-Member / External Guest</strong>
-                    <p style="color: #64748b; font-size: 0.85rem; margin: 0.3rem 0;" data-i18n="event_tier_non_desc">Open to all Politecnico students, friends, and community guests.</p>
+                    <strong style="color: var(--color-primary); font-size: 1.15rem; display: block;"
+                        data-i18n="event_tier_non_title">Non-Member / External Guest</strong>
+                    <p style="color: #64748b; font-size: 0.85rem; margin: 0.3rem 0;" data-i18n="event_tier_non_desc">
+                        Open to all Politecnico students, friends, and community guests.</p>
                     <div class="tier-price-pill pill-non-member" id="card-price-non">Price: €10</div>
                 </div>
             </div>
 
             <!-- Student ID / Guest verification -->
             <div id="matricola-group" class="form-group" style="margin-top: 1.5rem;">
-                <label for="input-matricola" id="label-matricola" data-i18n="event_matricola_label">Polimi Matricola (Student ID) *</label>
+                <label for="input-matricola" id="label-matricola" data-i18n="event_matricola_label">Polimi Matricola
+                    (Student ID) *</label>
                 <input type="text" id="input-matricola" placeholder="e.g. 10987654">
-                <label style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.65rem; font-weight: 500; font-size: 0.88rem; color: #475569; cursor: pointer;">
-                    <input type="checkbox" id="check-is-external-guest" style="width: 1.1rem; height: 1.1rem; cursor: pointer;">
+                <label
+                    style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.65rem; font-weight: 500; font-size: 0.88rem; color: #475569; cursor: pointer;">
+                    <input type="checkbox" id="check-is-external-guest"
+                        style="width: 1.1rem; height: 1.1rem; cursor: pointer;">
                     <span data-i18n="event_guest_toggle">I am not a Polimi student (External Guest / Non-Student)</span>
                 </label>
             </div>
 
             <div class="step-actions-bar">
-                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-3">&larr; Back to Step 2</button>
-                <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-3" data-i18n="event_btn_continue_logistics">Next: Logistics &amp; Dietary &rarr;</button>
+                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-3">&larr; Back to Step
+                    2</button>
+                <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-3"
+                    data-i18n="event_btn_continue_logistics">Next: Logistics &amp; Dietary &rarr;</button>
             </div>
         </div>
 
@@ -735,36 +782,46 @@
             <div class="step-title-wrap">
                 <div class="step-title-icon">🥗</div>
                 <div>
-                    <h2 class="step-heading" data-i18n="event_step4_heading">Step 4: Dietary Needs & Emergency Logistics</h2>
-                    <p class="step-desc" data-i18n="event_step4_desc">Help us prepare food portions, safety measures, and logistics.</p>
+                    <h2 class="step-heading" data-i18n="event_step4_heading">Step 4: Dietary Needs & Emergency Logistics
+                    </h2>
+                    <p class="step-desc" data-i18n="event_step4_desc">Help us prepare food portions, safety measures,
+                        and logistics.</p>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="input-dietary" data-i18n="event_dietary_label">Dietary Requirements & Allergies (for meals/Iftar)</label>
+                <label for="input-dietary" data-i18n="event_dietary_label">Dietary Requirements & Allergies (for
+                    meals/Iftar)</label>
                 <select id="input-dietary">
-                    <option value="None" data-i18n="dietary_opt_none">No special dietary restrictions (Halal standard)</option>
+                    <option value="None" data-i18n="dietary_opt_none">No special dietary restrictions (Halal standard)
+                    </option>
                     <option value="Vegetarian" data-i18n="dietary_opt_veg">Vegetarian</option>
                     <option value="Vegan" data-i18n="dietary_opt_vegan">Vegan</option>
                     <option value="Celiac / Gluten-Free" data-i18n="dietary_opt_celiac">Gluten-Free / Celiac</option>
                     <option value="Nut Allergy" data-i18n="dietary_opt_nut">Nut / Peanut Allergy</option>
-                    <option value="Other Allergy" data-i18n="dietary_opt_other">Other (please specify in notes below)</option>
+                    <option value="Other Allergy" data-i18n="dietary_opt_other">Other (please specify in notes below)
+                    </option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="input-emergency" data-i18n="event_emergency_label">Emergency Contact Name & Phone (recommended for hikes & sports)</label>
+                <label for="input-emergency" data-i18n="event_emergency_label">Emergency Contact Name & Phone
+                    (recommended for hikes & sports)</label>
                 <input type="text" id="input-emergency" placeholder="e.g. Brother Ahmad: +39 320 000 0000">
             </div>
 
             <div class="form-group">
-                <label for="input-notes" data-i18n="event_notes_label">Special Notes, Questions, or Carpooling Offers</label>
-                <textarea id="input-notes" rows="2" placeholder="Let us know if you can offer a ride, have questions, or require special assistance..."></textarea>
+                <label for="input-notes" data-i18n="event_notes_label">Special Notes, Questions, or Carpooling
+                    Offers</label>
+                <textarea id="input-notes" rows="2"
+                    placeholder="Let us know if you can offer a ride, have questions, or require special assistance..."></textarea>
             </div>
 
             <div class="step-actions-bar">
-                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-4">&larr; Back to Step 3</button>
-                <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-4" data-i18n="event_btn_continue_review">Review &amp; Confirm &rarr;</button>
+                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-4">&larr; Back to Step
+                    3</button>
+                <button type="button" class="btn btn-primary btn-step-next" id="btn-next-step-4"
+                    data-i18n="event_btn_continue_review">Review &amp; Confirm &rarr;</button>
             </div>
         </div>
 
@@ -776,7 +833,8 @@
                 <div class="step-title-icon">✅</div>
                 <div>
                     <h2 class="step-heading" data-i18n="event_step5_heading">Step 5: Review & Confirm Registration</h2>
-                    <p class="step-desc" data-i18n="event_step5_desc">Please review your booking details before confirming.</p>
+                    <p class="step-desc" data-i18n="event_step5_desc">Please review your booking details before
+                        confirming.</p>
                 </div>
             </div>
 
@@ -810,9 +868,13 @@
                     <span class="summary-label" data-i18n="summary_membership">Membership Tier</span>
                     <span class="summary-value" id="sum-membership-tier">-</span>
                 </div>
-                <div class="summary-row" style="border-top: 1.5px solid #cbd5e1; padding-top: 0.75rem; margin-top: 0.35rem;">
-                    <span class="summary-label" style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem;" data-i18n="summary_price_due">Total Contribution Due</span>
-                    <span class="summary-value" id="sum-price-due" style="font-size: 1.25rem; font-weight: 800; color: #047857;">Free</span>
+                <div class="summary-row"
+                    style="border-top: 1.5px solid #cbd5e1; padding-top: 0.75rem; margin-top: 0.35rem;">
+                    <span class="summary-label"
+                        style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem;"
+                        data-i18n="summary_price_due">Total Contribution Due</span>
+                    <span class="summary-value" id="sum-price-due"
+                        style="font-size: 1.25rem; font-weight: 800; color: #047857;">Free</span>
                 </div>
             </div>
 
@@ -820,8 +882,10 @@
             <div id="banner-free" class="free-banner">
                 <div style="font-size: 2rem;">🎉</div>
                 <div>
-                    <strong style="font-size: 1rem;" data-i18n="event_free_banner_title">100% Free Event Registration!</strong>
-                    <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem;" data-i18n="event_free_banner_desc">This event has zero entry fee for you. Click Confirm below to lock in your attendee reservation.</p>
+                    <strong style="font-size: 1rem;" data-i18n="event_free_banner_title">100% Free Event
+                        Registration!</strong>
+                    <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem;" data-i18n="event_free_banner_desc">This event
+                        has zero entry fee for you. Click Confirm below to lock in your attendee reservation.</p>
                 </div>
             </div>
 
@@ -829,7 +893,9 @@
                 <div style="font-size: 2rem;">💳</div>
                 <div>
                     <strong style="font-size: 1rem;" id="paid-title-text">Event Contribution Required</strong>
-                    <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem;" id="paid-desc-text">You can pay in cash to any ASM board member on the event day, or in advance via PayPal to <strong>asm.polimi@gmail.com</strong>.</p>
+                    <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem;" id="paid-desc-text">You can pay in cash to any
+                        ASM board member on the event day, or in advance via PayPal to
+                        <strong>asm.polimi@gmail.com</strong>.</p>
                 </div>
             </div>
 
@@ -839,8 +905,8 @@
                     style="align-items: flex-start; gap: 0.75rem; padding: 1rem; border-color: #cbd5e1; background: #f8fafc; cursor: pointer;">
                     <input type="checkbox" id="app-consent" required style="margin-top: 0.2rem;"
                         onchange="toggleCheckbox(this)">
-                    <span style="font-size: 0.88rem; line-height: 1.5; font-weight: 500;"
-                        id="lbl-consent-text" data-i18n="event_consent_text">
+                    <span style="font-size: 0.88rem; line-height: 1.5; font-weight: 500;" id="lbl-consent-text"
+                        data-i18n="event_consent_text">
                         I accept the <strong>ASM Statute</strong> and give my consent to the processing of
                         personal data for association activities in accordance with European GDPR & Italian
                         privacy regulations. *
@@ -849,12 +915,15 @@
             </div>
 
             <div class="step-actions-bar">
-                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-5">&larr; Back to Step 4</button>
+                <button type="button" class="btn btn-secondary btn-step-prev" id="btn-prev-step-5">&larr; Back to Step
+                    4</button>
                 <!-- Cloudflare Turnstile Privacy-Friendly Anti-Bot Verification -->
                 <div style="margin: 1.5rem 0; display: flex; justify-content: center;">
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAAFp9eO1iyGkqFdRO" data-theme="light"></div>
                 </div>
-                <button type="button" class="btn btn-primary btn-step-next" id="btn-confirm-submit" style="font-size: 1.1rem; padding: 0.9rem 2.2rem; box-shadow: 0 4px 15px rgba(18, 74, 97, 0.25);" data-i18n="event_btn_submit">
+                <button type="button" class="btn btn-primary btn-step-next" id="btn-confirm-submit"
+                    style="font-size: 1.1rem; padding: 0.9rem 2.2rem; box-shadow: 0 4px 15px rgba(18, 74, 97, 0.25);"
+                    data-i18n="event_btn_submit">
                     🎟️ Confirm &amp; Complete Registration
                 </button>
             </div>
@@ -865,23 +934,32 @@
         <!-- ============================================================ -->
         <div id="panel-success" class="success-card hidden">
             <div class="success-icon-badge">✓</div>
-            <h2 style="color: var(--color-primary); font-size: 2.1rem; margin: 0 0 0.5rem 0;" data-i18n="event_success_title">Registration Confirmed!</h2>
-            <p style="color: #475569; font-size: 1.1rem; margin: 0 0 2rem 0;" data-i18n="event_success_sub">Alhamdulillah! Your spot has been secured. We look forward to seeing you.</p>
+            <h2 style="color: var(--color-primary); font-size: 2.1rem; margin: 0 0 0.5rem 0;"
+                data-i18n="event_success_title">Registration Confirmed!</h2>
+            <p style="color: #475569; font-size: 1.1rem; margin: 0 0 2rem 0;" data-i18n="event_success_sub">
+                Alhamdulillah! Your spot has been secured. We look forward to seeing you.</p>
 
-            <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 1.75rem; max-width: 540px; margin: 0 auto 2.5rem auto; text-align: left;">
+            <div
+                style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 1.75rem; max-width: 540px; margin: 0 auto 2.5rem auto; text-align: left;">
                 <div style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Event</div>
-                <div style="font-size: 1.35rem; font-weight: 700; color: var(--color-primary); margin-top: 0.2rem;" id="success-event-name">Event Title</div>
-                
-                <div style="margin-top: 0.85rem; font-size: 0.92rem; color: #334155;" id="success-event-details">Date & Location</div>
-                <div style="margin-top: 0.5rem; font-size: 0.92rem; color: #047857; font-weight: 600;" id="success-person-name">Fatima Zahra</div>
-                
-                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
-                    💡 <em>A confirmation has been logged. Join the ASM announcement channels to receive real-time room and schedule updates.</em>
+                <div style="font-size: 1.35rem; font-weight: 700; color: var(--color-primary); margin-top: 0.2rem;"
+                    id="success-event-name">Event Title</div>
+
+                <div style="margin-top: 0.85rem; font-size: 0.92rem; color: #334155;" id="success-event-details">Date &
+                    Location</div>
+                <div style="margin-top: 0.5rem; font-size: 0.92rem; color: #047857; font-weight: 600;"
+                    id="success-person-name">Fatima Zahra</div>
+
+                <div
+                    style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
+                    💡 <em>A confirmation has been logged. Join the ASM announcement channels to receive real-time room
+                        and schedule updates.</em>
                 </div>
             </div>
 
             <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <button type="button" id="btn-register-another" class="btn btn-secondary" style="font-weight: 600;" data-i18n="event_register_another">
+                <button type="button" id="btn-register-another" class="btn btn-secondary" style="font-weight: 600;"
+                    data-i18n="event_register_another">
                     Register Another Person
                 </button>
                 <a href="/events" class="btn btn-primary" style="font-weight: 700;" data-i18n="event_back_to_events">
@@ -959,7 +1037,7 @@
             const opt = document.createElement('option');
             opt.value = ev.id || ev.title;
             const priceText = (ev.price_member === ev.price_non_member) ? (ev.price_member || 'Free') : `Members: ${ev.price_member || 'Free'} / Non-Members: ${ev.price_non_member || 'Free'}`;
-            
+
             let statusSuffix = '';
             if (status === 'soon') {
                 statusSuffix = ' — ⏳ [Opening Soon]';
@@ -1152,7 +1230,7 @@
             errorAlert.style.display = 'none';
         }
 
-        window.goToStep = function(step, pushHistory = true) {
+        window.goToStep = function (step, pushHistory = true) {
             hideError();
             for (let i = 1; i <= 5; i++) {
                 const panel = document.getElementById(`step-panel-${i}`);
@@ -1273,7 +1351,7 @@
         document.getElementById('sum-event-location').textContent = selectedEvent ? (selectedEvent.location || 'Campus Leonardo') : '-';
         document.getElementById('sum-attendee-name').textContent = `${name} (${matricola})`;
         document.getElementById('sum-attendee-contact').textContent = `${email} • ${phone}`;
-        
+
         const sumCountryRow = document.getElementById('sum-row-origin-country');
         const sumCountryVal = document.getElementById('sum-attendee-country');
         if (sumCountryVal) sumCountryVal.textContent = originCountry || '-';
@@ -1331,7 +1409,7 @@
         const priceApplied = isMemberSelected ? (selectedEvent.price_member || selectedEvent.cost || 'Free') : (selectedEvent.price_non_member || selectedEvent.cost || 'Free');
 
         const turnstileToken = document.querySelector('#step-panel-5 [name="cf-turnstile-response"]')?.value ||
-                               document.querySelector('[name="cf-turnstile-response"]')?.value || '';
+            document.querySelector('[name="cf-turnstile-response"]')?.value || '';
 
         const payload = {
             turnstile_token: turnstileToken,
@@ -1389,11 +1467,11 @@
             // Hide stepper and steps, show celebration card
             document.getElementById('step-panel-5').classList.add('hidden');
             document.getElementById('event-stepper').classList.add('hidden');
-            
+
             document.getElementById('success-event-name').textContent = selectedEvent.title;
             document.getElementById('success-event-details').textContent = `${selectedEvent.date || 'TBD'} ${selectedEvent.time ? '• ' + selectedEvent.time : ''} • 📍 ${selectedEvent.location || 'Campus Leonardo'}`;
             document.getElementById('success-person-name').textContent = `${name} (${isMemberSelected ? '🏅 ASM Member' : '👥 Guest'}) • ${priceApplied}`;
-            
+
             document.getElementById('panel-success').classList.remove('hidden');
             window.scrollTo({ top: 120, behavior: 'smooth' });
         } else {
