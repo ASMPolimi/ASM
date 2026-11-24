@@ -1027,6 +1027,43 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 padding: 0.28rem 0.65rem !important;
             }
         }
+    /* Keep the community actions compact and the featured section centered on phones. */
+    @media (max-width: 576px) {
+        .halal-cta-buttons {
+            width: 100%;
+            padding: 0 0.75rem;
+            box-sizing: border-box;
+            gap: 0.75rem;
+        }
+
+        .halal-cta-buttons a.btn {
+            width: min(100%, 340px);
+            max-width: 340px;
+            box-sizing: border-box;
+            padding: 0.85rem 1rem !important;
+            font-size: 0.92rem !important;
+            line-height: 1.35;
+        }
+
+        #featured-products-section {
+            width: 100%;
+            max-width: 1000px;
+            margin: 2.5rem auto 1.5rem;
+            padding: 0 0.75rem;
+            box-sizing: border-box;
+        }
+
+        #featured-products-title,
+        #featured-products-description {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #featured-products-description {
+            max-width: 34rem;
+        }
+    }
 </style>
 {% endblock %}
 
