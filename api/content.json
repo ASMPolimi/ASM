@@ -30,7 +30,8 @@
       "end_datetime": "",
       "agenda": "",
       "what_to_bring": "",
-      "accessibility_info": ""
+      "accessibility_info": "",
+      "directions_url": ""
     },
     {
       "id": 15,
@@ -53,7 +54,8 @@
       "end_datetime": "",
       "agenda": "",
       "what_to_bring": "",
-      "accessibility_info": ""
+      "accessibility_info": "",
+      "directions_url": ""
     },
     {
       "id": 16,
@@ -76,7 +78,8 @@
       "end_datetime": "",
       "agenda": "",
       "what_to_bring": "",
-      "accessibility_info": ""
+      "accessibility_info": "",
+      "directions_url": ""
     },
     {
       "id": 17,
@@ -99,7 +102,8 @@
       "end_datetime": "",
       "agenda": "",
       "what_to_bring": "",
-      "accessibility_info": ""
+      "accessibility_info": "",
+      "directions_url": ""
     }
   ],
   "board_members": [
