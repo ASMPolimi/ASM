@@ -4735,6 +4735,7 @@ body.dark-mode .islamic-events-grid::-webkit-scrollbar-track {
 }
 
 .islamic-event-card {
+    cursor: default;
     flex: 1 1 calc(25% - 0.9rem);
     min-width: 235px;
     scroll-snap-align: start;
