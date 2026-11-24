@@ -51,12 +51,18 @@
         return [1, true, '1', 'true', 'on'].includes(event.registration_open) ? 'open' : 'closed';
     }
 
+    function eventDetailSlug(title) {
+        return String(title || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+            .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'event';
+    }
+
     async function loadEventDetail() {
         const isItalian = (window.currentLang || localStorage.getItem('site_lang') || 'en') === 'it';
         const content = document.getElementById('event-detail-content');
         document.getElementById('event-back-label').textContent = isItalian ? 'Tutti gli eventi' : 'All events';
         const eventId = new URLSearchParams(window.location.search).get('id');
-        if (!eventId) {
+        const eventSlug = decodeURIComponent(window.location.pathname.replace(/\/+$/, '').split('/').pop() || '');
+        if (!eventId && !eventSlug) {
             showEventNotFound(isItalian);
             return;
         }
@@ -75,7 +81,13 @@
         }
 
         const event = Array.isArray(data.events)
-            ? data.events.find(item => String(item.id) === String(eventId))
+            ? data.events.find(item => {
+                if (eventId) return String(item.id) === String(eventId);
+                const baseSlug = eventDetailSlug(item.title);
+                const collisions = data.events.filter(candidate => eventDetailSlug(candidate.title) === baseSlug).length > 1;
+                const expectedSlug = collisions ? `${baseSlug}-${item.id}` : baseSlug;
+                return eventSlug === expectedSlug || eventSlug === baseSlug;
+            })
             : null;
         if (!event) {
             showEventNotFound(isItalian);
@@ -106,8 +118,12 @@
         document.querySelector('meta[property="og:description"]')?.setAttribute('content', metaDescription);
         document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', `${title} | ASM Polimi`);
         document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', metaDescription);
-        document.querySelector('link[rel="canonical"]')?.setAttribute('href', `${window.location.origin}/event.html?id=${encodeURIComponent(event.id)}`);
-        document.querySelector('meta[property="og:url"]')?.setAttribute('content', `${window.location.origin}/event.html?id=${encodeURIComponent(event.id)}`);
+        const baseCanonicalSlug = eventDetailSlug(title);
+        const isSlugCollision = data.events.filter(candidate => eventDetailSlug(candidate.title) === baseCanonicalSlug).length > 1;
+        const canonicalSlug = eventId ? (isSlugCollision ? `${baseCanonicalSlug}-${event.id}` : baseCanonicalSlug) : eventSlug;
+        const canonicalEventUrl = `${window.location.origin}/event/${encodeURIComponent(canonicalSlug)}`;
+        document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalEventUrl);
+        document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalEventUrl);
 
         content.innerHTML = `
             <span class="event-detail-category">${eventDetailEscape(event.category || (isItalian ? 'Evento' : 'Event'))}</span>

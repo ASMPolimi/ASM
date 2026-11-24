@@ -4,6 +4,7 @@ const STATIC_ASSETS = [
     '/',
     '/halal.html',
     '/event.html',
+    '/404.html',
     '/jumuah.html',
     '/css/styles.css',
     '/js/main.js',
@@ -74,6 +75,9 @@ self.addEventListener('fetch', (event) => {
             }).catch(() => {
                 // If network fails and requested page is an HTML document, fallback to cached halal or jumuah
                 if (event.request.headers.get('accept')?.includes('text/html')) {
+                    if (url.pathname.startsWith('/event/')) {
+                        return caches.match('/404.html');
+                    }
                     if (url.pathname === '/event.html') {
                         return caches.match('/event.html');
                     }

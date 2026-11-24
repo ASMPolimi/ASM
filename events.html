@@ -688,6 +688,17 @@
         return (ev.registration_open === 1 || ev.registration_open === true || ev.registration_open === '1') ? 'open' : 'closed';
     }
 
+    function eventTitleSlug(title) {
+        return String(title || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+            .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'event';
+    }
+
+    function eventDetailSlug(event) {
+        const baseSlug = eventTitleSlug(event.title);
+        const duplicates = siteEvents.filter(item => eventTitleSlug(item.title) === baseSlug);
+        return duplicates.length > 1 ? `${baseSlug}-${event.id}` : baseSlug;
+    }
+
     function renderEventsGrid() {
         const container = document.getElementById('dynamic-events-container');
         if (!container) return;
@@ -722,7 +733,7 @@
             let statusBadgeHtml = '';
             let actionBtnHtml = '';
             const detailsBtnHtml = `
-                <a href="/event.html?id=${encodeURIComponent(ev.id || '')}" class="btn btn-secondary text-center" style="display: block; width: 100%; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; text-decoration: none;">
+                <a href="/event/${encodeURIComponent(eventDetailSlug(ev))}" class="btn btn-secondary text-center" style="display: block; width: 100%; padding: 0.65rem 1rem; font-size: 0.92rem; font-weight: 700; border-radius: 8px; text-decoration: none;">
                     View event details
                 </a>
             `;
