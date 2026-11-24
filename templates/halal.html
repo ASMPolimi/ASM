@@ -27,36 +27,47 @@ student-friendly halal dining and food options around Politecnico di Milano camp
     }
 
     .tab-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        border-bottom: 2px solid var(--color-bg-light);
-        padding-bottom: 1rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.4rem;
+        margin-bottom: 1.25rem;
+        padding: 0.4rem;
+        border: 1px solid #dbe3ec;
+        border-radius: 0.9rem;
+        background: #f1f5f9;
     }
 
     .tab-btn {
-        background: none;
-        border: none;
+        min-height: 3.5rem;
+        background: transparent;
+        border: 1px solid transparent;
         font-family: var(--font-heading);
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 600;
-        color: var(--color-text-light);
+        color: #475569;
         cursor: pointer;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        transition: all 0.3s ease;
+        padding: 0.7rem 0.8rem;
+        border-radius: 0.65rem;
+        transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        flex: 1 1 auto;
         text-align: center;
     }
 
     .tab-btn.active {
-        color: var(--color-primary);
-        background-color: rgba(18, 74, 97, 0.08);
+        color: #fff;
+        background-color: var(--color-primary);
+        box-shadow: 0 3px 8px rgba(18, 74, 97, 0.22);
+    }
+
+    .tab-btn:focus-visible,
+    .mode-btn:focus-visible {
+        outline: 3px solid #0284c7;
+        outline-offset: 3px;
+        position: relative;
+        z-index: 1;
     }
 
     .tab-content {
@@ -65,6 +76,36 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
     .tab-content.active {
         display: block;
+    }
+
+    .mode-buttons {
+        display: flex;
+        gap: 0.25rem;
+        margin: 0 0 1.25rem;
+        padding: 0.25rem;
+        border: 1px solid #dbe3ec;
+        border-radius: 0.7rem;
+        background: #f1f5f9;
+    }
+
+    .mode-btn {
+        flex: 1;
+        min-height: 2.7rem;
+        border: 1px solid transparent;
+        border-radius: 0.48rem;
+        padding: 0.55rem 0.75rem;
+        background: transparent;
+        color: #475569;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .mode-btn.active {
+        color: var(--color-primary);
+        background: #fff;
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.14);
     }
 
     /* Camera scan styles */
@@ -683,15 +724,32 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         </div>
 
         <div class="scanner-card" id="halal-scanner-card">
-            <div class="tab-buttons">
-                <button class="tab-btn active" onclick="switchTab('camera-tab')" data-i18n="halal_tab_cam">📷 Live
-                    Camera Scan</button>
-                <button class="tab-btn" onclick="switchTab('barcode-tab')" data-i18n="halal_tab_barcode">🔢 Enter
-                    Barcode</button>
-                <button class="tab-btn" onclick="switchTab('visual-tab')" data-i18n="halal_tab_visual">📸 Photo / Label
-                    Scan</button>
-                <button class="tab-btn" onclick="switchTab('ingredients-tab')" data-i18n="halal_tab_ingredients">📝
-                    Ingredients Analyzer</button>
+            <div class="tab-buttons" role="group" aria-label="Scanner type">
+                <button class="tab-btn active" type="button" aria-pressed="true"
+                    onclick="switchTab('camera-tab')"><span aria-hidden="true">&#128290;</span><span
+                        data-i18n="halal_tab_barcode">Barcode</span></button>
+                <button class="tab-btn" type="button" aria-pressed="false" onclick="switchTab('visual-tab')"><span
+                        aria-hidden="true">&#129367;</span><span
+                        data-i18n="halal_tab_ingredients">Ingredients</span></button>
+            </div>
+
+            <div class="mode-buttons" data-mode-group="barcode" role="group" aria-label="Barcode input method">
+                <button type="button" class="mode-btn active" aria-pressed="true"
+                    onclick="switchTab('camera-tab')"><span aria-hidden="true">&#128247;</span> <span
+                        data-i18n="halal_barcode_camera">Camera</span></button>
+                <button type="button" class="mode-btn" aria-pressed="false" onclick="switchTab('barcode-tab')"><span
+                        aria-hidden="true">&#9000;</span> <span
+                        data-i18n="halal_barcode_manual">Manual</span></button>
+            </div>
+
+            <div class="mode-buttons" data-mode-group="ingredients" style="display:none;" role="group"
+                aria-label="Ingredients input method">
+                <button type="button" class="mode-btn active" aria-pressed="true"
+                    onclick="switchTab('visual-tab')"><span aria-hidden="true">&#128248;</span> <span
+                        data-i18n="halal_ingredients_photo">Photo</span></button>
+                <button type="button" class="mode-btn" aria-pressed="false"
+                    onclick="switchTab('ingredients-tab')"><span aria-hidden="true">&#128196;</span> <span
+                        data-i18n="halal_ingredients_manual">Paste text</span></button>
             </div>
 
             <!-- Tab 1: Camera Scanner -->
@@ -802,7 +860,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
                 <div id="visual-loading" style="display: none; margin-top: 1.5rem; text-align: center;">
                     <div class="spinner" style="margin: 0 auto 0.75rem auto; width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: var(--color-primary); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
                     <div style="font-weight: 600; color: var(--color-primary);" data-i18n="halal_visual_analyzing">
-                        Reading ingredients with Gemini Flash Vision...
+                        Reading ingredients with AI...
                     </div>
                     <div style="font-size: 0.82rem; color: #64748b; margin-top: 0.25rem;" data-i18n="halal_visual_analyzing_sub">
                         Extracting packaging text, additives, and E-numbers
@@ -894,9 +952,19 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 <script>
     // Tab switching logic
     function switchTab(tabId) {
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            const oc = btn.getAttribute('onclick') || '';
-            btn.classList.toggle('active', oc.includes(`'${tabId}'`));
+        const ingredientMode = tabId === 'visual-tab' || tabId === 'ingredients-tab';
+        document.querySelectorAll('.tab-btn').forEach((btn, index) => {
+            const isActive = index === (ingredientMode ? 1 : 0);
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-pressed', String(isActive));
+        });
+        document.querySelectorAll('[data-mode-group]').forEach(group => {
+            group.style.display = group.dataset.modeGroup === (ingredientMode ? 'ingredients' : 'barcode') ? 'flex' : 'none';
+            group.querySelectorAll('.mode-btn').forEach(btn => {
+                const isActive = (btn.getAttribute('onclick') || '').includes(`'${tabId}'`);
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', String(isActive));
+            });
         });
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.toggle('active', content.id === tabId);
@@ -1323,16 +1391,36 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
     // Send anonymous scan report to backend admin log
     async function reportScannedProduct(product, analysis) {
-        if (!product || !product.code) return;
+        if (!product) return;
+        const rawIngredients = product.ingredients_text;
+        const hasIngredients = Boolean(rawIngredients && rawIngredients.trim().length > 0 && !rawIngredients.includes('No ingredients list available'));
+
+        // Ensure every scanned product or analyzed ingredient gets an identifier for admin tracking
+        let barcode = String(product.code || '').trim();
+        if (!barcode && hasIngredients) {
+            let hash = 0;
+            const clean = rawIngredients.trim();
+            for (let i = 0; i < clean.length; i++) {
+                hash = ((hash << 5) - hash) + clean.charCodeAt(i);
+                hash |= 0;
+            }
+            const hex = Math.abs(hash).toString(16).toUpperCase().padStart(8, '0');
+            const prefix = product.source === 'gemini_vision' ? 'ING-PHOTO' : 'ING-TXT';
+            barcode = `${prefix}-${hex}`;
+            product.code = barcode;
+        }
+
+        if (!barcode) return;
+
         try {
             const payload = {
-                barcode: String(product.code).trim(),
-                product_name: product.product_name || product.product_name_en || '',
-                brand: product.brands || '',
-                ingredients_text: (product.ingredients_text && !product.ingredients_text.includes('No ingredients list available')) ? product.ingredients_text : '',
+                barcode: barcode,
+                product_name: product.product_name || product.product_name_en || (product.source === 'gemini_vision' ? 'Label AI Scan' : 'Ingredients Analysis'),
+                brand: product.brands || (product.source === 'gemini_vision' ? 'Visual Capture' : 'User Entered'),
+                ingredients_text: hasIngredients ? rawIngredients : '',
                 status: (analysis && analysis.status) ? analysis.status : 'not_listed',
                 image_url: product.image_url || '',
-                source: product.source || 'scanner'
+                source: product.source || (hasIngredients ? 'ingredients_scan' : 'scanner')
             };
 
             const endpoints = [
@@ -1363,14 +1451,27 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         const currentLang = window.currentLang || localStorage.getItem('site_lang') || 'en';
         const isIt = currentLang === 'it';
 
-        const name = product.product_name || product.product_name_en || (isIt ? 'Prodotto Non in Lista' : 'Product Not Listed');
-        const brand = product.brands || (isIt ? 'Marca non specificata' : 'Unknown Brand');
-        const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
-
         const rawIngredients = product.ingredients_text;
         const placeholderNotice = isIt ? 'Nessun elenco ingredienti disponibile per questo prodotto in Open Food Facts o nel database locale.' : 'No ingredients list available for this product in Open Food Facts or local database.';
         const hasIngredients = Boolean(rawIngredients && rawIngredients.trim().length > 0 && !rawIngredients.includes('No ingredients list available'));
         const ingredients = hasIngredients ? rawIngredients : placeholderNotice;
+
+        // If product has no barcode (e.g. ingredient text analysis or visual photo scan), generate a stable code so it appears in the admin portal
+        if (!product.code && hasIngredients) {
+            let hash = 0;
+            const clean = rawIngredients.trim();
+            for (let i = 0; i < clean.length; i++) {
+                hash = ((hash << 5) - hash) + clean.charCodeAt(i);
+                hash |= 0;
+            }
+            const hex = Math.abs(hash).toString(16).toUpperCase().padStart(8, '0');
+            const prefix = product.source === 'gemini_vision' ? 'ING-PHOTO' : 'ING-TXT';
+            product.code = `${prefix}-${hex}`;
+        }
+
+        const name = product.product_name || product.product_name_en || (isIt ? (product.source === 'gemini_vision' ? 'Scansione Etichetta (IA)' : 'Analisi Ingredienti') : (product.source === 'gemini_vision' ? 'Label AI Scan' : 'Ingredients Analysis'));
+        const brand = product.brands || (isIt ? (product.source === 'gemini_vision' ? 'Acquisizione Visiva' : 'Inserito da Utente') : (product.source === 'gemini_vision' ? 'Visual Capture' : 'User Entered'));
+        const img = product.image_url || 'https://images.openfoodfacts.org/images/placeholder/en.png';
 
         // Run analysis
         const labels = product.labels || '';
@@ -2084,20 +2185,22 @@ student-friendly halal dining and food options around Politecnico di Milano camp
         stopVisualLiveCamera();
 
         const rawDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-        compressImage(rawDataUrl, 1024, 0.82, function(compressedDataUrl) {
-            visualSelectedBase64 = compressedDataUrl;
-            visualPreviewDataUrl = compressedDataUrl;
+        compressImage(rawDataUrl, 1024, 0.82, setVisualImage);
+    }
 
-            const previewImg = document.getElementById('visual-preview-img');
-            const promptContent = document.getElementById('visual-prompt-content');
-            const previewWrap = document.getElementById('visual-preview-wrap');
-            const statusBox = document.getElementById('visual-status-box');
+    function setVisualImage(dataUrl) {
+        visualSelectedBase64 = dataUrl;
+        visualPreviewDataUrl = dataUrl;
 
-            if (previewImg) previewImg.src = compressedDataUrl;
-            if (promptContent) promptContent.style.display = 'none';
-            if (previewWrap) previewWrap.style.display = 'block';
-            if (statusBox) statusBox.style.display = 'none';
-        });
+        const previewImg = document.getElementById('visual-preview-img');
+        const promptContent = document.getElementById('visual-prompt-content');
+        const previewWrap = document.getElementById('visual-preview-wrap');
+        const statusBox = document.getElementById('visual-status-box');
+
+        if (previewImg) previewImg.src = dataUrl;
+        if (promptContent) promptContent.style.display = 'none';
+        if (previewWrap) previewWrap.style.display = 'block';
+        if (statusBox) statusBox.style.display = 'none';
     }
 
     function handleVisualFileSelect(e) {
@@ -2116,21 +2219,7 @@ student-friendly halal dining and food options around Politecnico di Milano camp
 
         const reader = new FileReader();
         reader.onload = function(evt) {
-            const rawDataUrl = evt.target.result;
-            compressImage(rawDataUrl, 1024, 0.82, function(compressedDataUrl) {
-                visualSelectedBase64 = compressedDataUrl;
-                visualPreviewDataUrl = compressedDataUrl;
-                
-                const previewImg = document.getElementById('visual-preview-img');
-                const promptContent = document.getElementById('visual-prompt-content');
-                const previewWrap = document.getElementById('visual-preview-wrap');
-                const statusBox = document.getElementById('visual-status-box');
-
-                if (previewImg) previewImg.src = compressedDataUrl;
-                if (promptContent) promptContent.style.display = 'none';
-                if (previewWrap) previewWrap.style.display = 'block';
-                if (statusBox) statusBox.style.display = 'none';
-            });
+            compressImage(evt.target.result, 1024, 0.82, setVisualImage);
         };
         reader.readAsDataURL(file);
     }

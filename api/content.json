@@ -23,7 +23,8 @@
       "max_capacity": 80,
       "price_member": "Free",
       "price_non_member": "Free",
-      "registration_status": "open"
+      "registration_status": "open",
+      "ask_origin_country": 1
     },
     {
       "id": 15,
@@ -39,7 +40,8 @@
       "max_capacity": 150,
       "price_member": "Free",
       "price_non_member": "€5",
-      "registration_status": "open"
+      "registration_status": "open",
+      "ask_origin_country": 1
     },
     {
       "id": 16,
@@ -55,7 +57,8 @@
       "max_capacity": 40,
       "price_member": "€10",
       "price_non_member": "€18",
-      "registration_status": "open"
+      "registration_status": "open",
+      "ask_origin_country": 1
     },
     {
       "id": 17,
@@ -71,7 +74,8 @@
       "max_capacity": 35,
       "price_member": "Free",
       "price_non_member": "€3",
-      "registration_status": "soon"
+      "registration_status": "soon",
+      "ask_origin_country": 1
     }
   ],
   "board_members": [
