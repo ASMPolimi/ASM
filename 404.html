@@ -96,13 +96,19 @@
 <style>
     .event-detail-wrap { max-width: 1000px; margin: 0 auto; }
     .event-detail-card { overflow: hidden; padding: clamp(1.25rem, 4vw, 3rem); border: 1px solid #dce7e9; border-radius: 1.5rem; background: #fff; box-shadow: 0 20px 55px rgba(15, 45, 55, 0.1); }
-    .event-detail-category { display: inline-flex; align-items: center; min-height: 30px; padding: 0.35rem 0.8rem; border: 1px solid #cce9dc; border-radius: 999px; background: #effaf4; color: #176344; font-size: 0.76rem; font-weight: 800; letter-spacing: 0.045em; text-transform: uppercase; }
-    .event-detail-title { max-width: 780px; margin: 0.85rem 0 0.65rem; color: #103f50; font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.08; }
-    .event-detail-status-row { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin: 0.25rem 0 1rem; }
-    .event-detail-status { display: inline-flex; align-items: center; margin: 0; padding: 0.4rem 0.75rem; border-radius: 999px; font-size: 0.82rem; font-weight: 750; }
-    .event-detail-status.open { background: #e5f7eb; color: #17643a; }
-    .event-detail-status.soon { background: #fff5d8; color: #875a00; }
-    .event-detail-status.closed { background: #eef2f5; color: #4b5965; }
+    .event-detail-badge-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .event-cat-badge { display: inline-flex; justify-self: start; align-items: center; gap: 0.3rem; max-width: 100%; padding: 0.3rem 0.65rem; border: 1px solid transparent; border-radius: 999px; font-size: 0.76rem; font-weight: 750; text-transform: uppercase; }
+    .cat-islamic { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+    .cat-ramadiamo { background: #fffbeb; color: #b45309; border-color: #fde68a; }
+    .cat-physical { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .cat-cultural { background: #fdf2f8; color: #be185d; border-color: #fbcfe8; }
+    .cat-other { background: #f3f4f6; color: #374151; border-color: #e5e7eb; }
+    .event-status-pill { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+    .status-open { background: #dcfce7; color: #15803d; }
+    .status-soon { background: #fef3c7; color: #b45309; }
+    .status-closed { background: #fee2e2; color: #b91c1c; }
+    .event-detail-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.85rem; margin-bottom: 1rem; }
+    .event-detail-title { flex: 1 1 0; min-width: 0; max-width: 780px; margin: 0; color: #103f50; font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.08; }
     .event-detail-poster { display: block; width: 100%; max-height: 500px; margin: 0 0 2rem; border-radius: 1.1rem; object-fit: cover; object-position: center; background: #edf3f4; }
     .event-detail-info { max-width: 800px; margin: 0 auto; }
     .event-detail-content-heading { margin: 0 0 0.65rem; color: #103f50; font-size: 1.55rem; letter-spacing: -0.025em; }
@@ -121,32 +127,36 @@
     .event-detail-tool-btn:focus-visible, .event-detail-location-link:focus-visible { outline: 3px solid #fbbf24; outline-offset: 3px; }
     .event-detail-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; margin: 0; padding-top: 1.5rem; border-top: 1px solid #e7edef; }
     .event-detail-meta-item { min-width: 0; min-height: 104px; padding: 1rem 1.1rem; border: 1px solid #e1eaec; border-radius: 0.9rem; background: #f7faf9; }
-    .event-detail-datetime { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
-    .event-detail-datetime-part { min-width: 0; }
-    .event-detail-datetime-part + .event-detail-datetime-part { padding-left: 0.75rem; border-left: 1px solid #dbe5e8; }
+    .event-detail-datetime { grid-column: auto; }
     .event-detail-meta-label { display: block; margin-bottom: 0.35rem; color: #60727a; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; }
     .event-detail-meta-value { color: #193b46; font-size: 0.94rem; font-weight: 650; overflow-wrap: anywhere; line-height: 1.5; }
     .event-detail-price-line { display: block; font-size: 0.88rem; }
     .event-detail-location-link { display: inline-flex; margin-top: 0.55rem; padding: 0.28rem 0.6rem; border-radius: 0.45rem; background: #e5f2f5; color: #14556b; font-size: 0.8rem; font-weight: 750; text-decoration: none; }
     .event-detail-location-link:hover, .event-detail-location-link:focus-visible { background: #cce6ec; color: #103f50; }
-    .event-detail-capacity { display: inline-flex; align-items: center; margin: 0; padding: 0.4rem 0.75rem; border-radius: 999px; background: #e8f2ff; color: #20599a; font-size: 0.82rem; font-weight: 750; }
+    .event-detail-capacity { display: inline-flex; align-items: center; flex: 0 0 auto; margin: 0.4rem 0 0; padding: 0.4rem 0.75rem; border-radius: 999px; background: #e8f2ff; color: #20599a; font-size: 0.82rem; font-weight: 750; white-space: nowrap; }
     .event-detail-capacity[hidden] { display: none; }
     .event-detail-capacity.full { background: #fff0e4; color: #a44916; }
     body.dark-mode .event-detail-card { border-color: #344b53; background: #17272d; box-shadow: 0 20px 55px rgba(0, 0, 0, 0.24); }
     body.dark-mode .event-detail-title, body.dark-mode .event-detail-content-heading, body.dark-mode .event-detail-section h2 { color: #d9eef1; }
-    body.dark-mode .event-detail-category { border-color: #315d4c; background: #203d32; color: #a9e2c1; }
+    body.dark-mode .cat-islamic { background: #203d32; color: #a9e2c1; border-color: #315d4c; }
+    body.dark-mode .cat-ramadiamo { background: #3d3320; color: #f3c879; border-color: #6b552a; }
+    body.dark-mode .cat-physical { background: #1e3048; color: #a8c9ff; border-color: #37577e; }
+    body.dark-mode .cat-cultural { background: #40263a; color: #f1b4dc; border-color: #704062; }
+    body.dark-mode .cat-other { background: #30383b; color: #d5dfe2; border-color: #4b595e; }
     body.dark-mode .event-detail-meta-item { border-color: #344b53; background: #1e3239; }
     body.dark-mode .event-detail-meta-label { color: #a2b6bc; }
     body.dark-mode .event-detail-meta-value, body.dark-mode .event-detail-description, body.dark-mode .event-detail-list { color: #d1dfe2; }
     body.dark-mode .event-detail-section, body.dark-mode .event-detail-meta, body.dark-mode .event-detail-footer { border-color: #344b53; }
     body.dark-mode .event-detail-calendar h2 { color: #a2b6bc; }
-    body.dark-mode .event-detail-datetime-part + .event-detail-datetime-part { border-color: #42545a; }
+    body.dark-mode .status-open { background: #173d2a; color: #86dfa6; }
+    body.dark-mode .status-soon { background: #493a1a; color: #f4d278; }
+    body.dark-mode .status-closed { background: #482829; color: #f0a3a3; }
     body.dark-mode .event-detail-tool-btn { border-color: #3b5963; background: #20363e; color: #d8edf1; }
     body.dark-mode .event-detail-tool-btn:hover, body.dark-mode .event-detail-tool-btn:focus-visible { border-color: #668a94; background: #29444d; }
     body.dark-mode .event-detail-location-link { background: #233f49; color: #b7e3ef; }
-    @media (max-width: 760px) { .event-detail-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); } .event-detail-datetime { grid-column: 1 / -1; } }
+    @media (max-width: 760px) { .event-detail-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (max-width: 576px) { .event-detail-card { padding: 1.1rem; border-radius: 1.1rem; } .event-detail-poster { min-height: 180px; max-height: 330px; margin-bottom: 1.5rem; border-radius: 0.8rem; } .event-detail-meta { gap: 0.6rem; padding-top: 1rem; } .event-detail-meta-item { min-height: 90px; padding: 0.8rem; } .event-detail-actions, .event-detail-tools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .event-detail-actions .btn, .event-detail-actions .event-detail-tool-btn, .event-detail-tools .event-detail-tool-btn { width: 100%; min-width: 0; padding: 0.65rem 0.5rem; font-size: 0.82rem; } }
-    @media (max-width: 400px) { .event-detail-meta { grid-template-columns: 1fr; } .event-detail-datetime { grid-column: auto; } .event-detail-datetime-part + .event-detail-datetime-part { padding: 0.45rem 0 0; border-top: 1px solid #dbe5e8; border-left: 0; } }
+    @media (max-width: 400px) { .event-detail-meta { grid-template-columns: 1fr; } }
     @media (prefers-reduced-motion: reduce) { .event-detail-tool-btn { transition: none; } .event-detail-tool-btn:hover { transform: none; } }
 </style>
 
@@ -229,6 +239,24 @@
     function eventDetailStatus(event) {
         if (event.registration_status) return String(event.registration_status).toLowerCase();
         return [1, true, '1', 'true', 'on'].includes(event.registration_open) ? 'open' : 'closed';
+    }
+
+    function eventDetailCategoryClass(category) {
+        const value = String(category || 'Islamic Event').toLowerCase();
+        if (value.includes('islamic')) return 'cat-islamic';
+        if (value.includes('ramadiamo') || value.includes('iftar')) return 'cat-ramadiamo';
+        if (value.includes('physical') || value.includes('hike') || value.includes('laser')) return 'cat-physical';
+        if (value.includes('cultural') || value.includes('calligraphy') || value.includes('henna')) return 'cat-cultural';
+        return 'cat-other';
+    }
+
+    function eventDetailCategoryIcon(category) {
+        const value = String(category || 'Islamic Event').toLowerCase();
+        if (value.includes('islamic')) return '🕌';
+        if (value.includes('ramadiamo') || value.includes('iftar')) return '🌙';
+        if (value.includes('physical') || value.includes('hike') || value.includes('laser')) return '🥾';
+        if (value.includes('cultural') || value.includes('calligraphy') || value.includes('henna')) return '🎨';
+        return '🌟';
     }
 
     function eventDetailSlug(title) {
@@ -357,16 +385,16 @@
 
         const status = eventDetailStatus(event);
         const statusLabels = isItalian
-            ? { open: 'Iscrizioni aperte', soon: 'Apertura a breve', closed: 'Iscrizioni chiuse' }
-            : { open: 'Registration open', soon: 'Opening soon', closed: 'Registration closed' };
+            ? { open: 'Aperte', soon: 'A breve', closed: 'Chiuse' }
+            : { open: 'Open', soon: 'Soon', closed: 'Closed' };
+        const statusIcons = { open: '🟢', soon: '⏳', closed: '🔴' };
         const title = event.title || (isItalian ? 'Evento ASM' : 'ASM Event');
         const description = event.desc || (isItalian ? 'Ulteriori dettagli saranno pubblicati a breve.' : 'More event details will be announced soon.');
         const priceMembers = event.price_member || event.cost || 'Free';
         const priceGuests = event.price_non_member || event.cost || 'Free';
         const eventLocation = event.location || 'Campus Leonardo';
         const calendarTimes = getEventCalendarTimes(event);
-        const dateLabel = isItalian ? 'Data' : 'Date';
-        const timeLabel = calendarTimes ? (isItalian ? 'Orario (Europe/Rome)' : 'Time (Europe/Rome)') : (isItalian ? 'Orario' : 'Time');
+        const dateTimeLabel = calendarTimes ? (isItalian ? 'Data e ora (Europe/Rome)' : 'Date & time (Europe/Rome)') : (isItalian ? 'Data e ora' : 'Date & time');
         const locationLabel = isItalian ? 'Luogo' : 'Location';
         const membersLabel = isItalian ? 'Prezzo soci' : 'Member price';
         const guestsLabel = isItalian ? 'Prezzo ospiti' : 'Guest price';
@@ -412,10 +440,12 @@
         document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalEventUrl);
 
         content.innerHTML = `
-            <span class="event-detail-category">${eventDetailEscape(event.category || (isItalian ? 'Evento' : 'Event'))}</span>
-            <h1 class="event-detail-title">${eventDetailEscape(title)}</h1>
-            <div class="event-detail-status-row">
-                <span class="event-detail-status ${['open', 'soon'].includes(status) ? status : 'closed'}">${eventDetailEscape(statusLabels[status] || statusLabels.closed)}</span>
+            <div class="event-detail-badge-row">
+                <span class="event-cat-badge ${eventDetailCategoryClass(event.category)}">${eventDetailCategoryIcon(event.category)} ${eventDetailEscape(event.category || (isItalian ? 'Evento islamico' : 'Islamic Event'))}</span>
+                <span class="event-status-pill status-${['open', 'soon'].includes(status) ? status : 'closed'}">${statusIcons[status] || statusIcons.closed} ${eventDetailEscape(statusLabels[status] || statusLabels.closed)}</span>
+            </div>
+            <div class="event-detail-title-row">
+                <h1 class="event-detail-title">${eventDetailEscape(title)}</h1>
                 <div id="event-detail-capacity" class="event-detail-capacity" hidden></div>
             </div>
             ${event.event_image ? `<img class="event-detail-poster" src="${eventDetailEscape(event.event_image)}" alt="${eventDetailEscape(title)}" loading="eager">` : ''}
@@ -430,15 +460,12 @@
                 <button class="event-detail-tool-btn" type="button" onclick="shareEventPage()">🔗 ${isItalian ? 'Condividi evento' : 'Share event'}</button>
                 ${registerButton}
             </div>
-            ${hasCalendarTimes ? `<section class="event-detail-calendar"><h2>${isItalian ? 'Aggiungi al calendario' : 'Add to your calendar'}</h2><div class="event-detail-tools"><a class="event-detail-tool-btn" target="_blank" rel="noopener noreferrer" href="${googleCalendarUrl}">🗓️ ${isItalian ? 'Aggiungi a Google Calendar' : 'Add to Google Calendar'}</a><a class="event-detail-tool-btn" href="${icsUrl}" download="${eventDetailSlug(title)}.ics">📅 ${isItalian ? 'Aggiungi ad Apple / Outlook' : 'Add to Apple / Outlook'}</a></div></section>` : ''}
             <div class="event-detail-meta">
-                <div class="event-detail-meta-item event-detail-datetime">
-                    <div class="event-detail-datetime-part"><span class="event-detail-meta-label">📅 ${dateLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.date || (isItalian ? 'Data da definire' : 'Date to be announced'))}</span></div>
-                    <div class="event-detail-datetime-part"><span class="event-detail-meta-label">🕒 ${timeLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
-                </div>
+                <div class="event-detail-meta-item event-detail-datetime"><span class="event-detail-meta-label">📅 ${dateTimeLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.date || (isItalian ? 'Data da definire' : 'Date to be announced'))} · ${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
                 <div class="event-detail-meta-item"><span class="event-detail-meta-label">📍 ${locationLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(eventLocation)}</span>${directionsButton}</div>
                 <div class="event-detail-meta-item"><span class="event-detail-meta-label">💳 ${isItalian ? 'Prezzo' : 'Price'}</span><span class="event-detail-meta-value event-detail-price-line">${eventDetailEscape(membersLabel)}: ${eventDetailEscape(priceMembers)}</span><span class="event-detail-meta-value event-detail-price-line">${eventDetailEscape(guestsLabel)}: ${eventDetailEscape(priceGuests)}</span></div>
             </div>
+            ${hasCalendarTimes ? `<section class="event-detail-calendar"><h2>${isItalian ? 'Aggiungi al calendario' : 'Add to your calendar'}</h2><div class="event-detail-tools"><a class="event-detail-tool-btn" target="_blank" rel="noopener noreferrer" href="${googleCalendarUrl}">🗓️ ${isItalian ? 'Aggiungi a Google Calendar' : 'Add to Google Calendar'}</a><a class="event-detail-tool-btn" href="${icsUrl}" download="${eventDetailSlug(title)}.ics">📅 ${isItalian ? 'Aggiungi ad Apple / Outlook' : 'Add to Apple / Outlook'}</a></div></section>` : ''}
             <div class="event-detail-footer"><a class="event-detail-tool-btn" href="/events">⬅️ ${isItalian ? 'Tutti gli eventi' : 'Back to events'}</a></div>
         `;
 
