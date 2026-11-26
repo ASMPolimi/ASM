@@ -375,7 +375,8 @@
         line-height: 1.5;
     }
 
-    .event-detail-price-line {
+    .event-detail-price-line,
+    .event-detail-datetime-line {
         display: block;
         font-size: 0.88rem;
     }
@@ -692,6 +693,43 @@
         return items.length ? `<ul class="event-detail-list">${items.map(item => `<li>${eventDetailEscape(item)}</li>`).join('')}</ul>` : '';
     }
 
+    function formatEventDateDDMMYYYY(event, isItalian) {
+        const raw = String(event && event.date ? event.date : '').trim();
+        if (!raw) {
+            if (event && event.start_datetime) {
+                const isoMatch = String(event.start_datetime).match(/^(\d{4})-(\d{2})-(\d{2})/);
+                if (isoMatch) return `${isoMatch[3]}/${isoMatch[2]}/${isoMatch[1]}`;
+            }
+            return isItalian ? 'Data da definire' : 'Date to be announced';
+        }
+
+        const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (isoMatch) {
+            return `${isoMatch[3]}/${isoMatch[2]}/${isoMatch[1]}`;
+        }
+
+        const slashMatch = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        if (slashMatch) {
+            const first = Number(slashMatch[1]);
+            const second = Number(slashMatch[2]);
+            const day = first > 12 ? first : second;
+            const month = first > 12 ? second : first;
+            return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${slashMatch[3]}`;
+        }
+
+        const namedMatch = raw.match(/([A-Za-z]{3,})\s+(\d{1,2}),?\s+(\d{4})/);
+        if (namedMatch) {
+            const parsed = new Date(`${namedMatch[1]} ${namedMatch[2]}, ${namedMatch[3]} UTC`);
+            if (!Number.isNaN(parsed.getTime())) {
+                const dd = String(parsed.getUTCDate()).padStart(2, '0');
+                const mm = String(parsed.getUTCMonth() + 1).padStart(2, '0');
+                return `${dd}/${mm}/${parsed.getUTCFullYear()}`;
+            }
+        }
+
+        return raw;
+    }
+
     function calendarLocalValue(value) {
         return String(value || '').replace(/[-:]/g, '').replace('T', '') + '00';
     }
@@ -884,7 +922,7 @@
                 ${registerButton}
             </div>
             <div class="event-detail-meta">
-                <div class="event-detail-meta-item event-detail-datetime"><span class="event-detail-meta-label">📅 ${dateTimeLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(event.date || (isItalian ? 'Data da definire' : 'Date to be announced'))} · ${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
+                <div class="event-detail-meta-item event-detail-datetime"><span class="event-detail-meta-label">📅 ${dateTimeLabel}</span><span class="event-detail-meta-value event-detail-datetime-line">${eventDetailEscape(formatEventDateDDMMYYYY(event, isItalian))}</span><span class="event-detail-meta-value event-detail-datetime-line">${eventDetailEscape(event.time || (isItalian ? 'Orario da definire' : 'Time to be announced'))}</span></div>
                 <div class="event-detail-meta-item"><span class="event-detail-meta-label">📍 ${locationLabel}</span><span class="event-detail-meta-value">${eventDetailEscape(eventLocation)}</span>${directionsButton}</div>
                 <div class="event-detail-meta-item"><span class="event-detail-meta-label">💳 ${isItalian ? 'Prezzo' : 'Price'}</span><span class="event-detail-meta-value event-detail-price-line">${eventDetailEscape(membersLabel)}: ${eventDetailEscape(priceMembers)}</span><span class="event-detail-meta-value event-detail-price-line">${eventDetailEscape(guestsLabel)}: ${eventDetailEscape(priceGuests)}</span></div>
             </div>
