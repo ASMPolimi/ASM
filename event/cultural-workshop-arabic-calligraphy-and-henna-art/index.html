@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Details | ASM Polimi</title>
+    <title>Cultural Workshop: Arabic Calligraphy & Henna Art | ASM Polimi</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
@@ -16,31 +16,35 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ASM Polimi">
     <meta name="description"
-        content="Event details, schedule, location, and registration information from ASM Polimi.">
-    <link rel="canonical" href="https://asmpolimi.it/event.html">
+        content="Hands-on creative masterclass where you will learn traditional Arabic calligraphy stroke techniques with authentic bamboo pens, and explore natural organic h...">
+    <link rel="canonical" href="https://asmpolimi.it/event/cultural-workshop-arabic-calligraphy-and-henna-art">
 
     <!-- Open Graph / Facebook / WhatsApp / Telegram / LinkedIn -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://asmpolimi.it/event.html">
-    <meta property="og:title" content="Event Details | ASM Polimi">
-    <meta property="og:description" content="Event details, schedule, location, and registration information from ASM Polimi.">
+    <meta property="og:url" content="https://asmpolimi.it/event/cultural-workshop-arabic-calligraphy-and-henna-art">
+    <meta property="og:title" content="Cultural Workshop: Arabic Calligraphy & Henna Art | ASM Polimi">
+    <meta property="og:description" content="Hands-on creative masterclass where you will learn traditional Arabic calligraphy stroke techniques with authentic bamboo pens, and explore natural organic h...">
+    
     <meta property="og:image" content="https://asmpolimi.it/assets/og-banner.png">
     <meta property="og:image:secure_url" content="https://asmpolimi.it/assets/og-banner.png">
+    
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
+    
+    <meta property="og:image:alt" content="Cultural Workshop: Arabic Calligraphy & Henna Art">
+
     <meta property="og:site_name" content="ASM Polimi">
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="it_IT">
 
     <!-- Twitter / X Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://asmpolimi.it/event.html">
-    <meta name="twitter:title" content="Event Details | ASM Polimi">
-    <meta name="twitter:description" content="Event details, schedule, location, and registration information from ASM Polimi.">
+    <meta name="twitter:url" content="https://asmpolimi.it/event/cultural-workshop-arabic-calligraphy-and-henna-art">
+    <meta name="twitter:title" content="Cultural Workshop: Arabic Calligraphy & Henna Art | ASM Polimi">
+    <meta name="twitter:description" content="Hands-on creative masterclass where you will learn traditional Arabic calligraphy stroke techniques with authentic bamboo pens, and explore natural organic h...">
     <meta name="twitter:image" content="https://asmpolimi.it/assets/og-banner.png">
-    <meta name="twitter:image:alt" content="ASM Polimi - Muslim Student Association Politecnico di Milano">
+    <meta name="twitter:image:alt" content="Cultural Workshop: Arabic Calligraphy & Henna Art">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -899,6 +903,17 @@
         const canonicalEventUrl = `${window.location.origin}/event/${encodeURIComponent(canonicalSlug)}`;
         document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalEventUrl);
         document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalEventUrl);
+        document.querySelector('meta[name="twitter:url"]')?.setAttribute('content', canonicalEventUrl);
+        if (event.event_image) {
+            try {
+                const absEventImage = new URL(String(event.event_image), window.location.origin).href;
+                document.querySelector('meta[property="og:image"]')?.setAttribute('content', absEventImage);
+                document.querySelector('meta[property="og:image:secure_url"]')?.setAttribute('content', absEventImage);
+                document.querySelector('meta[property="og:image:alt"]')?.setAttribute('content', title);
+                document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', absEventImage);
+                document.querySelector('meta[name="twitter:image:alt"]')?.setAttribute('content', title);
+            } catch (error) { }
+        }
 
         content.innerHTML = `
             <div class="event-detail-badge-row">
@@ -952,16 +967,17 @@
 
     window.shareEventPage = async function () {
         const title = document.querySelector('.event-detail-title')?.textContent || document.title;
-        const shareData = { title, text: title, url: window.location.href };
+        const shareUrl = document.querySelector('link[rel="canonical"]')?.href || window.location.href;
+        const shareData = { title, text: title, url: shareUrl };
         try {
             if (navigator.share) {
                 await navigator.share(shareData);
                 return;
             }
-            await navigator.clipboard.writeText(window.location.href);
+            await navigator.clipboard.writeText(shareUrl);
             alert((window.currentLang || localStorage.getItem('site_lang') || 'en') === 'it' ? 'Link copiato.' : 'Event link copied.');
         } catch (error) {
-            if (error.name !== 'AbortError') window.prompt('Copy event link:', window.location.href);
+            if (error.name !== 'AbortError') window.prompt('Copy event link:', shareUrl);
         }
     };
 

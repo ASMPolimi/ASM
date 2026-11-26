@@ -1,16 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}Event Details | ASM Polimi{% endblock %}
-{% block meta_description %}Event details, schedule, location, and registration information from ASM Polimi.{% endblock
-%}
-{% block canonical_url %}https://asmpolimi.it/event.html{% endblock %}
-{% block og_url %}https://asmpolimi.it/event.html{% endblock %}
-{% block og_title %}Event Details | ASM Polimi{% endblock %}
-{% block og_description %}Event details, schedule, location, and registration information from ASM Polimi.{% endblock %}
-{% block twitter_url %}https://asmpolimi.it/event.html{% endblock %}
-{% block twitter_title %}Event Details | ASM Polimi{% endblock %}
-{% block twitter_description %}Event details, schedule, location, and registration information from ASM Polimi.{%
-endblock %}
+{% set page_title = (event.title ~ ' | ASM Polimi') if event is defined and event and event.title else 'Event Details | ASM Polimi' %}
+{% set page_desc = (event.desc | replace('\n', ' ') | trim | truncate(160, True, '...')) if event is defined and event and event.desc else 'Event details, schedule, location, and registration information from ASM Polimi.' %}
+{% set page_url = event_canonical_url if event_canonical_url is defined and event_canonical_url else 'https://asmpolimi.it/event.html' %}
+{% set page_og_image = event_og_image if event_og_image is defined and event_og_image else 'https://asmpolimi.it/assets/og-banner.png' %}
+{% set page_og_alt = event.title if event is defined and event and event.title else 'ASM Polimi - Muslim Student Association Politecnico di Milano' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ page_desc }}{% endblock %}
+{% block canonical_url %}{{ page_url }}{% endblock %}
+{% block og_url %}{{ page_url }}{% endblock %}
+{% block og_title %}{{ page_title }}{% endblock %}
+{% block og_description %}{{ page_desc }}{% endblock %}
+{% block og_image_meta %}
+    <meta property="og:image" content="{{ page_og_image }}">
+    <meta property="og:image:secure_url" content="{{ page_og_image }}">
+    {% if page_og_image == 'https://asmpolimi.it/assets/og-banner.png' %}
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    {% endif %}
+    <meta property="og:image:alt" content="{{ page_og_alt }}">
+{% endblock %}
+{% block twitter_url %}{{ page_url }}{% endblock %}
+{% block twitter_title %}{{ page_title }}{% endblock %}
+{% block twitter_description %}{{ page_desc }}{% endblock %}
+{% block twitter_image %}{{ page_og_image }}{% endblock %}
+{% block twitter_image_alt %}{{ page_og_alt }}{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -759,6 +775,17 @@ endblock %}
         const canonicalEventUrl = `${window.location.origin}/event/${encodeURIComponent(canonicalSlug)}`;
         document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalEventUrl);
         document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalEventUrl);
+        document.querySelector('meta[name="twitter:url"]')?.setAttribute('content', canonicalEventUrl);
+        if (event.event_image) {
+            try {
+                const absEventImage = new URL(String(event.event_image), window.location.origin).href;
+                document.querySelector('meta[property="og:image"]')?.setAttribute('content', absEventImage);
+                document.querySelector('meta[property="og:image:secure_url"]')?.setAttribute('content', absEventImage);
+                document.querySelector('meta[property="og:image:alt"]')?.setAttribute('content', title);
+                document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', absEventImage);
+                document.querySelector('meta[name="twitter:image:alt"]')?.setAttribute('content', title);
+            } catch (error) { }
+        }
 
         content.innerHTML = `
             <div class="event-detail-badge-row">
@@ -812,16 +839,17 @@ endblock %}
 
     window.shareEventPage = async function () {
         const title = document.querySelector('.event-detail-title')?.textContent || document.title;
-        const shareData = { title, text: title, url: window.location.href };
+        const shareUrl = document.querySelector('link[rel="canonical"]')?.href || window.location.href;
+        const shareData = { title, text: title, url: shareUrl };
         try {
             if (navigator.share) {
                 await navigator.share(shareData);
                 return;
             }
-            await navigator.clipboard.writeText(window.location.href);
+            await navigator.clipboard.writeText(shareUrl);
             alert((window.currentLang || localStorage.getItem('site_lang') || 'en') === 'it' ? 'Link copiato.' : 'Event link copied.');
         } catch (error) {
-            if (error.name !== 'AbortError') window.prompt('Copy event link:', window.location.href);
+            if (error.name !== 'AbortError') window.prompt('Copy event link:', shareUrl);
         }
     };
 
