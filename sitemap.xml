@@ -50,4 +50,4 @@
         <priority>0.70</priority>
     </url>
     
-    <url><loc>https://asmpolimi.it/event/networking</loc><changefreq>monthly</changefreq><priority>0.70</priority></url><url><loc>https://asmpolimi.it/event/ramadiamo</loc><changefreq>monthly</changefreq><priority>0.70</priority></url></urlset>
+    <url><loc>https://asmpolimi.it/event/networking</loc><changefreq>monthly</changefreq><priority>0.70</priority></url><url><loc>https://asmpolimi.it/event/ramadiamo</loc><changefreq>monthly</changefreq><priority>0.70</priority></url><url><loc>https://asmpolimi.it/event/testasm</loc><changefreq>monthly</changefreq><priority>0.70</priority></url></urlset>
