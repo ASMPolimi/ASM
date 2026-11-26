@@ -50,8 +50,4 @@
         <priority>0.70</priority>
     </url>
     
-    <url><loc>https://asmpolimi.it/event/islamic-event-spiritual-gathering-and-halaqa</loc><changefreq>monthly</changefreq><priority>0.70</priority></url>
-    <url><loc>https://asmpolimi.it/event/ramadiamo-grand-community-iftar</loc><changefreq>monthly</changefreq><priority>0.70</priority></url>
-    <url><loc>https://asmpolimi.it/event/physical-activities-alpine-lake-hike-and-laser-tag</loc><changefreq>monthly</changefreq><priority>0.70</priority></url>
-    <url><loc>https://asmpolimi.it/event/cultural-workshop-arabic-calligraphy-and-henna-art</loc><changefreq>monthly</changefreq><priority>0.70</priority></url>
-</urlset>
+    <url><loc>https://asmpolimi.it/event/networking</loc><changefreq>monthly</changefreq><priority>0.70</priority></url><url><loc>https://asmpolimi.it/event/ramadiamo</loc><changefreq>monthly</changefreq><priority>0.70</priority></url></urlset>
