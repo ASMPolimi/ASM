@@ -124,6 +124,7 @@
 
     .event-detail-title-row {
         display: flex;
+        flex-wrap: wrap;
         align-items: flex-start;
         justify-content: space-between;
         gap: 0.85rem;
@@ -131,7 +132,7 @@
     }
 
     .event-detail-title {
-        flex: 1 1 0;
+        flex: 1 1 260px;
         min-width: 0;
         max-width: 780px;
         margin: 0;
@@ -145,12 +146,13 @@
     .event-detail-poster {
         display: block;
         width: 100%;
-        max-height: 500px;
+        max-height: 460px;
         margin: 0 0 2rem;
         border-radius: 1.1rem;
-        object-fit: cover;
+        object-fit: contain;
         object-position: center;
-        background: #edf3f4;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
     }
 
     .event-detail-info {
@@ -275,7 +277,7 @@
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 0.85rem;
-        margin: 1.25rem;
+        margin: 1.5rem 0;
         padding-top: 1.5rem;
         border-top: 1px solid #e7edef;
     }
@@ -457,9 +459,158 @@
         color: #b7e3ef;
     }
 
+    body.dark-mode .event-detail-capacity {
+        background: #1b3650;
+        color: #9ac6ff;
+    }
+
+    body.dark-mode .event-detail-capacity.full {
+        background: #472b19;
+        color: #f4b78b;
+    }
+
+    body.dark-mode .event-detail-poster {
+        background: #1e3239;
+        border-color: #344b53;
+    }
+
+    .event-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin-bottom: 1rem;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid #d5e2e5;
+        background: #ffffff;
+        color: var(--color-primary);
+        font-size: 0.9rem;
+        font-weight: 650;
+        text-decoration: none;
+        transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .event-back-link:hover,
+    .event-back-link:focus-visible {
+        background: #eef5f7;
+        border-color: #9cbcc4;
+        transform: translateX(-2px);
+    }
+
+    .event-back-link:focus-visible {
+        outline: 3px solid #fbbf24;
+        outline-offset: 2px;
+    }
+
+    body.dark-mode .event-back-link {
+        background: #1e3239;
+        border-color: #344b53;
+        color: #d9eef1;
+    }
+
+    body.dark-mode .event-back-link:hover,
+    body.dark-mode .event-back-link:focus-visible {
+        background: #28424b;
+        border-color: #537681;
+    }
+
+    /* Skeleton Loader */
+    .event-skeleton-wrap {
+        display: grid;
+        gap: 1.15rem;
+    }
+
+    .event-skeleton-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+
+    .event-skeleton {
+        border-radius: 0.65rem;
+        background: linear-gradient(90deg, #eef3f5 25%, #e2eaed 50%, #eef3f5 75%);
+        background-size: 200% 100%;
+        animation: eventShimmer 1.4s infinite linear;
+    }
+
+    @keyframes eventShimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    body.dark-mode .event-skeleton {
+        background: linear-gradient(90deg, #1f333a 25%, #29424b 50%, #1f333a 75%);
+        background-size: 200% 100%;
+    }
+
+    /* Sticky Mobile Registration Bar */
+    .event-mobile-sticky-bar {
+        display: none;
+    }
+
     @media (max-width: 760px) {
         .event-detail-meta {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 640px) {
+        .event-mobile-sticky-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 950;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #dbe6e9;
+            box-shadow: 0 -6px 24px rgba(15, 45, 55, 0.12);
+        }
+
+        .event-mobile-sticky-bar[hidden] {
+            display: none;
+        }
+
+        .event-mobile-sticky-price {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            font-size: 0.8rem;
+            color: #475569;
+            line-height: 1.3;
+        }
+
+        .event-mobile-sticky-price strong {
+            font-size: 0.95rem;
+            color: #103f50;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .event-mobile-sticky-bar .btn {
+            flex-shrink: 0;
+            padding: 0.65rem 1.15rem;
+            font-size: 0.9rem;
+            min-height: 44px;
+        }
+
+        body.dark-mode .event-mobile-sticky-bar {
+            background: rgba(23, 39, 45, 0.96);
+            border-top-color: #344b53;
+        }
+
+        body.dark-mode .event-mobile-sticky-price {
+            color: #a2b6bc;
+        }
+
+        body.dark-mode .event-mobile-sticky-price strong {
+            color: #d9eef1;
         }
     }
 
@@ -470,8 +621,8 @@
         }
 
         .event-detail-poster {
-            min-height: 180px;
-            max-height: 330px;
+            min-height: 160px;
+            max-height: 340px;
             margin-bottom: 1.5rem;
             border-radius: 0.8rem;
         }
@@ -486,14 +637,26 @@
             padding: 0.8rem;
         }
 
-        .event-detail-actions,
+        .event-detail-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .event-detail-actions .btn,
+        .event-detail-actions .event-detail-tool-btn {
+            flex: 1 1 140px;
+            width: auto;
+            min-width: 0;
+            padding: 0.65rem 0.75rem;
+            font-size: 0.86rem;
+        }
+
         .event-detail-tools {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .event-detail-actions .btn,
-        .event-detail-actions .event-detail-tool-btn,
         .event-detail-tools .event-detail-tool-btn {
             width: 100%;
             min-width: 0;
@@ -509,12 +672,18 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .event-detail-tool-btn {
+        .event-detail-tool-btn,
+        .event-back-link {
             transition: none;
         }
 
-        .event-detail-tool-btn:hover {
+        .event-detail-tool-btn:hover,
+        .event-back-link:hover {
             transform: none;
+        }
+
+        .event-skeleton {
+            animation: none;
         }
     }
 </style>
@@ -523,13 +692,22 @@
 {% block content %}
 <section class="section first-section bg-light">
     <div class="container event-detail-wrap">
-        <p><a href="/events" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">&larr; <span
-                    id="event-back-label">All events</span></a></p>
+        <a href="/events" class="event-back-link">&larr; <span id="event-back-label">All events</span></a>
         <div id="event-detail-content" class="event-detail-card" aria-live="polite">
-            <p style="margin: 0; color: #64748b; text-align: center;">Loading event details&hellip;</p>
+            <div class="event-skeleton-wrap" aria-label="Loading event details">
+                <div class="event-skeleton-row">
+                    <div class="event-skeleton" style="width: 130px; height: 28px; border-radius: 999px;"></div>
+                    <div class="event-skeleton" style="width: 85px; height: 28px; border-radius: 999px;"></div>
+                </div>
+                <div class="event-skeleton" style="width: 72%; height: 42px;"></div>
+                <div class="event-skeleton" style="width: 100%; height: 260px; border-radius: 1rem;"></div>
+                <div class="event-skeleton" style="width: 40%; height: 26px;"></div>
+                <div class="event-skeleton" style="width: 100%; height: 76px;"></div>
+            </div>
         </div>
     </div>
 </section>
+<div id="event-mobile-sticky-bar" class="event-mobile-sticky-bar" hidden></div>
 
 <script>
     const eventDetailEscape = value => String(value == null ? '' : value)
@@ -805,7 +983,7 @@
                 ${event.accessibility_info ? `<section class="event-detail-section"><h2>${isItalian ? 'Accessibilità' : 'Accessibility'}</h2><div class="event-detail-description">${eventDetailEscape(event.accessibility_info)}</div></section>` : ''}
             </section>
             <div class="event-detail-actions">
-                <button class="event-detail-tool-btn" type="button" onclick="shareEventPage()">🔗 ${isItalian ? 'Condividi evento' : 'Share event'}</button>
+                <button class="event-detail-tool-btn" type="button" onclick="shareEventPage(this)">🔗 ${isItalian ? 'Condividi evento' : 'Share event'}</button>
                 ${registerButton}
             </div>
             <div class="event-detail-meta">
@@ -816,6 +994,23 @@
             ${hasCalendarTimes ? `<section class="event-detail-calendar"><h2>${isItalian ? 'Aggiungi al calendario' : 'Add to your calendar'}</h2><div class="event-detail-tools"><a class="event-detail-tool-btn" target="_blank" rel="noopener noreferrer" href="${googleCalendarUrl}">🗓️ ${isItalian ? 'Aggiungi a Google Calendar' : 'Add to Google Calendar'}</a><a class="event-detail-tool-btn" href="${icsUrl}" download="${eventDetailSlug(title)}.ics">📅 ${isItalian ? 'Aggiungi ad Apple / Outlook' : 'Add to Apple / Outlook'}</a></div></section>` : ''}
             <div class="event-detail-footer"><a class="event-detail-tool-btn" href="/events">⬅️ ${isItalian ? 'Tutti gli eventi' : 'Back to events'}</a></div>
         `;
+
+        const stickyBar = document.getElementById('event-mobile-sticky-bar');
+        if (stickyBar) {
+            if (status === 'open') {
+                stickyBar.hidden = false;
+                stickyBar.innerHTML = `
+                    <div class="event-mobile-sticky-price">
+                        <span>${eventDetailEscape(membersLabel)}: ${eventDetailEscape(priceMembers)}</span>
+                        <strong>${eventDetailEscape(guestsLabel)}: ${eventDetailEscape(priceGuests)}</strong>
+                    </div>
+                    <a class="btn btn-primary" href="/event-register?event=${encodeURIComponent(event.id)}">${isItalian ? 'Registrati' : 'Register'}</a>
+                `;
+            } else {
+                stickyBar.hidden = true;
+                stickyBar.innerHTML = '';
+            }
+        }
 
         const capacityBadge = document.getElementById('event-detail-capacity');
         if (Number(event.max_capacity) > 0) {
@@ -837,17 +1032,25 @@
         content.innerHTML = `<div style="text-align: center; padding: 1rem;"><h1 style="color: var(--color-primary);">${isItalian ? 'Evento non trovato' : 'Event not found'}</h1><p style="color: #64748b;">${isItalian ? 'Questo evento potrebbe essere stato rimosso o il link non è valido.' : 'This event may have been removed or the link is invalid.'}</p><a class="btn btn-primary" href="/events">${isItalian ? 'Visualizza tutti gli eventi' : 'Browse all events'}</a></div>`;
     }
 
-    window.shareEventPage = async function () {
+    window.shareEventPage = async function (btn) {
         const title = document.querySelector('.event-detail-title')?.textContent || document.title;
         const shareUrl = document.querySelector('link[rel="canonical"]')?.href || window.location.href;
         const shareData = { title, text: title, url: shareUrl };
+        const isIt = (window.currentLang || localStorage.getItem('site_lang') || 'en') === 'it';
         try {
             if (navigator.share) {
                 await navigator.share(shareData);
                 return;
             }
             await navigator.clipboard.writeText(shareUrl);
-            alert((window.currentLang || localStorage.getItem('site_lang') || 'en') === 'it' ? 'Link copiato.' : 'Event link copied.');
+            if (btn) {
+                if (!btn.dataset.originalText) btn.dataset.originalText = btn.innerHTML;
+                btn.innerHTML = isIt ? '✓ Link copiato!' : '✓ Link copied!';
+                clearTimeout(btn._copyTimer);
+                btn._copyTimer = setTimeout(() => {
+                    btn.innerHTML = btn.dataset.originalText;
+                }, 2000);
+            }
         } catch (error) {
             if (error.name !== 'AbortError') window.prompt('Copy event link:', shareUrl);
         }
