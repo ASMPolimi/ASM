@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
-{% set page_title = (event.title ~ ' | ASM Polimi') if event is defined and event and event.title else 'Event Details | ASM Polimi' %}
-{% set page_desc = (event.desc | replace('\n', ' ') | trim | truncate(160, True, '...')) if event is defined and event and event.desc else 'Event details, schedule, location, and registration information from ASM Polimi.' %}
-{% set page_url = event_canonical_url if event_canonical_url is defined and event_canonical_url else 'https://asmpolimi.it/event.html' %}
-{% set page_og_image = event_og_image if event_og_image is defined and event_og_image else 'https://asmpolimi.it/assets/og-banner.png' %}
-{% set page_og_alt = event.title if event is defined and event and event.title else 'ASM Polimi - Muslim Student Association Politecnico di Milano' %}
+{% set page_title = (event.title ~ ' | ASM Polimi') if event is defined and event and event.title else 'Event Details |
+ASM Polimi' %}
+{% set page_desc = (event.desc | replace('\n', ' ') | trim | truncate(160, True, '...')) if event is defined and event
+and event.desc else 'Event details, schedule, location, and registration information from ASM Polimi.' %}
+{% set page_url = event_canonical_url if event_canonical_url is defined and event_canonical_url else
+'https://asmpolimi.it/event.html' %}
+{% set page_og_image = event_og_image if event_og_image is defined and event_og_image else
+'https://asmpolimi.it/assets/og-banner.png' %}
+{% set page_og_alt = event.title if event is defined and event and event.title else 'ASM Polimi - Muslim Student
+Association Politecnico di Milano' %}
 
 {% block title %}{{ page_title }}{% endblock %}
 {% block meta_description %}{{ page_desc }}{% endblock %}
@@ -13,14 +18,14 @@
 {% block og_title %}{{ page_title }}{% endblock %}
 {% block og_description %}{{ page_desc }}{% endblock %}
 {% block og_image_meta %}
-    <meta property="og:image" content="{{ page_og_image }}">
-    <meta property="og:image:secure_url" content="{{ page_og_image }}">
-    {% if page_og_image == 'https://asmpolimi.it/assets/og-banner.png' %}
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    {% endif %}
-    <meta property="og:image:alt" content="{{ page_og_alt }}">
+<meta property="og:image" content="{{ page_og_image }}">
+<meta property="og:image:secure_url" content="{{ page_og_image }}">
+{% if page_og_image == 'https://asmpolimi.it/assets/og-banner.png' %}
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+{% endif %}
+<meta property="og:image:alt" content="{{ page_og_alt }}">
 {% endblock %}
 {% block twitter_url %}{{ page_url }}{% endblock %}
 {% block twitter_title %}{{ page_title }}{% endblock %}
@@ -534,8 +539,13 @@
     }
 
     @keyframes eventShimmer {
-        0% { background-position: 200% 0; }
-        100% { background-position: -200% 0; }
+        0% {
+            background-position: 200% 0;
+        }
+
+        100% {
+            background-position: -200% 0;
+        }
     }
 
     body.dark-mode .event-skeleton {
@@ -676,6 +686,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+
         .event-detail-tool-btn,
         .event-back-link {
             transition: none;
