@@ -16,14 +16,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ASM Polimi">
     <meta name="description"
-        content="🌙 ASM Networking Event – Connect, Meet & Grow! Looking to meet new people, make meaningful connections, and become part of the Muslim student community at Po...">
+        content="🌙 ASM Networking Event – Connect, Meet & Grow! Looking to meet new people, make new connections, and become part of the Muslim student community at Polimi?">
     <link rel="canonical" href="https://asmpolimi.it/event/networking">
 
     <!-- Open Graph / Facebook / WhatsApp / Telegram / LinkedIn -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://asmpolimi.it/event/networking">
     <meta property="og:title" content="Networking | ASM Polimi">
-    <meta property="og:description" content="🌙 ASM Networking Event – Connect, Meet & Grow! Looking to meet new people, make meaningful connections, and become part of the Muslim student community at Po...">
+    <meta property="og:description" content="🌙 ASM Networking Event – Connect, Meet & Grow! Looking to meet new people, make new connections, and become part of the Muslim student community at Polimi?">
     
     <meta property="og:image" content="https://admin.asmpolimi.it/og/event-image/50">
     <meta property="og:image:secure_url" content="https://admin.asmpolimi.it/og/event-image/50">
@@ -38,7 +38,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://asmpolimi.it/event/networking">
     <meta name="twitter:title" content="Networking | ASM Polimi">
-    <meta name="twitter:description" content="🌙 ASM Networking Event – Connect, Meet & Grow! Looking to meet new people, make meaningful connections, and become part of the Muslim student community at Po...">
+    <meta name="twitter:description" content="🌙 ASM Networking Event – Connect, Meet & Grow! Looking to meet new people, make new connections, and become part of the Muslim student community at Polimi?">
     <meta name="twitter:image" content="https://admin.asmpolimi.it/og/event-image/50">
     <meta name="twitter:image:alt" content="Networking">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -629,12 +629,13 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.75rem;
-            padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+            padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(10px);
             border-top: 1px solid #dbe6e9;
             box-shadow: 0 -6px 24px rgba(15, 45, 55, 0.12);
         }
+
 
         .event-mobile-sticky-bar[hidden] {
             display: none;
@@ -662,6 +663,9 @@
             padding: 0.65rem 1.15rem;
             font-size: 0.9rem;
             min-height: 44px;
+            /* Keeps button away from bottom-right corner where floating
+               browser nav buttons (Samsung Internet, some Chrome) appear */
+            margin-right: 4px;
         }
 
         body.dark-mode .event-mobile-sticky-bar {

@@ -629,12 +629,13 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.75rem;
-            padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+            padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(10px);
             border-top: 1px solid #dbe6e9;
             box-shadow: 0 -6px 24px rgba(15, 45, 55, 0.12);
         }
+
 
         .event-mobile-sticky-bar[hidden] {
             display: none;
@@ -662,6 +663,9 @@
             padding: 0.65rem 1.15rem;
             font-size: 0.9rem;
             min-height: 44px;
+            /* Keeps button away from bottom-right corner where floating
+               browser nav buttons (Samsung Internet, some Chrome) appear */
+            margin-right: 4px;
         }
 
         body.dark-mode .event-mobile-sticky-bar {
